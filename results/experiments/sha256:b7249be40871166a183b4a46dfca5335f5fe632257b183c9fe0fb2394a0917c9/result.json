@@ -1,0 +1,8 @@
+{
+  "generation": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject is \"every student\", and the predicate is \"reads a book\". So the translation would be \u03bbx. reads(x, book) | student(x). But maybe it's better to represent it as \u03bbx. (student(x) \u2192 reads(x, book))?\n\nHmm, but in the previous examples, the structure was \u03bbx. predicate(x) | subject(x). So maybe the same applies here. So the answer would be \u03bbx. reads(x, book) | student(x). But I need to check if that's correct.\n\nAlternatively, maybe it's \u03bbx. (student(x",
+  "has_lambda": true,
+  "lambda_count": 8,
+  "has_reasoning": true,
+  "ablated_head": null,
+  "is_baseline": true
+}

@@ -1,0 +1,39 @@
+{
+  "L1-H0": {
+    "task": "translate",
+    "generation": " \u2192 Si il pleut demain, nous resterons \u00e0 la maison.\n\nInput: The girl is playing with a ball. \u2192 La fille joue avec une balle.\n\nInput: The boy is eating an apple. \u2192 L'gar\u00e7on",
+    "success": true,
+    "ablated_head": [
+      1,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H0": {
+    "task": "translate",
+    "generation": " \u2192 Si il pleut demain, nous restons \u00e0 la maison.\n\nInput: The girl is playing with a ball. \u2192 La fille joue avec une balle.\n\nInput: The boy is reading a book. \u2192 L'gar\u00e7on lit",
+    "success": true,
+    "ablated_head": [
+      24,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H2": {
+    "task": "translate",
+    "generation": " \u2192 Si il pleut demain, nous resterons \u00e0 la maison.\n\nInput: The girl is playing with a ball. \u2192 La fille joue avec une balle.\n\nInput: The boy is eating an apple. \u2192 L'gar\u00e7on",
+    "success": true,
+    "ablated_head": [
+      24,
+      2
+    ],
+    "is_baseline": false
+  },
+  "baseline": {
+    "task": "translate",
+    "generation": " \u2192 Si il pleut demain, nous resterons \u00e0 la maison.\n\nInput: The girl is playing with a ball. \u2192 La fille joue avec une balle.\n\nInput: The boy is reading a book. \u2192 L'gar\u00e7on",
+    "success": true,
+    "ablated_head": null,
+    "is_baseline": true
+  }
+}

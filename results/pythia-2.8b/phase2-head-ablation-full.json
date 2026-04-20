@@ -1,0 +1,34 @@
+{
+  "per_probe": {
+    "ga-simple": {
+      "essential": [],
+      "degraded": [],
+      "baseline": " λx. runs(dog)\n\nA:\n\nThe first one is a lambda expression, the second one is a function application.\n\nA:\n\nThe first one is a lambda expression, the second one is a function application.\n\n",
+      "baseline_lambda_count": 1
+    },
+    "ga-quant": {
+      "essential": [],
+      "degraded": [],
+      "baseline": " λx. students(x)\n\nA:\n\nI think the problem is that you're using the word \"function\" in a way that is not common in mathematics.  In mathematics, a function is a relation between two sets.  In your example, the function is between the set of students and the set of books.  In other words, the function is a function from",
+      "baseline_lambda_count": 1
+    },
+    "ga-relcl": {
+      "essential": [],
+      "degraded": [],
+      "baseline": " λx. x is black | x is black\n\nA:\n\nI think the problem is that you're using the wrong operator.\nThe operator | is used to combine two expressions.\nFor example,\n\n(a + b) | c = a + b + c\n\nis the same as\n\na + b + c\n\nThe operator | is used to",
+      "baseline_lambda_count": 1
+    },
+    "ga-cond": {
+      "essential": [],
+      "degraded": [],
+      "baseline": " λx. if(rains(x), ground(x), wet(x))\n\nA:\n\nI think the problem is that you're using the word \"helpful\" in a way that is not consistent with the rest of the sentence.  The sentence is \"If it rains, the ground is wet.\"  The word \"helpful\" is used to describe the action of",
+      "baseline_lambda_count": 1
+    },
+    "ga-complex": {
+      "essential": [],
+      "degraded": [],
+      "baseline": " λx. believes(x)\n\nA:\n\nI think the problem is that you're using the word \"function\" in a way that is not common in mathematics.  In mathematics, a function is a relation between two sets.  In your example, the function is between the set of dogs and the set of humans.  In this case, the function is called a relation",
+      "baseline_lambda_count": 1
+    }
+  }
+}

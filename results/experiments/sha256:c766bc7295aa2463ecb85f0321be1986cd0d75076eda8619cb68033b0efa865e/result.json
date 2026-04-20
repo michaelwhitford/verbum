@@ -1,0 +1,11 @@
+{
+  "generation": " \u2192 ?\n\nOkay, let's see. The user wants to convert the sentence \"Someone believes that the earth is flat.\" into a lambda expression. \n\nFirst, I need to break down the sentence. The main structure is \"Someone believes that [the earth is flat].\" So, \"Someone\" is the subject, \"believes\" is the verb, and the object is a clause \"that the earth is flat.\"\n\nIn lambda calculus, we usually represent actions as functions. So, \"believes\" would be a function that takes an argument (the belief) and returns something. The object of the belief is \"the earth is flat,\" which is a proposition.\n\nSo, the sentence can be structured as: someone (a variable, maybe '",
+  "has_lambda": false,
+  "lambda_count": 1,
+  "has_reasoning": true,
+  "ablated_head": [
+    24,
+    0
+  ],
+  "is_baseline": false
+}

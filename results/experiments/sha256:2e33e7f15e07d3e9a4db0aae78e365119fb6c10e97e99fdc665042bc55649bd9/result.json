@@ -1,0 +1,39 @@
+{
+  "L1-H0": {
+    "task": "classify",
+    "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+    "success": false,
+    "ablated_head": [
+      1,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H0": {
+    "task": "classify",
+    "generation": " \u2192 mixed\n\nI need to determine the sentiment of the following input. The options are: positive, negative, or mixed.\n\nInput: I really like this product. It's very comfortable and I would recommend it to anyone. \u2192 positive\n\nI need",
+    "success": true,
+    "ablated_head": [
+      24,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H2": {
+    "task": "classify",
+    "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+    "success": false,
+    "ablated_head": [
+      24,
+      2
+    ],
+    "is_baseline": false
+  },
+  "baseline": {
+    "task": "classify",
+    "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+    "success": false,
+    "ablated_head": null,
+    "is_baseline": true
+  }
+}

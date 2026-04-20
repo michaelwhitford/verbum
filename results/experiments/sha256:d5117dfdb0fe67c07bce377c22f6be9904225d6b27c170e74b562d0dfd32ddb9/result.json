@@ -1,0 +1,7 @@
+{
+  "task": "extract",
+  "generation": " \n\nOutput: send(mary, john, letter)\n\nYes, the output is correct. The structure of the output is the same as the examples provided. The verb is \"send\", the subject is \"Mary\", the object is \"John\", and",
+  "success": true,
+  "ablated_head": null,
+  "is_baseline": true
+}

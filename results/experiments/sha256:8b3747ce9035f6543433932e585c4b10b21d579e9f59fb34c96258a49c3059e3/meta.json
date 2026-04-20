@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T03:33:13.951389+00:00",
+  "node_id": "circuit-discovery/multi-head/threshold-25/probe-ga-relcl",
+  "config_hash": "sha256:8b3747ce9035f6543433932e585c4b10b21d579e9f59fb34c96258a49c3059e3",
+  "elapsed_ms": 898.0,
+  "completed_at": "2026-04-17T03:33:14.849758+00:00"
+}

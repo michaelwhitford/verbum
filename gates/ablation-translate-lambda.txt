@@ -1,0 +1,3 @@
+Translate to lambda calculus:
+
+Input: 

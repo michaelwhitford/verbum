@@ -1,0 +1,11 @@
+{
+  "model": "microsoft/Phi-4-mini-instruct",
+  "finding": "no_essential_heads",
+  "critical_layers": [
+    0,
+    3,
+    5,
+    30
+  ],
+  "elapsed_s": 743.2493171691895
+}

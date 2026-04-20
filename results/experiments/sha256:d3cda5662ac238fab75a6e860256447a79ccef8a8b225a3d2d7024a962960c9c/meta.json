@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T03:51:37.232882+00:00",
+  "node_id": "cross-task/summarize/probe-sum-nested",
+  "config_hash": "sha256:d3cda5662ac238fab75a6e860256447a79ccef8a8b225a3d2d7024a962960c9c",
+  "elapsed_ms": 6695.7,
+  "completed_at": "2026-04-17T03:51:43.928728+00:00"
+}

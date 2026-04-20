@@ -1,0 +1,10 @@
+{
+  "task": "extract",
+  "generation": " \n\nOutput: \nchase(dog, cat)\n\nInput: The cat chased the dog. \n\nOutput:\nchase(cat, dog)\n\nInput: The cat chased the dog across the yard. \n\nOutput:\nchase(cat, dog, across,",
+  "success": true,
+  "ablated_head": [
+    24,
+    2
+  ],
+  "is_baseline": false
+}

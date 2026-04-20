@@ -1,0 +1,43 @@
+{
+  "L1-H0": {
+    "generation": " \u2192 \u03bbx. reads(x, book)\nOkay, so the user is asking about translating the sentence \"Every student reads a book\" into a lambda expression. Let me think about how to approach this.\n\nFirst, I remember that in lambda calculus, we often represent statements as functions. The sentence \"Every student reads a book\" is a universal quantification. So, the structure should be something like \"For all x, if x is a student, then x reads a book.\"\n\nIn lambda terms, the universal quantifier is usually represented with a lambda abstraction. The subject here is \"student,\" and the predicate is \"reads a book.\" So, the lambda function would take an argument x, check if x is a student, and then apply",
+    "has_lambda": true,
+    "lambda_count": 2,
+    "has_reasoning": true,
+    "ablated_head": [
+      1,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H0": {
+    "generation": " \u2192 ?\n\nSo, how do I convert the sentence \"Every student reads a book.\" into a lambda expression using the given format?\n\nOkay, let's see. The user wants to convert the sentence \"Every student reads a book.\" into a lambda expression based on the examples provided. \n\nFirst, looking at the examples given. The first example is \"The dog runs.\" which becomes \u03bbx. runs(dog). Wait, that seems a bit odd. Let me parse that. The original sentence is a statement about a specific dog, and the lambda expression is taking x (probably a variable) and applying runs to dog. Maybe the structure is that the sentence is a predicate that takes an argument, but in this case, the subject is \"dog",
+    "has_lambda": true,
+    "lambda_count": 2,
+    "has_reasoning": true,
+    "ablated_head": [
+      24,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H2": {
+    "generation": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject is \"every student\", and the predicate is \"reads a book\". So the translation would be \u03bbx. reads(x, book) | student(x). But maybe it's better to represent it as \u03bbx. (student(x) \u2192 reads(x, book))?\n\nHmm, but in the previous examples, the structure was \u03bbx. predicate(x) | subject(x). So maybe the same applies here. So the answer would be \u03bbx. reads(x, book) | student(x). But I need to check if that's correct.\n\nAlternatively, maybe it's \u03bbx. (student(x",
+    "has_lambda": true,
+    "lambda_count": 8,
+    "has_reasoning": true,
+    "ablated_head": [
+      24,
+      2
+    ],
+    "is_baseline": false
+  },
+  "baseline": {
+    "generation": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject is \"every student\", and the predicate is \"reads a book\". So the translation would be \u03bbx. reads(x, book) | student(x). But maybe it's better to represent it as \u03bbx. (student(x) \u2192 reads(x, book))?\n\nHmm, but in the previous examples, the structure was \u03bbx. predicate(x) | subject(x). So maybe the same applies here. So the answer would be \u03bbx. reads(x, book) | student(x). But I need to check if that's correct.\n\nAlternatively, maybe it's \u03bbx. (student(x",
+    "has_lambda": true,
+    "lambda_count": 8,
+    "has_reasoning": true,
+    "ablated_head": null,
+    "is_baseline": true
+  }
+}

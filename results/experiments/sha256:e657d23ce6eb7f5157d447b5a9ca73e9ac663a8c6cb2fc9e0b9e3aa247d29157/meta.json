@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T03:50:01.111354+00:00",
+  "node_id": "cross-task/classify/probe-cls-neg-complex/L24-H0",
+  "config_hash": "sha256:e657d23ce6eb7f5157d447b5a9ca73e9ac663a8c6cb2fc9e0b9e3aa247d29157",
+  "elapsed_ms": 1578.0,
+  "completed_at": "2026-04-17T03:50:02.689717+00:00"
+}

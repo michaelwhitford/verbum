@@ -1,0 +1,197 @@
+{
+  "probe-ext-ditrans": {
+    "L1-H0": {
+      "task": "extract",
+      "generation": " \n\nOutput: send(mary, john, letter)\nOkay, so I need to figure out how to convert the sentence \"Mary sent John a letter\" into the predicate logic format similar to the examples given. Let me start by recalling the examples provided",
+      "success": true,
+      "ablated_head": [
+        1,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H0": {
+      "task": "extract",
+      "generation": " \n\nOutput: ?\nSo, the task is to convert the given natural language sentence into a logical form using the same structure as the examples provided. Let's break down the sentence and identify the key components.\n\nThe sentence is: \"Mary sent John a",
+      "success": false,
+      "ablated_head": [
+        24,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H2": {
+      "task": "extract",
+      "generation": " \n\nOutput: send(mary, john, letter)\n\nYes, the output is correct. The structure of the output is the same as the examples provided. The verb is \"send\", the subject is \"Mary\", the object is \"John\", and",
+      "success": true,
+      "ablated_head": [
+        24,
+        2
+      ],
+      "is_baseline": false
+    },
+    "baseline": {
+      "task": "extract",
+      "generation": " \n\nOutput: send(mary, john, letter)\n\nYes, the output is correct. The structure of the output is the same as the examples provided. The verb is \"send\", the subject is \"Mary\", the object is \"John\", and",
+      "success": true,
+      "ablated_head": null,
+      "is_baseline": true
+    }
+  },
+  "probe-ext-multi": {
+    "L1-H0": {
+      "task": "extract",
+      "generation": " \n\nOutput: buy(alice, car), sell(bob, house)\n\nOkay, so I need to convert the sentence \"Alice bought a car and Bob sold his house.\" into a list of action verbs with their respective subjects and objects. Let me",
+      "success": true,
+      "ablated_head": [
+        1,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H0": {
+      "task": "extract",
+      "generation": " \n\nOutput: buy(alice, car), sell(bob, house)\n\nOkay, so I need to convert the sentence \"Alice bought a car and Bob sold his house.\" into a list of action triples. Let me think about how to approach this",
+      "success": true,
+      "ablated_head": [
+        24,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H2": {
+      "task": "extract",
+      "generation": " \n\nOutput: buy(alice, car), sell(bob, house)\n\nOkay, so I need to convert the sentence \"Alice bought a car and Bob sold his house.\" into a list of action verbs with their respective subjects and objects. Let me",
+      "success": true,
+      "ablated_head": [
+        24,
+        2
+      ],
+      "is_baseline": false
+    },
+    "baseline": {
+      "task": "extract",
+      "generation": " \n\nOutput: buy(alice, car), sell(bob, house)\n\nOkay, so I need to convert the sentence \"Alice bought a car and Bob sold his house.\" into a list of action verbs with their respective subjects, objects, and possibly",
+      "success": true,
+      "ablated_head": null,
+      "is_baseline": true
+    }
+  },
+  "probe-ext-nested": {
+    "L1-H0": {
+      "task": "extract",
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+      "success": true,
+      "ablated_head": [
+        1,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H0": {
+      "task": "extract",
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+      "success": true,
+      "ablated_head": [
+        24,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H2": {
+      "task": "extract",
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\n\nNow, do the same for the following sentence:\n\nThe students were told by the teacher that the exam was cancelled.\n\nOutput: tell(students, teacher, exam was cancelled)\n\nWait,",
+      "success": true,
+      "ablated_head": [
+        24,
+        2
+      ],
+      "is_baseline": false
+    },
+    "baseline": {
+      "task": "extract",
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+      "success": true,
+      "ablated_head": null,
+      "is_baseline": true
+    }
+  },
+  "probe-ext-passive": {
+    "L1-H0": {
+      "task": "extract",
+      "generation": " \u2192 ?\n\nOutput: write(book, author, famous)\n\nOkay, so I need to figure out how to convert the sentence \"The book was written by a famous author.\" into a predicate logic statement. Let me start by breaking down the sentence.\n\nFirst",
+      "success": true,
+      "ablated_head": [
+        1,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H0": {
+      "task": "extract",
+      "generation": " \u2192 write(?, ?, book)\n\nSo the answer should be: write(author, book, ?)\n\nWait, but the original sentence is \"The book was written by a famous author.\" So the subject is the book, and the verb is written,",
+      "success": true,
+      "ablated_head": [
+        24,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H2": {
+      "task": "extract",
+      "generation": " \u2192 ?\n\nOutput: write(book, author, famous)\n\nThe task is to convert the given natural language sentence into a logical form using the given examples. The logical form should be in the format of a predicate logic expression. The predicates should be in the",
+      "success": true,
+      "ablated_head": [
+        24,
+        2
+      ],
+      "is_baseline": false
+    },
+    "baseline": {
+      "task": "extract",
+      "generation": " \u2192 ?\n\nOutput: write(book, author, famous)\n\nThe task is to convert the given natural language sentence into a predicate logic expression. The predicate logic expression should be in the form of a function call with the subject, object, and any additional parameters",
+      "success": true,
+      "ablated_head": null,
+      "is_baseline": true
+    }
+  },
+  "probe-ext-simple": {
+    "L1-H0": {
+      "task": "extract",
+      "generation": " \n\nOutput: chase(dog, cat)\n\nInput: The cat chased the dog. \n\nOutput: chase(cat, dog)\n\nSo, the task is to convert a sentence into a predicate logic expression. The predicate is the verb in the sentence, and",
+      "success": true,
+      "ablated_head": [
+        1,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H0": {
+      "task": "extract",
+      "generation": " \n\nOutput: \nchase(dog, cat)\n\nInput: The girl kicked the ball. \n\nOutput:\nkick(girl, ball)\n\nInput: The man hit the ball. \n\nOutput:\nhit(man, ball)\n\nInput: The boy ate",
+      "success": true,
+      "ablated_head": [
+        24,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H2": {
+      "task": "extract",
+      "generation": " \n\nOutput: \nchase(dog, cat)\n\nInput: The cat chased the dog. \n\nOutput:\nchase(cat, dog)\n\nInput: The cat chased the dog across the yard. \n\nOutput:\nchase(cat, dog, across,",
+      "success": true,
+      "ablated_head": [
+        24,
+        2
+      ],
+      "is_baseline": false
+    },
+    "baseline": {
+      "task": "extract",
+      "generation": " \n\nOutput: \nchase(dog, cat)\n\nInput: The cat chased the dog. \n\nOutput:\nchase(cat, dog)\n\nInput: The cat chased the dog into the house. \n\nOutput:\nchase(cat, dog, house)\n\n",
+      "success": true,
+      "ablated_head": null,
+      "is_baseline": true
+    }
+  }
+}

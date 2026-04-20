@@ -1,0 +1,39 @@
+{
+  "L1-H0": {
+    "generation": " \u2192 The cat is sitting on the mat.\n\nOutput: The cat is sitting on the mat.\n\nSo, the output is the same as the input. But the input is a lambda expression, and the output is a natural language sentence. So, the",
+    "has_english": true,
+    "has_lambda": false,
+    "ablated_head": [
+      1,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H0": {
+    "generation": " \u2192 The cat is sitting on the mat.\n\nSo, the input is a lambda expression that defines a predicate. Let's break it down.\n\nFirst, the main predicate is \u03bbx. black(\u03b9y. cat(y) \u2227 sat_on(y,",
+    "has_english": true,
+    "has_lambda": true,
+    "ablated_head": [
+      24,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H2": {
+    "generation": " \u2192 The cat is sitting on the mat.\n\nOutput: The cat is sitting on the mat.\n\nSo, the output is the same as the input. But the input is a lambda expression, and the output is a natural language sentence. So, the",
+    "has_english": true,
+    "has_lambda": false,
+    "ablated_head": [
+      24,
+      2
+    ],
+    "is_baseline": false
+  },
+  "baseline": {
+    "generation": " \u2192 The cat is sitting on the mat.\n\nOutput: The cat is sitting on the mat.\n\nSo, the output is the same as the input. But the input is a lambda expression, and the output is a natural language sentence. So, the",
+    "has_english": true,
+    "has_lambda": false,
+    "ablated_head": null,
+    "is_baseline": true
+  }
+}

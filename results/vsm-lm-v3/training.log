@@ -1,0 +1,890 @@
+
+============================================================
+  VSM-LM v3 — Progressive Binding Compressor 10K STEPS
+============================================================
+
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+  Device: mps
+  Architecture: VSM-LM-v3 (3 registers, 2 layers/phase)
+  S1 strides: (1, 8, 64)
+  S1 layers per phase: 2
+  S1 order: type → parse → apply (fine→coarse)
+  S4: 3-register cross-attention (per-iteration)
+  S3: per-dimension gating + soft-partitioned register writes
+  Registers: 3 × d_register=256
+  Iterations: 2
+  FFN passes/forward: 12
+  Seq len: 4096
+  Batch: 2 × 4 accum = 8
+  Steps: 10000
+  Tokens: 327,680,000
+  Data: SHUFFLED
+
+============================================================
+  BUILDING MODEL
+============================================================
+
+VSM-LM v3 — Progressive Binding Compressor
+  d_model=512, d_register=256×3, seq_len=4096, iterations=2
+  S1: type(s=1, 2L) → parse(s=8, 2L) → apply(s=64, 2L)
+  S4: 3-register cross-attention (per-iteration)
+  S3: per-phase per-iteration gating (3 phases × 2 iters = 6 gates) + 9 soft-partition writes
+  Window: 8
+  FFN passes/forward: 12
+
+  S5_token_embeddings      :   25,741,824
+  S5_positional            :    2,097,152
+  S5_other                 :        1,792
+  S4_intelligence          :    1,311,744
+  S3_control               :    5,119,497
+  S1_operations            :   15,765,504
+  total                    :   50,037,513
+  non_embedding            :   22,198,537  (44.4%)
+
+
+============================================================
+  TRAINING
+============================================================
+
+  step    25/10000  loss=10.1597  lr=3.00e-05  regs=[type=0.004 scope=0.004 role=0.004]  tok/s=14630  elapsed=56s
+  step    50/10000  loss=9.4806  lr=6.00e-05  regs=[type=0.008 scope=0.008 role=0.008]  tok/s=15126  elapsed=108s
+  step    75/10000  loss=8.6985  lr=9.00e-05  regs=[type=0.009 scope=0.009 role=0.010]  tok/s=15287  elapsed=161s
+  step   100/10000  loss=8.1873  lr=1.20e-04  regs=[type=0.010 scope=0.011 role=0.011]  tok/s=15371  elapsed=213s
+  step   125/10000  loss=7.6428  lr=1.50e-04  regs=[type=0.012 scope=0.012 role=0.013]  tok/s=15423  elapsed=266s
+  step   150/10000  loss=7.4506  lr=1.80e-04  regs=[type=0.015 scope=0.016 role=0.017]  tok/s=15135  elapsed=325s
+  step   175/10000  loss=7.1444  lr=2.10e-04  regs=[type=0.019 scope=0.020 role=0.021]  tok/s=15208  elapsed=377s
+  step   200/10000  loss=7.2882  lr=2.40e-04  regs=[type=0.025 scope=0.027 role=0.027]  tok/s=15255  elapsed=430s
+  step   225/10000  loss=6.9669  lr=2.70e-04  regs=[type=0.034 scope=0.036 role=0.037]  tok/s=15294  elapsed=482s
+  step   250/10000  loss=6.7204  lr=3.00e-04  regs=[type=0.043 scope=0.047 role=0.046]  tok/s=15324  elapsed=535s
+  step   275/10000  loss=6.8364  lr=3.30e-04  regs=[type=0.052 scope=0.057 role=0.056]  tok/s=15353  elapsed=587s
+  step   300/10000  loss=6.5556  lr=3.60e-04  regs=[type=0.063 scope=0.069 role=0.069]  tok/s=15220  elapsed=646s
+  step   325/10000  loss=6.6195  lr=3.90e-04  regs=[type=0.074 scope=0.082 role=0.081]  tok/s=15251  elapsed=698s
+  step   350/10000  loss=6.4780  lr=4.20e-04  regs=[type=0.085 scope=0.095 role=0.094]  tok/s=15279  elapsed=751s
+  step   375/10000  loss=6.6047  lr=4.50e-04  regs=[type=0.099 scope=0.109 role=0.106]  tok/s=15301  elapsed=803s
+  step   400/10000  loss=6.4069  lr=4.80e-04  regs=[type=0.107 scope=0.119 role=0.115]  tok/s=15320  elapsed=856s
+  step   425/10000  loss=6.3744  lr=5.10e-04  regs=[type=0.123 scope=0.140 role=0.131]  tok/s=15230  elapsed=914s
+  step   450/10000  loss=6.5527  lr=5.40e-04  regs=[type=0.145 scope=0.163 role=0.154]  tok/s=15253  elapsed=967s
+  step   475/10000  loss=6.2838  lr=5.70e-04  regs=[type=0.150 scope=0.172 role=0.162]  tok/s=15274  elapsed=1019s
+  step   500/10000  loss=6.3099  lr=6.00e-04  regs=[type=0.165 scope=0.186 role=0.174]  tok/s=15293  elapsed=1071s
+  ── eval loss at step 500: 6.5680 ──
+  ── checkpoint 500 ──
+     grad norms: {"S1_type": 0.2976, "S1_parse": 0.082, "S1_apply": 0.0574, "S3": 0.0165, "S3_iter0_type": 0.0091, "S3_iter0_parse": 0.0066, "S3_iter0_apply": 0.0057, "S3_iter1_type": 0.0073, "S3_iter1_parse": 0.0055, "S3_iter1_apply": 0.0056, "S4": 0.0045, "S5_embed": 0.3261, "S5_register_type": 0.0005, "S5_register_scope": 0.0006, "S5_register_role": 0.0005}
+     expansion: 108.49x
+     iter0 S4 entropy: 8.3094
+     iter1 S4 entropy: 8.1791
+     reg_type: init=0.1645 → S4.0=1.2392 → iter0=0.9867 → S4.1=2.0130 → iter1=2.2335
+     reg_scope: init=0.1858 → S4.0=1.4329 → iter0=1.1167 → S4.1=1.9770 → iter1=2.2600
+     reg_role: init=0.1742 → S4.0=1.3797 → iter0=1.1453 → S4.1=2.0389 → iter1=2.4055
+     iter0 gates: type=0.908±0.099  parse=0.553±0.130  apply=0.436±0.121
+     iter1 gates: type=0.383±0.167  parse=0.460±0.124  apply=0.441±0.129
+     soft partition (write gates):
+       iter0/type: type=0.014 scope=0.025 role=0.012
+       iter0/parse: type=0.024 scope=0.034 role=0.036
+       iter0/apply: type=0.035 scope=0.041 role=0.042
+       iter1/type: type=0.032 scope=0.042 role=0.036
+       iter1/parse: type=0.039 scope=0.053 role=0.063
+       iter1/apply: type=0.047 scope=0.051 role=0.055
+     gate divergence (cosine iter0↔iter1): type=-0.006  parse=0.031  apply=0.038
+     compile gate: 0/4
+     saved: checkpoints/vsm-lm-v3/step_000500.pt
+  step   525/10000  loss=6.1662  lr=6.00e-04  regs=[type=0.184 scope=0.205 role=0.190]  tok/s=15178  elapsed=1133s
+  step   550/10000  loss=6.1701  lr=6.00e-04  regs=[type=0.208 scope=0.229 role=0.213]  tok/s=15200  elapsed=1186s
+  step   575/10000  loss=6.2639  lr=6.00e-04  regs=[type=0.193 scope=0.217 role=0.200]  tok/s=15146  elapsed=1244s
+  step   600/10000  loss=6.0890  lr=6.00e-04  regs=[type=0.190 scope=0.211 role=0.194]  tok/s=15167  elapsed=1296s
+  step   625/10000  loss=6.2176  lr=6.00e-04  regs=[type=0.184 scope=0.204 role=0.189]  tok/s=15187  elapsed=1349s
+  step   650/10000  loss=6.0394  lr=6.00e-04  regs=[type=0.178 scope=0.201 role=0.184]  tok/s=15205  elapsed=1401s
+  step   675/10000  loss=5.9925  lr=5.99e-04  regs=[type=0.191 scope=0.216 role=0.202]  tok/s=15222  elapsed=1453s
+  step   700/10000  loss=5.9989  lr=5.99e-04  regs=[type=0.188 scope=0.214 role=0.200]  tok/s=15169  elapsed=1512s
+  step   725/10000  loss=5.9924  lr=5.99e-04  regs=[type=0.209 scope=0.236 role=0.220]  tok/s=15182  elapsed=1565s
+  step   750/10000  loss=5.9108  lr=5.99e-04  regs=[type=0.188 scope=0.213 role=0.196]  tok/s=15198  elapsed=1617s
+  step   775/10000  loss=5.8763  lr=5.99e-04  regs=[type=0.183 scope=0.206 role=0.191]  tok/s=15212  elapsed=1669s
+  step   800/10000  loss=5.7072  lr=5.99e-04  regs=[type=0.186 scope=0.207 role=0.195]  tok/s=15225  elapsed=1722s
+  step   825/10000  loss=6.1467  lr=5.98e-04  regs=[type=0.210 scope=0.230 role=0.216]  tok/s=15235  elapsed=1774s
+  step   850/10000  loss=6.0428  lr=5.98e-04  regs=[type=0.189 scope=0.209 role=0.194]  tok/s=15198  elapsed=1833s
+  step   875/10000  loss=5.7372  lr=5.98e-04  regs=[type=0.194 scope=0.214 role=0.200]  tok/s=15211  elapsed=1885s
+  step   900/10000  loss=6.0534  lr=5.97e-04  regs=[type=0.189 scope=0.211 role=0.196]  tok/s=15222  elapsed=1937s
+  step   925/10000  loss=5.4909  lr=5.97e-04  regs=[type=0.185 scope=0.208 role=0.193]  tok/s=15232  elapsed=1990s
+  step   950/10000  loss=5.5969  lr=5.97e-04  regs=[type=0.188 scope=0.209 role=0.195]  tok/s=15242  elapsed=2042s
+  step   975/10000  loss=6.0545  lr=5.96e-04  regs=[type=0.171 scope=0.191 role=0.179]  tok/s=15236  elapsed=2097s
+  step  1000/10000  loss=5.8390  lr=5.96e-04  regs=[type=0.166 scope=0.189 role=0.177]  tok/s=15219  elapsed=2153s
+  ── eval loss at step 1000: 6.0545 ──
+  ── checkpoint 1000 ──
+     grad norms: {"S1_type": 0.3846, "S1_parse": 0.1261, "S1_apply": 0.0861, "S3": 0.0242, "S3_iter0_type": 0.007, "S3_iter0_parse": 0.0098, "S3_iter0_apply": 0.0091, "S3_iter1_type": 0.0109, "S3_iter1_parse": 0.0115, "S3_iter1_apply": 0.0102, "S4": 0.006, "S5_embed": 0.5329, "S5_register_type": 0.0012, "S5_register_scope": 0.0011, "S5_register_role": 0.0012}
+     expansion: 105.98x
+     iter0 S4 entropy: 8.3147
+     iter1 S4 entropy: 7.7550
+     reg_type: init=0.1664 → S4.0=0.5966 → iter0=0.6851 → S4.1=2.0820 → iter1=2.1748
+     reg_scope: init=0.1892 → S4.0=0.6479 → iter0=0.8277 → S4.1=2.1953 → iter1=2.2777
+     reg_role: init=0.1768 → S4.0=0.6343 → iter0=0.7483 → S4.1=2.1316 → iter1=2.2565
+     iter0 gates: type=0.957±0.080  parse=0.576±0.154  apply=0.507±0.146
+     iter1 gates: type=0.378±0.226  parse=0.514±0.183  apply=0.525±0.182
+     soft partition (write gates):
+       iter0/type: type=0.002 scope=0.000 role=0.002
+       iter0/parse: type=0.021 scope=0.023 role=0.021
+       iter0/apply: type=0.042 scope=0.059 role=0.058
+       iter1/type: type=0.009 scope=0.005 role=0.012
+       iter1/parse: type=0.008 scope=0.008 role=0.008
+       iter1/apply: type=0.011 scope=0.015 role=0.018
+     gate divergence (cosine iter0↔iter1): type=-0.005  parse=0.107  apply=0.121
+     compile gate: 0/4
+     saved: checkpoints/vsm-lm-v3/step_001000.pt
+  step  1025/10000  loss=5.8086  lr=5.95e-04  regs=[type=0.177 scope=0.202 role=0.190]  tok/s=15183  elapsed=2212s
+  step  1050/10000  loss=5.6672  lr=5.95e-04  regs=[type=0.179 scope=0.205 role=0.192]  tok/s=15192  elapsed=2265s
+  step  1075/10000  loss=5.6274  lr=5.95e-04  regs=[type=0.186 scope=0.214 role=0.200]  tok/s=15202  elapsed=2317s
+  step  1100/10000  loss=5.7594  lr=5.94e-04  regs=[type=0.185 scope=0.214 role=0.199]  tok/s=15211  elapsed=2370s
+  step  1125/10000  loss=5.5964  lr=5.94e-04  regs=[type=0.178 scope=0.206 role=0.189]  tok/s=15168  elapsed=2430s
+  step  1150/10000  loss=5.9930  lr=5.93e-04  regs=[type=0.179 scope=0.207 role=0.192]  tok/s=15178  elapsed=2483s
+  step  1175/10000  loss=5.6095  lr=5.93e-04  regs=[type=0.177 scope=0.201 role=0.187]  tok/s=15187  elapsed=2535s
+  step  1200/10000  loss=5.5873  lr=5.92e-04  regs=[type=0.174 scope=0.199 role=0.187]  tok/s=15195  elapsed=2588s
+  step  1225/10000  loss=5.5744  lr=5.91e-04  regs=[type=0.177 scope=0.201 role=0.189]  tok/s=15200  elapsed=2641s
+  step  1250/10000  loss=5.4244  lr=5.91e-04  regs=[type=0.174 scope=0.203 role=0.188]  tok/s=15193  elapsed=2696s
+  step  1275/10000  loss=5.6754  lr=5.90e-04  regs=[type=0.175 scope=0.201 role=0.185]  tok/s=15173  elapsed=2754s
+  step  1300/10000  loss=5.7159  lr=5.90e-04  regs=[type=0.178 scope=0.198 role=0.184]  tok/s=15180  elapsed=2806s
+  step  1325/10000  loss=5.6773  lr=5.89e-04  regs=[type=0.172 scope=0.195 role=0.184]  tok/s=15188  elapsed=2859s
+  step  1350/10000  loss=5.7532  lr=5.88e-04  regs=[type=0.173 scope=0.195 role=0.186]  tok/s=15196  elapsed=2911s
+  step  1375/10000  loss=5.5698  lr=5.88e-04  regs=[type=0.168 scope=0.194 role=0.185]  tok/s=15205  elapsed=2963s
+  step  1400/10000  loss=5.5153  lr=5.87e-04  regs=[type=0.166 scope=0.191 role=0.184]  tok/s=15181  elapsed=3022s
+  step  1425/10000  loss=5.5333  lr=5.86e-04  regs=[type=0.174 scope=0.197 role=0.188]  tok/s=15187  elapsed=3075s
+  step  1450/10000  loss=5.4812  lr=5.85e-04  regs=[type=0.169 scope=0.193 role=0.183]  tok/s=15193  elapsed=3127s
+  step  1475/10000  loss=5.6374  lr=5.85e-04  regs=[type=0.171 scope=0.192 role=0.185]  tok/s=15201  elapsed=3180s
+  step  1500/10000  loss=5.6490  lr=5.84e-04  regs=[type=0.173 scope=0.194 role=0.186]  tok/s=15208  elapsed=3232s
+  ── eval loss at step 1500: 5.7947 ──
+  ── checkpoint 1500 ──
+     grad norms: {"S1_type": 0.2417, "S1_parse": 0.0831, "S1_apply": 0.0743, "S3": 0.012, "S3_iter0_type": 0.0042, "S3_iter0_parse": 0.0039, "S3_iter0_apply": 0.0048, "S3_iter1_type": 0.0053, "S3_iter1_parse": 0.0044, "S3_iter1_apply": 0.0065, "S4": 0.0043, "S5_embed": 0.3165, "S5_register_type": 0.0008, "S5_register_scope": 0.0009, "S5_register_role": 0.0009}
+     expansion: 100.35x
+     iter0 S4 entropy: 8.3135
+     iter1 S4 entropy: 8.1492
+     reg_type: init=0.1732 → S4.0=0.6591 → iter0=0.6760 → S4.1=1.4918 → iter1=1.5246
+     reg_scope: init=0.1941 → S4.0=0.7144 → iter0=0.7371 → S4.1=1.5145 → iter1=1.5314
+     reg_role: init=0.1858 → S4.0=0.7237 → iter0=0.7305 → S4.1=1.5285 → iter1=1.5906
+     iter0 gates: type=0.957±0.078  parse=0.639±0.155  apply=0.531±0.209
+     iter1 gates: type=0.448±0.246  parse=0.604±0.199  apply=0.644±0.226
+     soft partition (write gates):
+       iter0/type: type=0.001 scope=0.000 role=0.002
+       iter0/parse: type=0.015 scope=0.014 role=0.015
+       iter0/apply: type=0.007 scope=0.009 role=0.011
+       iter1/type: type=0.006 scope=0.002 role=0.010
+       iter1/parse: type=0.003 scope=0.003 role=0.004
+       iter1/apply: type=0.001 scope=0.002 role=0.002
+     gate divergence (cosine iter0↔iter1): type=0.008  parse=0.146  apply=0.159
+     compile gate: 0/4
+     saved: checkpoints/vsm-lm-v3/step_001500.pt
+  step  1525/10000  loss=5.4608  lr=5.83e-04  regs=[type=0.172 scope=0.195 role=0.182]  tok/s=15184  elapsed=3291s
+  step  1550/10000  loss=5.5659  lr=5.82e-04  regs=[type=0.171 scope=0.197 role=0.182]  tok/s=15165  elapsed=3349s
+  step  1575/10000  loss=5.5590  lr=5.81e-04  regs=[type=0.169 scope=0.196 role=0.181]  tok/s=15173  elapsed=3402s
+  step  1600/10000  loss=5.5442  lr=5.80e-04  regs=[type=0.173 scope=0.199 role=0.186]  tok/s=15179  elapsed=3454s
+  step  1625/10000  loss=5.6236  lr=5.79e-04  regs=[type=0.172 scope=0.193 role=0.180]  tok/s=15185  elapsed=3507s
+  step  1650/10000  loss=5.7719  lr=5.79e-04  regs=[type=0.175 scope=0.202 role=0.185]  tok/s=15192  elapsed=3559s
+  step  1675/10000  loss=5.6712  lr=5.78e-04  regs=[type=0.161 scope=0.187 role=0.175]  tok/s=15171  elapsed=3618s
+  step  1700/10000  loss=5.2732  lr=5.77e-04  regs=[type=0.164 scope=0.187 role=0.174]  tok/s=15177  elapsed=3670s
+  step  1725/10000  loss=5.4885  lr=5.76e-04  regs=[type=0.164 scope=0.185 role=0.174]  tok/s=15183  elapsed=3723s
+  step  1750/10000  loss=5.4637  lr=5.75e-04  regs=[type=0.162 scope=0.186 role=0.175]  tok/s=15187  elapsed=3776s
+  step  1775/10000  loss=5.2957  lr=5.74e-04  regs=[type=0.160 scope=0.182 role=0.170]  tok/s=15192  elapsed=3828s
+  step  1800/10000  loss=5.5445  lr=5.73e-04  regs=[type=0.157 scope=0.183 role=0.169]  tok/s=15198  elapsed=3881s
+  step  1825/10000  loss=5.3899  lr=5.72e-04  regs=[type=0.159 scope=0.184 role=0.169]  tok/s=15179  elapsed=3940s
+  step  1850/10000  loss=5.4947  lr=5.71e-04  regs=[type=0.148 scope=0.172 role=0.163]  tok/s=15185  elapsed=3992s
+  step  1875/10000  loss=5.1177  lr=5.70e-04  regs=[type=0.142 scope=0.164 role=0.157]  tok/s=15190  elapsed=4045s
+  step  1900/10000  loss=5.4658  lr=5.68e-04  regs=[type=0.139 scope=0.162 role=0.151]  tok/s=15147  elapsed=4110s
+  step  1925/10000  loss=5.3264  lr=5.67e-04  regs=[type=0.133 scope=0.158 role=0.145]  tok/s=15072  elapsed=4185s
+  step  1950/10000  loss=5.3144  lr=5.66e-04  regs=[type=0.133 scope=0.155 role=0.143]  tok/s=14997  elapsed=4261s
+  step  1975/10000  loss=5.4022  lr=5.65e-04  regs=[type=0.140 scope=0.160 role=0.148]  tok/s=14927  elapsed=4336s
+  step  2000/10000  loss=5.1668  lr=5.64e-04  regs=[type=0.135 scope=0.154 role=0.143]  tok/s=14861  elapsed=4410s
+  ── eval loss at step 2000: 5.5894 ──
+  ── checkpoint 2000 ──
+     grad norms: {"S1_type": 0.2617, "S1_parse": 0.094, "S1_apply": 0.0786, "S3": 0.0132, "S3_iter0_type": 0.0042, "S3_iter0_parse": 0.0049, "S3_iter0_apply": 0.0051, "S3_iter1_type": 0.0067, "S3_iter1_parse": 0.0051, "S3_iter1_apply": 0.0057, "S4": 0.005, "S5_embed": 0.2989, "S5_register_type": 0.0007, "S5_register_scope": 0.0007, "S5_register_role": 0.0007}
+     expansion: 96.34x
+     iter0 S4 entropy: 8.3176
+     iter1 S4 entropy: 7.6395
+     reg_type: init=0.1352 → S4.0=0.6141 → iter0=0.7662 → S4.1=1.7545 → iter1=1.9125
+     reg_scope: init=0.1538 → S4.0=0.6325 → iter0=0.8767 → S4.1=1.8826 → iter1=2.0267
+     reg_role: init=0.1426 → S4.0=0.6174 → iter0=0.8000 → S4.1=1.8417 → iter1=2.1349
+     iter0 gates: type=0.950±0.082  parse=0.634±0.149  apply=0.545±0.210
+     iter1 gates: type=0.516±0.252  parse=0.691±0.206  apply=0.735±0.213
+     soft partition (write gates):
+       iter0/type: type=0.002 scope=0.001 role=0.003
+       iter0/parse: type=0.014 scope=0.014 role=0.017
+       iter0/apply: type=0.024 scope=0.032 role=0.026
+       iter1/type: type=0.016 scope=0.016 role=0.030
+       iter1/parse: type=0.003 scope=0.003 role=0.004
+       iter1/apply: type=0.005 scope=0.005 role=0.005
+     gate divergence (cosine iter0↔iter1): type=0.015  parse=0.169  apply=0.174
+     compile gate: 0/4
+     saved: checkpoints/vsm-lm-v3/step_002000.pt
+  step  2025/10000  loss=5.2581  lr=5.63e-04  regs=[type=0.134 scope=0.153 role=0.140]  tok/s=14767  elapsed=4493s
+  step  2050/10000  loss=4.9499  lr=5.61e-04  regs=[type=0.137 scope=0.157 role=0.142]  tok/s=14700  elapsed=4570s
+  step  2075/10000  loss=5.3376  lr=5.60e-04  regs=[type=0.136 scope=0.157 role=0.139]  tok/s=14651  elapsed=4641s
+  step  2100/10000  loss=5.3597  lr=5.59e-04  regs=[type=0.137 scope=0.159 role=0.140]  tok/s=14662  elapsed=4693s
+  step  2125/10000  loss=5.6968  lr=5.58e-04  regs=[type=0.128 scope=0.148 role=0.131]  tok/s=14673  elapsed=4746s
+  step  2150/10000  loss=5.1831  lr=5.56e-04  regs=[type=0.127 scope=0.151 role=0.132]  tok/s=14673  elapsed=4801s
+  step  2175/10000  loss=5.4629  lr=5.55e-04  regs=[type=0.121 scope=0.140 role=0.125]  tok/s=14676  elapsed=4856s
+  step  2200/10000  loss=5.6050  lr=5.54e-04  regs=[type=0.126 scope=0.146 role=0.127]  tok/s=14686  elapsed=4909s
+  step  2225/10000  loss=5.4544  lr=5.52e-04  regs=[type=0.130 scope=0.149 role=0.128]  tok/s=14697  elapsed=4961s
+  step  2250/10000  loss=4.9335  lr=5.51e-04  regs=[type=0.123 scope=0.144 role=0.121]  tok/s=14706  elapsed=5013s
+  step  2275/10000  loss=5.3874  lr=5.50e-04  regs=[type=0.121 scope=0.138 role=0.117]  tok/s=14716  elapsed=5066s
+  step  2300/10000  loss=5.3776  lr=5.48e-04  regs=[type=0.119 scope=0.133 role=0.116]  tok/s=14708  elapsed=5124s
+  step  2325/10000  loss=5.1298  lr=5.47e-04  regs=[type=0.110 scope=0.128 role=0.110]  tok/s=14717  elapsed=5177s
+  step  2350/10000  loss=5.5328  lr=5.46e-04  regs=[type=0.112 scope=0.131 role=0.108]  tok/s=14727  elapsed=5229s
+  step  2375/10000  loss=5.2205  lr=5.44e-04  regs=[type=0.116 scope=0.133 role=0.112]  tok/s=14736  elapsed=5281s
+  step  2400/10000  loss=5.0127  lr=5.43e-04  regs=[type=0.115 scope=0.132 role=0.113]  tok/s=14745  elapsed=5333s
+  step  2425/10000  loss=5.1290  lr=5.41e-04  regs=[type=0.113 scope=0.132 role=0.109]  tok/s=14754  elapsed=5386s
+  step  2450/10000  loss=5.3882  lr=5.40e-04  regs=[type=0.113 scope=0.132 role=0.109]  tok/s=14747  elapsed=5444s
+  step  2475/10000  loss=5.0723  lr=5.38e-04  regs=[type=0.114 scope=0.131 role=0.110]  tok/s=14756  elapsed=5496s
+  step  2500/10000  loss=5.4408  lr=5.37e-04  regs=[type=0.111 scope=0.125 role=0.107]  tok/s=14765  elapsed=5548s
+  ── eval loss at step 2500: 5.4616 ──
+  ── checkpoint 2500 ──
+     grad norms: {"S1_type": 0.3569, "S1_parse": 0.1339, "S1_apply": 0.1302, "S3": 0.0296, "S3_iter0_type": 0.0083, "S3_iter0_parse": 0.0085, "S3_iter0_apply": 0.0121, "S3_iter1_type": 0.0099, "S3_iter1_parse": 0.0088, "S3_iter1_apply": 0.0151, "S4": 0.0139, "S5_embed": 0.4448, "S5_register_type": 0.0013, "S5_register_scope": 0.0016, "S5_register_role": 0.0013}
+     expansion: 93.48x
+     iter0 S4 entropy: 8.3177
+     iter1 S4 entropy: 8.0958
+     reg_type: init=0.1110 → S4.0=0.6711 → iter0=0.7441 → S4.1=1.6960 → iter1=1.9086
+     reg_scope: init=0.1254 → S4.0=0.6850 → iter0=0.8189 → S4.1=1.7296 → iter1=1.9099
+     reg_role: init=0.1073 → S4.0=0.7411 → iter0=0.8735 → S4.1=1.9279 → iter1=2.5129
+     iter0 gates: type=0.937±0.090  parse=0.623±0.149  apply=0.552±0.236
+     iter1 gates: type=0.564±0.261  parse=0.750±0.194  apply=0.799±0.212
+     soft partition (write gates):
+       iter0/type: type=0.002 scope=0.001 role=0.004
+       iter0/parse: type=0.021 scope=0.024 role=0.023
+       iter0/apply: type=0.012 scope=0.016 role=0.018
+       iter1/type: type=0.018 scope=0.015 role=0.040
+       iter1/parse: type=0.004 scope=0.004 role=0.004
+       iter1/apply: type=0.002 scope=0.003 role=0.004
+     gate divergence (cosine iter0↔iter1): type=0.022  parse=0.174  apply=0.183
+     compile gate: 0/4
+     saved: checkpoints/vsm-lm-v3/step_002500.pt
+  step  2525/10000  loss=4.7741  lr=5.35e-04  regs=[type=0.113 scope=0.132 role=0.110]  tok/s=14756  elapsed=5607s
+  step  2550/10000  loss=5.3672  lr=5.34e-04  regs=[type=0.111 scope=0.129 role=0.107]  tok/s=14764  elapsed=5659s
+  step  2575/10000  loss=5.1348  lr=5.32e-04  regs=[type=0.114 scope=0.130 role=0.109]  tok/s=14758  elapsed=5717s
+  step  2600/10000  loss=5.5842  lr=5.31e-04  regs=[type=0.104 scope=0.121 role=0.098]  tok/s=14766  elapsed=5770s
+  step  2625/10000  loss=5.3560  lr=5.29e-04  regs=[type=0.108 scope=0.124 role=0.100]  tok/s=14774  elapsed=5822s
+  step  2650/10000  loss=5.3227  lr=5.27e-04  regs=[type=0.104 scope=0.120 role=0.096]  tok/s=14782  elapsed=5874s
+  step  2675/10000  loss=5.1085  lr=5.26e-04  regs=[type=0.102 scope=0.122 role=0.097]  tok/s=14790  elapsed=5927s
+  step  2700/10000  loss=5.2456  lr=5.24e-04  regs=[type=0.099 scope=0.117 role=0.094]  tok/s=14798  elapsed=5979s
+  step  2725/10000  loss=5.2450  lr=5.22e-04  regs=[type=0.098 scope=0.116 role=0.091]  tok/s=14788  elapsed=6038s
+  step  2750/10000  loss=5.3187  lr=5.21e-04  regs=[type=0.097 scope=0.113 role=0.090]  tok/s=14796  elapsed=6090s
+  step  2775/10000  loss=5.0600  lr=5.19e-04  regs=[type=0.093 scope=0.108 role=0.085]  tok/s=14803  elapsed=6143s
+  step  2800/10000  loss=5.2119  lr=5.17e-04  regs=[type=0.095 scope=0.111 role=0.087]  tok/s=14811  elapsed=6195s
+  step  2825/10000  loss=5.7569  lr=5.16e-04  regs=[type=0.093 scope=0.107 role=0.085]  tok/s=14818  elapsed=6247s
+  step  2850/10000  loss=4.8998  lr=5.14e-04  regs=[type=0.086 scope=0.101 role=0.081]  tok/s=14816  elapsed=6303s
+  step  2875/10000  loss=5.2649  lr=5.12e-04  regs=[type=0.088 scope=0.105 role=0.084]  tok/s=14818  elapsed=6358s
+  step  2900/10000  loss=5.2164  lr=5.10e-04  regs=[type=0.087 scope=0.104 role=0.082]  tok/s=14824  elapsed=6410s
+  step  2925/10000  loss=5.3570  lr=5.09e-04  regs=[type=0.085 scope=0.102 role=0.082]  tok/s=14830  elapsed=6463s
+  step  2950/10000  loss=4.9525  lr=5.07e-04  regs=[type=0.085 scope=0.101 role=0.081]  tok/s=14836  elapsed=6516s
+  step  2975/10000  loss=5.1296  lr=5.05e-04  regs=[type=0.086 scope=0.103 role=0.082]  tok/s=14842  elapsed=6568s
+  step  3000/10000  loss=5.1046  lr=5.03e-04  regs=[type=0.081 scope=0.096 role=0.076]  tok/s=14834  elapsed=6627s
+  ── eval loss at step 3000: 5.3595 ──
+  ── checkpoint 3000 ──
+     grad norms: {"S1_type": 0.3343, "S1_parse": 0.1151, "S1_apply": 0.1019, "S3": 0.0138, "S3_iter0_type": 0.0069, "S3_iter0_parse": 0.0052, "S3_iter0_apply": 0.0057, "S3_iter1_type": 0.0061, "S3_iter1_parse": 0.0049, "S3_iter1_apply": 0.0044, "S4": 0.0051, "S5_embed": 0.4167, "S5_register_type": 0.001, "S5_register_scope": 0.001, "S5_register_role": 0.001}
+     expansion: 93.59x
+     iter0 S4 entropy: 8.3177
+     iter1 S4 entropy: 8.0833
+     reg_type: init=0.0809 → S4.0=0.4671 → iter0=0.6417 → S4.1=1.4985 → iter1=1.9314
+     reg_scope: init=0.0964 → S4.0=0.4867 → iter0=0.6312 → S4.1=1.3991 → iter1=1.8070
+     reg_role: init=0.0764 → S4.0=0.4756 → iter0=0.7474 → S4.1=1.6497 → iter1=2.8412
+     iter0 gates: type=0.910±0.102  parse=0.616±0.151  apply=0.553±0.238
+     iter1 gates: type=0.613±0.254  parse=0.801±0.185  apply=0.834±0.213
+     soft partition (write gates):
+       iter0/type: type=0.003 scope=0.002 role=0.005
+       iter0/parse: type=0.017 scope=0.017 role=0.022
+       iter0/apply: type=0.019 scope=0.018 role=0.026
+       iter1/type: type=0.027 scope=0.027 role=0.058
+       iter1/parse: type=0.007 scope=0.008 role=0.012
+       iter1/apply: type=0.004 scope=0.004 role=0.007
+     gate divergence (cosine iter0↔iter1): type=0.020  parse=0.175  apply=0.183
+     compile gate: 0/4
+     saved: checkpoints/vsm-lm-v3/step_003000.pt
+  step  3025/10000  loss=5.3435  lr=5.01e-04  regs=[type=0.083 scope=0.101 role=0.078]  tok/s=14823  elapsed=6687s
+  step  3050/10000  loss=5.2780  lr=5.00e-04  regs=[type=0.083 scope=0.102 role=0.079]  tok/s=14830  elapsed=6739s
+  step  3075/10000  loss=5.0571  lr=4.98e-04  regs=[type=0.085 scope=0.105 role=0.083]  tok/s=14836  elapsed=6792s
+  step  3100/10000  loss=5.1161  lr=4.96e-04  regs=[type=0.087 scope=0.106 role=0.089]  tok/s=14842  elapsed=6844s
+  step  3125/10000  loss=5.2972  lr=4.94e-04  regs=[type=0.084 scope=0.103 role=0.083]  tok/s=14848  elapsed=6896s
+  step  3150/10000  loss=5.1667  lr=4.92e-04  regs=[type=0.089 scope=0.111 role=0.088]  tok/s=14817  elapsed=6966s
+  step  3175/10000  loss=5.1919  lr=4.90e-04  regs=[type=0.083 scope=0.103 role=0.080]  tok/s=14770  elapsed=7044s
+  step  3200/10000  loss=5.0971  lr=4.88e-04  regs=[type=0.082 scope=0.101 role=0.080]  tok/s=14730  elapsed=7119s
+  step  3225/10000  loss=5.3667  lr=4.86e-04  regs=[type=0.084 scope=0.104 role=0.085]  tok/s=14691  elapsed=7193s
+  step  3250/10000  loss=5.1217  lr=4.84e-04  regs=[type=0.083 scope=0.100 role=0.082]  tok/s=14647  elapsed=7271s
+  step  3275/10000  loss=4.7937  lr=4.82e-04  regs=[type=0.079 scope=0.097 role=0.077]  tok/s=14610  elapsed=7345s
+  step  3300/10000  loss=5.3861  lr=4.80e-04  regs=[type=0.082 scope=0.102 role=0.079]  tok/s=14573  elapsed=7420s
+  step  3325/10000  loss=5.1251  lr=4.78e-04  regs=[type=0.079 scope=0.099 role=0.078]  tok/s=14536  elapsed=7495s
+  step  3350/10000  loss=5.3432  lr=4.76e-04  regs=[type=0.085 scope=0.105 role=0.084]  tok/s=14501  elapsed=7570s
+  step  3375/10000  loss=5.1181  lr=4.74e-04  regs=[type=0.085 scope=0.106 role=0.084]  tok/s=14467  elapsed=7645s
+  step  3400/10000  loss=4.9583  lr=4.72e-04  regs=[type=0.080 scope=0.098 role=0.079]  tok/s=14430  elapsed=7721s
+  step  3425/10000  loss=5.0535  lr=4.70e-04  regs=[type=0.079 scope=0.097 role=0.078]  tok/s=14384  elapsed=7803s
+  step  3450/10000  loss=5.0882  lr=4.68e-04  regs=[type=0.083 scope=0.099 role=0.081]  tok/s=14345  elapsed=7881s
+  step  3475/10000  loss=5.1890  lr=4.66e-04  regs=[type=0.082 scope=0.099 role=0.082]  tok/s=14303  elapsed=7961s
+  step  3500/10000  loss=4.9245  lr=4.64e-04  regs=[type=0.078 scope=0.095 role=0.078]  tok/s=14264  elapsed=8040s
+  ── eval loss at step 3500: 5.2787 ──
+  ── checkpoint 3500 ──
+     grad norms: {"S1_type": 0.2661, "S1_parse": 0.1298, "S1_apply": 0.0968, "S3": 0.0142, "S3_iter0_type": 0.0083, "S3_iter0_parse": 0.0061, "S3_iter0_apply": 0.0044, "S3_iter1_type": 0.007, "S3_iter1_parse": 0.004, "S3_iter1_apply": 0.0033, "S4": 0.0061, "S5_embed": 0.3812, "S5_register_type": 0.0014, "S5_register_scope": 0.0015, "S5_register_role": 0.0013}
+     expansion: 89.75x
+     iter0 S4 entropy: 8.3165
+     iter1 S4 entropy: 7.9910
+     reg_type: init=0.0780 → S4.0=0.4324 → iter0=0.6572 → S4.1=1.8141 → iter1=2.5249
+     reg_scope: init=0.0955 → S4.0=0.4555 → iter0=0.6507 → S4.1=1.7795 → iter1=2.2608
+     reg_role: init=0.0782 → S4.0=0.4811 → iter0=0.8354 → S4.1=1.9545 → iter1=4.4604
+     iter0 gates: type=0.882±0.110  parse=0.614±0.142  apply=0.558±0.242
+     iter1 gates: type=0.644±0.247  parse=0.858±0.171  apply=0.865±0.206
+     soft partition (write gates):
+       iter0/type: type=0.005 scope=0.004 role=0.009
+       iter0/parse: type=0.018 scope=0.020 role=0.025
+       iter0/apply: type=0.015 scope=0.014 role=0.023
+       iter1/type: type=0.047 scope=0.035 role=0.124
+       iter1/parse: type=0.005 scope=0.005 role=0.009
+       iter1/apply: type=0.004 scope=0.004 role=0.008
+     gate divergence (cosine iter0↔iter1): type=0.023  parse=0.170  apply=0.179
+     compile gate: 0/4
+     saved: checkpoints/vsm-lm-v3/step_003500.pt
+  step  3525/10000  loss=5.3205  lr=4.62e-04  regs=[type=0.076 scope=0.094 role=0.078]  tok/s=14261  elapsed=8100s
+  step  3550/10000  loss=5.1289  lr=4.60e-04  regs=[type=0.077 scope=0.095 role=0.079]  tok/s=14269  elapsed=8152s
+  step  3575/10000  loss=5.1275  lr=4.58e-04  regs=[type=0.076 scope=0.096 role=0.079]  tok/s=14264  elapsed=8212s
+  step  3600/10000  loss=4.8077  lr=4.56e-04  regs=[type=0.082 scope=0.104 role=0.085]  tok/s=14273  elapsed=8265s
+  step  3625/10000  loss=5.1487  lr=4.54e-04  regs=[type=0.074 scope=0.094 role=0.076]  tok/s=14281  elapsed=8317s
+  step  3650/10000  loss=4.9984  lr=4.51e-04  regs=[type=0.077 scope=0.098 role=0.079]  tok/s=14289  elapsed=8370s
+  step  3675/10000  loss=5.1692  lr=4.49e-04  regs=[type=0.074 scope=0.095 role=0.078]  tok/s=14298  elapsed=8422s
+  step  3700/10000  loss=5.0184  lr=4.47e-04  regs=[type=0.072 scope=0.093 role=0.076]  tok/s=14294  elapsed=8482s
+  step  3725/10000  loss=5.0461  lr=4.45e-04  regs=[type=0.068 scope=0.087 role=0.069]  tok/s=14302  elapsed=8534s
+  step  3750/10000  loss=5.0961  lr=4.43e-04  regs=[type=0.071 scope=0.091 role=0.074]  tok/s=14310  elapsed=8587s
+  step  3775/10000  loss=4.6978  lr=4.41e-04  regs=[type=0.067 scope=0.088 role=0.071]  tok/s=14318  elapsed=8639s
+  step  3800/10000  loss=4.9210  lr=4.38e-04  regs=[type=0.073 scope=0.094 role=0.076]  tok/s=14326  elapsed=8692s
+  step  3825/10000  loss=4.5589  lr=4.36e-04  regs=[type=0.072 scope=0.093 role=0.076]  tok/s=14334  elapsed=8744s
+  step  3850/10000  loss=5.2587  lr=4.34e-04  regs=[type=0.072 scope=0.092 role=0.075]  tok/s=14322  elapsed=8809s
+  step  3875/10000  loss=5.0746  lr=4.32e-04  regs=[type=0.071 scope=0.089 role=0.073]  tok/s=14330  elapsed=8861s
+  step  3900/10000  loss=4.7763  lr=4.30e-04  regs=[type=0.070 scope=0.088 role=0.073]  tok/s=14337  elapsed=8914s
+  step  3925/10000  loss=5.0980  lr=4.27e-04  regs=[type=0.070 scope=0.089 role=0.073]  tok/s=14344  elapsed=8966s
+  step  3950/10000  loss=5.3775  lr=4.25e-04  regs=[type=0.072 scope=0.091 role=0.074]  tok/s=14351  elapsed=9019s
+  step  3975/10000  loss=4.9514  lr=4.23e-04  regs=[type=0.067 scope=0.085 role=0.068]  tok/s=14345  elapsed=9080s
+  step  4000/10000  loss=4.6986  lr=4.21e-04  regs=[type=0.072 scope=0.092 role=0.077]  tok/s=14352  elapsed=9133s
+  ── eval loss at step 4000: 5.2362 ──
+  ── checkpoint 4000 ──
+     grad norms: {"S1_type": 0.3079, "S1_parse": 0.1383, "S1_apply": 0.1196, "S3": 0.0152, "S3_iter0_type": 0.0091, "S3_iter0_parse": 0.006, "S3_iter0_apply": 0.0048, "S3_iter1_type": 0.0073, "S3_iter1_parse": 0.0041, "S3_iter1_apply": 0.004, "S4": 0.0052, "S5_embed": 0.4099, "S5_register_type": 0.0015, "S5_register_scope": 0.0017, "S5_register_role": 0.0017}
+     expansion: 84.25x
+     iter0 S4 entropy: 8.3158
+     iter1 S4 entropy: 8.0634
+     reg_type: init=0.0723 → S4.0=0.4295 → iter0=0.5707 → S4.1=1.6248 → iter1=2.3571
+     reg_scope: init=0.0918 → S4.0=0.4443 → iter0=0.5990 → S4.1=1.5633 → iter1=2.1749
+     reg_role: init=0.0774 → S4.0=0.4496 → iter0=0.7393 → S4.1=1.7976 → iter1=5.1294
+     iter0 gates: type=0.851±0.117  parse=0.599±0.133  apply=0.567±0.234
+     iter1 gates: type=0.657±0.240  parse=0.881±0.152  apply=0.883±0.197
+     soft partition (write gates):
+       iter0/type: type=0.006 scope=0.004 role=0.010
+       iter0/parse: type=0.019 scope=0.019 role=0.025
+       iter0/apply: type=0.014 scope=0.014 role=0.023
+       iter1/type: type=0.047 scope=0.045 role=0.154
+       iter1/parse: type=0.006 scope=0.005 role=0.008
+       iter1/apply: type=0.006 scope=0.006 role=0.010
+     gate divergence (cosine iter0↔iter1): type=0.024  parse=0.167  apply=0.178
+     compile gate: 0/4
+     saved: checkpoints/vsm-lm-v3/step_004000.pt
+  step  4025/10000  loss=4.9175  lr=4.18e-04  regs=[type=0.071 scope=0.091 role=0.076]  tok/s=14349  elapsed=9192s
+  step  4050/10000  loss=4.8928  lr=4.16e-04  regs=[type=0.065 scope=0.082 role=0.070]  tok/s=14356  elapsed=9244s
+  step  4075/10000  loss=4.7544  lr=4.14e-04  regs=[type=0.073 scope=0.092 role=0.076]  tok/s=14364  elapsed=9296s
+  step  4100/10000  loss=5.1972  lr=4.11e-04  regs=[type=0.071 scope=0.089 role=0.076]  tok/s=14371  elapsed=9349s
+  step  4125/10000  loss=5.0269  lr=4.09e-04  regs=[type=0.068 scope=0.086 role=0.073]  tok/s=14365  elapsed=9409s
+  step  4150/10000  loss=4.9687  lr=4.07e-04  regs=[type=0.064 scope=0.082 role=0.066]  tok/s=14372  elapsed=9462s
+  step  4175/10000  loss=5.3320  lr=4.04e-04  regs=[type=0.064 scope=0.083 role=0.067]  tok/s=14378  elapsed=9515s
+  step  4200/10000  loss=4.6538  lr=4.02e-04  regs=[type=0.064 scope=0.082 role=0.066]  tok/s=14385  elapsed=9567s
+  step  4225/10000  loss=5.1220  lr=4.00e-04  regs=[type=0.069 scope=0.089 role=0.073]  tok/s=14392  elapsed=9620s
+  step  4250/10000  loss=4.7624  lr=3.97e-04  regs=[type=0.069 scope=0.087 role=0.071]  tok/s=14386  elapsed=9680s
+  step  4275/10000  loss=5.1552  lr=3.95e-04  regs=[type=0.064 scope=0.082 role=0.067]  tok/s=14393  elapsed=9733s
+  step  4300/10000  loss=4.9581  lr=3.93e-04  regs=[type=0.059 scope=0.079 role=0.062]  tok/s=14400  elapsed=9785s
+  step  4325/10000  loss=5.1410  lr=3.90e-04  regs=[type=0.062 scope=0.079 role=0.062]  tok/s=14405  elapsed=9838s
+  step  4350/10000  loss=4.9001  lr=3.88e-04  regs=[type=0.066 scope=0.084 role=0.068]  tok/s=14410  elapsed=9892s
+  step  4375/10000  loss=4.8301  lr=3.86e-04  regs=[type=0.066 scope=0.085 role=0.070]  tok/s=14415  elapsed=9945s
+  step  4400/10000  loss=4.8314  lr=3.83e-04  regs=[type=0.064 scope=0.082 role=0.067]  tok/s=14407  elapsed=10007s
+  step  4425/10000  loss=5.1704  lr=3.81e-04  regs=[type=0.064 scope=0.081 role=0.064]  tok/s=14413  elapsed=10060s
+  step  4450/10000  loss=4.9228  lr=3.78e-04  regs=[type=0.065 scope=0.084 role=0.066]  tok/s=14385  elapsed=10137s
+  step  4475/10000  loss=4.9379  lr=3.76e-04  regs=[type=0.065 scope=0.086 role=0.069]  tok/s=14354  elapsed=10216s
+  step  4500/10000  loss=5.2123  lr=3.74e-04  regs=[type=0.059 scope=0.079 role=0.064]  tok/s=14326  elapsed=10293s
+  ── eval loss at step 4500: 5.1697 ──
+  ── checkpoint 4500 ──
+     grad norms: {"S1_type": 0.326, "S1_parse": 0.1308, "S1_apply": 0.132, "S3": 0.0169, "S3_iter0_type": 0.0094, "S3_iter0_parse": 0.0055, "S3_iter0_apply": 0.0069, "S3_iter1_type": 0.007, "S3_iter1_parse": 0.005, "S3_iter1_apply": 0.0067, "S4": 0.0061, "S5_embed": 0.4777, "S5_register_type": 0.0012, "S5_register_scope": 0.0011, "S5_register_role": 0.0012}
+     expansion: 81.47x
+     iter0 S4 entropy: 8.3170
+     iter1 S4 entropy: 8.0550
+     reg_type: init=0.0595 → S4.0=0.4066 → iter0=0.5867 → S4.1=1.6930 → iter1=2.4888
+     reg_scope: init=0.0789 → S4.0=0.4127 → iter0=0.6516 → S4.1=1.7087 → iter1=2.4748
+     reg_role: init=0.0637 → S4.0=0.4163 → iter0=0.7478 → S4.1=1.8332 → iter1=5.3564
+     iter0 gates: type=0.831±0.119  parse=0.589±0.132  apply=0.571±0.229
+     iter1 gates: type=0.672±0.231  parse=0.893±0.145  apply=0.888±0.188
+     soft partition (write gates):
+       iter0/type: type=0.006 scope=0.005 role=0.011
+       iter0/parse: type=0.021 scope=0.023 role=0.026
+       iter0/apply: type=0.019 scope=0.022 role=0.032
+       iter1/type: type=0.051 scope=0.050 role=0.168
+       iter1/parse: type=0.005 scope=0.007 role=0.008
+       iter1/apply: type=0.011 scope=0.011 role=0.018
+     gate divergence (cosine iter0↔iter1): type=0.024  parse=0.162  apply=0.175
+     compile gate: 0/4
+     saved: checkpoints/vsm-lm-v3/step_004500.pt
+  step  4525/10000  loss=4.9638  lr=3.71e-04  regs=[type=0.063 scope=0.082 role=0.067]  tok/s=14286  elapsed=10379s
+  step  4550/10000  loss=4.9033  lr=3.69e-04  regs=[type=0.063 scope=0.083 role=0.068]  tok/s=14257  elapsed=10458s
+  step  4575/10000  loss=5.0385  lr=3.66e-04  regs=[type=0.059 scope=0.078 role=0.063]  tok/s=14248  elapsed=10522s
+  step  4600/10000  loss=5.0564  lr=3.64e-04  regs=[type=0.056 scope=0.075 role=0.059]  tok/s=14252  elapsed=10577s
+  step  4625/10000  loss=4.9846  lr=3.62e-04  regs=[type=0.060 scope=0.079 role=0.063]  tok/s=14225  elapsed=10654s
+  step  4650/10000  loss=4.7921  lr=3.59e-04  regs=[type=0.060 scope=0.078 role=0.061]  tok/s=14198  elapsed=10732s
+  step  4675/10000  loss=4.9911  lr=3.57e-04  regs=[type=0.062 scope=0.079 role=0.063]  tok/s=14169  elapsed=10812s
+  step  4700/10000  loss=4.9695  lr=3.54e-04  regs=[type=0.058 scope=0.075 role=0.061]  tok/s=14142  elapsed=10891s
+  step  4725/10000  loss=4.9820  lr=3.52e-04  regs=[type=0.057 scope=0.075 role=0.061]  tok/s=14115  elapsed=10969s
+  step  4750/10000  loss=4.7969  lr=3.49e-04  regs=[type=0.060 scope=0.078 role=0.063]  tok/s=14088  elapsed=11048s
+  step  4775/10000  loss=4.8543  lr=3.47e-04  regs=[type=0.058 scope=0.075 role=0.060]  tok/s=14063  elapsed=11126s
+  step  4800/10000  loss=5.0034  lr=3.44e-04  regs=[type=0.055 scope=0.072 role=0.058]  tok/s=14036  elapsed=11206s
+  step  4825/10000  loss=4.6982  lr=3.42e-04  regs=[type=0.054 scope=0.071 role=0.057]  tok/s=14011  elapsed=11284s
+  step  4850/10000  loss=4.7897  lr=3.40e-04  regs=[type=0.057 scope=0.074 role=0.060]  tok/s=13987  elapsed=11362s
+  step  4875/10000  loss=4.9441  lr=3.37e-04  regs=[type=0.051 scope=0.068 role=0.055]  tok/s=13964  elapsed=11440s
+  step  4900/10000  loss=5.1155  lr=3.35e-04  regs=[type=0.049 scope=0.065 role=0.052]  tok/s=13938  elapsed=11520s
+  step  4925/10000  loss=4.9965  lr=3.32e-04  regs=[type=0.054 scope=0.071 role=0.057]  tok/s=13915  elapsed=11597s
+  step  4950/10000  loss=4.9351  lr=3.30e-04  regs=[type=0.052 scope=0.067 role=0.054]  tok/s=13893  elapsed=11675s
+  step  4975/10000  loss=5.0417  lr=3.27e-04  regs=[type=0.054 scope=0.070 role=0.057]  tok/s=13869  elapsed=11754s
+  step  5000/10000  loss=5.0796  lr=3.25e-04  regs=[type=0.055 scope=0.071 role=0.059]  tok/s=13847  elapsed=11832s
+  ── eval loss at step 5000: 5.1184 ──
+  ── checkpoint 5000 ──
+     grad norms: {"S1_type": 0.3989, "S1_parse": 0.2021, "S1_apply": 0.1786, "S3": 0.0191, "S3_iter0_type": 0.0119, "S3_iter0_parse": 0.0074, "S3_iter0_apply": 0.0069, "S3_iter1_type": 0.0077, "S3_iter1_parse": 0.0045, "S3_iter1_apply": 0.0062, "S4": 0.008, "S5_embed": 0.6518, "S5_register_type": 0.0017, "S5_register_scope": 0.002, "S5_register_role": 0.0019}
+     expansion: 77.15x
+     iter0 S4 entropy: 8.3170
+     iter1 S4 entropy: 7.8091
+     reg_type: init=0.0548 → S4.0=0.4601 → iter0=0.6980 → S4.1=1.6542 → iter1=2.7071
+     reg_scope: init=0.0713 → S4.0=0.4673 → iter0=0.7857 → S4.1=1.7583 → iter1=2.8862
+     reg_role: init=0.0586 → S4.0=0.4821 → iter0=0.9088 → S4.1=1.8128 → iter1=7.0896
+     iter0 gates: type=0.783±0.120  parse=0.582±0.122  apply=0.571±0.214
+     iter1 gates: type=0.683±0.221  parse=0.916±0.132  apply=0.910±0.176
+     soft partition (write gates):
+       iter0/type: type=0.007 scope=0.007 role=0.016
+       iter0/parse: type=0.019 scope=0.022 role=0.027
+       iter0/apply: type=0.026 scope=0.033 role=0.042
+       iter1/type: type=0.067 scope=0.068 role=0.234
+       iter1/parse: type=0.008 scope=0.010 role=0.013
+       iter1/apply: type=0.021 scope=0.024 role=0.033
+     gate divergence (cosine iter0↔iter1): type=0.024  parse=0.159  apply=0.172
+     compile gate: 1/4
+     saved: checkpoints/vsm-lm-v3/step_005000.pt
+  step  5025/10000  loss=5.1459  lr=3.22e-04  regs=[type=0.052 scope=0.067 role=0.056]  tok/s=13815  elapsed=11919s
+  step  5050/10000  loss=4.6151  lr=3.20e-04  regs=[type=0.053 scope=0.069 role=0.057]  tok/s=13793  elapsed=11997s
+  step  5075/10000  loss=4.7210  lr=3.17e-04  regs=[type=0.054 scope=0.071 role=0.059]  tok/s=13770  elapsed=12077s
+  step  5100/10000  loss=5.0330  lr=3.15e-04  regs=[type=0.057 scope=0.073 role=0.062]  tok/s=13748  elapsed=12155s
+  step  5125/10000  loss=5.1718  lr=3.12e-04  regs=[type=0.050 scope=0.065 role=0.055]  tok/s=13727  elapsed=12234s
+  step  5150/10000  loss=4.6178  lr=3.10e-04  regs=[type=0.054 scope=0.070 role=0.059]  tok/s=13705  elapsed=12313s
+  step  5175/10000  loss=4.9163  lr=3.07e-04  regs=[type=0.054 scope=0.070 role=0.058]  tok/s=13685  elapsed=12391s
+  step  5200/10000  loss=4.7727  lr=3.05e-04  regs=[type=0.052 scope=0.069 role=0.056]  tok/s=13665  elapsed=12470s
+  step  5225/10000  loss=4.8970  lr=3.02e-04  regs=[type=0.053 scope=0.068 role=0.057]  tok/s=13644  elapsed=12548s
+  step  5250/10000  loss=5.1389  lr=3.00e-04  regs=[type=0.055 scope=0.069 role=0.058]  tok/s=13623  elapsed=12628s
+  step  5275/10000  loss=4.9992  lr=2.98e-04  regs=[type=0.054 scope=0.067 role=0.056]  tok/s=13604  elapsed=12706s
+  step  5300/10000  loss=4.7338  lr=2.95e-04  regs=[type=0.056 scope=0.070 role=0.058]  tok/s=13585  elapsed=12784s
+  step  5325/10000  loss=4.9335  lr=2.93e-04  regs=[type=0.056 scope=0.070 role=0.058]  tok/s=13566  elapsed=12862s
+  step  5350/10000  loss=4.9302  lr=2.90e-04  regs=[type=0.061 scope=0.074 role=0.063]  tok/s=13546  elapsed=12942s
+  step  5375/10000  loss=4.9478  lr=2.88e-04  regs=[type=0.061 scope=0.075 role=0.063]  tok/s=13528  elapsed=13020s
+  step  5400/10000  loss=5.0109  lr=2.85e-04  regs=[type=0.058 scope=0.072 role=0.060]  tok/s=13510  elapsed=13098s
+  step  5425/10000  loss=4.8938  lr=2.83e-04  regs=[type=0.059 scope=0.075 role=0.062]  tok/s=13491  elapsed=13176s
+  step  5450/10000  loss=4.7199  lr=2.80e-04  regs=[type=0.055 scope=0.070 role=0.057]  tok/s=13473  elapsed=13255s
+  step  5475/10000  loss=4.9886  lr=2.78e-04  regs=[type=0.058 scope=0.073 role=0.060]  tok/s=13454  elapsed=13334s
+  step  5500/10000  loss=4.9279  lr=2.75e-04  regs=[type=0.056 scope=0.072 role=0.060]  tok/s=13435  elapsed=13414s
+  ── eval loss at step 5500: 5.0808 ──
+  ── checkpoint 5500 ──
+     grad norms: {"S1_type": 0.4256, "S1_parse": 0.1699, "S1_apply": 0.1438, "S3": 0.0204, "S3_iter0_type": 0.0132, "S3_iter0_parse": 0.0081, "S3_iter0_apply": 0.006, "S3_iter1_type": 0.0093, "S3_iter1_parse": 0.0059, "S3_iter1_apply": 0.0042, "S4": 0.011, "S5_embed": 0.5226, "S5_register_type": 0.0019, "S5_register_scope": 0.0019, "S5_register_role": 0.0019}
+     expansion: 74.48x
+     iter0 S4 entropy: 8.3168
+     iter1 S4 entropy: 7.9922
+     reg_type: init=0.0563 → S4.0=0.3907 → iter0=0.6157 → S4.1=1.5477 → iter1=2.5446
+     reg_scope: init=0.0716 → S4.0=0.4014 → iter0=0.7304 → S4.1=1.6880 → iter1=2.7514
+     reg_role: init=0.0596 → S4.0=0.3983 → iter0=0.8736 → S4.1=1.7423 → iter1=7.7907
+     iter0 gates: type=0.755±0.118  parse=0.564±0.116  apply=0.568±0.212
+     iter1 gates: type=0.687±0.219  parse=0.920±0.125  apply=0.915±0.172
+     soft partition (write gates):
+       iter0/type: type=0.008 scope=0.008 role=0.016
+       iter0/parse: type=0.022 scope=0.027 role=0.031
+       iter0/apply: type=0.024 scope=0.033 role=0.043
+       iter1/type: type=0.056 scope=0.055 role=0.253
+       iter1/parse: type=0.012 scope=0.016 role=0.020
+       iter1/apply: type=0.030 scope=0.035 role=0.049
+     gate divergence (cosine iter0↔iter1): type=0.022  parse=0.156  apply=0.167
+     compile gate: 0/4
+     saved: checkpoints/vsm-lm-v3/step_005500.pt
+  step  5525/10000  loss=4.8917  lr=2.73e-04  regs=[type=0.056 scope=0.071 role=0.059]  tok/s=13409  elapsed=13502s
+  step  5550/10000  loss=4.8664  lr=2.70e-04  regs=[type=0.062 scope=0.078 role=0.066]  tok/s=13388  elapsed=13584s
+  step  5575/10000  loss=5.0289  lr=2.68e-04  regs=[type=0.060 scope=0.076 role=0.064]  tok/s=13369  elapsed=13664s
+  step  5600/10000  loss=4.9184  lr=2.65e-04  regs=[type=0.063 scope=0.078 role=0.065]  tok/s=13352  elapsed=13743s
+  step  5625/10000  loss=5.1210  lr=2.63e-04  regs=[type=0.062 scope=0.077 role=0.065]  tok/s=13336  elapsed=13822s
+  step  5650/10000  loss=4.9919  lr=2.60e-04  regs=[type=0.060 scope=0.075 role=0.063]  tok/s=13319  elapsed=13900s
+  step  5675/10000  loss=4.9630  lr=2.58e-04  regs=[type=0.057 scope=0.070 role=0.059]  tok/s=13302  elapsed=13980s
+  step  5700/10000  loss=5.0253  lr=2.56e-04  regs=[type=0.064 scope=0.077 role=0.066]  tok/s=13284  elapsed=14060s
+  step  5725/10000  loss=4.7730  lr=2.53e-04  regs=[type=0.060 scope=0.072 role=0.062]  tok/s=13268  elapsed=14139s
+  step  5750/10000  loss=4.5029  lr=2.51e-04  regs=[type=0.063 scope=0.076 role=0.065]  tok/s=13252  elapsed=14218s
+  step  5775/10000  loss=4.8782  lr=2.48e-04  regs=[type=0.062 scope=0.075 role=0.065]  tok/s=13237  elapsed=14296s
+  step  5800/10000  loss=5.1798  lr=2.46e-04  regs=[type=0.064 scope=0.076 role=0.066]  tok/s=13222  elapsed=14375s
+  step  5825/10000  loss=4.7938  lr=2.43e-04  regs=[type=0.061 scope=0.074 role=0.064]  tok/s=13207  elapsed=14452s
+  step  5850/10000  loss=4.8286  lr=2.41e-04  regs=[type=0.064 scope=0.076 role=0.066]  tok/s=13193  elapsed=14530s
+  step  5875/10000  loss=4.5226  lr=2.38e-04  regs=[type=0.067 scope=0.080 role=0.070]  tok/s=13178  elapsed=14609s
+  step  5900/10000  loss=4.6251  lr=2.36e-04  regs=[type=0.063 scope=0.075 role=0.065]  tok/s=13164  elapsed=14687s
+  step  5925/10000  loss=5.1714  lr=2.34e-04  regs=[type=0.065 scope=0.076 role=0.066]  tok/s=13150  elapsed=14765s
+  step  5950/10000  loss=5.0595  lr=2.31e-04  regs=[type=0.065 scope=0.078 role=0.068]  tok/s=13136  elapsed=14842s
+  step  5975/10000  loss=4.8077  lr=2.29e-04  regs=[type=0.065 scope=0.076 role=0.066]  tok/s=13122  elapsed=14920s
+  step  6000/10000  loss=4.8703  lr=2.26e-04  regs=[type=0.066 scope=0.077 role=0.067]  tok/s=13107  elapsed=15000s
+  ── eval loss at step 6000: 5.0138 ──
+  ── checkpoint 6000 ──
+     grad norms: {"S1_type": 0.3482, "S1_parse": 0.1367, "S1_apply": 0.1218, "S3": 0.0141, "S3_iter0_type": 0.0103, "S3_iter0_parse": 0.005, "S3_iter0_apply": 0.0045, "S3_iter1_type": 0.0054, "S3_iter1_parse": 0.0028, "S3_iter1_apply": 0.0028, "S4": 0.006, "S5_embed": 0.3983, "S5_register_type": 0.0014, "S5_register_scope": 0.0013, "S5_register_role": 0.0014}
+     expansion: 69.95x
+     iter0 S4 entropy: 8.3159
+     iter1 S4 entropy: 7.8331
+     reg_type: init=0.0656 → S4.0=0.3679 → iter0=0.6551 → S4.1=1.5475 → iter1=2.7305
+     reg_scope: init=0.0771 → S4.0=0.3804 → iter0=0.7421 → S4.1=1.6525 → iter1=2.9963
+     reg_role: init=0.0667 → S4.0=0.3851 → iter0=0.9218 → S4.1=1.6787 → iter1=8.4949
+     iter0 gates: type=0.723±0.118  parse=0.547±0.109  apply=0.566±0.205
+     iter1 gates: type=0.682±0.214  parse=0.926±0.117  apply=0.923±0.166
+     soft partition (write gates):
+       iter0/type: type=0.009 scope=0.008 role=0.018
+       iter0/parse: type=0.025 scope=0.028 role=0.032
+       iter0/apply: type=0.030 scope=0.037 role=0.049
+       iter1/type: type=0.068 scope=0.073 role=0.294
+       iter1/parse: type=0.015 scope=0.019 role=0.022
+       iter1/apply: type=0.040 scope=0.043 role=0.058
+     gate divergence (cosine iter0↔iter1): type=0.020  parse=0.152  apply=0.165
+     compile gate: 0/4
+     saved: checkpoints/vsm-lm-v3/step_006000.pt
+  step  6025/10000  loss=5.0450  lr=2.24e-04  regs=[type=0.068 scope=0.079 role=0.069]  tok/s=13087  elapsed=15086s
+  step  6050/10000  loss=4.8510  lr=2.22e-04  regs=[type=0.064 scope=0.075 role=0.065]  tok/s=13073  elapsed=15164s
+  step  6075/10000  loss=5.0198  lr=2.19e-04  regs=[type=0.068 scope=0.078 role=0.068]  tok/s=13060  elapsed=15242s
+  step  6100/10000  loss=4.9018  lr=2.17e-04  regs=[type=0.066 scope=0.076 role=0.067]  tok/s=13047  elapsed=15320s
+  step  6125/10000  loss=4.9558  lr=2.14e-04  regs=[type=0.071 scope=0.081 role=0.070]  tok/s=13035  elapsed=15397s
+  step  6150/10000  loss=4.8938  lr=2.12e-04  regs=[type=0.073 scope=0.085 role=0.074]  tok/s=13022  elapsed=15476s
+  step  6175/10000  loss=5.0729  lr=2.10e-04  regs=[type=0.069 scope=0.081 role=0.071]  tok/s=13010  elapsed=15553s
+  step  6200/10000  loss=4.7333  lr=2.07e-04  regs=[type=0.070 scope=0.083 role=0.072]  tok/s=12998  elapsed=15631s
+  step  6225/10000  loss=4.9585  lr=2.05e-04  regs=[type=0.068 scope=0.080 role=0.069]  tok/s=12986  elapsed=15708s
+  step  6250/10000  loss=5.2455  lr=2.03e-04  regs=[type=0.069 scope=0.080 role=0.070]  tok/s=12972  elapsed=15788s
+  step  6275/10000  loss=5.1962  lr=2.00e-04  regs=[type=0.070 scope=0.081 role=0.072]  tok/s=12959  elapsed=15867s
+  step  6300/10000  loss=4.9767  lr=1.98e-04  regs=[type=0.072 scope=0.083 role=0.073]  tok/s=12948  elapsed=15944s
+  step  6325/10000  loss=4.9014  lr=1.96e-04  regs=[type=0.071 scope=0.081 role=0.071]  tok/s=12935  elapsed=16023s
+  step  6350/10000  loss=4.8821  lr=1.93e-04  regs=[type=0.072 scope=0.082 role=0.072]  tok/s=12923  elapsed=16101s
+  step  6375/10000  loss=5.0289  lr=1.91e-04  regs=[type=0.077 scope=0.086 role=0.077]  tok/s=12911  elapsed=16180s
+  step  6400/10000  loss=4.8755  lr=1.89e-04  regs=[type=0.073 scope=0.082 role=0.073]  tok/s=12899  elapsed=16258s
+  step  6425/10000  loss=4.6269  lr=1.86e-04  regs=[type=0.071 scope=0.081 role=0.072]  tok/s=12888  elapsed=16336s
+  step  6450/10000  loss=4.7425  lr=1.84e-04  regs=[type=0.072 scope=0.081 role=0.073]  tok/s=12876  elapsed=16415s
+  step  6475/10000  loss=5.1452  lr=1.82e-04  regs=[type=0.071 scope=0.082 role=0.073]  tok/s=12865  elapsed=16493s
+  step  6500/10000  loss=4.8467  lr=1.79e-04  regs=[type=0.067 scope=0.077 role=0.069]  tok/s=12854  elapsed=16570s
+  ── eval loss at step 6500: 4.9753 ──
+  ── checkpoint 6500 ──
+     grad norms: {"S1_type": 0.3224, "S1_parse": 0.1396, "S1_apply": 0.1258, "S3": 0.0136, "S3_iter0_type": 0.01, "S3_iter0_parse": 0.0044, "S3_iter0_apply": 0.0044, "S3_iter1_type": 0.0052, "S3_iter1_parse": 0.0026, "S3_iter1_apply": 0.0031, "S4": 0.0092, "S5_embed": 0.4193, "S5_register_type": 0.0016, "S5_register_scope": 0.0016, "S5_register_role": 0.0017}
+     expansion: 67.55x
+     iter0 S4 entropy: 8.3160
+     iter1 S4 entropy: 7.9156
+     reg_type: init=0.0668 → S4.0=0.3921 → iter0=0.6262 → S4.1=1.3087 → iter1=2.5508
+     reg_scope: init=0.0769 → S4.0=0.4045 → iter0=0.7075 → S4.1=1.3845 → iter1=2.7887
+     reg_role: init=0.0686 → S4.0=0.4061 → iter0=0.8197 → S4.1=1.3850 → iter1=9.4951
+     iter0 gates: type=0.702±0.114  parse=0.546±0.104  apply=0.563±0.200
+     iter1 gates: type=0.674±0.204  parse=0.937±0.106  apply=0.930±0.161
+     soft partition (write gates):
+       iter0/type: type=0.011 scope=0.010 role=0.022
+       iter0/parse: type=0.028 scope=0.030 role=0.035
+       iter0/apply: type=0.029 scope=0.040 role=0.048
+       iter1/type: type=0.079 scope=0.083 role=0.352
+       iter1/parse: type=0.018 scope=0.022 role=0.027
+       iter1/apply: type=0.040 scope=0.047 role=0.059
+     gate divergence (cosine iter0↔iter1): type=0.018  parse=0.151  apply=0.161
+     compile gate: 0/4
+     saved: checkpoints/vsm-lm-v3/step_006500.pt
+  step  6525/10000  loss=4.4765  lr=1.77e-04  regs=[type=0.071 scope=0.081 role=0.072]  tok/s=12837  elapsed=16656s
+  step  6550/10000  loss=4.7096  lr=1.75e-04  regs=[type=0.071 scope=0.081 role=0.072]  tok/s=12827  elapsed=16733s
+  step  6575/10000  loss=4.9310  lr=1.73e-04  regs=[type=0.070 scope=0.080 role=0.071]  tok/s=12817  elapsed=16810s
+  step  6600/10000  loss=4.6739  lr=1.70e-04  regs=[type=0.073 scope=0.083 role=0.073]  tok/s=12806  elapsed=16888s
+  step  6625/10000  loss=5.0659  lr=1.68e-04  regs=[type=0.075 scope=0.086 role=0.076]  tok/s=12796  elapsed=16966s
+  step  6650/10000  loss=4.5995  lr=1.66e-04  regs=[type=0.076 scope=0.086 role=0.077]  tok/s=12786  elapsed=17043s
+  step  6675/10000  loss=4.5500  lr=1.64e-04  regs=[type=0.072 scope=0.082 role=0.073]  tok/s=12775  elapsed=17121s
+  step  6700/10000  loss=4.9110  lr=1.62e-04  regs=[type=0.074 scope=0.084 role=0.075]  tok/s=12764  elapsed=17201s
+  step  6725/10000  loss=4.9870  lr=1.59e-04  regs=[type=0.076 scope=0.086 role=0.077]  tok/s=12754  elapsed=17278s
+  step  6750/10000  loss=5.2563  lr=1.57e-04  regs=[type=0.075 scope=0.085 role=0.075]  tok/s=12744  elapsed=17356s
+  step  6775/10000  loss=4.5522  lr=1.55e-04  regs=[type=0.078 scope=0.086 role=0.077]  tok/s=12734  elapsed=17434s
+  step  6800/10000  loss=4.8495  lr=1.53e-04  regs=[type=0.078 scope=0.086 role=0.077]  tok/s=12724  elapsed=17511s
+  step  6825/10000  loss=4.7890  lr=1.51e-04  regs=[type=0.076 scope=0.085 role=0.076]  tok/s=12714  elapsed=17590s
+  step  6850/10000  loss=4.7859  lr=1.49e-04  regs=[type=0.076 scope=0.085 role=0.076]  tok/s=12705  elapsed=17668s
+  step  6875/10000  loss=4.7117  lr=1.46e-04  regs=[type=0.074 scope=0.081 role=0.073]  tok/s=12696  elapsed=17745s
+  step  6900/10000  loss=4.5133  lr=1.44e-04  regs=[type=0.075 scope=0.082 role=0.075]  tok/s=12687  elapsed=17822s
+  step  6925/10000  loss=4.6340  lr=1.42e-04  regs=[type=0.078 scope=0.085 role=0.077]  tok/s=12677  elapsed=17900s
+  step  6950/10000  loss=4.7798  lr=1.40e-04  regs=[type=0.076 scope=0.082 role=0.075]  tok/s=12668  elapsed=17977s
+  step  6975/10000  loss=4.7889  lr=1.38e-04  regs=[type=0.074 scope=0.081 role=0.074]  tok/s=12659  elapsed=18055s
+  step  7000/10000  loss=4.4605  lr=1.36e-04  regs=[type=0.076 scope=0.083 role=0.076]  tok/s=12649  elapsed=18133s
+  ── eval loss at step 7000: 4.9557 ──
+  ── checkpoint 7000 ──
+     grad norms: {"S1_type": 0.4752, "S1_parse": 0.2533, "S1_apply": 0.2033, "S3": 0.0282, "S3_iter0_type": 0.0214, "S3_iter0_parse": 0.0094, "S3_iter0_apply": 0.007, "S3_iter1_type": 0.0116, "S3_iter1_parse": 0.005, "S3_iter1_apply": 0.0054, "S4": 0.0117, "S5_embed": 0.6734, "S5_register_type": 0.0022, "S5_register_scope": 0.0022, "S5_register_role": 0.0021}
+     expansion: 64.32x
+     iter0 S4 entropy: 8.3150
+     iter1 S4 entropy: 7.8319
+     reg_type: init=0.0757 → S4.0=0.4163 → iter0=0.6366 → S4.1=1.3556 → iter1=2.8726
+     reg_scope: init=0.0833 → S4.0=0.4456 → iter0=0.7700 → S4.1=1.4574 → iter1=3.1779
+     reg_role: init=0.0759 → S4.0=0.4450 → iter0=0.8598 → S4.1=1.4439 → iter1=9.9513
+     iter0 gates: type=0.670±0.111  parse=0.531±0.101  apply=0.560±0.194
+     iter1 gates: type=0.667±0.193  parse=0.938±0.105  apply=0.933±0.159
+     soft partition (write gates):
+       iter0/type: type=0.013 scope=0.012 role=0.025
+       iter0/parse: type=0.032 scope=0.033 role=0.040
+       iter0/apply: type=0.030 scope=0.044 role=0.050
+       iter1/type: type=0.103 scope=0.107 role=0.394
+       iter1/parse: type=0.021 scope=0.023 role=0.031
+       iter1/apply: type=0.055 scope=0.065 role=0.076
+     gate divergence (cosine iter0↔iter1): type=0.015  parse=0.149  apply=0.159
+     compile gate: 0/4
+     saved: checkpoints/vsm-lm-v3/step_007000.pt
+  step  7025/10000  loss=4.7919  lr=1.34e-04  regs=[type=0.074 scope=0.081 role=0.074]  tok/s=12635  elapsed=18220s
+  step  7050/10000  loss=4.9032  lr=1.32e-04  regs=[type=0.074 scope=0.081 role=0.074]  tok/s=12626  elapsed=18297s
+  step  7075/10000  loss=4.8420  lr=1.30e-04  regs=[type=0.075 scope=0.082 role=0.075]  tok/s=12616  elapsed=18376s
+  step  7100/10000  loss=4.4975  lr=1.28e-04  regs=[type=0.074 scope=0.081 role=0.075]  tok/s=12607  elapsed=18454s
+  step  7125/10000  loss=4.7270  lr=1.26e-04  regs=[type=0.074 scope=0.081 role=0.074]  tok/s=12599  elapsed=18531s
+  step  7150/10000  loss=4.5520  lr=1.24e-04  regs=[type=0.073 scope=0.080 role=0.073]  tok/s=12591  elapsed=18608s
+  step  7175/10000  loss=4.3256  lr=1.22e-04  regs=[type=0.074 scope=0.081 role=0.075]  tok/s=12582  elapsed=18687s
+  step  7200/10000  loss=5.0016  lr=1.20e-04  regs=[type=0.076 scope=0.082 role=0.075]  tok/s=12573  elapsed=18764s
+  step  7225/10000  loss=4.9214  lr=1.18e-04  regs=[type=0.076 scope=0.083 role=0.075]  tok/s=12565  elapsed=18841s
+  step  7250/10000  loss=4.6391  lr=1.16e-04  regs=[type=0.077 scope=0.083 role=0.076]  tok/s=12558  elapsed=18918s
+  step  7275/10000  loss=5.0443  lr=1.14e-04  regs=[type=0.078 scope=0.084 role=0.077]  tok/s=12549  elapsed=18996s
+  step  7300/10000  loss=4.7944  lr=1.12e-04  regs=[type=0.077 scope=0.083 role=0.076]  tok/s=12541  elapsed=19074s
+  step  7325/10000  loss=4.8104  lr=1.10e-04  regs=[type=0.079 scope=0.084 role=0.078]  tok/s=12533  elapsed=19152s
+  step  7350/10000  loss=4.4917  lr=1.08e-04  regs=[type=0.081 scope=0.087 role=0.080]  tok/s=12525  elapsed=19229s
+  step  7375/10000  loss=4.4852  lr=1.06e-04  regs=[type=0.081 scope=0.087 role=0.080]  tok/s=12518  elapsed=19306s
+  step  7400/10000  loss=4.7540  lr=1.04e-04  regs=[type=0.079 scope=0.085 role=0.078]  tok/s=12510  elapsed=19383s
+  step  7425/10000  loss=4.8641  lr=1.02e-04  regs=[type=0.080 scope=0.085 role=0.079]  tok/s=12502  elapsed=19461s
+  step  7450/10000  loss=4.7174  lr=1.00e-04  regs=[type=0.079 scope=0.085 role=0.079]  tok/s=12495  elapsed=19538s
+  step  7475/10000  loss=4.5309  lr=9.86e-05  regs=[type=0.081 scope=0.087 role=0.080]  tok/s=12487  elapsed=19615s
+  step  7500/10000  loss=4.5419  lr=9.68e-05  regs=[type=0.080 scope=0.086 role=0.079]  tok/s=12480  elapsed=19693s
+  ── eval loss at step 7500: 4.9290 ──
+  ── checkpoint 7500 ──
+     grad norms: {"S1_type": 0.3175, "S1_parse": 0.1474, "S1_apply": 0.129, "S3": 0.0155, "S3_iter0_type": 0.0114, "S3_iter0_parse": 0.0058, "S3_iter0_apply": 0.0045, "S3_iter1_type": 0.0055, "S3_iter1_parse": 0.0032, "S3_iter1_apply": 0.0034, "S4": 0.009, "S5_embed": 0.4099, "S5_register_type": 0.0022, "S5_register_scope": 0.0024, "S5_register_role": 0.0022}
+     expansion: 61.88x
+     iter0 S4 entropy: 8.3147
+     iter1 S4 entropy: 7.7013
+     reg_type: init=0.0799 → S4.0=0.4248 → iter0=0.6733 → S4.1=1.5599 → iter1=3.0938
+     reg_scope: init=0.0862 → S4.0=0.4571 → iter0=0.8029 → S4.1=1.7132 → iter1=3.4785
+     reg_role: init=0.0793 → S4.0=0.4657 → iter0=0.9224 → S4.1=1.5948 → iter1=10.8049
+     iter0 gates: type=0.654±0.108  parse=0.524±0.097  apply=0.555±0.187
+     iter1 gates: type=0.663±0.193  parse=0.942±0.101  apply=0.937±0.153
+     soft partition (write gates):
+       iter0/type: type=0.014 scope=0.014 role=0.028
+       iter0/parse: type=0.038 scope=0.038 role=0.047
+       iter0/apply: type=0.034 scope=0.049 role=0.057
+       iter1/type: type=0.107 scope=0.110 role=0.429
+       iter1/parse: type=0.025 scope=0.027 role=0.035
+       iter1/apply: type=0.076 scope=0.086 role=0.102
+     gate divergence (cosine iter0↔iter1): type=0.014  parse=0.148  apply=0.158
+     compile gate: 0/4
+     saved: checkpoints/vsm-lm-v3/step_007500.pt
+  step  7525/10000  loss=4.8151  lr=9.50e-05  regs=[type=0.081 scope=0.086 role=0.080]  tok/s=12467  elapsed=19778s
+  step  7550/10000  loss=4.4473  lr=9.32e-05  regs=[type=0.080 scope=0.085 role=0.079]  tok/s=12460  elapsed=19856s
+  step  7575/10000  loss=4.6806  lr=9.14e-05  regs=[type=0.081 scope=0.086 role=0.080]  tok/s=12451  elapsed=19935s
+  step  7600/10000  loss=4.6063  lr=8.96e-05  regs=[type=0.081 scope=0.085 role=0.079]  tok/s=12444  elapsed=20012s
+  step  7625/10000  loss=4.9151  lr=8.79e-05  regs=[type=0.081 scope=0.085 role=0.080]  tok/s=12437  elapsed=20089s
+  step  7650/10000  loss=4.9765  lr=8.61e-05  regs=[type=0.081 scope=0.086 role=0.080]  tok/s=12430  elapsed=20167s
+  step  7675/10000  loss=5.0219  lr=8.44e-05  regs=[type=0.082 scope=0.086 role=0.081]  tok/s=12423  elapsed=20244s
+  step  7700/10000  loss=4.7865  lr=8.27e-05  regs=[type=0.083 scope=0.087 role=0.081]  tok/s=12416  elapsed=20321s
+  step  7725/10000  loss=4.8288  lr=8.10e-05  regs=[type=0.081 scope=0.085 role=0.080]  tok/s=12409  elapsed=20399s
+  step  7750/10000  loss=4.5372  lr=7.93e-05  regs=[type=0.082 scope=0.086 role=0.081]  tok/s=12402  elapsed=20477s
+  step  7775/10000  loss=4.5308  lr=7.76e-05  regs=[type=0.083 scope=0.087 role=0.082]  tok/s=12395  elapsed=20555s
+  step  7800/10000  loss=4.8678  lr=7.60e-05  regs=[type=0.082 scope=0.086 role=0.081]  tok/s=12388  elapsed=20632s
+  step  7825/10000  loss=4.4553  lr=7.43e-05  regs=[type=0.082 scope=0.086 role=0.081]  tok/s=12381  elapsed=20710s
+  step  7850/10000  loss=4.7591  lr=7.27e-05  regs=[type=0.082 scope=0.086 role=0.081]  tok/s=12374  elapsed=20788s
+  step  7875/10000  loss=4.4463  lr=7.11e-05  regs=[type=0.083 scope=0.086 role=0.081]  tok/s=12367  elapsed=20865s
+  step  7900/10000  loss=4.7305  lr=6.95e-05  regs=[type=0.083 scope=0.088 role=0.083]  tok/s=12361  elapsed=20943s
+  step  7925/10000  loss=4.5181  lr=6.79e-05  regs=[type=0.085 scope=0.089 role=0.084]  tok/s=12354  elapsed=21021s
+  step  7950/10000  loss=4.5286  lr=6.63e-05  regs=[type=0.084 scope=0.089 role=0.083]  tok/s=12346  elapsed=21100s
+  step  7975/10000  loss=4.7456  lr=6.48e-05  regs=[type=0.084 scope=0.088 role=0.083]  tok/s=12340  elapsed=21177s
+  step  8000/10000  loss=4.9443  lr=6.33e-05  regs=[type=0.084 scope=0.088 role=0.083]  tok/s=12334  elapsed=21254s
+  ── eval loss at step 8000: 4.8971 ──
+  ── checkpoint 8000 ──
+     grad norms: {"S1_type": 0.3196, "S1_parse": 0.1487, "S1_apply": 0.1354, "S3": 0.0154, "S3_iter0_type": 0.0115, "S3_iter0_parse": 0.0052, "S3_iter0_apply": 0.0046, "S3_iter1_type": 0.0055, "S3_iter1_parse": 0.003, "S3_iter1_apply": 0.0037, "S4": 0.0072, "S5_embed": 0.4926, "S5_register_type": 0.0016, "S5_register_scope": 0.0017, "S5_register_role": 0.0015}
+     expansion: 60.21x
+     iter0 S4 entropy: 8.3149
+     iter1 S4 entropy: 7.7081
+     reg_type: init=0.0837 → S4.0=0.4577 → iter0=0.6833 → S4.1=1.4732 → iter1=3.1498
+     reg_scope: init=0.0883 → S4.0=0.4899 → iter0=0.7941 → S4.1=1.5855 → iter1=3.5561
+     reg_role: init=0.0828 → S4.0=0.5029 → iter0=0.9128 → S4.1=1.4941 → iter1=11.4951
+     iter0 gates: type=0.636±0.105  parse=0.515±0.094  apply=0.551±0.183
+     iter1 gates: type=0.663±0.188  parse=0.947±0.096  apply=0.941±0.149
+     soft partition (write gates):
+       iter0/type: type=0.015 scope=0.015 role=0.029
+       iter0/parse: type=0.039 scope=0.040 role=0.049
+       iter0/apply: type=0.037 scope=0.052 role=0.059
+       iter1/type: type=0.117 scope=0.124 role=0.461
+       iter1/parse: type=0.029 scope=0.032 role=0.040
+       iter1/apply: type=0.079 scope=0.090 role=0.107
+     gate divergence (cosine iter0↔iter1): type=0.012  parse=0.148  apply=0.156
+     compile gate: 0/4
+     saved: checkpoints/vsm-lm-v3/step_008000.pt
+  step  8025/10000  loss=4.6014  lr=6.17e-05  regs=[type=0.084 scope=0.088 role=0.083]  tok/s=12322  elapsed=21341s
+  step  8050/10000  loss=4.8948  lr=6.02e-05  regs=[type=0.084 scope=0.089 role=0.083]  tok/s=12316  elapsed=21418s
+  step  8075/10000  loss=4.8740  lr=6.00e-05  regs=[type=0.085 scope=0.089 role=0.084]  tok/s=12309  elapsed=21497s
+  step  8100/10000  loss=4.7316  lr=6.00e-05  regs=[type=0.085 scope=0.089 role=0.083]  tok/s=12302  elapsed=21575s
+  step  8125/10000  loss=4.7760  lr=6.00e-05  regs=[type=0.086 scope=0.090 role=0.084]  tok/s=12295  elapsed=21654s
+  step  8150/10000  loss=4.8843  lr=6.00e-05  regs=[type=0.085 scope=0.090 role=0.084]  tok/s=12288  elapsed=21734s
+  step  8175/10000  loss=4.8732  lr=6.00e-05  regs=[type=0.087 scope=0.091 role=0.085]  tok/s=12281  elapsed=21812s
+  step  8200/10000  loss=4.6413  lr=6.00e-05  regs=[type=0.087 scope=0.092 role=0.086]  tok/s=12275  elapsed=21891s
+  step  8225/10000  loss=4.6295  lr=6.00e-05  regs=[type=0.087 scope=0.091 role=0.085]  tok/s=12267  elapsed=21970s
+  step  8250/10000  loss=4.7781  lr=6.00e-05  regs=[type=0.086 scope=0.091 role=0.085]  tok/s=12273  elapsed=22027s
+  step  8275/10000  loss=5.1035  lr=6.00e-05  regs=[type=0.086 scope=0.091 role=0.085]  tok/s=12280  elapsed=22081s
+  step  8300/10000  loss=4.6821  lr=6.00e-05  regs=[type=0.086 scope=0.091 role=0.085]  tok/s=12284  elapsed=22141s
+  step  8325/10000  loss=4.8820  lr=6.00e-05  regs=[type=0.087 scope=0.092 role=0.086]  tok/s=12290  elapsed=22196s
+  step  8350/10000  loss=4.7190  lr=6.00e-05  regs=[type=0.087 scope=0.092 role=0.086]  tok/s=12298  elapsed=22249s
+  step  8375/10000  loss=4.7984  lr=6.00e-05  regs=[type=0.088 scope=0.092 role=0.086]  tok/s=12305  elapsed=22303s
+  step  8400/10000  loss=4.9741  lr=6.00e-05  regs=[type=0.087 scope=0.092 role=0.086]  tok/s=12312  elapsed=22356s
+  step  8425/10000  loss=4.7059  lr=6.00e-05  regs=[type=0.087 scope=0.091 role=0.085]  tok/s=12320  elapsed=22409s
+  step  8450/10000  loss=4.8581  lr=6.00e-05  regs=[type=0.087 scope=0.092 role=0.086]  tok/s=12322  elapsed=22471s
+  step  8475/10000  loss=4.6134  lr=6.00e-05  regs=[type=0.087 scope=0.092 role=0.086]  tok/s=12329  elapsed=22525s
+  step  8500/10000  loss=4.9379  lr=6.00e-05  regs=[type=0.088 scope=0.092 role=0.086]  tok/s=12336  elapsed=22578s
+  ── eval loss at step 8500: 4.8904 ──
+  ── checkpoint 8500 ──
+     grad norms: {"S1_type": 0.3313, "S1_parse": 0.1452, "S1_apply": 0.1326, "S3": 0.0155, "S3_iter0_type": 0.0121, "S3_iter0_parse": 0.0048, "S3_iter0_apply": 0.0043, "S3_iter1_type": 0.0056, "S3_iter1_parse": 0.0026, "S3_iter1_apply": 0.0033, "S4": 0.0115, "S5_embed": 0.376, "S5_register_type": 0.002, "S5_register_scope": 0.0022, "S5_register_role": 0.002}
+     expansion: 58.99x
+     iter0 S4 entropy: 8.3143
+     iter1 S4 entropy: 7.5761
+     reg_type: init=0.0876 → S4.0=0.4800 → iter0=0.7244 → S4.1=1.5647 → iter1=3.2329
+     reg_scope: init=0.0920 → S4.0=0.5131 → iter0=0.8503 → S4.1=1.6631 → iter1=3.6968
+     reg_role: init=0.0862 → S4.0=0.5212 → iter0=0.9482 → S4.1=1.5298 → iter1=11.6692
+     iter0 gates: type=0.627±0.105  parse=0.508±0.092  apply=0.552±0.181
+     iter1 gates: type=0.653±0.185  parse=0.947±0.095  apply=0.944±0.145
+     soft partition (write gates):
+       iter0/type: type=0.016 scope=0.015 role=0.029
+       iter0/parse: type=0.045 scope=0.046 role=0.054
+       iter0/apply: type=0.040 scope=0.057 role=0.063
+       iter1/type: type=0.126 scope=0.134 role=0.482
+       iter1/parse: type=0.033 scope=0.035 role=0.044
+       iter1/apply: type=0.089 scope=0.100 role=0.113
+     gate divergence (cosine iter0↔iter1): type=0.011  parse=0.147  apply=0.156
+     compile gate: 0/4
+     saved: checkpoints/vsm-lm-v3/step_008500.pt
+  step  8525/10000  loss=4.5447  lr=6.00e-05  regs=[type=0.087 scope=0.091 role=0.086]  tok/s=12340  elapsed=22638s
+  step  8550/10000  loss=4.6625  lr=6.00e-05  regs=[type=0.087 scope=0.091 role=0.086]  tok/s=12347  elapsed=22692s
+  step  8575/10000  loss=4.6799  lr=6.00e-05  regs=[type=0.087 scope=0.092 role=0.086]  tok/s=12349  elapsed=22753s
+  step  8600/10000  loss=4.6890  lr=6.00e-05  regs=[type=0.088 scope=0.092 role=0.087]  tok/s=12356  elapsed=22806s
+  step  8625/10000  loss=4.7480  lr=6.00e-05  regs=[type=0.090 scope=0.093 role=0.088]  tok/s=12363  elapsed=22860s
+  step  8650/10000  loss=4.8888  lr=6.00e-05  regs=[type=0.089 scope=0.092 role=0.087]  tok/s=12370  elapsed=22913s
+  step  8675/10000  loss=4.5447  lr=6.00e-05  regs=[type=0.088 scope=0.092 role=0.087]  tok/s=12377  elapsed=22966s
+  step  8700/10000  loss=4.7487  lr=6.00e-05  regs=[type=0.087 scope=0.092 role=0.086]  tok/s=12385  elapsed=23019s
+  step  8725/10000  loss=4.3626  lr=6.00e-05  regs=[type=0.089 scope=0.093 role=0.087]  tok/s=12387  elapsed=23080s
+  step  8750/10000  loss=4.3691  lr=6.00e-05  regs=[type=0.088 scope=0.092 role=0.087]  tok/s=12395  elapsed=23133s
+  step  8775/10000  loss=4.8561  lr=6.00e-05  regs=[type=0.089 scope=0.092 role=0.087]  tok/s=12401  elapsed=23186s
+  step  8800/10000  loss=4.6035  lr=6.00e-05  regs=[type=0.089 scope=0.092 role=0.087]  tok/s=12408  elapsed=23240s
+  step  8825/10000  loss=4.6635  lr=6.00e-05  regs=[type=0.088 scope=0.092 role=0.087]  tok/s=12415  elapsed=23293s
+  step  8850/10000  loss=5.1092  lr=6.00e-05  regs=[type=0.088 scope=0.092 role=0.087]  tok/s=12417  elapsed=23355s
+  step  8875/10000  loss=5.0236  lr=6.00e-05  regs=[type=0.089 scope=0.092 role=0.087]  tok/s=12424  elapsed=23408s
+  step  8900/10000  loss=4.6488  lr=6.00e-05  regs=[type=0.088 scope=0.091 role=0.086]  tok/s=12430  elapsed=23463s
+  step  8925/10000  loss=5.2045  lr=6.00e-05  regs=[type=0.088 scope=0.091 role=0.087]  tok/s=12435  elapsed=23518s
+  step  8950/10000  loss=4.6574  lr=6.00e-05  regs=[type=0.087 scope=0.091 role=0.086]  tok/s=12442  elapsed=23572s
+  step  8975/10000  loss=4.7226  lr=6.00e-05  regs=[type=0.088 scope=0.091 role=0.086]  tok/s=12445  elapsed=23631s
+  step  9000/10000  loss=4.5231  lr=6.00e-05  regs=[type=0.089 scope=0.092 role=0.088]  tok/s=12448  elapsed=23691s
+  ── eval loss at step 9000: 4.8841 ──
+  ── checkpoint 9000 ──
+     grad norms: {"S1_type": 0.5155, "S1_parse": 0.2768, "S1_apply": 0.2142, "S3": 0.0361, "S3_iter0_type": 0.0274, "S3_iter0_parse": 0.0141, "S3_iter0_apply": 0.0087, "S3_iter1_type": 0.0139, "S3_iter1_parse": 0.0053, "S3_iter1_apply": 0.0067, "S4": 0.0263, "S5_embed": 0.6809, "S5_register_type": 0.0033, "S5_register_scope": 0.0034, "S5_register_role": 0.0036}
+     expansion: 57.58x
+     iter0 S4 entropy: 8.3146
+     iter1 S4 entropy: 7.6702
+     reg_type: init=0.0892 → S4.0=0.5120 → iter0=0.7192 → S4.1=1.5027 → iter1=3.2448
+     reg_scope: init=0.0924 → S4.0=0.5449 → iter0=0.8355 → S4.1=1.5935 → iter1=3.7271
+     reg_role: init=0.0879 → S4.0=0.5606 → iter0=0.9312 → S4.1=1.4400 → iter1=11.4312
+     iter0 gates: type=0.616±0.104  parse=0.503±0.088  apply=0.548±0.178
+     iter1 gates: type=0.648±0.181  parse=0.946±0.094  apply=0.945±0.143
+     soft partition (write gates):
+       iter0/type: type=0.016 scope=0.016 role=0.030
+       iter0/parse: type=0.047 scope=0.048 role=0.056
+       iter0/apply: type=0.041 scope=0.056 role=0.063
+       iter1/type: type=0.132 scope=0.144 role=0.483
+       iter1/parse: type=0.036 scope=0.039 role=0.046
+       iter1/apply: type=0.090 scope=0.099 role=0.113
+     gate divergence (cosine iter0↔iter1): type=0.011  parse=0.147  apply=0.154
+     compile gate: 0/4
+     saved: checkpoints/vsm-lm-v3/step_009000.pt
+  step  9025/10000  loss=4.4646  lr=6.00e-05  regs=[type=0.089 scope=0.092 role=0.088]  tok/s=12451  elapsed=23752s
+  step  9050/10000  loss=4.7745  lr=6.00e-05  regs=[type=0.089 scope=0.092 role=0.087]  tok/s=12457  elapsed=23806s
+  step  9075/10000  loss=4.7337  lr=6.00e-05  regs=[type=0.088 scope=0.092 role=0.087]  tok/s=12463  elapsed=23860s
+  step  9100/10000  loss=4.2356  lr=6.00e-05  regs=[type=0.089 scope=0.092 role=0.087]  tok/s=12469  elapsed=23914s
+  step  9125/10000  loss=4.4607  lr=6.00e-05  regs=[type=0.089 scope=0.092 role=0.087]  tok/s=12471  elapsed=23976s
+  step  9150/10000  loss=4.7498  lr=6.00e-05  regs=[type=0.089 scope=0.091 role=0.087]  tok/s=12477  elapsed=24030s
+  step  9175/10000  loss=4.8086  lr=6.00e-05  regs=[type=0.090 scope=0.093 role=0.088]  tok/s=12484  elapsed=24083s
+  step  9200/10000  loss=4.9032  lr=6.00e-05  regs=[type=0.090 scope=0.093 role=0.089]  tok/s=12490  elapsed=24137s
+  step  9225/10000  loss=4.7243  lr=6.00e-05  regs=[type=0.090 scope=0.093 role=0.088]  tok/s=12496  elapsed=24191s
+  step  9250/10000  loss=4.9377  lr=6.00e-05  regs=[type=0.090 scope=0.093 role=0.088]  tok/s=12498  elapsed=24253s
+  step  9275/10000  loss=4.8481  lr=6.00e-05  regs=[type=0.090 scope=0.093 role=0.088]  tok/s=12504  elapsed=24306s
+  step  9300/10000  loss=4.7231  lr=6.00e-05  regs=[type=0.091 scope=0.093 role=0.089]  tok/s=12510  elapsed=24360s
+  step  9325/10000  loss=4.8194  lr=6.00e-05  regs=[type=0.090 scope=0.093 role=0.089]  tok/s=12516  elapsed=24414s
+  step  9350/10000  loss=4.6255  lr=6.00e-05  regs=[type=0.090 scope=0.093 role=0.089]  tok/s=12522  elapsed=24467s
+  step  9375/10000  loss=4.9868  lr=6.00e-05  regs=[type=0.091 scope=0.094 role=0.089]  tok/s=12528  elapsed=24520s
+  step  9400/10000  loss=4.8442  lr=6.00e-05  regs=[type=0.091 scope=0.094 role=0.089]  tok/s=12535  elapsed=24574s
+  step  9425/10000  loss=4.8544  lr=6.00e-05  regs=[type=0.092 scope=0.095 role=0.090]  tok/s=12541  elapsed=24627s
+  step  9450/10000  loss=4.7364  lr=6.00e-05  regs=[type=0.091 scope=0.094 role=0.089]  tok/s=12546  elapsed=24682s
+  step  9475/10000  loss=4.9126  lr=6.00e-05  regs=[type=0.092 scope=0.095 role=0.090]  tok/s=12552  elapsed=24736s
+  step  9500/10000  loss=5.1632  lr=6.00e-05  regs=[type=0.092 scope=0.095 role=0.090]  tok/s=12558  elapsed=24790s
+  ── eval loss at step 9500: 4.8795 ──
+  ── checkpoint 9500 ──
+     grad norms: {"S1_type": 0.2806, "S1_parse": 0.1424, "S1_apply": 0.1395, "S3": 0.0142, "S3_iter0_type": 0.01, "S3_iter0_parse": 0.0047, "S3_iter0_apply": 0.0042, "S3_iter1_type": 0.0049, "S3_iter1_parse": 0.0027, "S3_iter1_apply": 0.0049, "S4": 0.0067, "S5_embed": 0.3819, "S5_register_type": 0.0019, "S5_register_scope": 0.0021, "S5_register_role": 0.002}
+     expansion: 56.88x
+     iter0 S4 entropy: 8.3140
+     iter1 S4 entropy: 7.7128
+     reg_type: init=0.0920 → S4.0=0.4945 → iter0=0.7092 → S4.1=1.3865 → iter1=3.3652
+     reg_scope: init=0.0952 → S4.0=0.5336 → iter0=0.8256 → S4.1=1.4579 → iter1=3.8236
+     reg_role: init=0.0901 → S4.0=0.5397 → iter0=0.9285 → S4.1=1.3440 → iter1=11.9146
+     iter0 gates: type=0.613±0.103  parse=0.505±0.090  apply=0.548±0.180
+     iter1 gates: type=0.644±0.181  parse=0.949±0.092  apply=0.946±0.144
+     soft partition (write gates):
+       iter0/type: type=0.017 scope=0.018 role=0.032
+       iter0/parse: type=0.049 scope=0.049 role=0.058
+       iter0/apply: type=0.040 scope=0.057 role=0.064
+       iter1/type: type=0.140 scope=0.149 role=0.494
+       iter1/parse: type=0.038 scope=0.040 role=0.049
+       iter1/apply: type=0.093 scope=0.105 role=0.123
+     gate divergence (cosine iter0↔iter1): type=0.010  parse=0.147  apply=0.153
+     compile gate: 0/4
+     saved: checkpoints/vsm-lm-v3/step_009500.pt
+  step  9525/10000  loss=4.7239  lr=6.00e-05  regs=[type=0.091 scope=0.095 role=0.090]  tok/s=12554  elapsed=24862s
+  step  9550/10000  loss=4.9618  lr=6.00e-05  regs=[type=0.092 scope=0.095 role=0.090]  tok/s=12560  elapsed=24915s
+  step  9575/10000  loss=4.7634  lr=6.00e-05  regs=[type=0.093 scope=0.095 role=0.091]  tok/s=12565  elapsed=24970s
+  step  9600/10000  loss=4.7165  lr=6.00e-05  regs=[type=0.093 scope=0.095 role=0.091]  tok/s=12565  elapsed=25037s
+  step  9625/10000  loss=4.6769  lr=6.00e-05  regs=[type=0.093 scope=0.096 role=0.091]  tok/s=12570  elapsed=25091s
+  step  9650/10000  loss=4.5169  lr=6.00e-05  regs=[type=0.093 scope=0.095 role=0.090]  tok/s=12569  elapsed=25158s
+  step  9675/10000  loss=4.3503  lr=6.00e-05  regs=[type=0.093 scope=0.095 role=0.090]  tok/s=12571  elapsed=25219s
+  step  9700/10000  loss=4.6815  lr=6.00e-05  regs=[type=0.093 scope=0.096 role=0.091]  tok/s=12567  elapsed=25292s
+  step  9725/10000  loss=4.6386  lr=6.00e-05  regs=[type=0.092 scope=0.095 role=0.090]  tok/s=12566  elapsed=25359s
+  step  9750/10000  loss=4.8981  lr=6.00e-05  regs=[type=0.093 scope=0.096 role=0.091]  tok/s=12558  elapsed=25440s
+  step  9775/10000  loss=4.7652  lr=6.00e-05  regs=[type=0.092 scope=0.095 role=0.090]  tok/s=12556  elapsed=25510s
+  step  9800/10000  loss=4.9898  lr=6.00e-05  regs=[type=0.092 scope=0.095 role=0.090]  tok/s=12558  elapsed=25571s
+  step  9825/10000  loss=4.3647  lr=6.00e-05  regs=[type=0.093 scope=0.096 role=0.091]  tok/s=12562  elapsed=25628s
+  step  9850/10000  loss=4.8169  lr=6.00e-05  regs=[type=0.094 scope=0.096 role=0.091]  tok/s=12560  elapsed=25698s
+  step  9875/10000  loss=4.7713  lr=6.00e-05  regs=[type=0.093 scope=0.096 role=0.091]  tok/s=12552  elapsed=25779s
+  step  9900/10000  loss=4.7828  lr=6.00e-05  regs=[type=0.093 scope=0.096 role=0.091]  tok/s=12544  elapsed=25862s
+  step  9925/10000  loss=4.7172  lr=6.00e-05  regs=[type=0.093 scope=0.096 role=0.091]  tok/s=12542  elapsed=25931s
+  step  9950/10000  loss=4.7084  lr=6.00e-05  regs=[type=0.093 scope=0.096 role=0.091]  tok/s=12535  elapsed=26011s
+  step  9975/10000  loss=4.3583  lr=6.00e-05  regs=[type=0.093 scope=0.096 role=0.091]  tok/s=12528  elapsed=26091s
+  step 10000/10000  loss=4.4667  lr=6.00e-05  regs=[type=0.093 scope=0.096 role=0.091]  tok/s=12520  elapsed=26172s
+  ── eval loss at step 10000: 4.8725 ──
+  ── checkpoint 10000 ──
+     grad norms: {"S1_type": 0.3182, "S1_parse": 0.1397, "S1_apply": 0.123, "S3": 0.0132, "S3_iter0_type": 0.0102, "S3_iter0_parse": 0.0043, "S3_iter0_apply": 0.0036, "S3_iter1_type": 0.0044, "S3_iter1_parse": 0.0026, "S3_iter1_apply": 0.0029, "S4": 0.008, "S5_embed": 0.3536, "S5_register_type": 0.0015, "S5_register_scope": 0.0016, "S5_register_role": 0.0015}
+     expansion: 55.78x
+     iter0 S4 entropy: 8.3139
+     iter1 S4 entropy: 7.6655
+     reg_type: init=0.0932 → S4.0=0.5082 → iter0=0.7429 → S4.1=1.4675 → iter1=3.3567
+     reg_scope: init=0.0961 → S4.0=0.5495 → iter0=0.8625 → S4.1=1.5603 → iter1=3.7845
+     reg_role: init=0.0913 → S4.0=0.5526 → iter0=0.9581 → S4.1=1.4344 → iter1=11.5163
+     iter0 gates: type=0.608±0.102  parse=0.502±0.088  apply=0.543±0.175
+     iter1 gates: type=0.638±0.179  parse=0.945±0.093  apply=0.944±0.142
+     soft partition (write gates):
+       iter0/type: type=0.018 scope=0.019 role=0.035
+       iter0/parse: type=0.053 scope=0.052 role=0.061
+       iter0/apply: type=0.046 scope=0.064 role=0.071
+       iter1/type: type=0.135 scope=0.145 role=0.489
+       iter1/parse: type=0.043 scope=0.045 role=0.055
+       iter1/apply: type=0.116 scope=0.130 role=0.144
+     gate divergence (cosine iter0↔iter1): type=0.009  parse=0.146  apply=0.152
+     compile gate: 0/4
+     saved: checkpoints/vsm-lm-v3/step_010000.pt
+
+============================================================
+  DONE — 26181s (7.3h)
+============================================================
+
+  Saved: results/vsm-lm-v3/summary.json
+
+  Reference:
+    Forward CompressorLM:  best eval 5.043 @ step 9500
+    Reverse CompressorLM:  best eval 5.342 @ step 9500
+    VSM-LM v1:            best eval 5.245 @ step 9500
+    VSM-LM v2:            best eval 5.064 @ step 29500 (1B tokens)
+
+  This run (VSM-LM-v3):
+    Best eval: 4.872 @ step 10000
+    Overall expansion: 55.781456x
+    iter0 gates: type=0.608, parse=0.502, apply=0.543
+    iter1 gates: type=0.638, parse=0.945, apply=0.944
+    Soft partition (final):
+      type: type=0.135, scope=0.145, role=0.489
+      parse: type=0.043, scope=0.045, role=0.055
+      apply: type=0.116, scope=0.130, role=0.144

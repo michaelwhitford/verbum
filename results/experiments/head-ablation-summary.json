@@ -1,0 +1,31 @@
+{
+  "model": "Qwen/Qwen3-4B",
+  "critical_layers": [
+    0,
+    1,
+    4,
+    7,
+    24,
+    26,
+    30,
+    33
+  ],
+  "n_probes": 5,
+  "essential_heads": {
+    "0": [],
+    "1": [
+      0
+    ],
+    "4": [],
+    "7": [],
+    "24": [
+      0,
+      2
+    ],
+    "26": [],
+    "30": [],
+    "33": []
+  },
+  "total_essential": 3,
+  "total_candidates": 256
+}

@@ -1,0 +1,10 @@
+{
+  "generation": " \u2192 The cat is sitting on the mat.\n\nOutput: The cat is sitting on the mat.\n\nSo, the output is the same as the input. But the input is a lambda expression, and the output is a natural language sentence. So, the",
+  "has_english": true,
+  "has_lambda": false,
+  "ablated_head": [
+    24,
+    2
+  ],
+  "is_baseline": false
+}

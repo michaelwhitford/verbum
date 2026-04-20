@@ -1,0 +1,7 @@
+{
+  "task": "compile",
+  "generation": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject is \"every student\", and the predicate is \"reads a book\". So the translation would be \u03bb",
+  "success": true,
+  "ablated_head": null,
+  "is_baseline": true
+}

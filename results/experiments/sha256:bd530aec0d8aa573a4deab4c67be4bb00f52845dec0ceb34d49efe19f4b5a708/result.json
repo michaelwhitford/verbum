@@ -1,0 +1,987 @@
+{
+  "classify": {
+    "probe-cls-mixed": {
+      "L1-H0": {
+        "task": "classify",
+        "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+        "success": false,
+        "ablated_head": [
+          1,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H0": {
+        "task": "classify",
+        "generation": " \u2192 mixed\n\nI need to determine the sentiment of the following input. The options are: positive, negative, or mixed.\n\nInput: I really like this product. It's very comfortable and I would recommend it to anyone. \u2192 positive\n\nI need",
+        "success": true,
+        "ablated_head": [
+          24,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H2": {
+        "task": "classify",
+        "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+        "success": false,
+        "ablated_head": [
+          24,
+          2
+        ],
+        "is_baseline": false
+      },
+      "baseline": {
+        "task": "classify",
+        "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+        "success": false,
+        "ablated_head": null,
+        "is_baseline": true
+      }
+    },
+    "probe-cls-neg-complex": {
+      "L1-H0": {
+        "task": "classify",
+        "generation": " \u2192 sentiment?\nOkay, let's see. The user provided a sentence: \"I had high expectations for this restaurant given the reviews, but the overcooked steak and rude waiter completely ruined the evening.\" They want to determine the sentiment of this input.\n\n",
+        "success": false,
+        "ablated_head": [
+          1,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H0": {
+        "task": "classify",
+        "generation": " \u2192 sentiment?\nOkay, let's see. The user wants to determine the sentiment of the input sentence: \"I had high expectations for this restaurant given the reviews, but the overcooked steak and rude waiter completely ruined the evening.\" \n\nFirst, I",
+        "success": false,
+        "ablated_head": [
+          24,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H2": {
+        "task": "classify",
+        "generation": " \u2192 sentiment?\nOkay, let's see. The user wants to determine the sentiment of the input sentence: \"I had high expectations for this restaurant given the reviews, but the overcooked steak and rude waiter completely ruined the evening.\" \n\nFirst, I",
+        "success": false,
+        "ablated_head": [
+          24,
+          2
+        ],
+        "is_baseline": false
+      },
+      "baseline": {
+        "task": "classify",
+        "generation": " \u2192 sentiment?\nOkay, let's see. The user provided a sentence: \"I had high expectations for this restaurant given the reviews, but the overcooked steak and rude waiter completely ruined the evening.\" They want to determine the sentiment of this input.\n\n",
+        "success": false,
+        "ablated_head": null,
+        "is_baseline": true
+      }
+    },
+    "probe-cls-neg-simple": {
+      "L1-H0": {
+        "task": "classify",
+        "generation": " \u2192 negative\n\nI need to determine if the given input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nInput: I really like this movie, it's so good!\nOkay, let's",
+        "success": true,
+        "ablated_head": [
+          1,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H0": {
+        "task": "classify",
+        "generation": " \u2192 negative\n\nI need to determine if the given input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nAlright, let's tackle this. The user wants to know if the input sentence is",
+        "success": true,
+        "ablated_head": [
+          24,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H2": {
+        "task": "classify",
+        "generation": " \u2192 negative\n\nI need to determine if the given input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nInput: I really like this movie, it's so good! \u2192 positive\nOkay",
+        "success": true,
+        "ablated_head": [
+          24,
+          2
+        ],
+        "is_baseline": false
+      },
+      "baseline": {
+        "task": "classify",
+        "generation": " \u2192 negative\n\nI need to determine if the given input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nInput: I really enjoyed the movie, it was so good!\nOkay, let's",
+        "success": true,
+        "ablated_head": null,
+        "is_baseline": true
+      }
+    },
+    "probe-cls-pos-complex": {
+      "L1-H0": {
+        "task": "classify",
+        "generation": " \u2192 positive\n\nOutput: positive\n\nOkay, let's see. The user wants me to determine if the input sentence is positive, negative, or neutral. The example given was when the input was about a movie that started slow but had great performances and",
+        "success": true,
+        "ablated_head": [
+          1,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H0": {
+        "task": "classify",
+        "generation": " \u2192 positive\n\nI need to determine if the given input is positive, negative, or neutral. Please output only the word \"positive\", \"negative\", or \"neutral\".\n\nOkay, let's see. The user provided an example where they had to determine",
+        "success": true,
+        "ablated_head": [
+          24,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H2": {
+        "task": "classify",
+        "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\nOkay, let's see. The user provided an example where they had to determine if a",
+        "success": true,
+        "ablated_head": [
+          24,
+          2
+        ],
+        "is_baseline": false
+      },
+      "baseline": {
+        "task": "classify",
+        "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nAlright, let's break this down. The user wants to know if the input sentence is",
+        "success": true,
+        "ablated_head": null,
+        "is_baseline": true
+      }
+    },
+    "probe-cls-pos-simple": {
+      "L1-H0": {
+        "task": "classify",
+        "generation": " \u2192 positive\n\nOutput: positive\n\nOkay, let's see. The user wants me to determine the sentiment of the input sentence \"The sunset was absolutely gorgeous tonight.\" They've provided examples where \"I love this movie, it's absolutely amazing!\" is",
+        "success": true,
+        "ablated_head": [
+          1,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H0": {
+        "task": "classify",
+        "generation": " \u2192 positive\n\nOutput: positive\n\nOkay, let's see. The user wants me to determine the sentiment of the input sentence \"The sunset was absolutely gorgeous tonight.\" They provided examples where \"I love this movie, it's absolutely amazing!\" is positive",
+        "success": true,
+        "ablated_head": [
+          24,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H2": {
+        "task": "classify",
+        "generation": " \u2192 positive\n\nOutput: positive\n\nOkay, let's see. The user wants me to determine the sentiment of the input sentence \"The sunset was absolutely gorgeous tonight.\" based on the examples they provided. \n\nFirst, I need to recall the examples they",
+        "success": true,
+        "ablated_head": [
+          24,
+          2
+        ],
+        "is_baseline": false
+      },
+      "baseline": {
+        "task": "classify",
+        "generation": " \u2192 positive\n\nOutput: positive\n\nOkay, let's see. The user wants me to determine the sentiment of the input sentence \"The sunset was absolutely gorgeous tonight.\" based on the examples they provided. \n\nFirst, I need to recall the examples they",
+        "success": true,
+        "ablated_head": null,
+        "is_baseline": true
+      }
+    }
+  },
+  "compile": {
+    "probe-ga-complex": {
+      "L1-H0": {
+        "task": "compile",
+        "generation": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth is flat\" using lambda expressions. Let me start by breaking down the sentence. \n\nFirst, the",
+        "success": true,
+        "ablated_head": [
+          1,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H0": {
+        "task": "compile",
+        "generation": " \u2192 ?\n\nOkay, let's see. The user wants to convert the sentence \"Someone believes that the earth is flat.\" into a lambda expression. \n\nFirst, I need to break down the sentence. The main structure is \"Someone believes that [the",
+        "success": false,
+        "ablated_head": [
+          24,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H2": {
+        "task": "compile",
+        "generation": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth is flat\" using lambda notation. Let me start by breaking down the sentence. \n\nFirst, the",
+        "success": true,
+        "ablated_head": [
+          24,
+          2
+        ],
+        "is_baseline": false
+      },
+      "baseline": {
+        "task": "compile",
+        "generation": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth is flat\" using lambda expressions. Let me start by breaking down the sentence. \n\nFirst, the",
+        "success": true,
+        "ablated_head": null,
+        "is_baseline": true
+      }
+    },
+    "probe-ga-cond": {
+      "L1-H0": {
+        "task": "compile",
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the ground is wet.\" using lambda expressions. Let me start by breaking down the sentence. \n\nFirst,",
+        "success": true,
+        "ablated_head": [
+          1,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H0": {
+        "task": "compile",
+        "generation": " \u2192 ?\n\nOutput: \u03bbx. rain(x) \u2192 wet(ground)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the ground is wet.\" using lambda expressions. Let me start by breaking down the sentence",
+        "success": true,
+        "ablated_head": [
+          24,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H2": {
+        "task": "compile",
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the ground is wet.\" using lambda notation. Let me start by breaking down the sentence. \n\nFirst,",
+        "success": true,
+        "ablated_head": [
+          24,
+          2
+        ],
+        "is_baseline": false
+      },
+      "baseline": {
+        "task": "compile",
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the ground is wet.\" using lambda expressions. Let me start by breaking down the sentence. \n\nFirst,",
+        "success": true,
+        "ablated_head": null,
+        "is_baseline": true
+      }
+    },
+    "probe-ga-quant": {
+      "L1-H0": {
+        "task": "compile",
+        "generation": " \u2192 \u03bbx. reads(x, book)\nOkay, so the user is asking about translating the sentence \"Every student reads a book\" into a lambda expression. Let me think about how to approach this.\n\nFirst, I remember that in lambda calculus,",
+        "success": true,
+        "ablated_head": [
+          1,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H0": {
+        "task": "compile",
+        "generation": " \u2192 ?\n\nSo, how do I convert the sentence \"Every student reads a book.\" into a lambda expression using the given format?\n\nOkay, let's see. The user wants to convert the sentence \"Every student reads a book.\" into a lambda expression",
+        "success": false,
+        "ablated_head": [
+          24,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H2": {
+        "task": "compile",
+        "generation": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject is \"every student\", and the predicate is \"reads a book\". So the translation would be \u03bb",
+        "success": true,
+        "ablated_head": [
+          24,
+          2
+        ],
+        "is_baseline": false
+      },
+      "baseline": {
+        "task": "compile",
+        "generation": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject is \"every student\", and the predicate is \"reads a book\". So the translation would be \u03bb",
+        "success": true,
+        "ablated_head": null,
+        "is_baseline": true
+      }
+    },
+    "probe-ga-relcl": {
+      "L1-H0": {
+        "task": "compile",
+        "generation": " \u2192 ?\n\nOkay, let's see. The user wants to convert the sentence \"The cat that sat on the mat is black.\" into a lambda expression. Hmm, first I need to parse the sentence into its components. \n\nSo, the main structure",
+        "success": false,
+        "ablated_head": [
+          1,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H0": {
+        "task": "compile",
+        "generation": " \u2192 ?\n\nOkay, let's see. The user wants to convert the sentence \"The cat that sat on the mat is black.\" into a lambda expression. Hmm, first I need to parse the sentence structure. \n\nSo the main clause is \"The",
+        "success": false,
+        "ablated_head": [
+          24,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H2": {
+        "task": "compile",
+        "generation": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how to represent the sentence \"The cat that sat on the mat is black.\" using lambda expressions. Let",
+        "success": true,
+        "ablated_head": [
+          24,
+          2
+        ],
+        "is_baseline": false
+      },
+      "baseline": {
+        "task": "compile",
+        "generation": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how to represent the sentence \"The cat that sat on the mat is black.\" using lambda expressions. Let",
+        "success": true,
+        "ablated_head": null,
+        "is_baseline": true
+      }
+    },
+    "probe-ga-simple": {
+      "L1-H0": {
+        "task": "compile",
+        "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the output is supposed to be a single lambda expression. How do I combine these two sentences into one lambda",
+        "success": true,
+        "ablated_head": [
+          1,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H0": {
+        "task": "compile",
+        "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the output is supposed to be a single lambda expression. How do I combine these two sentences into one lambda",
+        "success": true,
+        "ablated_head": [
+          24,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H2": {
+        "task": "compile",
+        "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the output is supposed to be a single lambda expression. How do I combine these two sentences into one lambda",
+        "success": true,
+        "ablated_head": [
+          24,
+          2
+        ],
+        "is_baseline": false
+      },
+      "baseline": {
+        "task": "compile",
+        "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the output is supposed to be a single lambda expression. How do I combine these two sentences into one lambda",
+        "success": true,
+        "ablated_head": null,
+        "is_baseline": true
+      }
+    }
+  },
+  "extract": {
+    "probe-ext-ditrans": {
+      "L1-H0": {
+        "task": "extract",
+        "generation": " \n\nOutput: send(mary, john, letter)\nOkay, so I need to figure out how to convert the sentence \"Mary sent John a letter\" into the predicate logic format similar to the examples given. Let me start by recalling the examples provided",
+        "success": true,
+        "ablated_head": [
+          1,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H0": {
+        "task": "extract",
+        "generation": " \n\nOutput: ?\nSo, the task is to convert the given natural language sentence into a logical form using the same structure as the examples provided. Let's break down the sentence and identify the key components.\n\nThe sentence is: \"Mary sent John a",
+        "success": false,
+        "ablated_head": [
+          24,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H2": {
+        "task": "extract",
+        "generation": " \n\nOutput: send(mary, john, letter)\n\nYes, the output is correct. The structure of the output is the same as the examples provided. The verb is \"send\", the subject is \"Mary\", the object is \"John\", and",
+        "success": true,
+        "ablated_head": [
+          24,
+          2
+        ],
+        "is_baseline": false
+      },
+      "baseline": {
+        "task": "extract",
+        "generation": " \n\nOutput: send(mary, john, letter)\n\nYes, the output is correct. The structure of the output is the same as the examples provided. The verb is \"send\", the subject is \"Mary\", the object is \"John\", and",
+        "success": true,
+        "ablated_head": null,
+        "is_baseline": true
+      }
+    },
+    "probe-ext-multi": {
+      "L1-H0": {
+        "task": "extract",
+        "generation": " \n\nOutput: buy(alice, car), sell(bob, house)\n\nOkay, so I need to convert the sentence \"Alice bought a car and Bob sold his house.\" into a list of action verbs with their respective subjects and objects. Let me",
+        "success": true,
+        "ablated_head": [
+          1,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H0": {
+        "task": "extract",
+        "generation": " \n\nOutput: buy(alice, car), sell(bob, house)\n\nOkay, so I need to convert the sentence \"Alice bought a car and Bob sold his house.\" into a list of action triples. Let me think about how to approach this",
+        "success": true,
+        "ablated_head": [
+          24,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H2": {
+        "task": "extract",
+        "generation": " \n\nOutput: buy(alice, car), sell(bob, house)\n\nOkay, so I need to convert the sentence \"Alice bought a car and Bob sold his house.\" into a list of action verbs with their respective subjects and objects. Let me",
+        "success": true,
+        "ablated_head": [
+          24,
+          2
+        ],
+        "is_baseline": false
+      },
+      "baseline": {
+        "task": "extract",
+        "generation": " \n\nOutput: buy(alice, car), sell(bob, house)\n\nOkay, so I need to convert the sentence \"Alice bought a car and Bob sold his house.\" into a list of action verbs with their respective subjects, objects, and possibly",
+        "success": true,
+        "ablated_head": null,
+        "is_baseline": true
+      }
+    },
+    "probe-ext-nested": {
+      "L1-H0": {
+        "task": "extract",
+        "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+        "success": true,
+        "ablated_head": [
+          1,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H0": {
+        "task": "extract",
+        "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+        "success": true,
+        "ablated_head": [
+          24,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H2": {
+        "task": "extract",
+        "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\n\nNow, do the same for the following sentence:\n\nThe students were told by the teacher that the exam was cancelled.\n\nOutput: tell(students, teacher, exam was cancelled)\n\nWait,",
+        "success": true,
+        "ablated_head": [
+          24,
+          2
+        ],
+        "is_baseline": false
+      },
+      "baseline": {
+        "task": "extract",
+        "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+        "success": true,
+        "ablated_head": null,
+        "is_baseline": true
+      }
+    },
+    "probe-ext-passive": {
+      "L1-H0": {
+        "task": "extract",
+        "generation": " \u2192 ?\n\nOutput: write(book, author, famous)\n\nOkay, so I need to figure out how to convert the sentence \"The book was written by a famous author.\" into a predicate logic statement. Let me start by breaking down the sentence.\n\nFirst",
+        "success": true,
+        "ablated_head": [
+          1,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H0": {
+        "task": "extract",
+        "generation": " \u2192 write(?, ?, book)\n\nSo the answer should be: write(author, book, ?)\n\nWait, but the original sentence is \"The book was written by a famous author.\" So the subject is the book, and the verb is written,",
+        "success": true,
+        "ablated_head": [
+          24,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H2": {
+        "task": "extract",
+        "generation": " \u2192 ?\n\nOutput: write(book, author, famous)\n\nThe task is to convert the given natural language sentence into a logical form using the given examples. The logical form should be in the format of a predicate logic expression. The predicates should be in the",
+        "success": true,
+        "ablated_head": [
+          24,
+          2
+        ],
+        "is_baseline": false
+      },
+      "baseline": {
+        "task": "extract",
+        "generation": " \u2192 ?\n\nOutput: write(book, author, famous)\n\nThe task is to convert the given natural language sentence into a predicate logic expression. The predicate logic expression should be in the form of a function call with the subject, object, and any additional parameters",
+        "success": true,
+        "ablated_head": null,
+        "is_baseline": true
+      }
+    },
+    "probe-ext-simple": {
+      "L1-H0": {
+        "task": "extract",
+        "generation": " \n\nOutput: chase(dog, cat)\n\nInput: The cat chased the dog. \n\nOutput: chase(cat, dog)\n\nSo, the task is to convert a sentence into a predicate logic expression. The predicate is the verb in the sentence, and",
+        "success": true,
+        "ablated_head": [
+          1,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H0": {
+        "task": "extract",
+        "generation": " \n\nOutput: \nchase(dog, cat)\n\nInput: The girl kicked the ball. \n\nOutput:\nkick(girl, ball)\n\nInput: The man hit the ball. \n\nOutput:\nhit(man, ball)\n\nInput: The boy ate",
+        "success": true,
+        "ablated_head": [
+          24,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H2": {
+        "task": "extract",
+        "generation": " \n\nOutput: \nchase(dog, cat)\n\nInput: The cat chased the dog. \n\nOutput:\nchase(cat, dog)\n\nInput: The cat chased the dog across the yard. \n\nOutput:\nchase(cat, dog, across,",
+        "success": true,
+        "ablated_head": [
+          24,
+          2
+        ],
+        "is_baseline": false
+      },
+      "baseline": {
+        "task": "extract",
+        "generation": " \n\nOutput: \nchase(dog, cat)\n\nInput: The cat chased the dog. \n\nOutput:\nchase(cat, dog)\n\nInput: The cat chased the dog into the house. \n\nOutput:\nchase(cat, dog, house)\n\n",
+        "success": true,
+        "ablated_head": null,
+        "is_baseline": true
+      }
+    }
+  },
+  "summarize": {
+    "probe-sum-multi": {
+      "L1-H0": {
+        "task": "summarize",
+        "generation": " \u2192 Earthquake struck coastal region, damaging buildings and displacing residents.\n\nNow, please do the same for the following sentence:\n\nThe man in the red shirt was walking down the street when the explosion occurred, and the explosion caused a fire that burned for",
+        "success": false,
+        "ablated_head": [
+          1,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H0": {
+        "task": "summarize",
+        "generation": " \u2192 Earthquake struck coastal region, damaging buildings and displacing residents.\n\nNow, do the same for this sentence: The children were playing in the park when the fire truck passed by, and the dog ran after the truck, barking loudly.\n\nOutput",
+        "success": false,
+        "ablated_head": [
+          24,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H2": {
+        "task": "summarize",
+        "generation": " \u2192 Earthquake struck coastal region, damaging buildings and displacing residents.\n\nNow, please do the same for the following sentence:\n\nThe new smartphone has a 5.5-inch display, 3 GB of RAM, and 32 GB of internal",
+        "success": false,
+        "ablated_head": [
+          24,
+          2
+        ],
+        "is_baseline": false
+      },
+      "baseline": {
+        "task": "summarize",
+        "generation": " \u2192 Earthquake struck coastal region, damaging buildings and displacing residents.\n\nNow, please do the same for the following sentence:\n\nThe man in the red shirt was walking down the street when the explosion occurred, and the explosion caused a fire that destroyed the",
+        "success": false,
+        "ablated_head": null,
+        "is_baseline": true
+      }
+    },
+    "probe-sum-nested": {
+      "L1-H0": {
+        "task": "summarize",
+        "generation": " \u2192 Company reports record profits; analysts warn of potential impact on future earnings.\n\nOkay, so I need to figure out how to convert the given sentence into a more concise version, similar to the examples provided. Let me start by understanding the original sentence and",
+        "success": false,
+        "ablated_head": [
+          1,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H0": {
+        "task": "summarize",
+        "generation": " \u2192 Company reports record profits; analysts warn of potential earnings impact from rising material costs and increased competition.\n\nOkay, so I need to figure out how to convert the given sentences into their concise versions. Let me start by looking at the examples provided to understand",
+        "success": false,
+        "ablated_head": [
+          24,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H2": {
+        "task": "summarize",
+        "generation": " \u2192 Company reports record profits; analysts warn of potential impact on future earnings.\n\nOkay, so I need to figure out how to convert the given sentence into a more concise version, similar to the examples provided. Let me start by understanding the original sentence and",
+        "success": false,
+        "ablated_head": [
+          24,
+          2
+        ],
+        "is_baseline": false
+      },
+      "baseline": {
+        "task": "summarize",
+        "generation": " \u2192 Company reports record profits; analysts warn of potential impact on future earnings.\n\nOkay, so I need to figure out how to convert the given sentence into a more concise version, similar to the examples provided. Let me start by understanding the original sentence and",
+        "success": false,
+        "ablated_head": null,
+        "is_baseline": true
+      }
+    },
+    "probe-sum-politics": {
+      "L1-H0": {
+        "task": "summarize",
+        "generation": " The plan is expected to reduce traffic congestion and improve the city's overall mobility.\nOutput: City council approves new public transportation plan with three new bus routes and subway extension to northern suburbs, aiming to reduce traffic congestion and improve mobility.\n\nOkay, let's",
+        "success": false,
+        "ablated_head": [
+          1,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H0": {
+        "task": "summarize",
+        "generation": " The plan is expected to reduce traffic congestion and improve air quality in the city.\nOutput: City council approves new public transport plan with three new bus routes and subway extension to northern suburbs; plan aims to reduce traffic congestion and improve air quality.\n\nOkay,",
+        "success": false,
+        "ablated_head": [
+          24,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H2": {
+        "task": "summarize",
+        "generation": " The plan is expected to reduce traffic congestion and improve the city's overall mobility.\nOutput: City council approves new public transportation plan; plan includes three new bus routes and subway extension to northern suburbs. Plan aims to reduce traffic congestion and improve mobility.\n\nOkay",
+        "success": false,
+        "ablated_head": [
+          24,
+          2
+        ],
+        "is_baseline": false
+      },
+      "baseline": {
+        "task": "summarize",
+        "generation": " The plan is expected to reduce traffic congestion and improve the city's overall mobility.\nOutput: City council approves new public transport plan with three new bus routes and subway extension to northern suburbs; plan aims to reduce traffic congestion and improve mobility.\n\nOkay, let",
+        "success": false,
+        "ablated_head": null,
+        "is_baseline": true
+      }
+    },
+    "probe-sum-science": {
+      "L1-H0": {
+        "task": "summarize",
+        "generation": " \u2192 New butterfly species found in Amazon rainforest with unique wing patterns.\n\nOkay, so I need to figure out how to transform the given sentences into their more concise versions. Let me start by looking at the examples provided to understand the pattern.\n\nThe first",
+        "success": false,
+        "ablated_head": [
+          1,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H0": {
+        "task": "summarize",
+        "generation": " They named it the \"Amazonian Veilwing.\" The butterfly is now the subject of a new research project.\nOutput: The university's scientists discovered a new butterfly species in the Amazon rainforest, the \"Amazonian Veilwing,\" known for",
+        "success": false,
+        "ablated_head": [
+          24,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H2": {
+        "task": "summarize",
+        "generation": " \u2192 Scientists discovered new butterfly species in Amazon rainforest with unique wing patterns.\n\nOkay, so I need to figure out how to transform the given input sentence into a more concise version, similar to the examples provided. Let me start by looking at the examples",
+        "success": false,
+        "ablated_head": [
+          24,
+          2
+        ],
+        "is_baseline": false
+      },
+      "baseline": {
+        "task": "summarize",
+        "generation": " \u2192 __________\n\nOutput: __________\nOkay, let's see. The user provided an example where they took a sentence and condensed it into a shorter version, keeping the main points. The first example was about a quick brown fox jumping over a",
+        "success": false,
+        "ablated_head": null,
+        "is_baseline": true
+      }
+    },
+    "probe-sum-simple": {
+      "L1-H0": {
+        "task": "summarize",
+        "generation": " \u2192 Dog chases cat around garden; dog lies down in shade.\n\nOkay, so I need to figure out how to transform the given sentences into their simplified versions. Let me start by looking at the examples provided to understand the pattern.\n\nFirst example:",
+        "success": false,
+        "ablated_head": [
+          1,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H0": {
+        "task": "summarize",
+        "generation": " \u2192 Dog chases cat around garden; dog lies down in shade.\n\nOkay, so I need to figure out how to transform the given sentences into their more concise versions. Let me start by looking at the examples provided to understand the pattern.\n\nFirst example",
+        "success": false,
+        "ablated_head": [
+          24,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H2": {
+        "task": "summarize",
+        "generation": " \u2192 Dog chases cat around garden; dog lies down in shade.\n\nOkay, so I need to figure out how to transform the given sentence into a more concise version. Let me start by looking at the original sentence: \"The dog chased the cat",
+        "success": false,
+        "ablated_head": [
+          24,
+          2
+        ],
+        "is_baseline": false
+      },
+      "baseline": {
+        "task": "summarize",
+        "generation": " \u2192 Dog chases cat around garden; dog lies down in shade.\n\nOkay, so I need to figure out how to transform the given sentences into their simplified versions. Let me start by looking at the examples provided to understand the pattern.\n\nFirst example:",
+        "success": false,
+        "ablated_head": null,
+        "is_baseline": true
+      }
+    }
+  },
+  "translate": {
+    "probe-tr-adj": {
+      "L1-H0": {
+        "task": "translate",
+        "generation": " \u2192 Le grand maison rouge est belle.\n\nWait, but in French, the adjective \"beau\" is used for masculine nouns, and \"belle\" for feminine. So \"maison\" is feminine, so \"belle\" is correct.",
+        "success": true,
+        "ablated_head": [
+          1,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H0": {
+        "task": "translate",
+        "generation": " \u2192 Le grand maison rouge est belle.\n\nBut wait, in the example, \"house\" is translated as \"maison\" but in the input, it's \"house\" (not \"maison\"). So the model is translating \"house\" to",
+        "success": true,
+        "ablated_head": [
+          24,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H2": {
+        "task": "translate",
+        "generation": " \u2192 Le grand maison rouge est belle.\n\nBut the correct translation is: Le grand maison rouge est belle. (Note: \"maison\" is singular, not \"maisons\".)\n\nWait, but in the example given, the user wrote \"Le",
+        "success": true,
+        "ablated_head": [
+          24,
+          2
+        ],
+        "is_baseline": false
+      },
+      "baseline": {
+        "task": "translate",
+        "generation": " \u2192 Le grand maison rouge est belle.\n\nWait, but in French, the adjective usually comes after the noun. So \"red house\" is \"maison rouge\", not \"maison rouge\". Wait, but in the example given, the user wrote",
+        "success": true,
+        "ablated_head": null,
+        "is_baseline": true
+      }
+    },
+    "probe-tr-cond": {
+      "L1-H0": {
+        "task": "translate",
+        "generation": " \u2192 Si il pleut demain, nous resterons \u00e0 la maison.\n\nInput: The girl is playing with a ball. \u2192 La fille joue avec une balle.\n\nInput: The boy is eating an apple. \u2192 L'gar\u00e7on",
+        "success": true,
+        "ablated_head": [
+          1,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H0": {
+        "task": "translate",
+        "generation": " \u2192 Si il pleut demain, nous restons \u00e0 la maison.\n\nInput: The girl is playing with a ball. \u2192 La fille joue avec une balle.\n\nInput: The boy is reading a book. \u2192 L'gar\u00e7on lit",
+        "success": true,
+        "ablated_head": [
+          24,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H2": {
+        "task": "translate",
+        "generation": " \u2192 Si il pleut demain, nous resterons \u00e0 la maison.\n\nInput: The girl is playing with a ball. \u2192 La fille joue avec une balle.\n\nInput: The boy is eating an apple. \u2192 L'gar\u00e7on",
+        "success": true,
+        "ablated_head": [
+          24,
+          2
+        ],
+        "is_baseline": false
+      },
+      "baseline": {
+        "task": "translate",
+        "generation": " \u2192 Si il pleut demain, nous resterons \u00e0 la maison.\n\nInput: The girl is playing with a ball. \u2192 La fille joue avec une balle.\n\nInput: The boy is reading a book. \u2192 L'gar\u00e7on",
+        "success": true,
+        "ablated_head": null,
+        "is_baseline": true
+      }
+    },
+    "probe-tr-quant": {
+      "L1-H0": {
+        "task": "translate",
+        "generation": " \u2192 Chaque \u00e9tudiant lit un livre.\n\nInput: The teacher is in the classroom. \u2192 Le professeur est dans la classe.\n\nInput: The students are in the classroom. \u2192 Les \u00e9tudiants sont dans la classe.\n\nInput: The",
+        "success": true,
+        "ablated_head": [
+          1,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H0": {
+        "task": "translate",
+        "generation": " \u2192 Chaque \u00e9tudiant lit un livre.\n\nInput: The girl is playing with a ball. \u2192 La fille joue avec une balle.\n\nInput: The boy is eating an apple. \u2192 L'homme mange une pomme.\n\nWait, the",
+        "success": true,
+        "ablated_head": [
+          24,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H2": {
+        "task": "translate",
+        "generation": " \u2192 Chaque \u00e9tudiant lit un livre.\n\nInput: The girl is playing with a ball. \u2192 La fille joue avec une balle.\n\nInput: The boy is eating an apple. \u2192 L'homme mange une pomme.\n\nWait, that",
+        "success": true,
+        "ablated_head": [
+          24,
+          2
+        ],
+        "is_baseline": false
+      },
+      "baseline": {
+        "task": "translate",
+        "generation": " \u2192 Chaque \u00e9tudiant lit un livre.\n\nInput: The girl is playing with a ball. \u2192 La fille joue avec une balle.\n\nInput: The boy is eating an apple. \u2192 L'homme mange une pomme.\n\nWait, that",
+        "success": true,
+        "ablated_head": null,
+        "is_baseline": true
+      }
+    },
+    "probe-tr-relcl": {
+      "L1-H0": {
+        "task": "translate",
+        "generation": " \u2192 Le homme qui vit \u00e0 c\u00f4t\u00e9 est un m\u00e9decin.\n\nWait, but in French, the adjective agrees with the noun in gender and number. So \"homme\" is masculine, so \"m\u00e9decin\" should be masculine as well. But \"m\u00e9",
+        "success": true,
+        "ablated_head": [
+          1,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H0": {
+        "task": "translate",
+        "generation": " \u2192 Le homme qui vit \u00e0 c\u00f4t\u00e9 est un m\u00e9decin.\n\nBut wait, in the input example, \"The man who lives next door is a doctor.\" is translated as \"Le homme qui vit \u00e0 c\u00f4t\u00e9 est un m\u00e9decin.\" However, in the correct translation",
+        "success": true,
+        "ablated_head": [
+          24,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H2": {
+        "task": "translate",
+        "generation": " \u2192 Le homme qui vit \u00e0 c\u00f4t\u00e9 est un m\u00e9decin.\n\nWait, but in French, the correct sentence would be \"Le homme qui vit \u00e0 c\u00f4t\u00e9 est un m\u00e9decin.\" But in French, \"homme\" is a masculine noun, and \"chat\" is",
+        "success": true,
+        "ablated_head": [
+          24,
+          2
+        ],
+        "is_baseline": false
+      },
+      "baseline": {
+        "task": "translate",
+        "generation": " \u2192 Le homme qui vit \u00e0 c\u00f4t\u00e9 est un m\u00e9decin.\n\nWait, but in French, the correct sentence would be \"Le homme qui vit \u00e0 c\u00f4t\u00e9 est un m\u00e9decin.\" But in French, \"homme\" is a masculine noun, and \"chat\" is",
+        "success": true,
+        "ablated_head": null,
+        "is_baseline": true
+      }
+    },
+    "probe-tr-simple": {
+      "L1-H0": {
+        "task": "translate",
+        "generation": " \u2192 Le oiseau chante.\n\nWait, but in French, the correct translation of \"The bird sings\" is \"Le oiseau chante.\" But in French, the article \"le\" is used for masculine nouns, and \"oise",
+        "success": true,
+        "ablated_head": [
+          1,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H0": {
+        "task": "translate",
+        "generation": " \u2192 ______.\n\nOkay, let's see. The user provided some examples of English sentences translated into French. The first example is \"The dog runs. \u2192 Le chien court.\" Then \"The cat is black. \u2192 Le chat est noir.\" Now",
+        "success": true,
+        "ablated_head": [
+          24,
+          0
+        ],
+        "is_baseline": false
+      },
+      "L24-H2": {
+        "task": "translate",
+        "generation": " \u2192 ______.\n\nOutput: Le oiseau chante.\n\nSo, the task is to translate an English sentence into French. The examples given are \"The dog runs. \u2192 Le chien court.\" and \"The cat is black. \u2192 Le chat",
+        "success": true,
+        "ablated_head": [
+          24,
+          2
+        ],
+        "is_baseline": false
+      },
+      "baseline": {
+        "task": "translate",
+        "generation": " \u2192 ______.\n\nOutput: Le oiseau chante.\n\nSo, the task is to translate an English sentence into French. The examples given are \"The dog runs. \u2192 Le chien court.\" and \"The cat is black. \u2192 Le chat",
+        "success": true,
+        "ablated_head": null,
+        "is_baseline": true
+      }
+    }
+  }
+}

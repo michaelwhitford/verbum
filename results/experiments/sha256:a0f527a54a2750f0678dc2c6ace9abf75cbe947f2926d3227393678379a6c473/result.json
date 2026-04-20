@@ -1,0 +1,7 @@
+{
+  "task": "extract",
+  "generation": " \u2192 ?\n\nOutput: write(book, author, famous)\n\nThe task is to convert the given natural language sentence into a predicate logic expression. The predicate logic expression should be in the form of a function call with the subject, object, and any additional parameters",
+  "success": true,
+  "ablated_head": null,
+  "is_baseline": true
+}

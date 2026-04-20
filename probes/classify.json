@@ -1,0 +1,45 @@
+{
+  "id": "classify",
+  "version": 1,
+  "description": "Sentiment classification probes. Sentence to positive/negative.",
+  "created": "2026-04-17T00:00:00Z",
+  "author": "verbum",
+  "default_gate": "classify",
+  "probes": [
+    {
+      "id": "cls-pos-simple",
+      "category": "classify",
+      "prompt": "The sunset was absolutely gorgeous tonight.",
+      "ground_truth": "positive",
+      "metadata": {"sentiment": "positive", "complexity": "simple"}
+    },
+    {
+      "id": "cls-neg-simple",
+      "category": "classify",
+      "prompt": "The food was terrible and the service was slow.",
+      "ground_truth": "negative",
+      "metadata": {"sentiment": "negative", "complexity": "simple"}
+    },
+    {
+      "id": "cls-pos-complex",
+      "category": "classify",
+      "prompt": "Although the movie started slow, the incredible performances and surprising plot twist made it one of the best films I have seen this year.",
+      "ground_truth": "positive",
+      "metadata": {"sentiment": "positive", "complexity": "complex"}
+    },
+    {
+      "id": "cls-neg-complex",
+      "category": "classify",
+      "prompt": "I had high expectations for this restaurant given the reviews, but the overcooked steak and rude waiter completely ruined the evening.",
+      "ground_truth": "negative",
+      "metadata": {"sentiment": "negative", "complexity": "complex"}
+    },
+    {
+      "id": "cls-mixed",
+      "category": "classify",
+      "prompt": "The hotel room was clean but tiny, and while the staff was friendly, the noise from the street made it impossible to sleep.",
+      "ground_truth": "negative",
+      "metadata": {"sentiment": "mixed-negative", "complexity": "complex"}
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T03:49:57.844488+00:00",
+  "node_id": "cross-task/classify/probe-cls-mixed/baseline",
+  "config_hash": "sha256:56ac0be83b5aada177ec951deb4cbfe990e3af7fd90da0f89123365485d726af",
+  "elapsed_ms": 1611.3,
+  "completed_at": "2026-04-17T03:49:59.456084+00:00"
+}

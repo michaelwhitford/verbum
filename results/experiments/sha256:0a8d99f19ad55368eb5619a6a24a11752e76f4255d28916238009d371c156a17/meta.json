@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T03:28:44.775601+00:00",
+  "node_id": "circuit-discovery/bos-tracing/probe-ga-relcl/L3",
+  "config_hash": "sha256:0a8d99f19ad55368eb5619a6a24a11752e76f4255d28916238009d371c156a17",
+  "elapsed_ms": 2500.1,
+  "completed_at": "2026-04-17T03:28:47.276059+00:00"
+}

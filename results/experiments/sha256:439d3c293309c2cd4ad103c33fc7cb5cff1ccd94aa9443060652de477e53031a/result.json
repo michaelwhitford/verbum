@@ -1,0 +1,7 @@
+{
+  "task": "summarize",
+  "generation": " \u2192 Company reports record profits; analysts warn of potential impact on future earnings.\n\nOkay, so I need to figure out how to convert the given sentence into a more concise version, similar to the examples provided. Let me start by understanding the original sentence and",
+  "success": false,
+  "ablated_head": null,
+  "is_baseline": true
+}

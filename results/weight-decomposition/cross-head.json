@@ -1,0 +1,13 @@
+{
+  "ov_write_sims": {
+    "L1:H0 gate recognizer_vs_L24:H0 core compositor": {
+      "max": 0.03728833049535751
+    },
+    "L1:H0 gate recognizer_vs_L24:H2 recursion head": {
+      "max": 0.039422400295734406
+    },
+    "L24:H0 core compositor_vs_L24:H2 recursion head": {
+      "max": 0.029946178197860718
+    }
+  }
+}

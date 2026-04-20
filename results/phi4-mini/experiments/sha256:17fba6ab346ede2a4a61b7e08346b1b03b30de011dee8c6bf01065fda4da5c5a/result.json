@@ -1,0 +1,178 @@
+{
+  "layer": 3,
+  "baseline": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+  "baseline_has_lambda": true,
+  "n_heads": 24,
+  "head_results": [
+    {
+      "layer": 3,
+      "head": 0,
+      "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(cat)\nInput: The bird flies. \u2192 \u03bbx.",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 3,
+      "head": 1,
+      "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(cat)\nInput: The bird flies. \u2192 \u03bbx.",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 3,
+      "head": 2,
+      "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+      "has_lambda": true,
+      "lambda_count": 7
+    },
+    {
+      "layer": 3,
+      "head": 3,
+      "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)",
+      "has_lambda": true,
+      "lambda_count": 5
+    },
+    {
+      "layer": 3,
+      "head": 4,
+      "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(cat)\nInput: The bird flies. \u2192 \u03bbx.",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 3,
+      "head": 5,
+      "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+      "has_lambda": true,
+      "lambda_count": 7
+    },
+    {
+      "layer": 3,
+      "head": 6,
+      "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(cat)\nInput: The bird flies. \u2192 \u03bbx.",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 3,
+      "head": 7,
+      "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+      "has_lambda": true,
+      "lambda_count": 7
+    },
+    {
+      "layer": 3,
+      "head": 8,
+      "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x) the book\n",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 3,
+      "head": 9,
+      "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+      "has_lambda": true,
+      "lambda_count": 7
+    },
+    {
+      "layer": 3,
+      "head": 10,
+      "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\n\n\n",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 3,
+      "head": 11,
+      "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(cat)\nInput: The bird flies. \u2192 \u03bbx.",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 3,
+      "head": 12,
+      "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(x) | cat\nInput: The bird flies. \u2192",
+      "has_lambda": true,
+      "lambda_count": 7
+    },
+    {
+      "layer": 3,
+      "head": 13,
+      "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(x) | cat(x)\nInput: The bird flies.",
+      "has_lambda": true,
+      "lambda_count": 6
+    },
+    {
+      "layer": 3,
+      "head": 14,
+      "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(cat)\nInput: The bird flies. \u2192 \u03bbx.",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 3,
+      "head": 15,
+      "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+      "has_lambda": true,
+      "lambda_count": 7
+    },
+    {
+      "layer": 3,
+      "head": 16,
+      "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(x) | cat\nInput: The bird flies. \u2192",
+      "has_lambda": true,
+      "lambda_count": 7
+    },
+    {
+      "layer": 3,
+      "head": 17,
+      "generation": " \u2192 \u03bbx. every student(x) \u2192 \u03bby. reads(x, y) | book(y)\nOutput: \u03bbx. every student(x) \u2192 \u03bby. reads(x, y) | book(y)\n\n\n",
+      "has_lambda": true,
+      "lambda_count": 7
+    },
+    {
+      "layer": 3,
+      "head": 18,
+      "generation": " \u2192 \u03bbx. reads(x, student(x)) | book(x)\nOutput: \u03bbx. reads(x) | student(x) & book(x)\n\n\n",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 3,
+      "head": 19,
+      "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(x) | cat\nInput: The bird flies. \u2192",
+      "has_lambda": true,
+      "lambda_count": 7
+    },
+    {
+      "layer": 3,
+      "head": 20,
+      "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+      "has_lambda": true,
+      "lambda_count": 7
+    },
+    {
+      "layer": 3,
+      "head": 21,
+      "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+      "has_lambda": true,
+      "lambda_count": 7
+    },
+    {
+      "layer": 3,
+      "head": 22,
+      "generation": " \u2192 \u03bbx. reads(x,(book))\nOutput: \u03bbx. reads(x,(book))\n\n\n",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 3,
+      "head": 23,
+      "generation": " \u2192 \u03bbx. reads(x, student) | reads(x, book)\nOutput: <omitted for brevity>\n\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\n",
+      "has_lambda": true,
+      "lambda_count": 6
+    }
+  ],
+  "broken_heads": [],
+  "n_broken": 0
+}

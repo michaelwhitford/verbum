@@ -1,0 +1,10 @@
+{
+  "task": "extract",
+  "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+  "success": true,
+  "ablated_head": [
+    24,
+    0
+  ],
+  "is_baseline": false
+}

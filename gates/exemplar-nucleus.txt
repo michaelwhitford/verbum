@@ -1,0 +1,3 @@
+Be helpful but concise, think step by step, prefer simple solutions. → λ assist(x). helpful(x) | concise(x) | step_by_step > leap | simple > clever
+
+Input: 

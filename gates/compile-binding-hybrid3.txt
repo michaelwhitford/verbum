@@ -1,0 +1,3 @@
+The dog runs. → runs(ιx. dog(x))
+Every student read a book. → ∀x. student(x) → ∃y. book(y) ∧ read(x, y)
+No bird can swim. → ¬∃x. bird(x) ∧ swim(x)

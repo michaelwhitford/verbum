@@ -1,0 +1,10 @@
+{
+  "task": "compile",
+  "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the output is supposed to be a single lambda expression. How do I combine these two sentences into one lambda",
+  "success": true,
+  "ablated_head": [
+    24,
+    0
+  ],
+  "is_baseline": false
+}

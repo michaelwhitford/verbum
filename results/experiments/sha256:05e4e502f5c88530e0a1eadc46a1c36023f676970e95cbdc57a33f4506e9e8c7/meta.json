@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T03:50:25.287630+00:00",
+  "node_id": "cross-task/compile/probe-ga-complex",
+  "config_hash": "sha256:05e4e502f5c88530e0a1eadc46a1c36023f676970e95cbdc57a33f4506e9e8c7",
+  "elapsed_ms": 6404.2,
+  "completed_at": "2026-04-17T03:50:31.691982+00:00"
+}

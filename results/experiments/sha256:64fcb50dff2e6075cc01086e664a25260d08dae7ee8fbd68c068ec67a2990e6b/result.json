@@ -1,0 +1,10 @@
+{
+  "generation": " \u2192 The cat is sitting on the mat.\n\nSo, the input is a lambda expression that defines a predicate. Let's break it down.\n\nFirst, the main predicate is \u03bbx. black(\u03b9y. cat(y) \u2227 sat_on(y,",
+  "has_english": true,
+  "has_lambda": true,
+  "ablated_head": [
+    24,
+    0
+  ],
+  "is_baseline": false
+}

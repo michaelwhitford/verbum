@@ -1,0 +1,93 @@
+Resuming — have: ['timestamp', 'model', 'depth_probing', 'residual_progression']
+Loading Qwen3-4B...
+2026-04-19 11:45:32 [info     ] instrument.loading             device=mps dtype=torch.float16 model=Qwen/Qwen3-4B
+2026-04-19 11:45:34 [info     ] instrument.loaded              head_dim=80 n_heads=32 n_kv_heads=8 n_layers=36 total_heads=1152
+  36 layers, 32 heads, 80 head_dim
+
+  Experiment 1: cached ✓
+
+  Experiment 2: cached ✓
+
+============================================================
+  EXPERIMENT 3: Activation swap (causal binding location)
+============================================================
+
+  Baselines:
+    A: "Everyone loves someone." → ∀x. ∃y. loves(x, y)
+    B: "Someone loves everyone." → ∃x. ∀y. loves(x, y)
+
+  Patching A with B's residuals at each layer:
+  (If output matches B, B's binding info was in the residual)
+    L 0: [A] ∀11 2     " " 3               English
+    L 2: [A] ∀1113311 "448353    43  21  " "4341
+    L 4: [A] ∀1113311 " "483 to0    2292    44
+    L 6: [A] ∀112  1 " "3588     2   231
+    L 7: [A] ∀21
+    L 8: [A] ∀ ∀ ∀ ∀ ∀
+    L10: [A] ∀ ∀ ∀ ∀ ∀ ∀ ∀ ∀
+    L12: [A] ∀222
+    L14: [A] ∀ ∀ ∀ ∀
+    L15: [A] ∀ ∀ ∀ ∀
+    L16: [A] ∀2 ∀ ∀ ∀
+    L17: [A] ∀22 ∀
+    L18: [A] ∀222
+    L20: [A] ∀22222222222222222222222222222
+    L22: [A] ∀2222222222222222222222222222222222222
+    L24: [A] ∀222222222222222222222222222222
+    L25: [A] ∀22222222222222222222222222222222
+    L26: [A] ∀222222222222222222222222
+    L28: [A] ∀22222222222222222222222222222222
+    L30: [?] 222222222222222222222
+    L31: [?] 222222222222222222222
+    L32: [?] 22222222222222222222222222
+    L33: [?] 22222222222222222222222
+    L34: [?] �22222222222222222222222222222222222222222222222222222222222
+    L35: [?] � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � 
+
+  Transitions:
+    L28 (A-scope) → L30 (broken)
+
+============================================================
+  EXPERIMENT 4: Cluster ablation
+============================================================
+
+  Baselines:
+    Everyone loves someone. → ∀x. ∃y. loves(x, y)
+    Someone loves everyone. → ∃x. ∀y. loves(x, y)
+    Every student read a book. → ∀x. student(x) → ∃y. book(y) ∧ read(x, y)
+    No student passed every exam. → ¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)
+
+  Ablating top5_sharpen (5 heads):
+    [=] [✗] Everyone loves someone. → ∀x. ∃y. loves(x, y)
+    [=] [✗] Someone loves everyone. → ∃x. ∀y. loves(x, y)
+    [=] [✓] Every student read a book. → ∀x. student(x) → ∃y. book(y) ∧ read(x, y)
+    [=] [✓] No student passed every exam. → ¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)
+
+  Ablating top13_sharpen (13 heads):
+    [=] [✗] Everyone loves someone. → ∀x. ∃y. loves(x, y)
+    [≠] [✗] Someone loves everyone. → 2. ∃x. ∀y. loves(x, y)
+    [=] [✓] Every student read a book. → ∀x. student(x) → ∃y. book(y) ∧ read(x, y)
+    [=] [✓] No student passed every exam. → ¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)
+
+  Ablating top5_diffuse (5 heads):
+    [=] [✗] Everyone loves someone. → ∀x. ∃y. loves(x, y)
+    [=] [✗] Someone loves everyone. → ∃x. ∀y. loves(x, y)
+    [=] [✓] Every student read a book. → ∀x. student(x) → ∃y. book(y) ∧ read(x, y)
+    [=] [✓] No student passed every exam. → ¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)
+
+  Ablating top13_diffuse (13 heads):
+    [=] [✗] Everyone loves someone. → ∀x. ∃y. loves(x, y)
+    [=] [✗] Someone loves everyone. → ∃x. ∀y. loves(x, y)
+    [=] [✓] Every student read a book. → ∀x. student(x) → ∃y. book(y) ∧ read(x, y)
+    [=] [✓] No student passed every exam. → ¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)
+
+  Ablating all_sharpen+diffuse (26 heads):
+    [=] [✗] Everyone loves someone. → ∀x. ∃y. loves(x, y)
+    [=] [✗] Someone loves everyone. → ∃x. ∀y. loves(x, y)
+    [=] [✓] Every student read a book. → ∀x. student(x) → ∃y. book(y) ∧ read(x, y)
+    [=] [✓] No student passed every exam. → ¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)
+
+============================================================
+  ALL EXPERIMENTS COMPLETE
+============================================================
+  Results: results/binding/binding_shape_results.json

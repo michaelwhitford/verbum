@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T03:50:05.910049+00:00",
+  "node_id": "cross-task/classify/probe-cls-neg-simple",
+  "config_hash": "sha256:20c2142edd0b5e846bf188ebbe3046b5a173dd9d11c9758549bffad3a910dc60",
+  "elapsed_ms": 6463.0,
+  "completed_at": "2026-04-17T03:50:12.373266+00:00"
+}

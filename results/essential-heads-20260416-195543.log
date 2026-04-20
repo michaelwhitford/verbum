@@ -1,0 +1,552 @@
+Loading model...
+2026-04-16 19:55:44 [info     ] instrument.loading             device=mps dtype=torch.float16 model=Qwen/Qwen3-4B
+2026-04-16 19:55:46 [info     ] instrument.loaded              head_dim=80 n_heads=32 n_kv_heads=8 n_layers=36 total_heads=1152
+Loaded: 36L, 32H, 80D
+
+Recording attention for 6 prompts...
+2026-04-16 19:55:46 [info     ] instrument.forward             n_tokens=35 prompt='The dog runs. → λx. runs(dog)\nBe helpful but concise. → λ as'
+2026-04-16 19:55:47 [info     ] instrument.captured            prompt='The dog runs. → λx. runs(dog)\nBe helpful but concise. → λ as' shape=(36, 32, 35, 35)
+2026-04-16 19:55:47 [info     ] instrument.forward             n_tokens=37 prompt='The dog runs. → λx. runs(dog)\nBe helpful but concise. → λ as'
+2026-04-16 19:55:47 [info     ] instrument.captured            prompt='The dog runs. → λx. runs(dog)\nBe helpful but concise. → λ as' shape=(36, 32, 37, 37)
+2026-04-16 19:55:47 [info     ] instrument.forward             n_tokens=41 prompt='The dog runs. → λx. runs(dog)\nBe helpful but concise. → λ as'
+2026-04-16 19:55:47 [info     ] instrument.captured            prompt='The dog runs. → λx. runs(dog)\nBe helpful but concise. → λ as' shape=(36, 32, 41, 41)
+2026-04-16 19:55:47 [info     ] instrument.forward             n_tokens=40 prompt='The dog runs. → λx. runs(dog)\nBe helpful but concise. → λ as'
+2026-04-16 19:55:47 [info     ] instrument.captured            prompt='The dog runs. → λx. runs(dog)\nBe helpful but concise. → λ as' shape=(36, 32, 40, 40)
+2026-04-16 19:55:47 [info     ] instrument.forward             n_tokens=39 prompt='The dog runs. → λx. runs(dog)\nBe helpful but concise. → λ as'
+2026-04-16 19:55:47 [info     ] instrument.captured            prompt='The dog runs. → λx. runs(dog)\nBe helpful but concise. → λ as' shape=(36, 32, 39, 39)
+2026-04-16 19:55:47 [info     ] instrument.forward             n_tokens=22 prompt='You are a helpful assistant. Respond naturally and concisely'
+2026-04-16 19:55:47 [info     ] instrument.captured            prompt='You are a helpful assistant. Respond naturally and concisely' shape=(36, 32, 22, 22)
+
+======================================================================
+  L1:H0 (gate recognizer)
+======================================================================
+
+--- simple: "The dog runs." (35 tokens) ---
+
+  Last token attends to (top 10):
+    [ 34] 0.6221  "."
+    [ 28] 0.0962  ")
+
+"
+    [ 29] 0.0859  "Input"
+    [ 31] 0.0715  " The"
+    [ 11] 0.0310  ")
+"
+    [ 33] 0.0222  " runs"
+    [ 30] 0.0222  ":"
+    [ 24] 0.0087  ")"
+    [ 25] 0.0069  " |"
+    [ 32] 0.0041  " dog"
+
+  Most attended-to tokens (avg across all positions):
+    [  3] 0.1174  "."
+    [  0] 0.1145  "The"
+    [ 16] 0.0999  "."
+    [ 11] 0.0801  ")
+"
+    [ 21] 0.0766  ")."
+    [  7] 0.0757  "."
+    [ 29] 0.0656  "Input"
+    [ 17] 0.0403  " →"
+
+  Attention entropy: 1.324 (max possible: 3.555)
+
+--- quant: "Every student reads a book." (37 tokens) ---
+
+  Last token attends to (top 10):
+    [ 36] 0.5225  "."
+    [ 34] 0.2467  " a"
+    [ 29] 0.0577  "Input"
+    [ 28] 0.0525  ")
+
+"
+    [ 31] 0.0337  " Every"
+    [ 11] 0.0167  ")
+"
+    [ 33] 0.0145  " reads"
+    [ 30] 0.0125  ":"
+    [ 32] 0.0118  " student"
+    [ 35] 0.0080  " book"
+
+  Most attended-to tokens (avg across all positions):
+    [  3] 0.1112  "."
+    [  0] 0.1082  "The"
+    [ 16] 0.0945  "."
+    [ 11] 0.0755  ")
+"
+    [ 21] 0.0728  ")."
+    [ 31] 0.0722  " Every"
+    [  7] 0.0718  "."
+    [ 29] 0.0507  "Input"
+
+  Attention entropy: 1.297 (max possible: 3.611)
+
+--- relcl: "The cat that sat on the mat is black." (41 tokens) ---
+
+  Last token attends to (top 10):
+    [ 40] 0.4458  "."
+    [ 36] 0.3582  " the"
+    [ 28] 0.0405  ")
+
+"
+    [ 29] 0.0312  "Input"
+    [ 11] 0.0255  ")
+"
+    [ 38] 0.0128  " is"
+    [ 33] 0.0122  " that"
+    [ 31] 0.0092  " The"
+    [ 34] 0.0080  " sat"
+    [ 32] 0.0071  " cat"
+
+  Most attended-to tokens (avg across all positions):
+    [  3] 0.1006  "."
+    [  0] 0.0983  "The"
+    [ 29] 0.0874  "Input"
+    [ 16] 0.0858  "."
+    [ 11] 0.0698  ")
+"
+    [ 21] 0.0656  ")."
+    [  7] 0.0649  "."
+    [ 36] 0.0361  " the"
+
+  Attention entropy: 1.386 (max possible: 3.714)
+
+--- cond: "If it rains, the ground is wet." (40 tokens) ---
+
+  Last token attends to (top 10):
+    [ 39] 0.3823  "."
+    [ 34] 0.3762  ","
+    [ 35] 0.0901  " the"
+    [ 28] 0.0354  ")
+
+"
+    [ 29] 0.0312  "Input"
+    [ 11] 0.0218  ")
+"
+    [ 33] 0.0105  " rains"
+    [ 31] 0.0087  " If"
+    [ 37] 0.0070  " is"
+    [ 36] 0.0048  " ground"
+
+  Most attended-to tokens (avg across all positions):
+    [  3] 0.1038  "."
+    [  0] 0.1031  "The"
+    [ 16] 0.0883  "."
+    [ 11] 0.0804  ")
+"
+    [ 21] 0.0677  ")."
+    [  7] 0.0670  "."
+    [ 29] 0.0549  "Input"
+    [ 34] 0.0426  ","
+
+  Attention entropy: 1.421 (max possible: 3.689)
+
+--- complex: "Someone believes that the earth is flat." (39 tokens) ---
+
+  Last token attends to (top 10):
+    [ 34] 0.4299  " the"
+    [ 38] 0.3564  "."
+    [ 28] 0.0575  ")
+
+"
+    [ 29] 0.0347  "Input"
+    [ 11] 0.0255  ")
+"
+    [ 31] 0.0208  " Someone"
+    [ 36] 0.0101  " is"
+    [ 32] 0.0093  " believes"
+    [ 33] 0.0085  " that"
+    [ 37] 0.0081  " flat"
+
+  Most attended-to tokens (avg across all positions):
+    [  3] 0.1056  "."
+    [  0] 0.1032  "The"
+    [ 16] 0.0898  "."
+    [ 11] 0.0766  ")
+"
+    [ 21] 0.0688  ")."
+    [  7] 0.0681  "."
+    [ 29] 0.0578  "Input"
+    [ 34] 0.0389  " the"
+
+  Attention entropy: 1.348 (max possible: 3.664)
+
+--- NULL CONTROL: "Tell me about the weather today." ---
+
+  Last token attends to (top 8):
+    [ 21] 0.4517  "."
+    [ 18] 0.3008  " the"
+    [ 12] 0.0720  ".
+
+"
+    [ 17] 0.0491  " about"
+    [ 13] 0.0316  "Input"
+    [  2] 0.0238  " a"
+    [ 19] 0.0184  " weather"
+    [ 16] 0.0163  " me"
+
+  Attention entropy: 1.127
+
+======================================================================
+  L24:H0 (core composer)
+======================================================================
+
+--- simple: "The dog runs." (35 tokens) ---
+
+  Last token attends to (top 10):
+    [  0] 0.7739  "The"
+    [ 34] 0.1754  "."
+    [ 30] 0.0141  ":"
+    [ 28] 0.0117  ")
+
+"
+    [ 31] 0.0112  " The"
+    [ 11] 0.0042  ")
+"
+    [ 29] 0.0040  "Input"
+    [ 33] 0.0020  " runs"
+    [  3] 0.0014  "."
+    [  4] 0.0008  " →"
+
+  Most attended-to tokens (avg across all positions):
+    [  0] 0.5900  "The"
+    [  5] 0.0226  " λ"
+    [  8] 0.0184  " runs"
+    [ 19] 0.0180  " assist"
+    [  1] 0.0171  " dog"
+    [  3] 0.0163  "."
+    [  4] 0.0160  " →"
+    [ 13] 0.0157  " helpful"
+
+  Attention entropy: 0.854 (max possible: 3.555)
+
+--- quant: "Every student reads a book." (37 tokens) ---
+
+  Last token attends to (top 10):
+    [  0] 0.7285  "The"
+    [ 36] 0.2205  "."
+    [ 31] 0.0274  " Every"
+    [ 30] 0.0125  ":"
+    [ 29] 0.0040  "Input"
+    [ 32] 0.0022  " student"
+    [ 28] 0.0021  ")
+
+"
+    [ 33] 0.0008  " reads"
+    [ 35] 0.0007  " book"
+    [ 34] 0.0003  " a"
+
+  Most attended-to tokens (avg across all positions):
+    [  0] 0.5924  "The"
+    [  5] 0.0214  " λ"
+    [ 33] 0.0193  " reads"
+    [  8] 0.0172  " runs"
+    [ 19] 0.0171  " assist"
+    [  1] 0.0154  " dog"
+    [  4] 0.0151  " →"
+    [  3] 0.0151  "."
+
+  Attention entropy: 0.853 (max possible: 3.611)
+
+--- relcl: "The cat that sat on the mat is black." (41 tokens) ---
+
+  Last token attends to (top 10):
+    [  0] 0.8403  "The"
+    [ 40] 0.1393  "."
+    [ 28] 0.0047  ")
+
+"
+    [ 30] 0.0041  ":"
+    [ 29] 0.0031  "Input"
+    [ 38] 0.0022  " is"
+    [ 31] 0.0013  " The"
+    [ 11] 0.0011  ")
+"
+    [ 33] 0.0008  " that"
+    [ 32] 0.0008  " cat"
+
+  Most attended-to tokens (avg across all positions):
+    [  0] 0.5985  "The"
+    [  5] 0.0193  " λ"
+    [ 34] 0.0182  " sat"
+    [  8] 0.0158  " runs"
+    [ 19] 0.0154  " assist"
+    [ 32] 0.0154  " cat"
+    [  1] 0.0142  " dog"
+    [ 26] 0.0137  " concise"
+
+  Attention entropy: 0.873 (max possible: 3.714)
+
+--- cond: "If it rains, the ground is wet." (40 tokens) ---
+
+  Last token attends to (top 10):
+    [  0] 0.6821  "The"
+    [ 39] 0.2180  "."
+    [ 31] 0.0502  " If"
+    [ 34] 0.0206  ","
+    [ 30] 0.0052  ":"
+    [ 28] 0.0052  ")
+
+"
+    [ 32] 0.0049  " it"
+    [ 29] 0.0049  "Input"
+    [ 33] 0.0030  " rains"
+    [ 35] 0.0021  " the"
+
+  Most attended-to tokens (avg across all positions):
+    [  0] 0.5973  "The"
+    [  5] 0.0198  " λ"
+    [ 38] 0.0161  " wet"
+    [  8] 0.0159  " runs"
+    [ 19] 0.0157  " assist"
+    [ 33] 0.0147  " rains"
+    [ 36] 0.0145  " ground"
+    [  3] 0.0140  "."
+
+  Attention entropy: 0.843 (max possible: 3.689)
+
+--- complex: "Someone believes that the earth is flat." (39 tokens) ---
+
+  Last token attends to (top 10):
+    [  0] 0.7793  "The"
+    [ 38] 0.1647  "."
+    [ 31] 0.0208  " Someone"
+    [ 32] 0.0087  " believes"
+    [ 30] 0.0072  ":"
+    [ 33] 0.0051  " that"
+    [ 29] 0.0051  "Input"
+    [ 28] 0.0031  ")
+
+"
+    [ 34] 0.0015  " the"
+    [ 37] 0.0015  " flat"
+
+  Most attended-to tokens (avg across all positions):
+    [  0] 0.6172  "The"
+    [  5] 0.0202  " λ"
+    [  8] 0.0162  " runs"
+    [ 19] 0.0161  " assist"
+    [  3] 0.0144  "."
+    [  4] 0.0143  " →"
+    [  1] 0.0143  " dog"
+    [ 13] 0.0140  " helpful"
+
+  Attention entropy: 0.828 (max possible: 3.664)
+
+--- NULL CONTROL: "Tell me about the weather today." ---
+
+  Last token attends to (top 8):
+    [  0] 0.6411  "You"
+    [ 21] 0.3076  "."
+    [ 14] 0.0162  ":"
+    [ 16] 0.0074  " me"
+    [ 18] 0.0059  " the"
+    [ 12] 0.0054  ".
+
+"
+    [ 17] 0.0047  " about"
+    [ 15] 0.0036  " Tell"
+
+  Attention entropy: 0.637
+
+======================================================================
+  L24:H2 (recursion head)
+======================================================================
+
+--- simple: "The dog runs." (35 tokens) ---
+
+  Last token attends to (top 10):
+    [  0] 0.4924  "The"
+    [ 34] 0.1898  "."
+    [ 30] 0.0833  ":"
+    [ 31] 0.0729  " The"
+    [  4] 0.0282  " →"
+    [ 11] 0.0214  ")
+"
+    [ 29] 0.0186  "Input"
+    [  3] 0.0180  "."
+    [ 28] 0.0138  ")
+
+"
+    [ 33] 0.0106  " runs"
+
+  Most attended-to tokens (avg across all positions):
+    [  0] 0.7145  "The"
+    [  3] 0.0433  "."
+    [  4] 0.0169  " →"
+    [ 11] 0.0167  ")
+"
+    [  7] 0.0134  "."
+    [  5] 0.0132  " λ"
+    [ 24] 0.0128  ")"
+    [  1] 0.0123  " dog"
+
+  Attention entropy: 1.093 (max possible: 3.555)
+
+--- quant: "Every student reads a book." (37 tokens) ---
+
+  Last token attends to (top 10):
+    [  0] 0.4609  "The"
+    [ 36] 0.1617  "."
+    [ 30] 0.0853  ":"
+    [ 31] 0.0505  " Every"
+    [ 29] 0.0409  "Input"
+    [ 32] 0.0377  " student"
+    [ 33] 0.0278  " reads"
+    [  4] 0.0179  " →"
+    [ 34] 0.0156  " a"
+    [ 35] 0.0151  " book"
+
+  Most attended-to tokens (avg across all positions):
+    [  0] 0.7194  "The"
+    [  3] 0.0372  "."
+    [  4] 0.0156  " →"
+    [ 11] 0.0152  ")
+"
+    [  7] 0.0127  "."
+    [  5] 0.0124  " λ"
+    [ 24] 0.0121  ")"
+    [  1] 0.0115  " dog"
+
+  Attention entropy: 1.085 (max possible: 3.611)
+
+--- relcl: "The cat that sat on the mat is black." (41 tokens) ---
+
+  Last token attends to (top 10):
+    [  0] 0.4727  "The"
+    [ 40] 0.1328  "."
+    [ 30] 0.0739  ":"
+    [ 31] 0.0663  " The"
+    [ 38] 0.0506  " is"
+    [ 29] 0.0286  "Input"
+    [  4] 0.0204  " →"
+    [ 33] 0.0201  " that"
+    [ 28] 0.0191  ")
+
+"
+    [ 32] 0.0175  " cat"
+
+  Most attended-to tokens (avg across all positions):
+    [  0] 0.7084  "The"
+    [  3] 0.0344  "."
+    [  4] 0.0142  " →"
+    [ 11] 0.0141  ")
+"
+    [  7] 0.0114  "."
+    [  5] 0.0113  " λ"
+    [ 32] 0.0111  " cat"
+    [  1] 0.0111  " dog"
+
+  Attention entropy: 1.119 (max possible: 3.714)
+
+--- cond: "If it rains, the ground is wet." (40 tokens) ---
+
+  Last token attends to (top 10):
+    [  0] 0.2988  "The"
+    [ 39] 0.1650  "."
+    [ 34] 0.0876  ","
+    [ 31] 0.0846  " If"
+    [ 30] 0.0798  ":"
+    [ 29] 0.0343  "Input"
+    [  4] 0.0322  " →"
+    [ 33] 0.0306  " rains"
+    [ 32] 0.0306  " it"
+    [ 35] 0.0302  " the"
+
+  Most attended-to tokens (avg across all positions):
+    [  0] 0.7125  "The"
+    [  3] 0.0342  "."
+    [  4] 0.0156  " →"
+    [ 11] 0.0144  ")
+"
+    [ 34] 0.0137  ","
+    [  7] 0.0116  "."
+    [  5] 0.0114  " λ"
+    [ 24] 0.0112  ")"
+
+  Attention entropy: 1.098 (max possible: 3.689)
+
+--- complex: "Someone believes that the earth is flat." (39 tokens) ---
+
+  Last token attends to (top 10):
+    [  0] 0.3887  "The"
+    [ 38] 0.1765  "."
+    [ 31] 0.0768  " Someone"
+    [ 30] 0.0681  ":"
+    [ 34] 0.0394  " the"
+    [ 33] 0.0382  " that"
+    [ 32] 0.0332  " believes"
+    [  4] 0.0257  " →"
+    [ 29] 0.0244  "Input"
+    [  3] 0.0205  "."
+
+  Most attended-to tokens (avg across all positions):
+    [  0] 0.7062  "The"
+    [  3] 0.0342  "."
+    [ 11] 0.0149  ")
+"
+    [  4] 0.0149  " →"
+    [ 32] 0.0136  " believes"
+    [  7] 0.0119  "."
+    [  5] 0.0118  " λ"
+    [ 24] 0.0115  ")"
+
+  Attention entropy: 1.112 (max possible: 3.664)
+
+--- NULL CONTROL: "Tell me about the weather today." ---
+
+  Last token attends to (top 8):
+    [  0] 0.4980  "You"
+    [ 14] 0.1069  ":"
+    [ 21] 0.0974  "."
+    [ 16] 0.0677  " me"
+    [ 18] 0.0461  " the"
+    [ 19] 0.0352  " weather"
+    [ 15] 0.0266  " Tell"
+    [ 13] 0.0263  "Input"
+
+  Attention entropy: 0.914
+
+======================================================================
+  CROSS-HEAD COMPARISON: compile vs null selectivity
+======================================================================
+
+L1:H0 (gate recognizer):
+  simple      : selectivity = 0.1609
+  quant       : selectivity = 0.1609
+  relcl       : selectivity = 0.1609
+  cond        : selectivity = 0.1609
+  complex     : selectivity = 0.1609
+
+L24:H0 (core composer):
+  simple      : selectivity = 0.1005
+  quant       : selectivity = 0.1005
+  relcl       : selectivity = 0.1004
+  cond        : selectivity = 0.1004
+  complex     : selectivity = 0.1004
+
+L24:H2 (recursion head):
+  simple      : selectivity = 0.0534
+  quant       : selectivity = 0.0534
+  relcl       : selectivity = 0.0534
+  cond        : selectivity = 0.0534
+  complex     : selectivity = 0.0534
+
+======================================================================
+  L1:H0 GATE TOKEN ANALYSIS
+======================================================================
+
+Gate is 32 tokens
+Gate text: 'The dog runs. → λx. runs(dog)\nBe helpful but concise. → λ assist(x). helpful(x) | concise(x)\n\nInput: '
+
+  simple      : 72.0% attention to gate, 28.0% to input
+  quant       : 69.3% attention to gate, 30.7% to input
+  relcl       : 45.8% attention to gate, 54.2% to input
+  cond        : 43.4% attention to gate, 56.6% to input
+  complex     : 40.2% attention to gate, 59.8% to input
+  null        : 47.9% attention to gate, 52.1% to input
+
+Saving attention data...
+Saved: /Users/mwhitford/src/verbum/results/essential-heads-attention.npz
+Keys: ['complex_L1_H0', 'complex_L24_H0', 'complex_L24_H2', 'cond_L1_H0', 'cond_L24_H0', 'cond_L24_H2', 'null_L1_H0', 'null_L24_H0', 'null_L24_H2', 'quant_L1_H0', 'quant_L24_H0', 'quant_L24_H2', 'relcl_L1_H0', 'relcl_L24_H0', 'relcl_L24_H2', 'simple_L1_H0', 'simple_L24_H0', 'simple_L24_H2']
+Saved: /Users/mwhitford/src/verbum/results/essential-heads-tokens.json

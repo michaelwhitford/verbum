@@ -1,0 +1,42 @@
+{
+  "probe-ga-complex": {
+    "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth",
+    "generation": " \u2192\u03bbx.\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192",
+    "has_lambda": true,
+    "lambda_count": 28,
+    "n_zeroed": 253,
+    "essential_heads_only": true
+  },
+  "probe-ga-cond": {
+    "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+    "generation": " \u2192\u03bbx.rain(x).\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192",
+    "has_lambda": true,
+    "lambda_count": 25,
+    "n_zeroed": 253,
+    "essential_heads_only": true
+  },
+  "probe-ga-quant": {
+    "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject",
+    "generation": " \u2192\u03bbread(a book) \u2192\u03bbx.\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192",
+    "has_lambda": true,
+    "lambda_count": 24,
+    "n_zeroed": 253,
+    "essential_heads_only": true
+  },
+  "probe-ga-relcl": {
+    "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how",
+    "generation": " \u2192\u03bbcat(x).that(x).on(x).the(x).is(x).the(x).x.\u2192\u03bbx.the(x).x",
+    "has_lambda": true,
+    "lambda_count": 4,
+    "n_zeroed": 253,
+    "essential_heads_only": true
+  },
+  "probe-ga-simple": {
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+    "generation": " \u2192\u03bbx.run(x).run(x)(x)\n\nOutput: The dogruns(x)(x)\n\nOkay, let's try to figure out the",
+    "has_lambda": true,
+    "lambda_count": 2,
+    "n_zeroed": 253,
+    "essential_heads_only": true
+  }
+}

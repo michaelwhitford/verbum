@@ -1,0 +1,94 @@
+[project]
+name = "verbum"
+version = "0.0.0"
+description = "Distilling the lambda compiler from LLMs into a portable tensor artifact."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.12,<3.13"
+authors = [{ name = "Michael Whitford" }]
+
+# Core deps — runtime substrate. No torch / transformers / mech-interp libs
+# here; those land at level-1 (per AGENTS.md S1 λ language, state.md).
+dependencies = [
+    "httpx>=0.27",
+    "httpx-sse>=0.4",
+    "pydantic>=2.7",
+    "pydantic-settings>=2.3",
+    "typer>=0.12",
+    "numpy>=1.26",
+    "polars>=1.0",
+    "structlog>=24.1",
+    "matplotlib>=3.10.8",
+    "seaborn>=0.13.2",
+]
+
+[project.scripts]
+verbum = "verbum.cli:app"
+
+# PEP 735 dependency groups (uv-native). Keeps level-1 libs out of core.
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "ruff>=0.5",
+    "ty",  # Astral's new type checker (alpha). Fall back to pyright if it bites.
+]
+notebook = [
+    "jupyterlab>=4.0",
+    "ipykernel>=6.29",
+    "matplotlib>=3.8",
+    "seaborn>=0.13",
+]
+# Level-1: mechanistic interpretability. Load HuggingFace models in PyTorch,
+# record attention patterns, compute per-head selectivity. Raw hooks, no
+# mech-interp frameworks (TransformerLens, nnsight) — simpler to release.
+level1 = [
+    "torch>=2.2",
+    "transformers>=4.45",
+    "accelerate>=0.30",
+    "safetensors>=0.4",
+    "scikit-learn>=1.4",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/verbum"]
+
+# uv: allow pre-releases globally for now. Only `ty` actually requires it;
+# narrow this if other alphas slip in.
+[tool.uv]
+prerelease = "allow"
+
+# ─────────────────────────── ruff ───────────────────────────
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "B",    # flake8-bugbear
+    "UP",   # pyupgrade
+    "RUF",  # ruff-specific
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["B011"]  # allow assert False / etc. in tests
+
+# ─────────────────────────── ty ─────────────────────────────
+# ty is alpha; config schema is moving. Empty stanza pins the table so
+# project-level config has a home when we need it.
+[tool.ty]
+
+# ─────────────────────────── pytest ─────────────────────────
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = ["-ra", "--strict-markers"]

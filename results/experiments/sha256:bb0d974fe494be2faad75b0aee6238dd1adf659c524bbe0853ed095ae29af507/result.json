@@ -1,0 +1,267 @@
+{
+  "task": "classify",
+  "layer": 4,
+  "baseline": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nAlright, let's break this down. The user wants to know if the input sentence is",
+  "baseline_success": true,
+  "n_heads": 32,
+  "head_results": [
+    {
+      "layer": 4,
+      "head": 0,
+      "generation": " \u2192 positive\n\nInput: The movie was so bad it was almost laughable. \u2192 negative\n\nInput: I found the movie to be very boring and unengaging. \u2192 negative\n\nInput: I really enjoyed the movie, it was a great experience",
+      "success": true,
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 4,
+      "head": 1,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\nOkay, let's see. The user provided an example where they had to determine if a",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 2,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only output the label: positive, negative, or neutral.\n\nAlright, let's break this down. The user provided an example where they had to determine the",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 3,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nAlright, let's break this down. The user wants to know if the input sentence is",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 4,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nAlright, let's break this down. The user wants to know if the input sentence is",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 5,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nAlright, let's break this down. The user wants to know if the input sentence is",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 6,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nAlright, let's break this down. The user wants to know if the input sentence is",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 7,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nAlright, let's break this down. The user wants to know if the input sentence is",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 8,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\nOkay, let's see. The user provided an example where they had to determine if a",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 9,
+      "generation": " \u2192 positive\n\nOutput: positive\n\nNow, given the input: I really enjoyed this movie, it's one of the best I've seen. \u2192 positive\n\nWhat is the sentiment of the input?\nThe sentiment of the input is positive. The sentence",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 2
+    },
+    {
+      "layer": 4,
+      "head": 10,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nAlright, let's break this down. The user wants to know if the input sentence is",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 11,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nAlright, let's break this down. The user wants to know if the input sentence is",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 12,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nAlright, let's break this down. The user wants to know if the input sentence is",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 13,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nOkay, let's see. The user provided an example where they had to determine the sentiment",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 14,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\nOkay, let's see. The user provided an example where they had to determine if a",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 15,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nAlright, let's break this down. The user wants to know if the input sentence is",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 16,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nAlright, let's break this down. The user wants to know if the input sentence is",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 17,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\nOkay, let's see. The user provided an example where they had to determine if a",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 18,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only output the label: positive, negative, or neutral.\n\nAlright, let's break this down. The user provided an example where they had to determine the",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 19,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nAlright, let's break this down. The user wants to know if the input sentence is",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 20,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only output the label: positive, negative, or neutral.\n\nAlright, let's break this down. The user provided an example where they had to determine the",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 21,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nAlright, let's break this down. The user wants to know if the input sentence is",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 22,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\nOkay, let's see. The user provided an example where they had to determine if a",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 23,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\nOkay, let's see. The user provided an example where they had to determine if a",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 24,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\nOkay, let's see. The user provided an example where they had to determine if a",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 25,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nAlright, let's break this down. The user wants to know if the input sentence is",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 26,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nAlright, let's break this down. The user wants to know if the input sentence is",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 27,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\nOkay, let's see. The user provided an example where they had to determine if a",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 28,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nAlright, let's break this down. The user wants to know if the input sentence is",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 29,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nAlright, let's break this down. The user wants to know if the input sentence is",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 30,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\nOkay, let's see. The user provided an example where they had to determine if a",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 4,
+      "head": 31,
+      "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nAlright, let's break this down. The user wants to know if the input sentence is",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    }
+  ],
+  "broken_heads": [],
+  "n_broken": 0
+}

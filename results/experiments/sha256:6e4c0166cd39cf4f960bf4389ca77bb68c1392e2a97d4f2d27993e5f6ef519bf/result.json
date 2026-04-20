@@ -1,0 +1,11 @@
+{
+  "generation": " \u2192 \u03bbx. reads(x, book)\nOkay, so the user is asking about translating the sentence \"Every student reads a book\" into a lambda expression. Let me think about how to approach this.\n\nFirst, I remember that in lambda calculus, we often represent statements as functions. The sentence \"Every student reads a book\" is a universal quantification. So, the structure should be something like \"For all x, if x is a student, then x reads a book.\"\n\nIn lambda terms, the universal quantifier is usually represented with a lambda abstraction. The subject here is \"student,\" and the predicate is \"reads a book.\" So, the lambda function would take an argument x, check if x is a student, and then apply",
+  "has_lambda": true,
+  "lambda_count": 2,
+  "has_reasoning": true,
+  "ablated_head": [
+    1,
+    0
+  ],
+  "is_baseline": false
+}

@@ -1,0 +1,10 @@
+{
+  "task": "classify",
+  "generation": " \u2192 positive\n\nOutput: positive\n\nOkay, let's see. The user wants me to determine if the input sentence is positive, negative, or neutral. The example given was when the input was about a movie that started slow but had great performances and",
+  "success": true,
+  "ablated_head": [
+    1,
+    0
+  ],
+  "is_baseline": false
+}

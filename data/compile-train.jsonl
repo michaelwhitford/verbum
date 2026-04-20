@@ -1,0 +1,509 @@
+{"input": "Every artist knows a baker.", "output": "∀x. (artist(x) → knows(x, baker))", "category": "quantified", "phenomena": ["quantification", "transitive"]}
+{"input": "Frank follows oscar.", "output": "λx. follows(frank, oscar)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "The teacher smiles in the house.", "output": "λx. smiles(teacher, house)", "category": "prepositional", "phenomena": ["prepositional"]}
+{"input": "Kate falls and waits.", "output": "λx. falls(kate) ∧ waits(kate)", "category": "conjunction", "phenomena": ["conjunction", "verb_coordination"]}
+{"input": "Either the dog falls or the lawyer laughs.", "output": "λx. (falls(dog) ∨ laughs(lawyer))", "category": "disjunction", "phenomena": ["disjunction"]}
+{"input": "Grace writes helen.", "output": "λx. writes(grace, helen)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "Mary sees peter.", "output": "λx. sees(mary, peter)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "The bird cries.", "output": "λx. cries(bird)", "category": "simple", "phenomena": ["predication"]}
+{"input": "Every cat fears a dog.", "output": "∀x. (cat(x) → ∃y. (dog(y) ∧ fears(x, y)))", "category": "quantified", "phenomena": ["quantification", "transitive"]}
+{"input": "Every judge finds a writer.", "output": "∀x. (judge(x) → ∃y. writer(y) ∧ finds(x, y))", "category": "quantified", "phenomena": ["quantification", "transitive"]}
+{"input": "The pilot handed the cat a gift.", "output": "λx. handed(pilot, cat, gift)", "category": "ditransitive", "phenomena": ["predication", "ditransitive"]}
+{"input": "John dances and swims.", "output": "λx. dances(john) ∧ swims(john)", "category": "conjunction", "phenomena": ["conjunction", "verb_coordination"]}
+{"input": "Paul dreams.", "output": "λx. dreams(paul)", "category": "simple", "phenomena": ["predication", "proper_noun"]}
+{"input": "James hopes that the hunter smiles.", "output": "λx. hopes(x, smiles(hunter))", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "If the woman sleeps, the cat works.", "output": "λx. if(sleeps(x), works(cat))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "Bob trusts mary.", "output": "λx. trusts(bob, mary)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "Paul runs and walks.", "output": "λx. runs(paul) ∧ walks(paul)", "category": "conjunction", "phenomena": ["conjunction", "verb_coordination"]}
+{"input": "Every teacher likes a artist.", "output": "∀x. teacher(x) → ∃y. artist(y) ∧ likes(x, y)", "category": "quantified", "phenomena": ["quantification", "transitive"]}
+{"input": "Either the knight sleeps or the singer sits.", "output": "λx. (sleeps(knight) ∨ sits(singer))", "category": "disjunction", "phenomena": ["disjunction"]}
+{"input": "The dog sits quietly.", "output": "λx. sits(dog)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "The knight laughs slowly.", "output": "λx. laughs(knight)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "Jane walks.", "output": "λx. walks(jane)", "category": "simple", "phenomena": ["predication", "proper_noun"]}
+{"input": "If the fish runs, the hunter jumps.", "output": "runs(fish) → jumps(hunter)", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "The cat jumps bravely.", "output": "λx. jumps(cat)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "Paul falls and waits.", "output": "λx. falls(paul) ∧ waits(paul)", "category": "conjunction", "phenomena": ["conjunction", "verb_coordination"]}
+{"input": "The student does not rest.", "output": "λx. not(rest(student))", "category": "negation", "phenomena": ["negation"]}
+{"input": "David and emma fly.", "output": "λx. fly(david) ∨ λx. fly(emma)", "category": "conjunction", "phenomena": ["conjunction"]}
+{"input": "The child hates the cat.", "output": "λx. hates(child, cat)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "Either the king flies or the woman works.", "output": "λx. (flies(king) ∨ works(woman))", "category": "disjunction", "phenomena": ["disjunction"]}
+{"input": "The poet who the baker reads swims.", "output": "λx. swims(λy. reads(baker, y))", "category": "relative_clause", "phenomena": ["relative_clause", "object_relative"]}
+{"input": "Either the fish jumps or the sailor sings.", "output": "λx. (fish_jumps(x) ∨ sailor_sings(x))", "category": "disjunction", "phenomena": ["disjunction"]}
+{"input": "Paul believes that the woman works.", "output": "λx. believes(paul, works(woman))", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "The bird walks in the school.", "output": "λx. walks(bird, school)", "category": "prepositional", "phenomena": ["prepositional"]}
+{"input": "Every farmer likes a woman.", "output": "∀x. (farmer(x) → likes(x, woman))", "category": "quantified", "phenomena": ["quantification", "transitive"]}
+{"input": "Every farmer sleeps.", "output": "∀x. (farmer(x) → sleeps(x))", "category": "quantified", "phenomena": ["quantification"]}
+{"input": "Every man fears a king.", "output": "∀x. (man(x) → fears(x, king))", "category": "quantified", "phenomena": ["quantification", "transitive"]}
+{"input": "If the farmer dreams, the scientist jumps.", "output": "λx. (dreams(farmer) → jumps(scientist))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "The student serves the woman.", "output": "λx. serves(student, woman)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "The doctor cries quietly.", "output": "λx. cries(quietly, doctor)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "The poet walks bravely.", "output": "λx. walks(poet)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "The poet does not dream.", "output": "λx. not(dreams(poet))", "category": "negation", "phenomena": ["negation"]}
+{"input": "The small writer flies.", "output": "λx. flies(writer)", "category": "simple", "phenomena": ["predication", "modifier"]}
+{"input": "Grace sees emma.", "output": "λx. sees(emma)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "The sailor rests.", "output": "λx. rests(sailor)", "category": "simple", "phenomena": ["predication"]}
+{"input": "The pilot guides the teacher.", "output": "λx. guides(pilot, teacher)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "Helen finds alice.", "output": "λx. finds(helen, alice)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "The writer who the sailor trusts walks.", "output": "λx. walks(λy. trusts(sailor, y))", "category": "relative_clause", "phenomena": ["relative_clause", "object_relative"]}
+{"input": "The man is gentle.", "output": "λx. gentle(man)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "Emma walks and sleeps.", "output": "λx. walks(emma) ∧ sleeps(emma)", "category": "conjunction", "phenomena": ["conjunction", "verb_coordination"]}
+{"input": "The old fish waits.", "output": "λx. waits(fish)", "category": "simple", "phenomena": ["predication", "modifier"]}
+{"input": "The dog flies.", "output": "λx. flies(dog)", "category": "simple", "phenomena": ["predication"]}
+{"input": "The fish sent the bird a flower.", "output": "λx. sent(fish, bird, flower)", "category": "ditransitive", "phenomena": ["predication", "ditransitive"]}
+{"input": "The singer does not sleep.", "output": "λx. not(sleeps(singer))", "category": "negation", "phenomena": ["negation"]}
+{"input": "Either the scientist flies or the artist falls.", "output": "λx. (flies(scientist) ∨ falls(artist))", "category": "disjunction", "phenomena": ["disjunction"]}
+{"input": "The baker smiles in the school.", "output": "λx. smiles(baker, school)", "category": "prepositional", "phenomena": ["prepositional"]}
+{"input": "The scientist swims in the forest.", "output": "λx. swims(scientist, forest)", "category": "prepositional", "phenomena": ["prepositional"]}
+{"input": "The writer does not jump.", "output": "λx. does_not_jump(writer)", "category": "negation", "phenomena": ["negation"]}
+{"input": "The clerk that serves the knight flies.", "output": "λx. flies(serves(knight, x))", "category": "relative_clause", "phenomena": ["relative_clause"]}
+{"input": "The farmer who the baker follows smiles.", "output": "λx. smiles(farmer)", "category": "relative_clause", "phenomena": ["relative_clause", "object_relative"]}
+{"input": "Tom believes that the clerk jumps.", "output": "λx. believes(tom, jumps(clerk))", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "The bird rests.", "output": "λx. rests(bird)", "category": "simple", "phenomena": ["predication"]}
+{"input": "The monk writes the woman.", "output": "λx. writes(monk, woman)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "The monk who the poet helps dreams.", "output": "λx. dreams(monk)", "category": "relative_clause", "phenomena": ["relative_clause", "object_relative"]}
+{"input": "Alice likes frank.", "output": "λx. likes(x, frank)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "The baker sits wisely.", "output": "λx. sits(baker)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "The queen finds the monk.", "output": "λx. finds(monk, queen)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "No cat cries.", "output": "λx. ¬(crying(x) ∧ cat(x))", "category": "negation", "phenomena": ["negation", "quantification"]}
+{"input": "Jane sees kate.", "output": "λx. sees(jane, kate)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "Either the guard swims or the scientist dreams.", "output": "λx. (swims(guard) ∨ dreams(scientist))", "category": "disjunction", "phenomena": ["disjunction"]}
+{"input": "The fish sings quietly.", "output": "λx. sings(fish)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "Henry fears that the king swims.", "output": "λx. fears(henry, king, swims)", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "Either the artist dreams or the queen dances.", "output": "λx. (dreams(artist) ∨ dances(queen))", "category": "disjunction", "phenomena": ["disjunction"]}
+{"input": "The judge teaches the guard.", "output": "λx. teaches(judge, guard)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "The dancer that guides the singer dances.", "output": "λx. dances(dancer(x, singer(x)))", "category": "relative_clause", "phenomena": ["relative_clause"]}
+{"input": "The hunter reads the poet.", "output": "λx. reads(hunter, poet)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "The fish fears the man.", "output": "λx. fears(fish, man)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "Some baker walks.", "output": "λx. walks(baker)", "category": "quantified", "phenomena": ["quantification", "existential"]}
+{"input": "The child shouts.", "output": "λx. shouts(child)", "category": "simple", "phenomena": ["predication"]}
+{"input": "No poet smiles.", "output": "λx. ¬smiles(poet)", "category": "negation", "phenomena": ["negation", "quantification"]}
+{"input": "If the singer sleeps, the writer sings.", "output": "λx. (sleeps(x) → sings(writer))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "Mary sings.", "output": "λx. sings(mary)", "category": "simple", "phenomena": ["predication", "proper_noun"]}
+{"input": "Sarah dreams and dances.", "output": "λx. (dreams(sarah) ∧ dances(sarah))", "category": "conjunction", "phenomena": ["conjunction", "verb_coordination"]}
+{"input": "Sarah believes that the scientist sits.", "output": "belief(λx. sits(scientist), sarah)", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "The judge is old.", "output": "λx. is(old, judge)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "Paul falls and cries.", "output": "λx. falls(paul) ∧ cries(paul)", "category": "conjunction", "phenomena": ["conjunction", "verb_coordination"]}
+{"input": "The dog showed the king a letter.", "output": "λx. showed(dog, king, letter)", "category": "ditransitive", "phenomena": ["predication", "ditransitive"]}
+{"input": "The dog that hates the poet laughs.", "output": "λx. hates(x, poet) ∧ laughs(dog)", "category": "relative_clause", "phenomena": ["relative_clause"]}
+{"input": "The chef is loud.", "output": "λx. loud(chef)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "No woman falls.", "output": "λx. falls(woman) → false", "category": "negation", "phenomena": ["negation", "quantification"]}
+{"input": "The chef helps the clerk.", "output": "λx. helps(chef, clerk)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "If the pilot swims, the monk smiles.", "output": "λx. if(swims(pilot), smiles(monk))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "Kate thinks that the baker works.", "output": "λx. thinks(kate, works(baker))", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "The pilot that reads the teacher dreams.", "output": "λx. dreams(pilot(x), reads(teacher(x)))", "category": "relative_clause", "phenomena": ["relative_clause"]}
+{"input": "The small doctor walks.", "output": "λx. walks(doctor)", "category": "simple", "phenomena": ["predication", "modifier"]}
+{"input": "Frank and emma sing.", "output": "λx. sing(frank, emma)", "category": "conjunction", "phenomena": ["conjunction"]}
+{"input": "The child swims.", "output": "λx. swims(child)", "category": "simple", "phenomena": ["predication"]}
+{"input": "Helen sees sarah.", "output": "λx. sees(helen, sarah)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "The poet sings.", "output": "λx. sings(poet)", "category": "simple", "phenomena": ["predication"]}
+{"input": "The pilot does not smile.", "output": "λx. not(smiles(pilot))", "category": "negation", "phenomena": ["negation"]}
+{"input": "Some scientist dreams.", "output": "λx. dreams(scientist)", "category": "quantified", "phenomena": ["quantification", "existential"]}
+{"input": "The guard works happily.", "output": "λx. works(guard, x)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "The sailor does not wait.", "output": "λx. not(wait(sailor))", "category": "negation", "phenomena": ["negation"]}
+{"input": "The writer rests carefully.", "output": "λx. rests(writer)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "Bob greets mary.", "output": "λx. greets(bob, mary)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "Some cat swims.", "output": "∃x. cat(x) ∧ swims(x)", "category": "quantified", "phenomena": ["quantification", "existential"]}
+{"input": "Every woman walks.", "output": "∀x. woman(x) → walks(x)", "category": "quantified", "phenomena": ["quantification"]}
+{"input": "The scientist does not walk.", "output": "λx. not(walk(scientist))", "category": "negation", "phenomena": ["negation"]}
+{"input": "Frank works and swims.", "output": "λx. works(frank) ∧ swims(frank)", "category": "conjunction", "phenomena": ["conjunction", "verb_coordination"]}
+{"input": "Either the singer waits or the baker waits.", "output": "λx. waits(singer) ∨ λx. waits(baker)", "category": "disjunction", "phenomena": ["disjunction"]}
+{"input": "The king flies.", "output": "λx. flies(king)", "category": "simple", "phenomena": ["predication"]}
+{"input": "The teacher cries.", "output": "λx. cries(teacher)", "category": "simple", "phenomena": ["predication"]}
+{"input": "The guard does not rest.", "output": "λx. not(rest(guard))", "category": "negation", "phenomena": ["negation"]}
+{"input": "The dog sleeps loudly.", "output": "λx. sleeps(dog, loudly)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "The hunter fears the writer.", "output": "λx. fears(hunter, writer)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "The dog greets the singer.", "output": "λx. greets(dog, singer)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "The cat gave the man a gift.", "output": "λx. gave(cat, man, gift)", "category": "ditransitive", "phenomena": ["predication", "ditransitive"]}
+{"input": "The artist swims.", "output": "λx. swims(artist)", "category": "simple", "phenomena": ["predication"]}
+{"input": "No cat dreams.", "output": "λx. ¬dreams(cat)", "category": "negation", "phenomena": ["negation", "quantification"]}
+{"input": "The queen who the artist follows swims.", "output": "λx. swims(queen(x))", "category": "relative_clause", "phenomena": ["relative_clause", "object_relative"]}
+{"input": "The baker cries eagerly.", "output": "λx. cries(baker, eagerly)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "If the student walks, the pilot laughs.", "output": "λx. if(walks(x), laughs(pilot))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "The man that loves the pilot works.", "output": "λx. works(man_loves_pilot)", "category": "relative_clause", "phenomena": ["relative_clause"]}
+{"input": "Every knight sings.", "output": "∀x. (knight(x) → sings(x))", "category": "quantified", "phenomena": ["quantification"]}
+{"input": "The gentle farmer flies.", "output": "λx. flies(farmer)", "category": "simple", "phenomena": ["predication", "modifier"]}
+{"input": "Frank works.", "output": "λx. works(frank)", "category": "simple", "phenomena": ["predication", "proper_noun"]}
+{"input": "If the knight walks, the dog jumps.", "output": "λx. (walks(knight) → jumps(dog))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "Anna swims.", "output": "λx. swims(anna)", "category": "simple", "phenomena": ["predication", "proper_noun"]}
+{"input": "The clerk that reads the sailor shouts.", "output": "λx. (reads(sailor) → shouts(clerk))", "category": "relative_clause", "phenomena": ["relative_clause"]}
+{"input": "Tom finds jane.", "output": "λx. finds(tom, jane)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "The cat runs.", "output": "λx. runs(cat)", "category": "simple", "phenomena": ["predication"]}
+{"input": "Oscar and john sit.", "output": "λx. sit(ocscar) ∧ λx. sit(john)", "category": "conjunction", "phenomena": ["conjunction"]}
+{"input": "Kate reads frank.", "output": "λx. reads(kate, frank)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "Kate believes that the teacher swims.", "output": "believes(λx. swims(teacher))", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "Some sailor waits.", "output": "λx. waits(sailor)", "category": "quantified", "phenomena": ["quantification", "existential"]}
+{"input": "Sarah guides jane.", "output": "λx. guides(sarah, jane)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "John hopes that the woman runs.", "output": "λx. hopes(λy. (x) → (y) → runs(woman))", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "The artist falls in the tower.", "output": "λx. falls(in, tower, artist)", "category": "prepositional", "phenomena": ["prepositional"]}
+{"input": "The man sits in the school.", "output": "λx. sits(man, school)", "category": "prepositional", "phenomena": ["prepositional"]}
+{"input": "The dancer serves the poet.", "output": "λx. serves(dancer, poet)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "Alice smiles and runs.", "output": "λx. smiles(alice) ∧ runs(alice)", "category": "conjunction", "phenomena": ["conjunction", "verb_coordination"]}
+{"input": "If the dog cries, the chef walks.", "output": "λx. if(cries(dog), walks(chef))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "Tom believes that the guard sleeps.", "output": "λx. believes(tom, sleeps(guard))", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "If the child rests, the judge smiles.", "output": "λx. if(rests(child), smiles(judge))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "Kate helps henry.", "output": "λx. helps(kate, henry)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "The farmer dreams loudly.", "output": "λx. dreams(farmer, loudly)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "The guard handed the fish a flower.", "output": "λx. handed(fish, flower)", "category": "ditransitive", "phenomena": ["predication", "ditransitive"]}
+{"input": "The hunter knows the king.", "output": "λx. knows(hunter, king)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "Alice knows henry.", "output": "λx. knows(alice, henry)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "The king dreams in the forest.", "output": "λx. dreams(king, x)", "category": "prepositional", "phenomena": ["prepositional"]}
+{"input": "The child dances eagerly.", "output": "λx. dances(child, eagerly)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "Every knight writes a scientist.", "output": "∀x. (knight(x) → writes(x, scientist))", "category": "quantified", "phenomena": ["quantification", "transitive"]}
+{"input": "Tom shouts.", "output": "λx. shouts(tom)", "category": "simple", "phenomena": ["predication", "proper_noun"]}
+{"input": "Every writer serves a fish.", "output": "∀x. (writer(x) → serves(fish, x))", "category": "quantified", "phenomena": ["quantification", "transitive"]}
+{"input": "David hates kate.", "output": "λx. hates(david, kate)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "Anna hates alice.", "output": "λx. hates(anna, alice)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "David writes james.", "output": "λx. writes(david, james)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "The baker likes the lawyer.", "output": "λx. likes(baker, lawyer)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "The singer falls quickly.", "output": "λx. falls(singer, quickly)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "Mary greets grace.", "output": "λx. greets(mary, grace)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "If the teacher jumps, the knight walks.", "output": "λx. if(jumps(teacher), walks(knight))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "If the child laughs, the queen jumps.", "output": "laughs(child) → jumps(queen)", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "The child sees the bird.", "output": "λx. sees(child, bird)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "Some baker cries.", "output": "∃x. (baker(x) ∧ cries(x))", "category": "quantified", "phenomena": ["quantification", "existential"]}
+{"input": "The child does not run.", "output": "λx. not(run(dog))", "category": "negation", "phenomena": ["negation"]}
+{"input": "The artist that hates the bird sings.", "output": "λx. sings(artist)", "category": "relative_clause", "phenomena": ["relative_clause"]}
+{"input": "The chef who the artist finds laughs.", "output": "λx. laughs(chef, artist)", "category": "relative_clause", "phenomena": ["relative_clause", "object_relative"]}
+{"input": "The scientist is proud.", "output": "λx. proud(scientist)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "Frank runs.", "output": "λx. runs(frank)", "category": "simple", "phenomena": ["predication", "proper_noun"]}
+{"input": "John teaches paul.", "output": "λx. teaches(john, paul)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "The chef is fierce.", "output": "λx. fierce(chef)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "The guard handed the hunter a ball.", "output": "λx. handed(hunter, ball)", "category": "ditransitive", "phenomena": ["predication", "ditransitive"]}
+{"input": "No king rests.", "output": "λx. rests(king)", "category": "negation", "phenomena": ["negation", "quantification"]}
+{"input": "The baker helps the judge.", "output": "λx. helps(baker, judge)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "Grace hopes that the dancer sits.", "output": "λx. hopes(grace, x, sits)", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "The dog sees the bird.", "output": "λx. sees(dog, bird)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "James admires frank.", "output": "λx. admires(james, frank)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "The sailor works.", "output": "λx. works(sailor)", "category": "simple", "phenomena": ["predication"]}
+{"input": "The cat jumps in the castle.", "output": "λx. jumps(cat, castle)", "category": "prepositional", "phenomena": ["prepositional"]}
+{"input": "Grace falls.", "output": "λx. falls(graace)", "category": "simple", "phenomena": ["predication", "proper_noun"]}
+{"input": "The king dances eagerly.", "output": "λx. dances(king, eagerly)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "Every fish flies.", "output": "∀x. (fish(x) → flies(x))", "category": "quantified", "phenomena": ["quantification"]}
+{"input": "Some baker falls.", "output": "λx. falls(baker)", "category": "quantified", "phenomena": ["quantification", "existential"]}
+{"input": "The poet sings bravely.", "output": "λx. sings(poet, bravely)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "Either the sailor walks or the doctor swims.", "output": "λx. walks(sailor) ∨ λx. swims(doctor)", "category": "disjunction", "phenomena": ["disjunction"]}
+{"input": "Sarah and oscar dream.", "output": "λx. dream(sarah, oscar)", "category": "conjunction", "phenomena": ["conjunction"]}
+{"input": "Peter hopes that the student cries.", "output": "λx. hopes(peter, x, cries(student))", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "Tom and emma wait.", "output": "λx. wait(tom, emma)", "category": "conjunction", "phenomena": ["conjunction"]}
+{"input": "The teacher is quiet.", "output": "λx. is_quiet(teacher)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "No baker sings.", "output": "λx. ¬sings(baker)", "category": "negation", "phenomena": ["negation", "quantification"]}
+{"input": "The monk that likes the cat flies.", "output": "λx. flies(monk(x))", "category": "relative_clause", "phenomena": ["relative_clause"]}
+{"input": "The student who the sailor reads runs.", "output": "λx. runs(λy. sailor(y) ∧ student(x) ∧ reads(sailor(y), x))", "category": "relative_clause", "phenomena": ["relative_clause", "object_relative"]}
+{"input": "Some lawyer waits.", "output": "λx. waits(some(lawyer))", "category": "quantified", "phenomena": ["quantification", "existential"]}
+{"input": "The scientist does not jump.", "output": "λx. not(jump(scientist))", "category": "negation", "phenomena": ["negation"]}
+{"input": "Henry loves helen.", "output": "λx. loves(henry, helen)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "Emma trusts david.", "output": "λx. trusts(emma, david)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "The cat sits quietly.", "output": "λx. sits(cat)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "The monk does not fly.", "output": "λx. not(fly(monk))", "category": "negation", "phenomena": ["negation"]}
+{"input": "If the man dances, the sailor smiles.", "output": "λx. dances(man) → smiles(sailor)", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "The dancer that reads the dog jumps.", "output": "λx. jumps(dancer(x), reads(dog))", "category": "relative_clause", "phenomena": ["relative_clause"]}
+{"input": "The fish is gentle.", "output": "λx. gentle(fish)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "Henry dreams.", "output": "λx. dreams(henry)", "category": "simple", "phenomena": ["predication", "proper_noun"]}
+{"input": "Grace waits.", "output": "λx. waits(graace)", "category": "simple", "phenomena": ["predication", "proper_noun"]}
+{"input": "The writer is wise.", "output": "λx. wise(writer)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "If the king works, the fish laughs.", "output": "λx. if(works(king), laughs(fish))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "The teacher that likes the farmer shouts.", "output": "λx. shouts(teacher(x))", "category": "relative_clause", "phenomena": ["relative_clause"]}
+{"input": "No baker works.", "output": "λx. works(baker) → λx. ¬(works(baker))", "category": "negation", "phenomena": ["negation", "quantification"]}
+{"input": "The woman that fears the monk falls.", "output": "λx. falls(woman(x) ∧ fears(monk(x)))", "category": "relative_clause", "phenomena": ["relative_clause"]}
+{"input": "If the artist works, the fish swims.", "output": "λx. (works(artist) → swims(fish))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "Some teacher runs.", "output": "∃x. teacher(x) ∧ runs(x)", "category": "quantified", "phenomena": ["quantification", "existential"]}
+{"input": "The baker works.", "output": "λx. works(baker)", "category": "simple", "phenomena": ["predication"]}
+{"input": "The cat is strong.", "output": "λx. strong(cat)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "Emma hopes that the poet flies.", "output": "λx. hopes(emma, poet, flies)", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "Grace thinks that the poet rests.", "output": "λx. thinks(graice, poet, rests)", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "Helen and kate sleep.", "output": "λx. sleep(helen) ∨ λx. sleep(kate)", "category": "conjunction", "phenomena": ["conjunction"]}
+{"input": "If the sailor dreams, the man walks.", "output": "λx. (dreams(sailor) → walks(man))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "Emma knows that the writer flies.", "output": "knows(emma, writer) → λx. knows(emma, x)", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "Helen follows david.", "output": "λx. follows(helen, david)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "Either the lawyer sits or the doctor flies.", "output": "λx. (sits(lawyer) ∨ flies(doctor))", "category": "disjunction", "phenomena": ["disjunction"]}
+{"input": "The dog flies happily.", "output": "λx. flies(dog, happily)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "The clerk jumps gently.", "output": "λx. jumps(gently, clerk)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "The monk does not laugh.", "output": "λx. ¬laugh(monk)", "category": "negation", "phenomena": ["negation"]}
+{"input": "Either the sailor sits or the woman laughs.", "output": "λx. (sits(sailor) ∨ laughs(woman))", "category": "disjunction", "phenomena": ["disjunction"]}
+{"input": "The brave queen sits.", "output": "λx. sits(queen)", "category": "simple", "phenomena": ["predication", "modifier"]}
+{"input": "Some baker jumps.", "output": "λx. jumps(baker)", "category": "quantified", "phenomena": ["quantification", "existential"]}
+{"input": "The doctor greets the clerk.", "output": "λx. greets(doctor, clerk)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "No dancer works.", "output": "λx. works(dancer) → λx. ¬works(dancer)", "category": "negation", "phenomena": ["negation", "quantification"]}
+{"input": "The artist sings in the mountain.", "output": "λx. sings(artist, mountain)", "category": "prepositional", "phenomena": ["prepositional"]}
+{"input": "The judge who the teacher fears dances.", "output": "λx. dances(judge(x))", "category": "relative_clause", "phenomena": ["relative_clause", "object_relative"]}
+{"input": "The doctor sent the sailor a gift.", "output": "λx. sent(sailor, gift)", "category": "ditransitive", "phenomena": ["predication", "ditransitive"]}
+{"input": "Grace and john wait.", "output": "λx. wait(grace, john)", "category": "conjunction", "phenomena": ["conjunction"]}
+{"input": "If the bird laughs, the cat jumps.", "output": "laughs(bird) → jumps(cat)", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "The hunter who the fish admires sings.", "output": "λx. sings(hunter(x))", "category": "relative_clause", "phenomena": ["relative_clause", "object_relative"]}
+{"input": "The pilot sent the teacher a ball.", "output": "λx. sent(pilot, teacher, ball)", "category": "ditransitive", "phenomena": ["predication", "ditransitive"]}
+{"input": "If the doctor smiles, the judge flies.", "output": "λx. if(smiles(doctor), flies(judge))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "Jane helps james.", "output": "λx. helps(jane, james)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "Oscar swims and flies.", "output": "λx. swims(oc) ∧ flies(oc)", "category": "conjunction", "phenomena": ["conjunction", "verb_coordination"]}
+{"input": "The writer is small.", "output": "λx. small(writer)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "Sarah believes that the writer waits.", "output": "belief(λx. waits(writer), λx. believes(sarah, x))", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "The poet is tall.", "output": "λx. is(tall, poet)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "The judge who the bird fears sings.", "output": "λx. sings(judge(x))", "category": "relative_clause", "phenomena": ["relative_clause", "object_relative"]}
+{"input": "Tom and james walk.", "output": "λx. walk(tom, james)", "category": "conjunction", "phenomena": ["conjunction"]}
+{"input": "The cat who the teacher serves falls.", "output": "λx. falls(teacher(x))", "category": "relative_clause", "phenomena": ["relative_clause", "object_relative"]}
+{"input": "Every child runs.", "output": "∀x. (child(x) → runs(x))", "category": "quantified", "phenomena": ["quantification"]}
+{"input": "The sailor gave the artist a message.", "output": "λx. gave(sailor, artist, message)", "category": "ditransitive", "phenomena": ["predication", "ditransitive"]}
+{"input": "Either the hunter walks or the child flies.", "output": "λx. walks(hunter) ∨ λx. flies(child)", "category": "disjunction", "phenomena": ["disjunction"]}
+{"input": "The monk likes the judge.", "output": "λx. likes(monk, judge)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "Lucy hopes that the cat sits.", "output": "hope(λx. sits(cat))", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "No hunter shouts.", "output": "λx. ¬shouts(hunter)", "category": "negation", "phenomena": ["negation", "quantification"]}
+{"input": "David hopes that the hunter jumps.", "output": "λx. hopes(david, jumps(hunter))", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "The baker runs happily.", "output": "λx. runs(happily, baker)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "Henry works and runs.", "output": "λx. works(henry) ∧ runs(henry)", "category": "conjunction", "phenomena": ["conjunction", "verb_coordination"]}
+{"input": "Either the singer waits or the writer falls.", "output": "λx. (singer(x) → waits(x)) ∨ (writer(x) → falls(x))", "category": "disjunction", "phenomena": ["disjunction"]}
+{"input": "Some poet runs.", "output": "∃x. poet(x) ∧ runs(x)", "category": "quantified", "phenomena": ["quantification", "existential"]}
+{"input": "The writer is fierce.", "output": "λx. is_fierce(writer)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "The student loves the scientist.", "output": "λx. loves(student, scientist)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "Lucy thinks that the knight sings.", "output": "λx. thinks(lucy, knight, sings)", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "Every pilot loves a man.", "output": "∀x. (pilot(x) → loves(x, man))", "category": "quantified", "phenomena": ["quantification", "transitive"]}
+{"input": "David rests.", "output": "λx. rests(david)", "category": "simple", "phenomena": ["predication", "proper_noun"]}
+{"input": "Every dancer swims.", "output": "∀x. (dancer(x) → swims(x))", "category": "quantified", "phenomena": ["quantification"]}
+{"input": "The old baker flies.", "output": "λx. flies(old(baker))", "category": "simple", "phenomena": ["predication", "modifier"]}
+{"input": "Every farmer falls.", "output": "∀x. (farmer(x) → falls(x))", "category": "quantified", "phenomena": ["quantification"]}
+{"input": "The farmer flies quietly.", "output": "λx. flies(farmer)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "Helen fears that the clerk flies.", "output": "λx. fears(helen, clerk)", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "Some child cries.", "output": "λx. cries(child)", "category": "quantified", "phenomena": ["quantification", "existential"]}
+{"input": "Every man likes a artist.", "output": "∀x. (man(x) → likes(x, artist))", "category": "quantified", "phenomena": ["quantification", "transitive"]}
+{"input": "The baker handed the poet a gift.", "output": "λx. handed(baker, poet, gift)", "category": "ditransitive", "phenomena": ["predication", "ditransitive"]}
+{"input": "Every guard reads a chef.", "output": "∀x. reads(x, chef)", "category": "quantified", "phenomena": ["quantification", "transitive"]}
+{"input": "Every judge likes a queen.", "output": "∀x. (judge(x) → likes(x, queen))", "category": "quantified", "phenomena": ["quantification", "transitive"]}
+{"input": "The baker greets the lawyer.", "output": "λx. greets(baker, lawyer)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "Either the pilot sits or the artist walks.", "output": "λx. (sits(pilot) ∨ walks(artist))", "category": "disjunction", "phenomena": ["disjunction"]}
+{"input": "No bird falls.", "output": "λx. falls(bird) → false", "category": "negation", "phenomena": ["negation", "quantification"]}
+{"input": "Kate thinks that the baker runs.", "output": "λx. thinks(kate, runs(baker))", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "Helen and frank fall.", "output": "λx. fall(helen, frank)", "category": "conjunction", "phenomena": ["conjunction"]}
+{"input": "Henry fears alice.", "output": "λx. fears(henry, alice)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "The kind fish walks.", "output": "λx. walks(fish)", "category": "simple", "phenomena": ["predication", "modifier"]}
+{"input": "The lawyer that admires the child works.", "output": "λx. works(lawyer(x), admires(child(x)))", "category": "relative_clause", "phenomena": ["relative_clause"]}
+{"input": "Tom smiles and sings.", "output": "λx. smiles(tom) ∧ sings(tom)", "category": "conjunction", "phenomena": ["conjunction", "verb_coordination"]}
+{"input": "The fish dreams slowly.", "output": "λx. dreams(fish, slowly)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "Every farmer works.", "output": "∀x. farmer(x) → works(x)", "category": "quantified", "phenomena": ["quantification"]}
+{"input": "The dog does not walk.", "output": "λx. not(walk(dog))", "category": "negation", "phenomena": ["negation"]}
+{"input": "The pilot works in the mountain.", "output": "λx. works(pilot, mountain)", "category": "prepositional", "phenomena": ["prepositional"]}
+{"input": "The sad poet sits.", "output": "λx. sits(poet)", "category": "simple", "phenomena": ["predication", "modifier"]}
+{"input": "If the dog dreams, the artist smiles.", "output": "λx. (dreams(dog) → smiles(artist))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "The bird who the lawyer teaches falls.", "output": "λx. falls(bird, lawyer)", "category": "relative_clause", "phenomena": ["relative_clause", "object_relative"]}
+{"input": "Jane smiles and runs.", "output": "λx. smiles(jane) ∧ runs(jane)", "category": "conjunction", "phenomena": ["conjunction", "verb_coordination"]}
+{"input": "Every hunter smiles.", "output": "∀x. (hunter(x) → smiles(x))", "category": "quantified", "phenomena": ["quantification"]}
+{"input": "The chef teaches the child.", "output": "λx. teaches(chef, child)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "David and kate walk.", "output": "λx. walk(david, kate)", "category": "conjunction", "phenomena": ["conjunction"]}
+{"input": "The hunter who the monk fears sleeps.", "output": "λx. sleeps(λy. fears(monk, y) → x)", "category": "relative_clause", "phenomena": ["relative_clause", "object_relative"]}
+{"input": "If the poet smiles, the sailor dreams.", "output": "λx. if(smiles(poet), dreams(sailor))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "If the lawyer falls, the scientist laughs.", "output": "λx. (falls(lawyer) → laughs(scientist))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "Every singer reads a farmer.", "output": "∀x. (singer(x) → reads(x, farmer))", "category": "quantified", "phenomena": ["quantification", "transitive"]}
+{"input": "The artist sings in the bridge.", "output": "λx. sings(bridge, artist)", "category": "prepositional", "phenomena": ["prepositional"]}
+{"input": "The chef is young.", "output": "λx. young(chef)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "No king falls.", "output": "λx. falls(king) → λx. ¬(falls(king))", "category": "negation", "phenomena": ["negation", "quantification"]}
+{"input": "The poet gave the artist a gift.", "output": "λx. gave(poet, artist, gift)", "category": "ditransitive", "phenomena": ["predication", "ditransitive"]}
+{"input": "Every clerk writes a writer.", "output": "∀x. clerk(x) → writes(writer(x))", "category": "quantified", "phenomena": ["quantification", "transitive"]}
+{"input": "The young bird swims.", "output": "λx. swims(young(bird))", "category": "simple", "phenomena": ["predication", "modifier"]}
+{"input": "The monk falls.", "output": "λx. falls(monk)", "category": "simple", "phenomena": ["predication"]}
+{"input": "Lucy and emma fly.", "output": "λx. fly(lucy, emma)", "category": "conjunction", "phenomena": ["conjunction"]}
+{"input": "Kate and jane sleep.", "output": "λx. sleep(kate) ∨ λx. sleep(jane)", "category": "conjunction", "phenomena": ["conjunction"]}
+{"input": "No man waits.", "output": "λx. ¬(wait(man))", "category": "negation", "phenomena": ["negation", "quantification"]}
+{"input": "The clever clerk works.", "output": "λx. works(clerk)", "category": "simple", "phenomena": ["predication", "modifier"]}
+{"input": "Grace cries and dreams.", "output": "λx. cries(graace) ∧ dreams(graace)", "category": "conjunction", "phenomena": ["conjunction", "verb_coordination"]}
+{"input": "Every writer fears a queen.", "output": "∀x. (writer(x) → fears(x, queen))", "category": "quantified", "phenomena": ["quantification", "transitive"]}
+{"input": "Grace thinks that the sailor jumps.", "output": "λx. thinks(grace, sailor, jumps)", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "If the dancer waits, the bird smiles.", "output": "λx. if(dancer, waits, then, bird, smiles)", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "The guard gave the teacher a gift.", "output": "λx. gave(guard, teacher, gift)", "category": "ditransitive", "phenomena": ["predication", "ditransitive"]}
+{"input": "The baker handed the fish a gift.", "output": "λx. handed(fish, gift)", "category": "ditransitive", "phenomena": ["predication", "ditransitive"]}
+{"input": "The baker sings in the forest.", "output": "λx. sings(baker, forest)", "category": "prepositional", "phenomena": ["prepositional"]}
+{"input": "Lucy waits and rests.", "output": "λx. waits(rests(lucy))", "category": "conjunction", "phenomena": ["conjunction", "verb_coordination"]}
+{"input": "The humble writer laughs.", "output": "λx. laughs(writer)", "category": "simple", "phenomena": ["predication", "modifier"]}
+{"input": "Kate and henry shout.", "output": "λx. shout(kate) ∨ λx. shout(henry)", "category": "conjunction", "phenomena": ["conjunction"]}
+{"input": "The guard knows the singer.", "output": "λx. knows(guard, singer)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "Every woman laughs.", "output": "∀x. (woman(x) → laughs(x))", "category": "quantified", "phenomena": ["quantification"]}
+{"input": "Every child cries.", "output": "∀x. child(x) → cries(x)", "category": "quantified", "phenomena": ["quantification"]}
+{"input": "The king is calm.", "output": "λx. calm(king)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "Helen and oscar swim.", "output": "λx. swim(helen) ∨ λx. swim(oscar)", "category": "conjunction", "phenomena": ["conjunction"]}
+{"input": "If the dog works, the sailor dances.", "output": "λx. if(works(dog), dances(sailor))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "If the judge falls, the pilot sits.", "output": "λx. if(falls(judge), sits(pilot))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "James and jane wait.", "output": "λx. wait(james, jane)", "category": "conjunction", "phenomena": ["conjunction"]}
+{"input": "David rests and flies.", "output": "λx. rests(david) ∧ flies(david)", "category": "conjunction", "phenomena": ["conjunction", "verb_coordination"]}
+{"input": "The scientist does not sing.", "output": "λx. not(sing(scientist))", "category": "negation", "phenomena": ["negation"]}
+{"input": "The child writes the bird.", "output": "λx. writes(x, bird)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "The small baker falls.", "output": "λx. falls(baker)", "category": "simple", "phenomena": ["predication", "modifier"]}
+{"input": "The bird guides the judge.", "output": "λx. guides(bird, judge)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "If the hunter rests, the singer jumps.", "output": "λx. (rests(x) → jumps(singer))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "The scientist serves the guard.", "output": "λx. serves(scientist, guard)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "Bob watches jane.", "output": "λx. watches(bob, jane)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "Peter loves alice.", "output": "λx. loves(peter, alice)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "The lawyer helps the dog.", "output": "λx. helps(lawyer, dog)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "Oscar walks.", "output": "λx. walks(oscar)", "category": "simple", "phenomena": ["predication", "proper_noun"]}
+{"input": "Mary guides grace.", "output": "λx. guides(mary, grace)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "The clerk reads the queen.", "output": "λx. reads(clerk, queen)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "The writer does not fly.", "output": "λx. does_not_fly(writer)", "category": "negation", "phenomena": ["negation"]}
+{"input": "The artist is young.", "output": "λx. is(young, artist)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "Every student flies.", "output": "∀x. student(x) → flies(x)", "category": "quantified", "phenomena": ["quantification"]}
+{"input": "The child guides the knight.", "output": "λx. guides(child, knight)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "Bob knows that the lawyer runs.", "output": "knows(bob, λx. runs(lawyer))", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "The cat is happy.", "output": "happy(cat)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "The scientist that follows the fish smiles.", "output": "λx. smiles(scientist(x))", "category": "relative_clause", "phenomena": ["relative_clause"]}
+{"input": "The lawyer is gentle.", "output": "λx. gentle(lawyer)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "Either the writer sings or the judge laughs.", "output": "λx. sings(writer) ∨ λx. laughs(judge)", "category": "disjunction", "phenomena": ["disjunction"]}
+{"input": "The scientist that guides the pilot sits.", "output": "λx. sits(λy. guides(x, y), pilot)", "category": "relative_clause", "phenomena": ["relative_clause"]}
+{"input": "The sailor trusts the man.", "output": "λx. trusts(sailor, man)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "Every baker cries.", "output": "∀x. baker(x) → cries(x)", "category": "quantified", "phenomena": ["quantification"]}
+{"input": "Mary trusts sarah.", "output": "λx. trusts(mary, sarah)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "The bird is old.", "output": "λx. old(bird)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "The teacher is old.", "output": "λx. is_old(teacher)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "Grace believes that the clerk smiles.", "output": "λx. believes(grace, clerk_smiles)", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "Paul flies.", "output": "λx. flies(paul)", "category": "simple", "phenomena": ["predication", "proper_noun"]}
+{"input": "Either the chef falls or the poet runs.", "output": "λx. (falls(chef) ∨ runs(poet))", "category": "disjunction", "phenomena": ["disjunction"]}
+{"input": "The chef is clever.", "output": "λx. clever(chef)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "If the cat smiles, the woman sings.", "output": "λx. if(smiles(cat), sings(woman))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "No scientist rests.", "output": "λx. rests(scientist)", "category": "negation", "phenomena": ["negation", "quantification"]}
+{"input": "Emma helps paul.", "output": "λx. helps(emma, paul)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "Tom laughs.", "output": "λx. laughs(tom)", "category": "simple", "phenomena": ["predication", "proper_noun"]}
+{"input": "The sailor who the child trusts swims.", "output": "λx. swims(sailor(x))", "category": "relative_clause", "phenomena": ["relative_clause", "object_relative"]}
+{"input": "Tom flies.", "output": "λx. flies(tom)", "category": "simple", "phenomena": ["predication", "proper_noun"]}
+{"input": "Every chef greets a baker.", "output": "∀x. (chef(x) → ∃y. (baker(y) ∧ greets(x, y)))", "category": "quantified", "phenomena": ["quantification", "transitive"]}
+{"input": "No fish waits.", "output": "λx. waits(no, fish)", "category": "negation", "phenomena": ["negation", "quantification"]}
+{"input": "The king that greets the pilot waits.", "output": "λx. waits(king(x) ∧ greets(pilot(x)))", "category": "relative_clause", "phenomena": ["relative_clause"]}
+{"input": "The scientist dreams quietly.", "output": "λx. dreams(quietly, scientist)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "The baker watches the poet.", "output": "λx. watches(baker, poet)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "The doctor walks wisely.", "output": "λx. walks(doctor, x)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "The pilot cries.", "output": "λx. cries(pilot)", "category": "simple", "phenomena": ["predication"]}
+{"input": "The judge that follows the guard walks.", "output": "λx. walks(judge(x))", "category": "relative_clause", "phenomena": ["relative_clause"]}
+{"input": "Bob hopes that the queen flies.", "output": "hope(bob, queen, fly)", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "Henry knows that the lawyer dances.", "output": "λx. knows(henry, lawyer, dances)", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "Some scientist rests.", "output": "λx. rests(scientist)", "category": "quantified", "phenomena": ["quantification", "existential"]}
+{"input": "The writer does not sleep.", "output": "λx. not(sleeps(writer))", "category": "negation", "phenomena": ["negation"]}
+{"input": "The guard that guides the sailor sings.", "output": "λx. sings(guard, sailor)", "category": "relative_clause", "phenomena": ["relative_clause"]}
+{"input": "Some bird swims.", "output": "∃x. bird(x) ∧ swims(x)", "category": "quantified", "phenomena": ["quantification", "existential"]}
+{"input": "The singer shouts in the house.", "output": "λx. shouts(singer, house)", "category": "prepositional", "phenomena": ["prepositional"]}
+{"input": "The queen rests in the bridge.", "output": "λx. rests(queen, bridge)", "category": "prepositional", "phenomena": ["prepositional"]}
+{"input": "If the fish cries, the dancer jumps.", "output": "λx. if(cries(fish), jumps(dancer))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "Every knight swims.", "output": "∀x. knight(x) → swims(x)", "category": "quantified", "phenomena": ["quantification"]}
+{"input": "The fast child sleeps.", "output": "λx. sleeps(fast(child))", "category": "simple", "phenomena": ["predication", "modifier"]}
+{"input": "Jane and peter work.", "output": "λx. work(jane) ∧ λx. work(peter)", "category": "conjunction", "phenomena": ["conjunction"]}
+{"input": "The writer runs.", "output": "λx. runs(writer)", "category": "simple", "phenomena": ["predication"]}
+{"input": "Kate and tom dream.", "output": "λx. dream(kate, tom)", "category": "conjunction", "phenomena": ["conjunction"]}
+{"input": "The slow fish sits.", "output": "λx. sits(fish)", "category": "simple", "phenomena": ["predication", "modifier"]}
+{"input": "The monk is slow.", "output": "λx. slow(monk)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "Some knight laughs.", "output": "λx. laughs(knight)", "category": "quantified", "phenomena": ["quantification", "existential"]}
+{"input": "The quiet scientist waits.", "output": "λx. waits(quiet(scientist))", "category": "simple", "phenomena": ["predication", "modifier"]}
+{"input": "Every judge writes a artist.", "output": "∀x. (judge(x) → writes(x, artist))", "category": "quantified", "phenomena": ["quantification", "transitive"]}
+{"input": "No queen rests.", "output": "λx. rests(queen)", "category": "negation", "phenomena": ["negation", "quantification"]}
+{"input": "If the baker sits, the singer smiles.", "output": "λx. if(sits(baker), smiles(singer))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "John swims and cries.", "output": "λx. swims(john) ∧ cries(john)", "category": "conjunction", "phenomena": ["conjunction", "verb_coordination"]}
+{"input": "James likes lucy.", "output": "λx. likes(james, lucy)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "The writer that guides the monk dreams.", "output": "λx. dreams(writer, monk)", "category": "relative_clause", "phenomena": ["relative_clause"]}
+{"input": "Either the writer works or the knight smiles.", "output": "λx. (works(writer) ∨ smiles(knight))", "category": "disjunction", "phenomena": ["disjunction"]}
+{"input": "Every baker trusts a baker.", "output": "∀x. ∀y. trusts(x, y)", "category": "quantified", "phenomena": ["quantification", "transitive"]}
+{"input": "The chef finds the monk.", "output": "λx. finds(monk, chef)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "The scientist hates the fish.", "output": "λx. hates(scientist, fish)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "The fish is young.", "output": "λx. is(young, fish)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "The judge is wise.", "output": "λx. is(wise, judge)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "Frank sleeps and sits.", "output": "λx. sleeps(frank) ∧ sits(frank)", "category": "conjunction", "phenomena": ["conjunction", "verb_coordination"]}
+{"input": "Bob knows that the farmer sits.", "output": "knows(bob, farmer, sits)", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "The baker greets the guard.", "output": "λx. greets(baker, guard)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "Every queen jumps.", "output": "∀x. queen(x) → jumps(x)", "category": "quantified", "phenomena": ["quantification"]}
+{"input": "The student handed the judge a ball.", "output": "λx. handed(judge, ball)", "category": "ditransitive", "phenomena": ["predication", "ditransitive"]}
+{"input": "Tom admires lucy.", "output": "λx. admires(tom, lucy)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "The king who the poet guides works.", "output": "λx. works(king, poet)", "category": "relative_clause", "phenomena": ["relative_clause", "object_relative"]}
+{"input": "The writer follows the doctor.", "output": "λx. follows(writer, doctor)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "The pilot sleeps in the castle.", "output": "λx. sleeps(pilot) ∧ in(x, castle)", "category": "prepositional", "phenomena": ["prepositional"]}
+{"input": "Alice greets kate.", "output": "λx. greets(alice, kate)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "The guard sent the queen a letter.", "output": "λx. sent(guard, queen, letter)", "category": "ditransitive", "phenomena": ["predication", "ditransitive"]}
+{"input": "Peter hates bob.", "output": "λx. hates(peter, bob)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "The judge cries in the forest.", "output": "λx. cries(judge, forest)", "category": "prepositional", "phenomena": ["prepositional"]}
+{"input": "The loud baker swims.", "output": "λx. swims(loud_baker)", "category": "simple", "phenomena": ["predication", "modifier"]}
+{"input": "If the writer swims, the knight shouts.", "output": "λx. if(swims(x), shouts(knight))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "Some chef smiles.", "output": "λx. smiles(chef)", "category": "quantified", "phenomena": ["quantification", "existential"]}
+{"input": "Oscar trusts james.", "output": "λx. trusts(ox, james)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "The humble judge dreams.", "output": "λx. dreams(judge)", "category": "simple", "phenomena": ["predication", "modifier"]}
+{"input": "The judge sent the teacher a letter.", "output": "λx. sent(judge, teacher, letter)", "category": "ditransitive", "phenomena": ["predication", "ditransitive"]}
+{"input": "No bird smiles.", "output": "λx. ¬smiles(bird)", "category": "negation", "phenomena": ["negation", "quantification"]}
+{"input": "Either the hunter smiles or the artist sings.", "output": "λx. (smiles(hunter) ∨ sings(artist))", "category": "disjunction", "phenomena": ["disjunction"]}
+{"input": "Sarah sleeps and flies.", "output": "λx. sleeps(sarah) ∧ flies(sarah)", "category": "conjunction", "phenomena": ["conjunction", "verb_coordination"]}
+{"input": "If the bird sleeps, the singer dances.", "output": "λx. if(sleeps(bird), dances(singer))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "Sarah thinks that the clerk smiles.", "output": "λx. thinks(sarah, clerk, smiles)", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "No sailor smiles.", "output": "λx. ¬smiles(sailor)", "category": "negation", "phenomena": ["negation", "quantification"]}
+{"input": "The lawyer gave the woman a book.", "output": "λx. gave(lawyer, woman, book)", "category": "ditransitive", "phenomena": ["predication", "ditransitive"]}
+{"input": "Paul waits.", "output": "λx. waits(paul)", "category": "simple", "phenomena": ["predication", "proper_noun"]}
+{"input": "Jane and emma laugh.", "output": "λx. laugh(jane, emma)", "category": "conjunction", "phenomena": ["conjunction"]}
+{"input": "Every king runs.", "output": "∀x. (king(x) → runs(x))", "category": "quantified", "phenomena": ["quantification"]}
+{"input": "The hunter works in the mountain.", "output": "λx. works(hunter, mountain)", "category": "prepositional", "phenomena": ["prepositional"]}
+{"input": "Either the man runs or the fish jumps.", "output": "λx. (runs(man) ∨ jumps(fish))", "category": "disjunction", "phenomena": ["disjunction"]}
+{"input": "The hunter sits slowly.", "output": "λx. sits(hunter, slowly)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "The student is quiet.", "output": "λx. is_quiet(student)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "The singer dances gently.", "output": "λx. dances(gently, singer)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "Some lawyer walks.", "output": "λx. walks(some_lawyer)", "category": "quantified", "phenomena": ["quantification", "existential"]}
+{"input": "The baker works gently.", "output": "λx. works(baker, gently)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "If the monk cries, the doctor flies.", "output": "λx. if(cries(monk), flies(doctor))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "Jane dances and dreams.", "output": "λx. dances(jane) ∧ dreams(jane)", "category": "conjunction", "phenomena": ["conjunction", "verb_coordination"]}
+{"input": "Some child dances.", "output": "∃x. child(x) ∧ dances(x)", "category": "quantified", "phenomena": ["quantification", "existential"]}
+{"input": "The clerk does not fly.", "output": "λx. not(fly(clerk))", "category": "negation", "phenomena": ["negation"]}
+{"input": "Jane and frank dream.", "output": "λx. dream(jane, frank)", "category": "conjunction", "phenomena": ["conjunction"]}
+{"input": "The pilot is fast.", "output": "λx. fast(pilot)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "Alice cries.", "output": "λx. cries(alice)", "category": "simple", "phenomena": ["predication", "proper_noun"]}
+{"input": "The woman sits in the garden.", "output": "λx. sits(woman, garden)", "category": "prepositional", "phenomena": ["prepositional"]}
+{"input": "The calm pilot jumps.", "output": "λx. jumps(pilot)", "category": "simple", "phenomena": ["predication", "modifier"]}
+{"input": "If the baker flies, the child cries.", "output": "flies(baker) → cries(child)", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "The chef who the clerk admires runs.", "output": "λx. runs(λy. (admirer(y, clerk) ∧ y) → x)", "category": "relative_clause", "phenomena": ["relative_clause", "object_relative"]}
+{"input": "The teacher works carefully.", "output": "λx. works(teacher, carefully)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "The dancer greets the bird.", "output": "λx. greets(dancer, bird)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "The fierce guard sits.", "output": "λx. sits(guard)", "category": "simple", "phenomena": ["predication", "modifier"]}
+{"input": "James smiles.", "output": "λx. smiles(james)", "category": "simple", "phenomena": ["predication", "proper_noun"]}
+{"input": "If the child works, the fish rests.", "output": "λx. if(works(child), rests(fish))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "If the woman sings, the child cries.", "output": "λx. (sings(woman) → cries(child))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "The cat who the king sees jumps.", "output": "λx. jumps(cat)", "category": "relative_clause", "phenomena": ["relative_clause", "object_relative"]}
+{"input": "Every dancer dreams.", "output": "∀x. (dancer(x) → dreams(x))", "category": "quantified", "phenomena": ["quantification"]}
+{"input": "The sailor that fears the woman smiles.", "output": "λx. (fears(x, woman) → smiles(sailor))", "category": "relative_clause", "phenomena": ["relative_clause"]}
+{"input": "The student offered the judge a gift.", "output": "λx. offered(student, judge, gift)", "category": "ditransitive", "phenomena": ["predication", "ditransitive"]}
+{"input": "Every king helps a judge.", "output": "∀x. (king(x) → helps(x, judge))", "category": "quantified", "phenomena": ["quantification", "transitive"]}
+{"input": "The monk follows the teacher.", "output": "λx. follows(monk, teacher)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "Every queen shouts.", "output": "∀x. queen(x) → shouts(x)", "category": "quantified", "phenomena": ["quantification"]}
+{"input": "Peter and frank walk.", "output": "λx. walk(peter, frank)", "category": "conjunction", "phenomena": ["conjunction"]}
+{"input": "Some guard cries.", "output": "∃x. guard(x) ∧ cries(x)", "category": "quantified", "phenomena": ["quantification", "existential"]}
+{"input": "Every farmer reads a pilot.", "output": "∀x. (farmer(x) → reads(x, pilot))", "category": "quantified", "phenomena": ["quantification", "transitive"]}
+{"input": "John hates alice.", "output": "λx. hates(john, alice)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "Either the artist shouts or the student flies.", "output": "λx. (shouts(artist) ∨ flies(student))", "category": "disjunction", "phenomena": ["disjunction"]}
+{"input": "The king who the judge guides waits.", "output": "λx. waits(king, judge)", "category": "relative_clause", "phenomena": ["relative_clause", "object_relative"]}
+{"input": "Tom swims.", "output": "λx. swims(tom)", "category": "simple", "phenomena": ["predication", "proper_noun"]}
+{"input": "The monk laughs.", "output": "λx. laughs(monk)", "category": "simple", "phenomena": ["predication"]}
+{"input": "The woman does not shout.", "output": "λx. not(shout(woman))", "category": "negation", "phenomena": ["negation"]}
+{"input": "The scientist that writes the clerk cries.", "output": "λx. cries(scientist(x) ∧ writes(x, clerk))", "category": "relative_clause", "phenomena": ["relative_clause"]}
+{"input": "The pilot serves the monk.", "output": "λx. serves(pilot, monk)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "The sad judge swims.", "output": "λx. swims(judge)", "category": "simple", "phenomena": ["predication", "modifier"]}
+{"input": "Some man shouts.", "output": "λx. shouts(man)", "category": "quantified", "phenomena": ["quantification", "existential"]}
+{"input": "The hunter is humble.", "output": "λx. humble(hunter)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "If the sailor flies, the scientist jumps.", "output": "λx. if(flies(sailor), jumps(scientist))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "The clerk writes the dog.", "output": "λx. writes(clerk, dog)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "The guard sits quickly.", "output": "λx. sits(guard, quickly)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "The farmer is calm.", "output": "λx. calm(farmer)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "The teacher sings.", "output": "λx. sings(teacher)", "category": "simple", "phenomena": ["predication"]}
+{"input": "Every cat sings.", "output": "∀x. (cat(x) → sings(x))", "category": "quantified", "phenomena": ["quantification"]}
+{"input": "Every monk flies.", "output": "∀x. monk(x) → flies(x)", "category": "quantified", "phenomena": ["quantification"]}
+{"input": "The judge is proud.", "output": "λx. proud(judge)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "The knight gave the student a ball.", "output": "λx. gave(knight, student, ball)", "category": "ditransitive", "phenomena": ["predication", "ditransitive"]}
+{"input": "The hunter sings in the mountain.", "output": "λx. sings(hunter, mountain)", "category": "prepositional", "phenomena": ["prepositional"]}
+{"input": "No chef sits.", "output": "λx. sits(chef)", "category": "negation", "phenomena": ["negation", "quantification"]}
+{"input": "Frank helps lucy.", "output": "λx. helps(frank, lucy)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "The child hates the singer.", "output": "λx. hates(child, singer)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "The knight runs.", "output": "λx. runs(knight)", "category": "simple", "phenomena": ["predication"]}
+{"input": "Anna finds lucy.", "output": "λx. finds(anna, lucy)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "No dancer runs.", "output": "∀x. (dancer(x) → ¬runs(x))", "category": "negation", "phenomena": ["negation", "quantification"]}
+{"input": "Paul fears that the queen walks.", "output": "λx. fears(paul, x) → λx. walks(queen)", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "The lawyer does not shout.", "output": "λx. not(shout(lawyer))", "category": "negation", "phenomena": ["negation"]}
+{"input": "The hunter is kind.", "output": "λx. is_kind(hunter)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "If the baker laughs, the bird swims.", "output": "laughs(baker) → swims(bird)", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "The scientist flies.", "output": "λx. flies(scientist)", "category": "simple", "phenomena": ["predication"]}
+{"input": "If the child swims, the farmer jumps.", "output": "λx. if(swims(child), jumps(farmer))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "The judge does not fall.", "output": "λx. not(fall(judge))", "category": "negation", "phenomena": ["negation"]}
+{"input": "No hunter laughs.", "output": "λx. ¬laughs(hunter)", "category": "negation", "phenomena": ["negation", "quantification"]}
+{"input": "If the man swims, the cat jumps.", "output": "λx. if(swims(man), jumps(cat))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "If the poet flies, the teacher dances.", "output": "flies(poet) → dances(teacher)", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "Tom fears that the guard sits.", "output": "λx. fears(tom, guard, sits)", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "The cat who the writer knows swims.", "output": "λx. swims(x) ∧ knows(writer, x)", "category": "relative_clause", "phenomena": ["relative_clause", "object_relative"]}
+{"input": "The judge sits in the garden.", "output": "λx. sits(judge, garden)", "category": "prepositional", "phenomena": ["prepositional"]}
+{"input": "If the pilot sits, the chef rests.", "output": "λx. if(sits(pilot), rests(chef))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "The fish dances quickly.", "output": "λx. dances(fish, quickly)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "Some guard sings.", "output": "λx. sings(some_guard)", "category": "quantified", "phenomena": ["quantification", "existential"]}
+{"input": "Lucy knows that the writer sits.", "output": "knows(lucy, λx. sits(writer))", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "Kate fears lucy.", "output": "λx. fears(kate, lucy)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "If the judge shouts, the singer jumps.", "output": "λx. if(shouts(judge), jumps(singer))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "The teacher handed the woman a gift.", "output": "λx. handed(teacher, woman, gift)", "category": "ditransitive", "phenomena": ["predication", "ditransitive"]}
+{"input": "The hunter who the king greets waits.", "output": "λx. waits(hunter(x) ∧ greets(king(x)))", "category": "relative_clause", "phenomena": ["relative_clause", "object_relative"]}
+{"input": "Helen flies.", "output": "λx. flies(helen)", "category": "simple", "phenomena": ["predication", "proper_noun"]}

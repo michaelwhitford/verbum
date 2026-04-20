@@ -1,0 +1,66 @@
+{
+  "timestamp": "2026-04-17T16:27:10.750301+00:00",
+  "elapsed_s": 66.53719973564148,
+  "levels": [
+    {
+      "level": "L0: Baseline (full model)",
+      "status": "PASS",
+      "success_rate": 1.0
+    },
+    {
+      "level": "L1: Zero ALL FFN (attention-only)",
+      "status": "FAIL",
+      "success_rate": 0.0
+    },
+    {
+      "level": "L2: Zero non-critical attention (FFN everywhere)",
+      "status": "FAIL",
+      "success_rate": 0.0
+    },
+    {
+      "level": "L3: Zero non-critical FFN+attn (residual pass-through)",
+      "status": "FAIL",
+      "success_rate": 0.0
+    },
+    {
+      "level": "L4: 3 essential heads + critical FFN",
+      "status": "FAIL",
+      "success_rate": 0.0
+    },
+    {
+      "level": "L5: 3 essential heads ONLY (no FFN)",
+      "status": "FAIL",
+      "success_rate": 0.0
+    },
+    {
+      "level": "L6: L24:H0 ONLY (single head)",
+      "status": "FAIL",
+      "success_rate": 0.0
+    }
+  ],
+  "minimum_passing": "L0: Baseline (full model)",
+  "critical_layers": [
+    0,
+    1,
+    4,
+    7,
+    24,
+    26,
+    30,
+    33
+  ],
+  "essential_heads": [
+    [
+      1,
+      0
+    ],
+    [
+      24,
+      0
+    ],
+    [
+      24,
+      2
+    ]
+  ]
+}

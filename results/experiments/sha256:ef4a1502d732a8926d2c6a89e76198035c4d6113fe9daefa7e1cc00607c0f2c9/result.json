@@ -1,0 +1,39 @@
+{
+  "L1-H0": {
+    "task": "summarize",
+    "generation": " \u2192 New butterfly species found in Amazon rainforest with unique wing patterns.\n\nOkay, so I need to figure out how to transform the given sentences into their more concise versions. Let me start by looking at the examples provided to understand the pattern.\n\nThe first",
+    "success": false,
+    "ablated_head": [
+      1,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H0": {
+    "task": "summarize",
+    "generation": " They named it the \"Amazonian Veilwing.\" The butterfly is now the subject of a new research project.\nOutput: The university's scientists discovered a new butterfly species in the Amazon rainforest, the \"Amazonian Veilwing,\" known for",
+    "success": false,
+    "ablated_head": [
+      24,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H2": {
+    "task": "summarize",
+    "generation": " \u2192 Scientists discovered new butterfly species in Amazon rainforest with unique wing patterns.\n\nOkay, so I need to figure out how to transform the given input sentence into a more concise version, similar to the examples provided. Let me start by looking at the examples",
+    "success": false,
+    "ablated_head": [
+      24,
+      2
+    ],
+    "is_baseline": false
+  },
+  "baseline": {
+    "task": "summarize",
+    "generation": " \u2192 __________\n\nOutput: __________\nOkay, let's see. The user provided an example where they took a sentence and condensed it into a shorter version, keeping the main points. The first example was about a quick brown fox jumping over a",
+    "success": false,
+    "ablated_head": null,
+    "is_baseline": true
+  }
+}

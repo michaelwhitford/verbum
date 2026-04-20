@@ -1,0 +1,2 @@
+The dog runs. → λx. runs(dog)
+Be helpful but concise. → λ assist(x). helpful(x) | concise(x)

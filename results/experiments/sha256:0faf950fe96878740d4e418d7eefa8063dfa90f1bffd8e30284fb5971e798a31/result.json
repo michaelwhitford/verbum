@@ -1,0 +1,39 @@
+{
+  "L1-H0": {
+    "task": "compile",
+    "generation": " \u2192 ?\n\nOkay, let's see. The user wants to convert the sentence \"The cat that sat on the mat is black.\" into a lambda expression. Hmm, first I need to parse the sentence into its components. \n\nSo, the main structure",
+    "success": false,
+    "ablated_head": [
+      1,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H0": {
+    "task": "compile",
+    "generation": " \u2192 ?\n\nOkay, let's see. The user wants to convert the sentence \"The cat that sat on the mat is black.\" into a lambda expression. Hmm, first I need to parse the sentence structure. \n\nSo the main clause is \"The",
+    "success": false,
+    "ablated_head": [
+      24,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H2": {
+    "task": "compile",
+    "generation": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how to represent the sentence \"The cat that sat on the mat is black.\" using lambda expressions. Let",
+    "success": true,
+    "ablated_head": [
+      24,
+      2
+    ],
+    "is_baseline": false
+  },
+  "baseline": {
+    "task": "compile",
+    "generation": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how to represent the sentence \"The cat that sat on the mat is black.\" using lambda expressions. Let",
+    "success": true,
+    "ablated_head": null,
+    "is_baseline": true
+  }
+}

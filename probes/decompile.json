@@ -1,0 +1,45 @@
+{
+  "id": "decompile",
+  "version": 1,
+  "description": "Decompile probe set. Lambda expressions to natural language. Tests whether the compilation circuit is bidirectional.",
+  "created": "2026-04-17T00:00:00Z",
+  "author": "verbum",
+  "default_gate": "decompile",
+  "probes": [
+    {
+      "id": "dc-simple",
+      "category": "decompile",
+      "prompt": "λx. runs(dog)",
+      "ground_truth": "The dog runs.",
+      "metadata": {"complexity": "simple", "phenomena": ["predication"]}
+    },
+    {
+      "id": "dc-quant",
+      "category": "decompile",
+      "prompt": "λx. ∀y. student(y) → ∃z. book(z) ∧ reads(y, z)",
+      "ground_truth": "Every student reads a book.",
+      "metadata": {"complexity": "medium", "phenomena": ["quantification"]}
+    },
+    {
+      "id": "dc-relcl",
+      "category": "decompile",
+      "prompt": "λx. black(ιy. cat(y) ∧ sat_on(y, ιz. mat(z)))",
+      "ground_truth": "The cat that sat on the mat is black.",
+      "metadata": {"complexity": "medium", "phenomena": ["relative_clause"]}
+    },
+    {
+      "id": "dc-cond",
+      "category": "decompile",
+      "prompt": "λx. rains → wet(ground)",
+      "ground_truth": "If it rains, the ground is wet.",
+      "metadata": {"complexity": "medium", "phenomena": ["conditional"]}
+    },
+    {
+      "id": "dc-belief",
+      "category": "decompile",
+      "prompt": "λx. ∃y. person(y) ∧ believes(y, flat(earth))",
+      "ground_truth": "Someone believes that the earth is flat.",
+      "metadata": {"complexity": "complex", "phenomena": ["belief_report"]}
+    }
+  ]
+}

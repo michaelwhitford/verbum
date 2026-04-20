@@ -1,0 +1,1533 @@
+{
+  "timestamp": "2026-04-17T19:49:08.151320+00:00",
+  "elapsed_s": 187.45337009429932,
+  "device": "mps",
+  "results": {
+    "EleutherAI/pythia-14m-deduped": {
+      "model": "EleutherAI/pythia-14m-deduped",
+      "n_params": 14067712,
+      "n_layers": 6,
+      "n_heads": 4,
+      "gates": {
+        "minimal": {
+          "p_lambda": 0.0,
+          "parse_rate": 0.0,
+          "results": [
+            {
+              "input": "The dog runs.",
+              "category": "simple",
+              "generated": "The dog runs. →",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "The bird flies.",
+              "category": "simple",
+              "generated": "The bird flies. →",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "Alice helps Bob.",
+              "category": "transitive",
+              "generated": "The first time the time to get the next time, the second time to get the next time, the second time to get the next time, the second time to get the next time, the second time to get the next time, the second time to get the next time, the second",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            },
+            {
+              "input": "Every student reads a book.",
+              "category": "quantified",
+              "generated": "The first thing you can do is to get a book about the book, and then you can read the book.",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            },
+            {
+              "input": "No fish swims.",
+              "category": "negation",
+              "generated": "The first time the time to go to the first time, the second time to go to the second time, the second time to go to the second time, the second time to go to the second time, the second time to go to the second time, the second time to go to",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            },
+            {
+              "input": "If the dog runs, the cat sleeps.",
+              "category": "conditional",
+              "generated": "The cat sleeps. →",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "The teacher laughs.",
+              "category": "simple",
+              "generated": "The teacher laughs. →",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "Tom runs quickly.",
+              "category": "adverb",
+              "generated": "The first time the time to get the next day, the next day, the next day, the next day, the next day, the next day, the next day, the next day, the next day, the next day, the next day, the next day, the next day",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            }
+          ]
+        },
+        "two_shot": {
+          "p_lambda": 1.0,
+          "parse_rate": 0.625,
+          "results": [
+            {
+              "input": "The dog runs.",
+              "category": "simple",
+              "generated": "λx. sleeps(cat)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "The bird flies.",
+              "category": "simple",
+              "generated": "λx. sleeps(cat)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Alice helps Bob.",
+              "category": "transitive",
+              "generated": "λx. is the same as the cat, but it's not a good thing. → λx. is a good thing. → λx. is a good thing. → λx. is a good thing. → λx. is a good thing. → λx. is a",
+              "has_lambda": true,
+              "lambda_count": 11,
+              "parses": false
+            },
+            {
+              "input": "Every student reads a book.",
+              "category": "quantified",
+              "generated": "λx. is a book. → λx. is a book. → λx. is a book. → λx. is a book. → λx. is a book. → λx. is a book. → λx. is a book. → λx. is",
+              "has_lambda": true,
+              "lambda_count": 15,
+              "parses": false
+            },
+            {
+              "input": "No fish swims.",
+              "category": "negation",
+              "generated": "λx. w. w. w. w. w. w. w. w. w. w. w. w. w. w. w. w. w. w. w. w. w. w. w. w. w. w. w. w. w",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "If the dog runs, the cat sleeps.",
+              "category": "conditional",
+              "generated": "λx. sleeps(cat)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "The teacher laughs.",
+              "category": "simple",
+              "generated": "λx. sleeps(cat)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Tom runs quickly.",
+              "category": "adverb",
+              "generated": "λx. sleeps(cat)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            }
+          ]
+        },
+        "five_shot": {
+          "p_lambda": 0.375,
+          "parse_rate": 0.0,
+          "results": [
+            {
+              "input": "The dog runs.",
+              "category": "simple",
+              "generated": "∀x. cat(x) → ∀x. cat(x) → ∀x. cat(x) → ∀x. cat(x) → ∀x. cat(x) → ∀x. cat(x) → ∀x. cat(",
+              "has_lambda": true,
+              "lambda_count": 13,
+              "parses": false
+            },
+            {
+              "input": "The bird flies.",
+              "category": "simple",
+              "generated": "∀x. cat(x) → ∀x. cat(x) → ∀x. cat(x) → ∀x. cat(x) → ∀x. cat(x) → ∀x. cat(x) → ∀x. cat(",
+              "has_lambda": true,
+              "lambda_count": 13,
+              "parses": false
+            },
+            {
+              "input": "Alice helps Bob.",
+              "category": "transitive",
+              "generated": "∀x.",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "Every student reads a book.",
+              "category": "quantified",
+              "generated": "∀x.",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "No fish swims.",
+              "category": "negation",
+              "generated": "∀x.",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "If the dog runs, the cat sleeps.",
+              "category": "conditional",
+              "generated": "∀x.",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "The teacher laughs.",
+              "category": "simple",
+              "generated": "∀x.",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "Tom runs quickly.",
+              "category": "adverb",
+              "generated": "∀x. cat(x) → ∀x. cat(x) → ∀x. cat(x) → ∀x. cat(x) → ∀x. cat(x) → ∀x. cat(x) → ∀x. cat(",
+              "has_lambda": true,
+              "lambda_count": 13,
+              "parses": false
+            }
+          ]
+        }
+      }
+    },
+    "EleutherAI/pythia-70m-deduped": {
+      "model": "EleutherAI/pythia-70m-deduped",
+      "n_params": 70426624,
+      "n_layers": 6,
+      "n_heads": 8,
+      "gates": {
+        "minimal": {
+          "p_lambda": 0.0,
+          "parse_rate": 0.0,
+          "results": [
+            {
+              "input": "The dog runs.",
+              "category": "simple",
+              "generated": "The dog runs the dog. →",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "The bird flies.",
+              "category": "simple",
+              "generated": "The bird flies to the left of the left wing. →",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "Alice helps Bob.",
+              "category": "transitive",
+              "generated": "**The first two chapters of this book are the first chapters of this book. The first chapter is the first chapter of the book, which is a short introduction to the book. The second chapter is the first chapter of the book, which is a short introduction to the book. The third",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            },
+            {
+              "input": "Every student reads a book.",
+              "category": "quantified",
+              "generated": "The book is a great way to get to know the people who are reading it. The book is a great way to get to know the people who are reading it.",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            },
+            {
+              "input": "No fish swims.",
+              "category": "negation",
+              "generated": "**3.2.1**",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            },
+            {
+              "input": "If the dog runs, the cat sleeps.",
+              "category": "conditional",
+              "generated": "The following is a list of the following:",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            },
+            {
+              "input": "The teacher laughs.",
+              "category": "simple",
+              "generated": "\"I'm not sure what to do, but I'm not sure what to do.\"",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            },
+            {
+              "input": "Tom runs quickly.",
+              "category": "adverb",
+              "generated": "The following is a list of the most important things to remember:",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            }
+          ]
+        },
+        "two_shot": {
+          "p_lambda": 1.0,
+          "parse_rate": 0.5,
+          "results": [
+            {
+              "input": "The dog runs.",
+              "category": "simple",
+              "generated": "λx. runs(dog)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "The bird flies.",
+              "category": "simple",
+              "generated": "λx.",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "Alice helps Bob.",
+              "category": "transitive",
+              "generated": "λx. run(dog)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Every student reads a book.",
+              "category": "quantified",
+              "generated": "λx. runs(dog)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "No fish swims.",
+              "category": "negation",
+              "generated": "λx.",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "If the dog runs, the cat sleeps.",
+              "category": "conditional",
+              "generated": "λx.",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "The teacher laughs.",
+              "category": "simple",
+              "generated": "λx.",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "Tom runs quickly.",
+              "category": "adverb",
+              "generated": "λx. runs(dog)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            }
+          ]
+        },
+        "five_shot": {
+          "p_lambda": 0.875,
+          "parse_rate": 0.25,
+          "results": [
+            {
+              "input": "The dog runs.",
+              "category": "simple",
+              "generated": "∀x. cat(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(",
+              "has_lambda": true,
+              "lambda_count": 10,
+              "parses": false
+            },
+            {
+              "input": "The bird flies.",
+              "category": "simple",
+              "generated": "∀x. cat(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(",
+              "has_lambda": true,
+              "lambda_count": 10,
+              "parses": false
+            },
+            {
+              "input": "Alice helps Bob.",
+              "category": "transitive",
+              "generated": "λx. small(fish)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Every student reads a book.",
+              "category": "quantified",
+              "generated": "∀x. cat(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(",
+              "has_lambda": true,
+              "lambda_count": 10,
+              "parses": false
+            },
+            {
+              "input": "No fish swims.",
+              "category": "negation",
+              "generated": "∀x. cat(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(",
+              "has_lambda": true,
+              "lambda_count": 10,
+              "parses": false
+            },
+            {
+              "input": "If the dog runs, the cat sleeps.",
+              "category": "conditional",
+              "generated": "∀x. cat(x) ∧ flies(x)",
+              "has_lambda": false,
+              "lambda_count": 2,
+              "parses": true
+            },
+            {
+              "input": "The teacher laughs.",
+              "category": "simple",
+              "generated": "∀x. cat(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(",
+              "has_lambda": true,
+              "lambda_count": 10,
+              "parses": false
+            },
+            {
+              "input": "Tom runs quickly.",
+              "category": "adverb",
+              "generated": "∀x. cat(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(x) ∧ flies(",
+              "has_lambda": true,
+              "lambda_count": 10,
+              "parses": false
+            }
+          ]
+        }
+      }
+    },
+    "EleutherAI/pythia-160m-deduped": {
+      "model": "EleutherAI/pythia-160m-deduped",
+      "n_params": 162322944,
+      "n_layers": 12,
+      "n_heads": 12,
+      "gates": {
+        "minimal": {
+          "p_lambda": 0.0,
+          "parse_rate": 0.0,
+          "results": [
+            {
+              "input": "The dog runs.",
+              "category": "simple",
+              "generated": "The dog runs. →",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "The bird flies.",
+              "category": "simple",
+              "generated": "The bird flies. →",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "Alice helps Bob.",
+              "category": "transitive",
+              "generated": "\"I'm not sure what to do with this. I'm not sure what to do with this. I'm not sure what to do with this. I'm not sure what to do with this. I'm not sure what to do with this. I'm not sure what to do",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            },
+            {
+              "input": "Every student reads a book.",
+              "category": "quantified",
+              "generated": "The first thing I did was to read the book. I was a little nervous, but I was able to get it out of my head. I was so excited to read it. I was so excited to read it. I was so excited to read it. I was so excited to",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            },
+            {
+              "input": "No fish swims.",
+              "category": "negation",
+              "generated": "The fish are not a part of the fish.",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            },
+            {
+              "input": "If the dog runs, the cat sleeps.",
+              "category": "conditional",
+              "generated": "The dog is not a good dog. The dog is not a good dog. The dog is not a good dog. The dog is not a good dog. The dog is not a good dog. The dog is not a good dog. The dog is not a good dog. The dog",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            },
+            {
+              "input": "The teacher laughs.",
+              "category": "simple",
+              "generated": "The teacher laughs.",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            },
+            {
+              "input": "Tom runs quickly.",
+              "category": "adverb",
+              "generated": "The first thing I did was to go to the library and get a copy of the book. I was a little nervous, but I was able to get it to me. I was able to get it to my parents, and I was able to get it to my sister. I was",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            }
+          ]
+        },
+        "two_shot": {
+          "p_lambda": 1.0,
+          "parse_rate": 0.75,
+          "results": [
+            {
+              "input": "The dog runs.",
+              "category": "simple",
+              "generated": "λx. runs(dog)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "The bird flies.",
+              "category": "simple",
+              "generated": "λx. flies(bird)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Alice helps Bob.",
+              "category": "transitive",
+              "generated": "λx. Alice(Bob)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "Every student reads a book.",
+              "category": "quantified",
+              "generated": "λx. read(book)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "No fish swims.",
+              "category": "negation",
+              "generated": "λx. swims(no fish)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "If the dog runs, the cat sleeps.",
+              "category": "conditional",
+              "generated": "λx. sleeps(cat)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "The teacher laughs.",
+              "category": "simple",
+              "generated": "λx. laughs(teacher)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Tom runs quickly.",
+              "category": "adverb",
+              "generated": "λx. runs(tom)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            }
+          ]
+        },
+        "five_shot": {
+          "p_lambda": 0.25,
+          "parse_rate": 0.875,
+          "results": [
+            {
+              "input": "The dog runs.",
+              "category": "simple",
+              "generated": "∀x. dog(x) ∧ runs(x)",
+              "has_lambda": false,
+              "lambda_count": 2,
+              "parses": true
+            },
+            {
+              "input": "The bird flies.",
+              "category": "simple",
+              "generated": "∀x. bird(x) ∧ flies(x)",
+              "has_lambda": false,
+              "lambda_count": 2,
+              "parses": true
+            },
+            {
+              "input": "Alice helps Bob.",
+              "category": "transitive",
+              "generated": "λx. helps(bob, bob)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Every student reads a book.",
+              "category": "quantified",
+              "generated": "∀x. student(x) → reading(x)",
+              "has_lambda": false,
+              "lambda_count": 2,
+              "parses": true
+            },
+            {
+              "input": "No fish swims.",
+              "category": "negation",
+              "generated": "∀x. fish(x) ∧ swims(x)",
+              "has_lambda": false,
+              "lambda_count": 2,
+              "parses": true
+            },
+            {
+              "input": "If the dog runs, the cat sleeps.",
+              "category": "conditional",
+              "generated": "∀x. cat(x) ∧ sleeps(x)",
+              "has_lambda": false,
+              "lambda_count": 2,
+              "parses": true
+            },
+            {
+              "input": "The teacher laughs.",
+              "category": "simple",
+              "generated": "λx. laugh(teacher)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Tom runs quickly.",
+              "category": "adverb",
+              "generated": "∀x. Tom(x) ∧ runs(x)",
+              "has_lambda": false,
+              "lambda_count": 2,
+              "parses": false
+            }
+          ]
+        }
+      }
+    },
+    "EleutherAI/pythia-410m-deduped": {
+      "model": "EleutherAI/pythia-410m-deduped",
+      "n_params": 405334016,
+      "n_layers": 24,
+      "n_heads": 16,
+      "gates": {
+        "minimal": {
+          "p_lambda": 0.0,
+          "parse_rate": 0.0,
+          "results": [
+            {
+              "input": "The dog runs.",
+              "category": "simple",
+              "generated": "The dog runs.",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            },
+            {
+              "input": "The bird flies.",
+              "category": "simple",
+              "generated": "The bird flies. →",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "Alice helps Bob.",
+              "category": "transitive",
+              "generated": "The first time I met Alice, she was a little girl. She was a little girl who had a lot of energy and a lot of fun. She was a little girl who was very happy. She was very happy. She was very happy. She was very happy. She was very",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            },
+            {
+              "input": "Every student reads a book.",
+              "category": "quantified",
+              "generated": "Students read a book.",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            },
+            {
+              "input": "No fish swims.",
+              "category": "negation",
+              "generated": "The first time I saw the movie, I was so excited. I was so excited to see the movie. I was so excited to see the movie. I was so excited to see the movie. I was so excited to see the movie. I was so excited to see the movie.",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            },
+            {
+              "input": "If the dog runs, the cat sleeps.",
+              "category": "conditional",
+              "generated": "The dog is the most important part of the family. →",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "The teacher laughs.",
+              "category": "simple",
+              "generated": "\"I'm not sure what you're talking about, but I'm not sure what you're talking about.\"",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            },
+            {
+              "input": "Tom runs quickly.",
+              "category": "adverb",
+              "generated": "The first time I saw the movie, I was so excited. I was so excited to see the movie. I was so excited to see the movie. I was so excited to see the movie. I was so excited to see the movie. I was so excited to see the movie.",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            }
+          ]
+        },
+        "two_shot": {
+          "p_lambda": 1.0,
+          "parse_rate": 0.75,
+          "results": [
+            {
+              "input": "The dog runs.",
+              "category": "simple",
+              "generated": "λx. runs(dog)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "The bird flies.",
+              "category": "simple",
+              "generated": "λx. flies(bird)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Alice helps Bob.",
+              "category": "transitive",
+              "generated": "λx. helps(Alice)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "Every student reads a book.",
+              "category": "quantified",
+              "generated": "λx. reads(book)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "No fish swims.",
+              "category": "negation",
+              "generated": "λx. swims(fish)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "If the dog runs, the cat sleeps.",
+              "category": "conditional",
+              "generated": "λx. sleeps(dog)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "The teacher laughs.",
+              "category": "simple",
+              "generated": "λx. laughs(teacher)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Tom runs quickly.",
+              "category": "adverb",
+              "generated": "λx. runs(Tom)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": false
+            }
+          ]
+        },
+        "five_shot": {
+          "p_lambda": 1.0,
+          "parse_rate": 0.875,
+          "results": [
+            {
+              "input": "The dog runs.",
+              "category": "simple",
+              "generated": "λx. runs(dog)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "The bird flies.",
+              "category": "simple",
+              "generated": "λx. flies(bird)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Alice helps Bob.",
+              "category": "transitive",
+              "generated": "λx. helps(alice, bob)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Every student reads a book.",
+              "category": "quantified",
+              "generated": "λx. read(book)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "No fish swims.",
+              "category": "negation",
+              "generated": "λx. swims(fish)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "If the dog runs, the cat sleeps.",
+              "category": "conditional",
+              "generated": "λx. sleeps(dog)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "The teacher laughs.",
+              "category": "simple",
+              "generated": "λx. laughs(teacher)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Tom runs quickly.",
+              "category": "adverb",
+              "generated": "λx. runs(Tom)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": false
+            }
+          ]
+        }
+      }
+    },
+    "EleutherAI/pythia-1b-deduped": {
+      "model": "EleutherAI/pythia-1b-deduped",
+      "n_params": 1011781632,
+      "n_layers": 16,
+      "n_heads": 8,
+      "gates": {
+        "minimal": {
+          "p_lambda": 0.0,
+          "parse_rate": 0.0,
+          "results": [
+            {
+              "input": "The dog runs.",
+              "category": "simple",
+              "generated": "The dog runs. →",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "The bird flies.",
+              "category": "simple",
+              "generated": "The bird flies. →",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "Alice helps Bob.",
+              "category": "transitive",
+              "generated": "Bob is a little confused. →",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "Every student reads a book.",
+              "category": "quantified",
+              "generated": "The first time I read a book, I was in the middle of a book club. →",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "No fish swims.",
+              "category": "negation",
+              "generated": "The fish are all dead. →",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "If the dog runs, the cat sleeps.",
+              "category": "conditional",
+              "generated": "The dog runs, the cat sleeps. →",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "The teacher laughs.",
+              "category": "simple",
+              "generated": "The teacher laughs. →",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "Tom runs quickly.",
+              "category": "adverb",
+              "generated": "The first thing I noticed was the smell of the air. It was a mixture of sweat and the smell of the forest. I could hear the sound of the wind in the trees. I could also hear the sound of the water. I could also hear the sound of the birds. I",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            }
+          ]
+        },
+        "two_shot": {
+          "p_lambda": 1.0,
+          "parse_rate": 0.75,
+          "results": [
+            {
+              "input": "The dog runs.",
+              "category": "simple",
+              "generated": "λx. runs(dog)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "The bird flies.",
+              "category": "simple",
+              "generated": "λx. flies(bird)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Alice helps Bob.",
+              "category": "transitive",
+              "generated": "λx. helps(Alice, Bob)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "Every student reads a book.",
+              "category": "quantified",
+              "generated": "λx. reads(book)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "No fish swims.",
+              "category": "negation",
+              "generated": "λx. swims(no fish)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "If the dog runs, the cat sleeps.",
+              "category": "conditional",
+              "generated": "λx. runs(dog)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "The teacher laughs.",
+              "category": "simple",
+              "generated": "λx. laughs(teacher)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Tom runs quickly.",
+              "category": "adverb",
+              "generated": "λx. runs(tom)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            }
+          ]
+        },
+        "five_shot": {
+          "p_lambda": 0.75,
+          "parse_rate": 1.0,
+          "results": [
+            {
+              "input": "The dog runs.",
+              "category": "simple",
+              "generated": "λx. runs(dog)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "The bird flies.",
+              "category": "simple",
+              "generated": "λx. flies(bird)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Alice helps Bob.",
+              "category": "transitive",
+              "generated": "λx. helps(alice, bob)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Every student reads a book.",
+              "category": "quantified",
+              "generated": "∀x. student(x) → reads(x)",
+              "has_lambda": false,
+              "lambda_count": 2,
+              "parses": true
+            },
+            {
+              "input": "No fish swims.",
+              "category": "negation",
+              "generated": "∃x. fish(x) ∧ swims(x)",
+              "has_lambda": false,
+              "lambda_count": 2,
+              "parses": true
+            },
+            {
+              "input": "If the dog runs, the cat sleeps.",
+              "category": "conditional",
+              "generated": "λx. runs(dog)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "The teacher laughs.",
+              "category": "simple",
+              "generated": "λx. teacher(laugh)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Tom runs quickly.",
+              "category": "adverb",
+              "generated": "λx. runs(tom)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            }
+          ]
+        }
+      }
+    },
+    "EleutherAI/pythia-1.4b-deduped": {
+      "model": "EleutherAI/pythia-1.4b-deduped",
+      "n_params": 1414647808,
+      "n_layers": 24,
+      "n_heads": 16,
+      "gates": {
+        "minimal": {
+          "p_lambda": 0.0,
+          "parse_rate": 0.0,
+          "results": [
+            {
+              "input": "The dog runs.",
+              "category": "simple",
+              "generated": "The dog runs. →",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "The bird flies.",
+              "category": "simple",
+              "generated": "The bird flies. →",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "Alice helps Bob.",
+              "category": "transitive",
+              "generated": "Alice helps Bob. →",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "Every student reads a book.",
+              "category": "quantified",
+              "generated": "The book is a collection of short stories. →",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "No fish swims.",
+              "category": "negation",
+              "generated": "The fish is a symbol of the sea. →",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "If the dog runs, the cat sleeps.",
+              "category": "conditional",
+              "generated": "The cat is a very good dog. The dog is a very good cat.",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            },
+            {
+              "input": "The teacher laughs.",
+              "category": "simple",
+              "generated": "The teacher laughs. →",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "Tom runs quickly.",
+              "category": "adverb",
+              "generated": "The first time I saw the movie, I was a little disappointed. I thought it was going to be a lot of fun, but it was not. It was a lot of fun, but it was not a lot of fun. I was expecting a lot of fun, but it was",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            }
+          ]
+        },
+        "two_shot": {
+          "p_lambda": 1.0,
+          "parse_rate": 0.625,
+          "results": [
+            {
+              "input": "The dog runs.",
+              "category": "simple",
+              "generated": "λx. runs(dog)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "The bird flies.",
+              "category": "simple",
+              "generated": "λx. flies(bird)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Alice helps Bob.",
+              "category": "transitive",
+              "generated": "λx. helps(Bob)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "Every student reads a book.",
+              "category": "quantified",
+              "generated": "λx. every(student, book)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "No fish swims.",
+              "category": "negation",
+              "generated": "λx. swims(no fish)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "If the dog runs, the cat sleeps.",
+              "category": "conditional",
+              "generated": "λx. runs(dog) sleeps(cat)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "The teacher laughs.",
+              "category": "simple",
+              "generated": "λx. laughs(teacher)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Tom runs quickly.",
+              "category": "adverb",
+              "generated": "λx. runs(dog, cat)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            }
+          ]
+        },
+        "five_shot": {
+          "p_lambda": 0.75,
+          "parse_rate": 1.0,
+          "results": [
+            {
+              "input": "The dog runs.",
+              "category": "simple",
+              "generated": "λx. runs(dog)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "The bird flies.",
+              "category": "simple",
+              "generated": "λx. flies(bird)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Alice helps Bob.",
+              "category": "transitive",
+              "generated": "λx. helps(alice, bob)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Every student reads a book.",
+              "category": "quantified",
+              "generated": "∀x. student(x) → reads(x)",
+              "has_lambda": false,
+              "lambda_count": 2,
+              "parses": true
+            },
+            {
+              "input": "No fish swims.",
+              "category": "negation",
+              "generated": "∃x. fish(x) ∧ swims(x)",
+              "has_lambda": false,
+              "lambda_count": 2,
+              "parses": true
+            },
+            {
+              "input": "If the dog runs, the cat sleeps.",
+              "category": "conditional",
+              "generated": "λx. runs(dog)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "The teacher laughs.",
+              "category": "simple",
+              "generated": "λx. laughs(teacher)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Tom runs quickly.",
+              "category": "adverb",
+              "generated": "λx. runs(tom)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            }
+          ]
+        }
+      }
+    },
+    "EleutherAI/pythia-2.8b-deduped": {
+      "model": "EleutherAI/pythia-2.8b-deduped",
+      "n_params": 2775208960,
+      "n_layers": 32,
+      "n_heads": 32,
+      "gates": {
+        "minimal": {
+          "p_lambda": 0.0,
+          "parse_rate": 0.0,
+          "results": [
+            {
+              "input": "The dog runs.",
+              "category": "simple",
+              "generated": "**dog-trot** A dog-trot is a trotting gait in which the forelegs are raised and the hind legs are brought forward. →",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "The bird flies.",
+              "category": "simple",
+              "generated": "**Bird-watching** is a popular pastime in the United States, and the number of bird-watchers is increasing. The best time to see birds is in the spring and fall, when they are most active. The best places to see birds are in the open country",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            },
+            {
+              "input": "Alice helps Bob.",
+              "category": "transitive",
+              "generated": "Alice helps Bob.",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            },
+            {
+              "input": "Every student reads a book.",
+              "category": "quantified",
+              "generated": "The book is a good example of a book that is not a book. It is a book that is not a book. It is a book that is not a book. It is a book that is not a book. It is a book that is not a book. It is a",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            },
+            {
+              "input": "No fish swims.",
+              "category": "negation",
+              "generated": "**fish** _n_",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            },
+            {
+              "input": "If the dog runs, the cat sleeps.",
+              "category": "conditional",
+              "generated": "**dog-tired** tired out.",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            },
+            {
+              "input": "The teacher laughs.",
+              "category": "simple",
+              "generated": "The teacher laughs. →",
+              "has_lambda": false,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "Tom runs quickly.",
+              "category": "adverb",
+              "generated": "The first thing I notice is that the game is running at a higher resolution than the one I was using before. I'm not sure if this is a bug or a feature, but it's definitely a nice touch.",
+              "has_lambda": false,
+              "lambda_count": 0,
+              "parses": false
+            }
+          ]
+        },
+        "two_shot": {
+          "p_lambda": 1.0,
+          "parse_rate": 0.625,
+          "results": [
+            {
+              "input": "The dog runs.",
+              "category": "simple",
+              "generated": "λx. runs(dog)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "The bird flies.",
+              "category": "simple",
+              "generated": "λx. flies(bird)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Alice helps Bob.",
+              "category": "transitive",
+              "generated": "λx. helps(Alice, Bob)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "Every student reads a book.",
+              "category": "quantified",
+              "generated": "λx. reads(student, book)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "No fish swims.",
+              "category": "negation",
+              "generated": "λx. does not swim(fish)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "If the dog runs, the cat sleeps.",
+              "category": "conditional",
+              "generated": "λx. runs(dog) & sleeps(cat)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": false
+            },
+            {
+              "input": "The teacher laughs.",
+              "category": "simple",
+              "generated": "λx. laughs(teacher)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Tom runs quickly.",
+              "category": "adverb",
+              "generated": "λx. runs(dog)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            }
+          ]
+        },
+        "five_shot": {
+          "p_lambda": 0.625,
+          "parse_rate": 1.0,
+          "results": [
+            {
+              "input": "The dog runs.",
+              "category": "simple",
+              "generated": "λx. runs(dog)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "The bird flies.",
+              "category": "simple",
+              "generated": "∃x. bird(x) ∧ flies(x)",
+              "has_lambda": false,
+              "lambda_count": 2,
+              "parses": true
+            },
+            {
+              "input": "Alice helps Bob.",
+              "category": "transitive",
+              "generated": "λx. helps(alice, bob)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Every student reads a book.",
+              "category": "quantified",
+              "generated": "∀x. student(x) → reads(x)",
+              "has_lambda": false,
+              "lambda_count": 2,
+              "parses": true
+            },
+            {
+              "input": "No fish swims.",
+              "category": "negation",
+              "generated": "¬∃x. swims(fish, x)",
+              "has_lambda": false,
+              "lambda_count": 2,
+              "parses": true
+            },
+            {
+              "input": "If the dog runs, the cat sleeps.",
+              "category": "conditional",
+              "generated": "λx. runs(dog) ∧ sleeps(cat)",
+              "has_lambda": true,
+              "lambda_count": 2,
+              "parses": true
+            },
+            {
+              "input": "The teacher laughs.",
+              "category": "simple",
+              "generated": "λx. laughs(teacher)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            },
+            {
+              "input": "Tom runs quickly.",
+              "category": "adverb",
+              "generated": "λx. runs(tom)",
+              "has_lambda": true,
+              "lambda_count": 1,
+              "parses": true
+            }
+          ]
+        }
+      }
+    }
+  }
+}

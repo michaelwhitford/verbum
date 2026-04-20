@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T03:51:57.323166+00:00",
+  "node_id": "cross-task/summarize/probe-sum-simple",
+  "config_hash": "sha256:cdf9babd2e780b1da7e5ce4fbd153b3b6c135fe2ec7be26991455b2e61b4ef89",
+  "elapsed_ms": 6624.3,
+  "completed_at": "2026-04-17T03:52:03.947670+00:00"
+}

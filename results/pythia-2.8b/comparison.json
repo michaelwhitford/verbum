@@ -1,0 +1,80 @@
+{
+  "models": {
+    "qwen3-4b": {
+      "architecture": "Qwen2ForCausalLM",
+      "params": "4.0B",
+      "training": "General web + instruction tuning",
+      "n_layers": 36,
+      "n_heads": 32,
+      "critical_layers": [
+        0,
+        1,
+        4,
+        7,
+        24,
+        26,
+        30,
+        33
+      ],
+      "critical_pct": 22.2,
+      "essential_heads": [
+        [
+          1,
+          0
+        ],
+        [
+          24,
+          0
+        ],
+        [
+          24,
+          2
+        ]
+      ],
+      "n_essential": 3,
+      "essential_pct": 0.26,
+      "topology": "sparse/localized"
+    },
+    "phi4-mini": {
+      "architecture": "Phi3ForCausalLM",
+      "params": "3.8B",
+      "training": "5T tokens, reasoning-dense synthetic",
+      "n_layers": 32,
+      "n_heads": 24,
+      "critical_layers": [
+        0,
+        3,
+        5,
+        30
+      ],
+      "critical_pct": 12.5,
+      "essential_heads": [],
+      "n_essential": 0,
+      "essential_pct": 0.0,
+      "topology": "distributed/redundant"
+    },
+    "pythia-2.8b": {
+      "architecture": "GPTNeoXForCausalLM",
+      "params": "2.8B",
+      "training": "The Pile (300B tokens), base model",
+      "n_layers": 32,
+      "n_heads": 32,
+      "critical_layers": [
+        0
+      ],
+      "critical_pct": 3.1,
+      "essential_heads": [],
+      "n_essential": 0,
+      "essential_pct": 0.0,
+      "topology": "sparse/localized"
+    }
+  },
+  "localization_gradient": {
+    "hypothesis": "localization is inversely proportional to reasoning training density",
+    "qwen_result": "3 essential (general training)",
+    "phi4_result": "0 essential (reasoning-dense)",
+    "pythia_prediction": "<=3 essential (minimal training)",
+    "pythia_result": "0 essential",
+    "confirmed": true
+  }
+}

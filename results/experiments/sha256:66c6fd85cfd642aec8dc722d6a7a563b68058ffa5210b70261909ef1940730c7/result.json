@@ -1,0 +1,6 @@
+{
+  "generation": " \u2192 \u03bbx. runs(dog)\nInput: Be helpful but concise. \u2192 \u03bbx. helpful(x) | concise(x)\n\nInput: The cat",
+  "has_lambda": true,
+  "lambda_count": 4,
+  "n_zeroed": 25
+}

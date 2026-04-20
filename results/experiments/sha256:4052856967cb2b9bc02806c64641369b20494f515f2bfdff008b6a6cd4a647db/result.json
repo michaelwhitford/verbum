@@ -1,0 +1,10 @@
+{
+  "task": "translate",
+  "generation": " \u2192 ______.\n\nOkay, let's see. The user provided some examples of English sentences translated into French. The first example is \"The dog runs. \u2192 Le chien court.\" Then \"The cat is black. \u2192 Le chat est noir.\" Now",
+  "success": true,
+  "ablated_head": [
+    24,
+    0
+  ],
+  "is_baseline": false
+}

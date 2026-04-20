@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-04-17T16:11:29.020764+00:00",
+  "elapsed_s": 33.92901611328125,
+  "l24_linear_probe_acc": 1.0,
+  "l24_cohens_d": 175.45751953125,
+  "l24_dims_90": 1,
+  "l24_dims_95": 1,
+  "q_rank_90": 65,
+  "q_amplification": 1.0433725576617805,
+  "verdict": "LOW-DIMENSIONAL — extraction-friendly"
+}

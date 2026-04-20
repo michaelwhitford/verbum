@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T04:49:52.051809+00:00",
+  "node_id": "task-head-scan/extract/probe-ext-multi",
+  "config_hash": "sha256:d8f10ac3ea75fabe866df949227bf2eaac76ccc5a15900525db2df89540a2a5b",
+  "elapsed_ms": 454567.2,
+  "completed_at": "2026-04-17T04:57:26.620193+00:00"
+}

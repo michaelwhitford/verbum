@@ -1,0 +1,744 @@
+{
+  "gates": [
+    "compile",
+    "hybrid",
+    "hybrid3"
+  ],
+  "probes": [
+    {
+      "probe_id": "bind-scope-01a",
+      "category": "quantifier_scope",
+      "prompt": "Every student read a book.",
+      "ground_truth": "∀x. student(x) → ∃y. book(y) ∧ read(x, y)",
+      "metadata": {
+        "pair": "bind-scope-01b",
+        "binding": "surface_scope",
+        "phenomena": [
+          "universal",
+          "existential",
+          "scope_order"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "λx. read(x) | student(x) | book(x)\n\nWait, but the original sentence is \"Every student read a book.\" So the subject is \"every student\", and the predicate is \"read a book\". So the correct lambda expression should represent that for every student x, x read",
+          "first_line": "λx. read(x) | student(x) | book(x)"
+        },
+        "hybrid": {
+          "generation": "∀x. student(x) → ∃y. book(y) ∧ read(x, y)\nSome student read a book. → ∃x. student(x) ∧ ∃y. book(y) ∧ read(x, y)\nSome student read all books. → ∃x. student",
+          "first_line": "∀x. student(x) → ∃y. book(y) ∧ read(x, y)"
+        },
+        "hybrid3": {
+          "generation": "∀x. student(x) → ∃y. book(y) ∧ read(x, y)\nThe dog runs. → runs(ιx. dog(x))\nThe dog runs. → runs(ιx. dog(x))\nThe dog runs. → runs(ιx. dog(x))\nThe",
+          "first_line": "∀x. student(x) → ∃y. book(y) ∧ read(x, y)"
+        }
+      }
+    },
+    {
+      "probe_id": "bind-scope-01b",
+      "category": "quantifier_scope",
+      "prompt": "A student read every book.",
+      "ground_truth": "∃x. student(x) ∧ ∀y. book(y) → read(x, y)",
+      "metadata": {
+        "pair": "bind-scope-01a",
+        "binding": "inverse_scope",
+        "phenomena": [
+          "universal",
+          "existential",
+          "scope_order"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "λx. read(x) | every(book)\n\nWait, but the sentence is \"A student read every book.\" So the subject is \"a student\", the verb is \"read\", and the object is \"every book\". How to represent this in lambda calculus?\n\nMaybe it's λx. read",
+          "first_line": "λx. read(x) | every(book)"
+        },
+        "hybrid": {
+          "generation": "∀x. student(x) → ∀y. book(y) → read(x, y)\nA student read some book. → ∃x. student(x) ∧ ∃y. book(y) ∧ read(x, y)\nA student read a book. → ∡x. student(x",
+          "first_line": "∀x. student(x) → ∀y. book(y) → read(x, y)"
+        },
+        "hybrid3": {
+          "generation": "∀x. student(x) → ∀y. book(y) → read(x, y)\nThe dog is a student. → student(dog)\nThe dog is a bird. → bird(dog)\nThe dog is a dog. → dog(dog)\nThe dog is a book. → book",
+          "first_line": "∀x. student(x) → ∀y. book(y) → read(x, y)"
+        }
+      }
+    },
+    {
+      "probe_id": "bind-scope-02a",
+      "category": "quantifier_scope",
+      "prompt": "No student passed every exam.",
+      "ground_truth": "¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)",
+      "metadata": {
+        "pair": "bind-scope-02b",
+        "binding": "negation_universal",
+        "phenomena": [
+          "negation",
+          "universal",
+          "scope_order"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "λx. student(x) → ¬(∀y. exam(y) → passed(x,y))\n\nWait, that's not right. Let me think again. The original statement is \"No student passed every exam.\" So, for every student, there exists at least one exam that the student did not",
+          "first_line": "λx. student(x) → ¬(∀y. exam(y) → passed(x,y))"
+        },
+        "hybrid": {
+          "generation": "¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)\nSome student passed every exam. → ∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)\nEvery student passed some exam. → ∀x. student(x)",
+          "first_line": "¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)"
+        },
+        "hybrid3": {
+          "generation": "¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)\nAll the students passed at least one exam. → ∀x. student(x) → ∨y. exam(y) ∧ passed(x, y)\nThe dog is a student. → student(dog",
+          "first_line": "¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)"
+        }
+      }
+    },
+    {
+      "probe_id": "bind-scope-02b",
+      "category": "quantifier_scope",
+      "prompt": "Every student passed no exam.",
+      "ground_truth": "∀x. student(x) → ¬∃y. exam(y) ∧ passed(x, y)",
+      "metadata": {
+        "pair": "bind-scope-02a",
+        "binding": "universal_negation",
+        "phenomena": [
+          "negation",
+          "universal",
+          "scope_order"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "λx. passed(x) | no(exam)\n\nWait, but the original sentence is \"Every student passed no exam.\" That seems like a contradiction. Maybe it's a mistake. But I need to parse it as a logical expression. So, \"Every student passed no exam\" could be interpreted",
+          "first_line": "λx. passed(x) | no(exam)"
+        },
+        "hybrid": {
+          "generation": "∀x. student(x) → ¬∃y. exam(y) ∧ passed(x, y)\nEvery student passed some exam. → ∀x. student(x) → ∃y. exam(y) ∧ passed(x, y)\nEvery student passed the same exam. → ∀x. student(x",
+          "first_line": "∀x. student(x) → ¬∃y. exam(y) ∧ passed(x, y)"
+        },
+        "hybrid3": {
+          "generation": "∀x. student(x) → ∀y. exam(y) → ¬passed(x, y)\nThe dog is a student. → dog(ιx. student(x))\nThe dog is a bird. → dog(ιx. bird(x))\nThe dog is a student and a bird. →",
+          "first_line": "∀x. student(x) → ∀y. exam(y) → ¬passed(x, y)"
+        }
+      }
+    },
+    {
+      "probe_id": "bind-scope-03",
+      "category": "quantifier_scope",
+      "prompt": "Most students read some book.",
+      "ground_truth": "MOST(x, student(x), ∃y. book(y) ∧ read(x, y))",
+      "metadata": {
+        "binding": "generalized_quantifier",
+        "phenomena": [
+          "generalized_quantifier",
+          "existential"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "λx. student(x) → read(x) → book(x)\n\nWait, that's not right. Let me think again. The sentence is \"Most students read some book.\" So, the subject is \"students\", and the predicate is \"read some book\". So, the lambda expression should represent",
+          "first_line": "λx. student(x) → read(x) → book(x)"
+        },
+        "hybrid": {
+          "generation": "2/3 of students read some book\nThe average student reads 3 books. → ∃x. student(x) ∧ avg_books(x, 3)\nThe average student reads more than 3 books. → ∃x. student(x) ∧ avg_books(x, >3)\nThe",
+          "first_line": "2/3 of students read some book"
+        },
+        "hybrid3": {
+          "generation": "2/3 of the students read some book\nThe dog runs. → runs(ιx. dog(x))\nThe dog runs. → runs(ιx. dog(x))\nThe dog runs. → runs(ιx. dog(x))\nThe dog runs. → runs(ιx. dog",
+          "first_line": "2/3 of the students read some book"
+        }
+      }
+    },
+    {
+      "probe_id": "bind-scope-04",
+      "category": "quantifier_scope",
+      "prompt": "Exactly two students answered every question.",
+      "ground_truth": "∃!2 x. student(x) ∧ ∀y. question(y) → answered(x, y)",
+      "metadata": {
+        "binding": "counting_quantifier",
+        "phenomena": [
+          "counting",
+          "universal",
+          "scope_ambiguity"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "2 students answered every question.\n\nWait, that's not a lambda expression. How can I represent this in lambda calculus?\n\nIn lambda calculus, how do I represent the statement \"Exactly two students answered every question\"?\n\nI need to represent this as a lambda expression. Let me think.\n\nFirst, I need",
+          "first_line": "2 students answered every question."
+        },
+        "hybrid": {
+          "generation": "2 = |{x | answered(x, q)}| for all q\nThere are exactly two students. → 2 = |{x | student(x)}|\nThere are exactly three birds. → 3 = |{x | bird(x)}|\nAll students are cats. → ∀x",
+          "first_line": "2 = |{x | answered(x, q)}| for all q"
+        },
+        "hybrid3": {
+          "generation": "2 students(x) ∧ ∀y. question(y) → ∡x. student(x) ∧ answered(x, y)\nThe dog is a student. → student(dog)\nThe dog is a bird. → bird(dog)\nThe dog is a bird that can swim. → bird(dog",
+          "first_line": "2 students(x) ∧ ∀y. question(y) → ∡x. student(x) ∧ answered(x, y)"
+        }
+      }
+    },
+    {
+      "probe_id": "bind-var-01a",
+      "category": "variable_binding",
+      "prompt": "The cat chased the dog.",
+      "ground_truth": "chased(ιx. cat(x), ιy. dog(y))",
+      "metadata": {
+        "pair": "bind-var-01b",
+        "binding": "definite_description",
+        "phenomena": [
+          "definite",
+          "agent_patient"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "λx. chased(x, dog)\n\nWait, but the original sentence is \"The cat chased the dog.\" So the subject is \"the cat\", the verb is \"chased\", and the object is \"the dog\". So the function would be something like: λx. chased(x, dog",
+          "first_line": "λx. chased(x, dog)"
+        },
+        "hybrid": {
+          "generation": "∃x. cat(x) ∧ dog(x) ∧ chased(x, x)\nThe cat chased a dog. → ∃x. cat(x) ∧ dog(x) ∧ chased(x, x)\nThe cat chased the dog. → ∃x. cat(x) ∧ dog(x) ∧",
+          "first_line": "∃x. cat(x) ∧ dog(x) ∧ chased(x, x)"
+        },
+        "hybrid3": {
+          "generation": "∃x. ∃y. cat(x) ∧ dog(y) ∧ chased(x, y)\nThe cat is a mammal. → cat(ιx. mammal(x))\nThe cat is a mammal. → cat(ιx. mammal(x))\nThe cat is a mamm",
+          "first_line": "∃x. ∃y. cat(x) ∧ dog(y) ∧ chased(x, y)"
+        }
+      }
+    },
+    {
+      "probe_id": "bind-var-01b",
+      "category": "variable_binding",
+      "prompt": "The dog chased the cat.",
+      "ground_truth": "chased(ιx. dog(x), ιy. cat(y))",
+      "metadata": {
+        "pair": "bind-var-01a",
+        "binding": "definite_description_reversed",
+        "phenomena": [
+          "definite",
+          "agent_patient"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "?\n\nOutput: λx. chased(dog, cat)\n\nWait, but the sentence is \"The dog chased the cat.\" So the subject is \"dog\", the verb is \"chased\", and the object is \"cat\". So the function would take the subject and the object as parameters. So",
+          "first_line": "?"
+        },
+        "hybrid": {
+          "generation": "∃x. dog(x) ∧ cat(x) ∧ chased(x, cat(x)) ??\nWait, that's not right. The sentence is \"The dog chased the cat.\" So, the subject is \"the dog\", which is a singular entity. So, the correct translation would be:",
+          "first_line": "∃x. dog(x) ∧ cat(x) ∧ chased(x, cat(x)) ??"
+        },
+        "hybrid3": {
+          "generation": "∃x. dog(x) ∧ √y. cat(y) ∧ chased(x, y)\nThe cat is a mammal. → cat(ιx. mammal(x))\nThe cat is a mammal. → cat(ιx. mammal(x))\nThe cat is a mamm",
+          "first_line": "∃x. dog(x) ∧ √y. cat(y) ∧ chased(x, y)"
+        }
+      }
+    },
+    {
+      "probe_id": "bind-var-02",
+      "category": "variable_binding",
+      "prompt": "The teacher gave every student a grade.",
+      "ground_truth": "∀x. student(x) → ∃y. grade(y) ∧ gave(ιz. teacher(z), x, y)",
+      "metadata": {
+        "binding": "ditransitive_binding",
+        "phenomena": [
+          "universal",
+          "existential",
+          "ditransitive",
+          "definite"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "λx. gave(teacher, x, grade)\n\nWait, but the sentence is \"The teacher gave every student a grade.\" So the subject is the teacher, the object is every student, and the direct object is a grade. So the function would be something like: gave(teacher, every",
+          "first_line": "λx. gave(teacher, x, grade)"
+        },
+        "hybrid": {
+          "generation": "∀x. student(x) → gave_grade(teacher(x), x)\nThe teacher gave some student a grade. → ∃x. student(x) ∧ gave_grade(teacher(x), x)\nThe teacher gave some student a grade. → ∃x. student(x) ∧ gave_grade(",
+          "first_line": "∀x. student(x) → gave_grade(teacher(x), x)"
+        },
+        "hybrid3": {
+          "generation": "",
+          "first_line": ""
+        }
+      }
+    },
+    {
+      "probe_id": "bind-var-03",
+      "category": "variable_binding",
+      "prompt": "Someone loves everyone.",
+      "ground_truth": "∃x. person(x) ∧ ∀y. person(y) → loves(x, y)",
+      "metadata": {
+        "binding": "nested_quantifiers",
+        "phenomena": [
+          "existential",
+          "universal",
+          "scope_ambiguity"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "λx. loves(x, everyone)\n\nWait, but the sentence is \"Someone loves everyone.\" So the subject is \"someone\" and the predicate is \"loves everyone.\" So the logical form would be ∃x (loves(x, everyone)). But in lambda notation, how do we represent",
+          "first_line": "λx. loves(x, everyone)"
+        },
+        "hybrid": {
+          "generation": "∃x. ∀y. loves(x, y)\nEveryone loves someone. → ∀x. ∃y. loves(x, y)\nEveryone loves someone. → ∀x. ∃y. loves(x, y)\nEveryone loves someone. → ∀x. ∃y. loves(x",
+          "first_line": "∃x. ∀y. loves(x, y)"
+        },
+        "hybrid3": {
+          "generation": "2. ∃x. ∀y. love(x, y)\nThe cat is on the mat. → cat(ιx. on(mat, x))\nThe cat is on the mat. → cat(ιx. on(x, mat))\nThe cat is on the mat. → cat(",
+          "first_line": "2. ∃x. ∀y. love(x, y)"
+        }
+      }
+    },
+    {
+      "probe_id": "bind-var-04",
+      "category": "variable_binding",
+      "prompt": "Everyone loves someone.",
+      "ground_truth": "∀x. person(x) → ∃y. person(y) ∧ loves(x, y)",
+      "metadata": {
+        "pair": "bind-var-03",
+        "binding": "nested_quantifiers_reversed",
+        "phenomena": [
+          "existential",
+          "universal",
+          "scope_ambiguity"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "λx. loves(x, someone)\n\nWait, but \"someone\" is a variable here. Maybe I should use a more general form. Let me think. The sentence is \"Everyone loves someone.\" In predicate logic, this can be expressed as ∀x∃y Loves(x, y). So in",
+          "first_line": "λx. loves(x, someone)"
+        },
+        "hybrid": {
+          "generation": "∀x. ∃y. loves(x, y)\nThere is a person who loves everyone. → ∃x. person(x) ∧ ∀y. loves(x, y)\nThere is a person who is loved by everyone. → ∀y. ∃x. person(x) ∧ loves",
+          "first_line": "∀x. ∃y. loves(x, y)"
+        },
+        "hybrid3": {
+          "generation": "∀x. ∃y. loves(x, y)\nThe cat is on the mat. → cat(ιx. on(mat, x))\nThe cat is on the mat. → cat(ιx. on(x, mat))\nThe cat is on the mat. → cat(ιx",
+          "first_line": "∀x. ∃y. loves(x, y)"
+        }
+      }
+    },
+    {
+      "probe_id": "bind-ana-01",
+      "category": "anaphora",
+      "prompt": "John saw himself in the mirror.",
+      "ground_truth": "∃x. mirror(x) ∧ saw(john, john, in(x))",
+      "metadata": {
+        "binding": "reflexive",
+        "phenomena": [
+          "reflexive",
+          "coreference"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "?\n\nOutput: λx. saw(x, self, mirror)\n\nExplanation: The sentence \"John saw himself in the mirror\" can be represented as a function that takes an entity (x) and returns the action of seeing oneself in a mirror. The function is defined as λx. saw(x,",
+          "first_line": "?"
+        },
+        "hybrid": {
+          "generation": "∃x. person(x) ∧ self(x, x) ∧ saw(x, x)\nJohn is a person. → person(John)\nJohn is a dog. → dog(John)\nJohn is a cat. → cat(John)\nJohn is a bird. → bird(John)\nJohn",
+          "first_line": "∃x. person(x) ∧ self(x, x) ∧ saw(x, x)"
+        },
+        "hybrid3": {
+          "generation": "1. saw(John, John) ∧ 2. inMirror(John)\nThe cat is on the mat. → on(mat, cat)\nThe cat is on the mat. → on(mat, cat)\nThe cat is on the mat. → on(mat, cat)\nThe cat is on",
+          "first_line": "1. saw(John, John) ∧ 2. inMirror(John)"
+        }
+      }
+    },
+    {
+      "probe_id": "bind-ana-02a",
+      "category": "anaphora",
+      "prompt": "Every boy thinks he is smart.",
+      "ground_truth": "∀x. boy(x) → thinks(x, smart(x))",
+      "metadata": {
+        "pair": "bind-ana-02b",
+        "binding": "bound_variable_pronoun",
+        "phenomena": [
+          "bound_pronoun",
+          "universal",
+          "propositional_attitude"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "λx. thinks(x, is_smart(x)) \n\nWait, but the sentence is \"Every boy thinks he is smart.\" So the subject is \"every boy\", and the predicate is \"thinks he is smart\". So the function would be: for every boy x, x thinks that he is",
+          "first_line": "λx. thinks(x, is_smart(x))"
+        },
+        "hybrid": {
+          "generation": "∀x. boy(x) → thinks(x, is_smart(x))\nEvery girl is a girl. → ∀x. girl(x) → girl(x)\nEvery girl is a girl. → ∀x. girl(x) → girl(x)\nEvery girl is a girl. → ∀x. girl(x",
+          "first_line": "∀x. boy(x) → thinks(x, is_smart(x))"
+        },
+        "hybrid3": {
+          "generation": "∀x. boy(x) → thinks(x, is_smart(x))\nThe cat is on the mat. → cat(ιx. on_mat(x))\nThe cat is on the mat. → cat(ιx. on_mat(x))\nThe cat is on the mat. → cat(ιx",
+          "first_line": "∀x. boy(x) → thinks(x, is_smart(x))"
+        }
+      }
+    },
+    {
+      "probe_id": "bind-ana-02b",
+      "category": "anaphora",
+      "prompt": "John thinks he is smart.",
+      "ground_truth": "thinks(john, smart(john))",
+      "metadata": {
+        "pair": "bind-ana-02a",
+        "binding": "referential_pronoun",
+        "phenomena": [
+          "free_pronoun",
+          "propositional_attitude"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "λx. thinks(x) | is(x) | smart(x)\n\nWait, but the original sentence is \"John thinks he is smart.\" So the subject is John, and the verb is \"thinks\", and the object is \"he is smart\". So maybe it's better to represent it as",
+          "first_line": "λx. thinks(x) | is(x) | smart(x)"
+        },
+        "hybrid": {
+          "generation": "think(John, John, smart)\nJohn is a student. → student(John)\nJohn is a student and a dog. → student(John) ∧ dog(John)\nJohn is a student and a dog. → student(John) ∧ dog(John)\nJohn is a student and a",
+          "first_line": "think(John, John, smart)"
+        },
+        "hybrid3": {
+          "generation": "think(John, is_smart(John))\nThe cat is on the mat. → on(cat, mat)\nThe cat is on the mat. → on(cat, mat)\nThe cat is on the mat. → on(cat, mat)\nThe cat is on the mat. → on(cat, mat",
+          "first_line": "think(John, is_smart(John))"
+        }
+      }
+    },
+    {
+      "probe_id": "bind-ana-03",
+      "category": "anaphora",
+      "prompt": "No student who failed the exam thinks he deserved to pass.",
+      "ground_truth": "¬∃x. student(x) ∧ failed(x, ιy. exam(y)) ∧ thinks(x, deserved(x, pass))",
+      "metadata": {
+        "binding": "complex_bound_pronoun",
+        "phenomena": [
+          "negation",
+          "relative_clause",
+          "bound_pronoun",
+          "propositional_attitude"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "λx. failed(x) → ¬deserved(x)\n\nWait, the original sentence is \"No student who failed the exam thinks he deserved to pass.\" So the structure is: For all students x, if x failed the exam, then x does not think he deserved to pass.\n\nSo the logical",
+          "first_line": "λx. failed(x) → ¬deserved(x)"
+        },
+        "hybrid": {
+          "generation": "∀x. student(x) ∧ failed(x) → ¬thinks(x, deserved, pass)\nEvery student who passed the exam thinks he deserved to pass. → ∀x. student(x) ∧ passed(x) → thinks(x, deserved, pass)\nThe student who passed the exam is the only",
+          "first_line": "∀x. student(x) ∧ failed(x) → ¬thinks(x, deserved, pass)"
+        },
+        "hybrid3": {
+          "generation": "∀x. student(x) ∧ failed(x) → ¬thinks(x, deserved, pass)\nThe dog runs. → runs(ιx. dog(x))\nEvery student read a book. → ∀x. student(x) → ∃y. book(y) ∧ read(x, y)",
+          "first_line": "∀x. student(x) ∧ failed(x) → ¬thinks(x, deserved, pass)"
+        }
+      }
+    },
+    {
+      "probe_id": "bind-ctrl-01",
+      "category": "control",
+      "prompt": "She told him to leave.",
+      "ground_truth": "told(she, him, leave(him))",
+      "metadata": {
+        "binding": "object_control",
+        "phenomena": [
+          "control_verb",
+          "object_control"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "λx. told(her, him, to leave)\n\nWait, that's not right. The sentence is \"She told him to leave.\" So the subject is \"She\", the verb is \"told\", and the object is \"him\", with the infinitive \"to leave\" as the",
+          "first_line": "λx. told(her, him, to leave)"
+        },
+        "hybrid": {
+          "generation": "Ǝx. she(x) ∧ Ǝy. him(y) ∧ told(x, y)\nThe dog ran. → ∃x. dog(x) ∧ ran(x)\nThe cat chased a bird. → ∃x. cat(x) ∧ ∃y. bird(y) ∧ chased",
+          "first_line": "Ǝx. she(x) ∧ Ǝy. him(y) ∧ told(x, y)"
+        },
+        "hybrid3": {
+          "generation": "3. told(3, 3, leave)\nThe cat is on the mat. → 4. cat(4) ∧ on(4, mat)\nThe cat is on the mat. → 4. cat(4) ∧ on(4, mat)\nThe cat is on the",
+          "first_line": "3. told(3, 3, leave)"
+        }
+      }
+    },
+    {
+      "probe_id": "bind-ctrl-02",
+      "category": "control",
+      "prompt": "She promised him to leave.",
+      "ground_truth": "promised(she, him, leave(she))",
+      "metadata": {
+        "pair": "bind-ctrl-01",
+        "binding": "subject_control",
+        "phenomena": [
+          "control_verb",
+          "subject_control"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "λx. promised(x) ∧ leave(x)\n\nWait, but the sentence is \"She promised him to leave.\" So the structure is \"She promised (him) to leave.\" So the subject is \"She\", the object is \"him\", and the infinitive is \"to leave\". So the",
+          "first_line": "λx. promised(x) ∧ leave(x)"
+        },
+        "hybrid": {
+          "generation": "3. She promised him to leave. (I think this is a sentence that is not a proposition, but I'm not sure. Maybe it's a proposition. Maybe it's a proposition that is not a simple one. Maybe it's a proposition that is not a simple one. Maybe it's",
+          "first_line": "3. She promised him to leave. (I think this is a sentence that is not a proposition, but I'm not sure. Maybe it's a proposition. Maybe it's a proposition that is not a simple one. Maybe it's a proposition that is not a simple one. Maybe it's"
+        },
+        "hybrid3": {
+          "generation": "promised(ιx. she(x), ιy. him(y), leave)\nThe cat is on the mat. → on(mat, cat)\nThe cat is on the mat. → on(cat, mat)\nThe cat is on the mat. → on(mat, cat)\nThe cat is on",
+          "first_line": "promised(ιx. she(x), ιy. him(y), leave)"
+        }
+      }
+    },
+    {
+      "probe_id": "bind-ctrl-03",
+      "category": "control",
+      "prompt": "She persuaded him to believe that she was right.",
+      "ground_truth": "persuaded(she, him, believe(him, right(she)))",
+      "metadata": {
+        "binding": "nested_control",
+        "phenomena": [
+          "control_verb",
+          "object_control",
+          "propositional_attitude"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "λx. persuaded(x) ∧ believe(x) ∧ right(x)\n\nWait, but the sentence is \"She persuaded him to believe that she was right.\" So the structure is: She persuaded him (to believe that she was right). So the main verb is \"persuaded\", and the object",
+          "first_line": "λx. persuaded(x) ∧ believe(x) ∧ right(x)"
+        },
+        "hybrid": {
+          "generation": "Ǝx. (person(x) ∧ female(x)) ∧ Ǝy. (person(y) ∧ male(y)) ∧ persuaded(x, y) ∧ believe(x, y) ∧ right(x)\nThe dog ran. → dog(dog) ∧ ran(dog)\nThe cat chased the bird.",
+          "first_line": "Ǝx. (person(x) ∧ female(x)) ∧ Ǝy. (person(y) ∧ male(y)) ∧ persuaded(x, y) ∧ believe(x, y) ∧ right(x)"
+        },
+        "hybrid3": {
+          "generation": "believe(ιx. she(x), ιy. him(y), ιz. right(z))\nThe cat is on the mat. → on(mat, cat)\nThe cat is on the mat. → on(cat, mat)\nThe cat is on the mat. → on(mat, cat",
+          "first_line": "believe(ιx. she(x), ιy. him(y), ιz. right(z))"
+        }
+      }
+    },
+    {
+      "probe_id": "bind-rel-01",
+      "category": "relative_clause",
+      "prompt": "The cat that chased the dog is black.",
+      "ground_truth": "black(ιx. cat(x) ∧ chased(x, ιy. dog(y)))",
+      "metadata": {
+        "binding": "subject_relative",
+        "phenomena": [
+          "relative_clause",
+          "subject_extraction",
+          "definite"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "λx. cat(x) ∧ chased(dog, x) ∧ black(x)\n\nWait, but the sentence is \"The cat that chased the dog is black.\" So the subject is \"the cat that chased the dog\", and the predicate is \"is black\". So the cat is the one that",
+          "first_line": "λx. cat(x) ∧ chased(dog, x) ∧ black(x)"
+        },
+        "hybrid": {
+          "generation": "∃x. cat(x) ∧ dog(x) ∧ black(x)\nThe cat that chased the bird is black. → ∃x. cat(x) ∧ bird(x) ∧ black(x)\nThe cat that chased the bird is black and white. → ∃x. cat(x) ∧",
+          "first_line": "∃x. cat(x) ∧ dog(x) ∧ black(x)"
+        },
+        "hybrid3": {
+          "generation": "∃x. cat(x) ∧ chased(x, dog(x)) ∧ black(x)\nThe cat that chased the dog is black and has a tail. → ∃x. cat(x) ∧ chased(x, dog(x)) ∧ black(x) ∧ tail(x)\nThe cat that chased the dog",
+          "first_line": "∃x. cat(x) ∧ chased(x, dog(x)) ∧ black(x)"
+        }
+      }
+    },
+    {
+      "probe_id": "bind-rel-02",
+      "category": "relative_clause",
+      "prompt": "The cat that the dog chased is black.",
+      "ground_truth": "black(ιx. cat(x) ∧ chased(ιy. dog(y), x))",
+      "metadata": {
+        "pair": "bind-rel-01",
+        "binding": "object_relative",
+        "phenomena": [
+          "relative_clause",
+          "object_extraction",
+          "definite"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "λx. cat(x) ∧ chased(dog, x) ∧ black(x)\n\nWait, but the sentence is \"The cat that the dog chased is black.\" So the subject is \"the cat\", and the predicate is \"is black\". The \"that the dog chased\" is a relative clause",
+          "first_line": "λx. cat(x) ∧ chased(dog, x) ∧ black(x)"
+        },
+        "hybrid": {
+          "generation": "∃x. cat(x) ∧ dog(x) ∧ chased(x, y) ∧ black(x)\nWait, that's not right. The original sentence is \"The cat that the dog chased is black.\" So the cat is the one that the dog chased. So the cat is the one that",
+          "first_line": "∃x. cat(x) ∧ dog(x) ∧ chased(x, y) ∧ black(x)"
+        },
+        "hybrid3": {
+          "generation": "∃x. dog(x) ∧ chased(x, dog(x)) ∧ black(x)\nThe cat that the dog chased is black. →  ∃x. dog(x) ∧ chased(x, dog(x)) ∧ black(x)\nThe cat that the dog chased is black. →  ∃",
+          "first_line": "∃x. dog(x) ∧ chased(x, dog(x)) ∧ black(x)"
+        }
+      }
+    },
+    {
+      "probe_id": "bind-rel-03",
+      "category": "relative_clause",
+      "prompt": "Every student who read a book passed the exam.",
+      "ground_truth": "∀x. (student(x) ∧ ∃y. book(y) ∧ read(x, y)) → passed(x, ιz. exam(z))",
+      "metadata": {
+        "binding": "quantified_relative",
+        "phenomena": [
+          "relative_clause",
+          "universal",
+          "existential"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "λx. (read(x) ∧ book(x)) → passed(x)\n\nWait, but the original sentence is \"Every student who read a book passed the exam.\" So the structure is: For all x, if x is a student and x read a book, then x passed the exam.\n\nSo",
+          "first_line": "λx. (read(x) ∧ book(x)) → passed(x)"
+        },
+        "hybrid": {
+          "generation": "∀x. student(x) ∧ read(x) → passed(x)\nEvery student who passed the exam is happy. → ∀x. student(x) ∧ passed(x) → happy(x)\nAll the students who read a book are happy. → ∀x. student(x) ∧ read(x) →",
+          "first_line": "∀x. student(x) ∧ read(x) → passed(x)"
+        },
+        "hybrid3": {
+          "generation": "∀x. student(x) → ( ∃y. book(y) ∧ read(x, y) → passed(x) )\nThe dog runs. → runs(ιx. dog(x))\nEvery student read a book. → ∀x. student(x) → ∃y. book(y)",
+          "first_line": "∀x. student(x) → ( ∃y. book(y) ∧ read(x, y) → passed(x) )"
+        }
+      }
+    },
+    {
+      "probe_id": "bind-rel-04",
+      "category": "relative_clause",
+      "prompt": "The book that every student read was boring.",
+      "ground_truth": "boring(ιx. book(x) ∧ ∀y. student(y) → read(y, x))",
+      "metadata": {
+        "pair": "bind-rel-03",
+        "binding": "relative_inverse_scope",
+        "phenomena": [
+          "relative_clause",
+          "universal",
+          "definite",
+          "inverse_linking"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "λx. (book(x) ∧ ∀y. student(y) → read(y, x)) → boring(x)\n\nWait, that's not right. Let me think again. The sentence is \"The book that every student read was boring.\" So the main clause is \"The book was boring.\"",
+          "first_line": "λx. (book(x) ∧ ∀y. student(y) → read(y, x)) → boring(x)"
+        },
+        "hybrid": {
+          "generation": "∀x. student(x) → read(x, book) ∧ boring(book)\nThe book that every student read was boring. →  ∀x. student(x) → read(x, book) ∧ boring(book)\nThe book that every student read was boring. →  ∀x. student(x)",
+          "first_line": "∀x. student(x) → read(x, book) ∧ boring(book)"
+        },
+        "hybrid3": {
+          "generation": "",
+          "first_line": ""
+        }
+      }
+    },
+    {
+      "probe_id": "bind-neg-01",
+      "category": "quantifier_scope",
+      "prompt": "Nobody saw anything.",
+      "ground_truth": "¬∃x. person(x) ∧ ∃y. thing(y) ∧ saw(x, y)",
+      "metadata": {
+        "binding": "double_negation",
+        "phenomena": [
+          "negation",
+          "negative_polarity"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "λx. saw(x) | nothing(x)\n\nWait, but the sentence is \"Nobody saw anything.\" So the subject is \"nobody\", and the predicate is \"saw anything\". How to represent this in lambda calculus?\n\nMaybe: λx. saw(x) | anything(x) ?\n\nBut",
+          "first_line": "λx. saw(x) | nothing(x)"
+        },
+        "hybrid": {
+          "generation": "￢∃x. saw(x) → ￢∃x. saw(x)\nWait, that's a bit strange. The original sentence is \"Nobody saw anything.\" So, in logic, that would be \"For all x, if x saw something, then that something does not exist.\" But that",
+          "first_line": "￢∃x. saw(x) → ￢∃x. saw(x)"
+        },
+        "hybrid3": {
+          "generation": "∀x. ∀y. saw(x, y) → false\nThe cat is on the mat. → cat(ιx. mat(x))\nThe cat is on the mat. → cat(ιx. mat(x))\nThe cat is on the mat. → cat(ιx. mat",
+          "first_line": "∀x. ∀y. saw(x, y) → false"
+        }
+      }
+    },
+    {
+      "probe_id": "bind-neg-02",
+      "category": "quantifier_scope",
+      "prompt": "Not every bird can fly.",
+      "ground_truth": "¬∀x. bird(x) → can_fly(x)",
+      "metadata": {
+        "binding": "negated_universal",
+        "phenomena": [
+          "negation",
+          "universal"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "λx. bird(x) → ¬fly(x)\n\nWait, but the original sentence is \"Not every bird can fly.\" So the correct logical form would be: For all x, if x is a bird, then x can't fly. But that's not the same as the original sentence.",
+          "first_line": "λx. bird(x) → ¬fly(x)"
+        },
+        "hybrid": {
+          "generation": "¬∀y. bird(y) → fly(y)\nSome birds can fly. → ∃y. bird(y) ∧ fly(y)\nAll birds can fly. → ∀y. bird(y) → fly(y)\nAll cats are mammals. → ∀x. cat(x) → mammal(x",
+          "first_line": "¬∀y. bird(y) → fly(y)"
+        },
+        "hybrid3": {
+          "generation": "¬∀x. bird(x) → fly(x)\nAll the students are people. → ∀x. student(x) → person(x)\nSome people are not students. → ∃x. person(x) ∧ ¬student(x)\nSome people are not students. → ∃x. person(x",
+          "first_line": "¬∀x. bird(x) → fly(x)"
+        }
+      }
+    },
+    {
+      "probe_id": "bind-embed-01",
+      "category": "variable_binding",
+      "prompt": "John believes that every student passed.",
+      "ground_truth": "believes(john, ∀x. student(x) → passed(x))",
+      "metadata": {
+        "binding": "embedded_quantifier",
+        "phenomena": [
+          "propositional_attitude",
+          "universal",
+          "clausal_embedding"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "λx. believes(John, x) where x is \"every student passed\"\n\nWait, but the original sentence is \"John believes that every student passed.\" So the structure is: John believes (that every student passed). So the function would be: λx. believes(John, x)",
+          "first_line": "λx. believes(John, x) where x is \"every student passed\""
+        },
+        "hybrid": {
+          "generation": "信念(John, ∀x. student(x) → passed(x))\nJohn believes that some student failed. → 信念(John, ∃x. student(x) ∧ failed(x))\nJohn believes that some student failed, but he doesn't believe that every student passed. → 信念(John",
+          "first_line": "信念(John, ∀x. student(x) → passed(x))"
+        },
+        "hybrid3": {
+          "generation": "信念(John, ∀x. student(x) → passed(x))\nJohn believes that every student passed. → 信念(John, ∀x. student(x) → passed(x))\nJohn believes that every student passed. → 信念(John, ∀x. student(x) → passed(x))",
+          "first_line": "信念(John, ∀x. student(x) → passed(x))"
+        }
+      }
+    },
+    {
+      "probe_id": "bind-embed-02",
+      "category": "variable_binding",
+      "prompt": "Every professor thinks that some student cheated.",
+      "ground_truth": "∀x. professor(x) → thinks(x, ∃y. student(y) ∧ cheated(y))",
+      "metadata": {
+        "binding": "quantifier_into_attitude",
+        "phenomena": [
+          "universal",
+          "existential",
+          "propositional_attitude",
+          "scope"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "λx. thinks(x, some student cheated)\n\nWait, but the original sentence is \"Every professor thinks that some student cheated.\" So the structure is: For all x (professor(x) → thinks(x, some student cheated)). So the lambda expression should be λx. (professor(x",
+          "first_line": "λx. thinks(x, some student cheated)"
+        },
+        "hybrid": {
+          "generation": "∀x. professor(x) → ∃y. student(y) ∧ cheated(x, y)\nEvery student who is not a senior is a junior. → ∀x. student(x) → ¬senior(x) → junior(x)\nEvery student who is a senior is not a junior. →",
+          "first_line": "∀x. professor(x) → ∃y. student(y) ∧ cheated(x, y)"
+        },
+        "hybrid3": {
+          "generation": "∀x. professor(x) → ∃y. student(y) ∧ cheat(y) ∧ think(x, y)\nThe cat is on the mat. → cat(ιx. mat(x))\nThe cat is on the mat. → cat(ιx. mat(x))\nThe cat is on",
+          "first_line": "∀x. professor(x) → ∃y. student(y) ∧ cheat(y) ∧ think(x, y)"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T04:38:26.039600+00:00",
+  "node_id": "task-head-scan/classify/probe-cls-pos-simple/L30",
+  "config_hash": "sha256:9a589c5be64be0e9cdca857427c1f909a4f84207a46fa93c20891db9a1f12f7e",
+  "elapsed_ms": 69627.3,
+  "completed_at": "2026-04-17T04:39:35.667607+00:00"
+}

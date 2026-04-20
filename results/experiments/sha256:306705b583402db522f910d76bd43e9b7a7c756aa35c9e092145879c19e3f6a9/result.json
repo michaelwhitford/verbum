@@ -1,0 +1,10 @@
+{
+  "task": "extract",
+  "generation": " \u2192 write(?, ?, book)\n\nSo the answer should be: write(author, book, ?)\n\nWait, but the original sentence is \"The book was written by a famous author.\" So the subject is the book, and the verb is written,",
+  "success": true,
+  "ablated_head": [
+    24,
+    0
+  ],
+  "is_baseline": false
+}

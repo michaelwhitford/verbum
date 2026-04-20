@@ -1,0 +1,10 @@
+{
+  "generation": " | \u03bby. helps(y, x) \u2192 help(y, x). \n\nOutput: If it rains, the ground gets wet and people help each other.\n\nNow, let's try to apply the same logic to the following input:\n\nInput: \u03bb",
+  "has_english": true,
+  "has_lambda": true,
+  "ablated_head": [
+    24,
+    0
+  ],
+  "is_baseline": false
+}

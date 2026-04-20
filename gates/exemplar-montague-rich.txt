@@ -1,0 +1,4 @@
+The dog runs. → λx. runs(dog)
+Every cat sleeps. → λx. ∀y. cat(y) → sleeps(y)
+
+Input: 

@@ -1,0 +1,8 @@
+{
+  "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how",
+  "generation": " \u2192\u03bbcat(x).that(x).on(x).the(x).is(x).the(x).x.\u2192\u03bbx.the(x).x",
+  "has_lambda": true,
+  "lambda_count": 4,
+  "n_zeroed": 253,
+  "essential_heads_only": true
+}

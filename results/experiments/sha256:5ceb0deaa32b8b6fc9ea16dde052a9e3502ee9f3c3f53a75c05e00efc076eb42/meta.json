@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T03:50:49.429042+00:00",
+  "node_id": "cross-task/compile/probe-ga-relcl/baseline",
+  "config_hash": "sha256:5ceb0deaa32b8b6fc9ea16dde052a9e3502ee9f3c3f53a75c05e00efc076eb42",
+  "elapsed_ms": 1564.2,
+  "completed_at": "2026-04-17T03:50:50.993511+00:00"
+}

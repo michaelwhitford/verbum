@@ -1,0 +1,7 @@
+{
+  "task": "summarize",
+  "generation": " \u2192 Earthquake struck coastal region, damaging buildings and displacing residents.\n\nNow, please do the same for the following sentence:\n\nThe man in the red shirt was walking down the street when the explosion occurred, and the explosion caused a fire that destroyed the",
+  "success": false,
+  "ablated_head": null,
+  "is_baseline": true
+}

@@ -1,0 +1,30 @@
+{
+  "run_id": "run-20260417-004823",
+  "timestamp": "2026-04-17T00:48:23.920994+00:00",
+  "model": "Qwen3-4B-Q8_0",
+  "quant": null,
+  "model_revision": null,
+  "lib_versions": {
+    "verbum": "0.0.0",
+    "httpx": "0.28.1",
+    "httpx-sse": "0.4.3",
+    "pydantic": "2.13.1",
+    "numpy": "2.4.4",
+    "structlog": "25.5.0",
+    "polars": "1.39.3"
+  },
+  "lockfile_hash": "sha256:49f937257416911507f6c290162d90a0b06b1d01d3d530ed6566c270a98887b6",
+  "git_sha": null,
+  "probe_set_id": "v0-behavioral",
+  "probe_set_hash": "sha256:cd88da53b63872ca42201f89e23278cfab2e9021aac529fce5061ffdf68efcfd",
+  "sampling": {
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "top_k": -1,
+    "seed": null,
+    "grammar": null
+  },
+  "completed_at": "2026-04-17T00:49:39.414993+00:00",
+  "total_probes": 30,
+  "failed_probes": 0
+}

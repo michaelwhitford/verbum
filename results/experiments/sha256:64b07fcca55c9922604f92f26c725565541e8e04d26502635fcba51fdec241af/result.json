@@ -1,0 +1,11 @@
+{
+  "generation": " \u2192 ?\n\nOkay, let's see. The user wants to convert the sentence \"The cat that sat on the mat is black.\" into a lambda expression. Hmm, first I need to parse the sentence structure. \n\nSo the main clause is \"The cat is black.\" And there's a relative clause \"that sat on the mat.\" So the cat is the subject, and the relative clause provides more information about the cat.\n\nIn lambda calculus, we usually represent predicates and functions. Let me think. The sentence is stating that the cat (which is black) is the one that sat on the mat. Wait, maybe the relative clause is a description of the cat. So the cat is the one that satisfies both being black and having sat on the",
+  "has_lambda": false,
+  "lambda_count": 1,
+  "has_reasoning": true,
+  "ablated_head": [
+    24,
+    0
+  ],
+  "is_baseline": false
+}

@@ -1,0 +1,45 @@
+{
+  "id": "extract",
+  "version": 1,
+  "description": "Relation extraction probes. Sentence to predicate notation. Close to compilation but without lambda/quantifiers.",
+  "created": "2026-04-17T00:00:00Z",
+  "author": "verbum",
+  "default_gate": "extract",
+  "probes": [
+    {
+      "id": "ext-simple",
+      "category": "extract",
+      "prompt": "The dog chased the cat.",
+      "ground_truth": "chase(dog, cat)",
+      "metadata": {"complexity": "simple"}
+    },
+    {
+      "id": "ext-ditrans",
+      "category": "extract",
+      "prompt": "Mary sent John a letter.",
+      "ground_truth": "send(mary, john, letter)",
+      "metadata": {"complexity": "medium"}
+    },
+    {
+      "id": "ext-nested",
+      "category": "extract",
+      "prompt": "The teacher told the students that the exam was cancelled.",
+      "ground_truth": "tell(teacher, students, cancel(exam))",
+      "metadata": {"complexity": "complex"}
+    },
+    {
+      "id": "ext-multi",
+      "category": "extract",
+      "prompt": "Alice bought a car and Bob sold his house.",
+      "ground_truth": "buy(alice, car), sell(bob, house)",
+      "metadata": {"complexity": "complex"}
+    },
+    {
+      "id": "ext-passive",
+      "category": "extract",
+      "prompt": "The book was written by a famous author.",
+      "ground_truth": "write(author, book)",
+      "metadata": {"complexity": "medium"}
+    }
+  ]
+}

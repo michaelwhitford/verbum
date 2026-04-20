@@ -1,0 +1,7 @@
+{
+  "layer": 0,
+  "generation": " \u2192,,,,,,,,,,,,,,aaaaaaaaaaaaaaa",
+  "has_lambda": false,
+  "lambda_count": 1,
+  "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+}

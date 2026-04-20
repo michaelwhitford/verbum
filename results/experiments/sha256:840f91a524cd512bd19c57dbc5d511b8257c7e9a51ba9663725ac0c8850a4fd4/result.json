@@ -1,0 +1,11 @@
+{
+  "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the ground is wet.\" using lambda notation. Let me start by breaking down the sentence. \n\nFirst, the structure is a conditional statement: \"If [condition], then [consequence].\" In this case, the condition is \"it rains\" and the consequence is \"the ground is wet.\" \n\nIn logic, a conditional statement is typically represented as P \u2192 Q, where P is the antecedent and Q is the consequent. So, translating this into lambda notation, I need to express this implication. \n\nBut wait, how do I represent the condition and the consequence in lambda terms? The",
+  "has_lambda": true,
+  "lambda_count": 4,
+  "has_reasoning": true,
+  "ablated_head": [
+    24,
+    2
+  ],
+  "is_baseline": false
+}

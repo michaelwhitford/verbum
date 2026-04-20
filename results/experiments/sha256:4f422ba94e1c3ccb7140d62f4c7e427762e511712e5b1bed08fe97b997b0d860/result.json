@@ -1,0 +1,8 @@
+{
+  "generation": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth is flat\" using lambda expressions. Let me start by breaking down the sentence. \n\nFirst, the main structure is \"Someone believes that [the earth is flat].\" The subject here is \"someone,\" and the predicate is \"believes that...\" The content of the belief is \"the earth is flat.\" \n\nIn lambda calculus, functions are represented with lambda abstractions. So, the verb \"believes\" would be a function that takes an argument (the person who believes) and another argument (the content of the belief). The content of the belief is itself a proposition: \"the earth is",
+  "has_lambda": true,
+  "lambda_count": 2,
+  "has_reasoning": true,
+  "ablated_head": null,
+  "is_baseline": true
+}

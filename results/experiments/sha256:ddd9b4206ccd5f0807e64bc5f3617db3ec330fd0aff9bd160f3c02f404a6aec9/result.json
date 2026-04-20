@@ -1,0 +1,10 @@
+{
+  "task": "translate",
+  "generation": " \u2192 ______.\n\nOutput: Le oiseau chante.\n\nSo, the task is to translate an English sentence into French. The examples given are \"The dog runs. \u2192 Le chien court.\" and \"The cat is black. \u2192 Le chat",
+  "success": true,
+  "ablated_head": [
+    24,
+    2
+  ],
+  "is_baseline": false
+}

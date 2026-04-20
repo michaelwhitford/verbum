@@ -1,0 +1,39 @@
+{
+  "L1-H0": {
+    "task": "extract",
+    "generation": " \n\nOutput: send(mary, john, letter)\nOkay, so I need to figure out how to convert the sentence \"Mary sent John a letter\" into the predicate logic format similar to the examples given. Let me start by recalling the examples provided",
+    "success": true,
+    "ablated_head": [
+      1,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H0": {
+    "task": "extract",
+    "generation": " \n\nOutput: ?\nSo, the task is to convert the given natural language sentence into a logical form using the same structure as the examples provided. Let's break down the sentence and identify the key components.\n\nThe sentence is: \"Mary sent John a",
+    "success": false,
+    "ablated_head": [
+      24,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H2": {
+    "task": "extract",
+    "generation": " \n\nOutput: send(mary, john, letter)\n\nYes, the output is correct. The structure of the output is the same as the examples provided. The verb is \"send\", the subject is \"Mary\", the object is \"John\", and",
+    "success": true,
+    "ablated_head": [
+      24,
+      2
+    ],
+    "is_baseline": false
+  },
+  "baseline": {
+    "task": "extract",
+    "generation": " \n\nOutput: send(mary, john, letter)\n\nYes, the output is correct. The structure of the output is the same as the examples provided. The verb is \"send\", the subject is \"Mary\", the object is \"John\", and",
+    "success": true,
+    "ablated_head": null,
+    "is_baseline": true
+  }
+}

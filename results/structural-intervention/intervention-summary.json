@@ -1,0 +1,1139 @@
+{
+  "timestamp": "2026-04-17T20:28:57.156343+00:00",
+  "elapsed_s": 34.48006296157837,
+  "model": "EleutherAI/pythia-160m-deduped",
+  "test_layers": [
+    0,
+    1,
+    2,
+    3,
+    5,
+    8,
+    11
+  ],
+  "n_pairs": 7,
+  "layer_scores": {
+    "0": 0.14285714285714285,
+    "1": 0.2857142857142857,
+    "2": 0.2857142857142857,
+    "3": 0.42857142857142855,
+    "5": 0.2857142857142857,
+    "8": -0.14285714285714285,
+    "11": -0.14285714285714285
+  },
+  "results": [
+    {
+      "name": "intrans→trans",
+      "donor": "Alice loves Bob.",
+      "recipient": "The bird flies.",
+      "baseline_donor": "λx. loves(alice)",
+      "baseline_recip": "λx. flies(bird)",
+      "donor_sig": {
+        "has_lambda": true,
+        "has_forall": false,
+        "has_exists": false,
+        "has_neg": false,
+        "has_arrow": false,
+        "has_and": false,
+        "has_or": false,
+        "n_args": 1,
+        "n_parens": 1,
+        "length": 16
+      },
+      "recip_sig": {
+        "has_lambda": true,
+        "has_forall": false,
+        "has_exists": false,
+        "has_neg": false,
+        "has_arrow": false,
+        "has_and": false,
+        "has_or": false,
+        "n_args": 1,
+        "n_parens": 1,
+        "length": 15
+      },
+      "layers": {
+        "0": {
+          "patched_output": "→ λx. loves(Alice)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": true,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 18
+          },
+          "dist_to_donor": 2,
+          "dist_to_recip": 2,
+          "shift_direction": "=SAME"
+        },
+        "1": {
+          "patched_output": "→ λx. loves(dog)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": true,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 16
+          },
+          "dist_to_donor": 1,
+          "dist_to_recip": 2,
+          "shift_direction": "→DONOR"
+        },
+        "2": {
+          "patched_output": "→ λx. loves(dog)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": true,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 16
+          },
+          "dist_to_donor": 1,
+          "dist_to_recip": 2,
+          "shift_direction": "→DONOR"
+        },
+        "3": {
+          "patched_output": "→ λx. loves(dog)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": true,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 16
+          },
+          "dist_to_donor": 1,
+          "dist_to_recip": 2,
+          "shift_direction": "→DONOR"
+        },
+        "5": {
+          "patched_output": "→ λx. loves(dog)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": true,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 16
+          },
+          "dist_to_donor": 1,
+          "dist_to_recip": 2,
+          "shift_direction": "→DONOR"
+        },
+        "8": {
+          "patched_output": "→ λx. birds(bird)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": true,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 17
+          },
+          "dist_to_donor": 2,
+          "dist_to_recip": 2,
+          "shift_direction": "=SAME"
+        },
+        "11": {
+          "patched_output": "→ λx. bird(bird)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": true,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 16
+          },
+          "dist_to_donor": 1,
+          "dist_to_recip": 2,
+          "shift_direction": "→DONOR"
+        }
+      }
+    },
+    {
+      "name": "trans→intrans",
+      "donor": "The bird flies.",
+      "recipient": "Alice loves Bob.",
+      "baseline_donor": "λx. flies(bird)",
+      "baseline_recip": "λx. loves(alice)",
+      "donor_sig": {
+        "has_lambda": true,
+        "has_forall": false,
+        "has_exists": false,
+        "has_neg": false,
+        "has_arrow": false,
+        "has_and": false,
+        "has_or": false,
+        "n_args": 1,
+        "n_parens": 1,
+        "length": 15
+      },
+      "recip_sig": {
+        "has_lambda": true,
+        "has_forall": false,
+        "has_exists": false,
+        "has_neg": false,
+        "has_arrow": false,
+        "has_and": false,
+        "has_or": false,
+        "n_args": 1,
+        "n_parens": 1,
+        "length": 16
+      },
+      "layers": {
+        "0": {
+          "patched_output": "λx. flies(bird)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 15
+          },
+          "dist_to_donor": 0,
+          "dist_to_recip": 1,
+          "shift_direction": "→DONOR"
+        },
+        "1": {
+          "patched_output": "λx. flies(bird)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 15
+          },
+          "dist_to_donor": 0,
+          "dist_to_recip": 1,
+          "shift_direction": "→DONOR"
+        },
+        "2": {
+          "patched_output": "λx. flies(bird)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 15
+          },
+          "dist_to_donor": 0,
+          "dist_to_recip": 1,
+          "shift_direction": "→DONOR"
+        },
+        "3": {
+          "patched_output": "λx. birds(bird)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 15
+          },
+          "dist_to_donor": 0,
+          "dist_to_recip": 1,
+          "shift_direction": "→DONOR"
+        },
+        "5": {
+          "patched_output": "λx. bird(bird)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 14
+          },
+          "dist_to_donor": 1,
+          "dist_to_recip": 1,
+          "shift_direction": "=SAME"
+        },
+        "8": {
+          "patched_output": "λx. loves(dog)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 14
+          },
+          "dist_to_donor": 1,
+          "dist_to_recip": 1,
+          "shift_direction": "=SAME"
+        },
+        "11": {
+          "patched_output": "λx. loves(alice)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 16
+          },
+          "dist_to_donor": 1,
+          "dist_to_recip": 0,
+          "shift_direction": "→RECIP"
+        }
+      }
+    },
+    {
+      "name": "simple→quant",
+      "donor": "Every student reads a book.",
+      "recipient": "The bird flies.",
+      "baseline_donor": "λx. read(book)",
+      "baseline_recip": "λx. flies(bird)",
+      "donor_sig": {
+        "has_lambda": true,
+        "has_forall": false,
+        "has_exists": false,
+        "has_neg": false,
+        "has_arrow": false,
+        "has_and": false,
+        "has_or": false,
+        "n_args": 1,
+        "n_parens": 1,
+        "length": 14
+      },
+      "recip_sig": {
+        "has_lambda": true,
+        "has_forall": false,
+        "has_exists": false,
+        "has_neg": false,
+        "has_arrow": false,
+        "has_and": false,
+        "has_or": false,
+        "n_args": 1,
+        "n_parens": 1,
+        "length": 15
+      },
+      "layers": {
+        "0": {
+          "patched_output": ". → λx. read(book)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": true,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 18
+          },
+          "dist_to_donor": 2,
+          "dist_to_recip": 2,
+          "shift_direction": "=SAME"
+        },
+        "1": {
+          "patched_output": ". → λx. read(book)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": true,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 18
+          },
+          "dist_to_donor": 2,
+          "dist_to_recip": 2,
+          "shift_direction": "=SAME"
+        },
+        "2": {
+          "patched_output": ". → λx. read(book)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": true,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 18
+          },
+          "dist_to_donor": 2,
+          "dist_to_recip": 2,
+          "shift_direction": "=SAME"
+        },
+        "3": {
+          "patched_output": ".",
+          "patched_sig": {
+            "has_lambda": false,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 0,
+            "n_parens": 0,
+            "length": 1
+          },
+          "dist_to_donor": 4,
+          "dist_to_recip": 4,
+          "shift_direction": "=SAME"
+        },
+        "5": {
+          "patched_output": ".",
+          "patched_sig": {
+            "has_lambda": false,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 0,
+            "n_parens": 0,
+            "length": 1
+          },
+          "dist_to_donor": 4,
+          "dist_to_recip": 4,
+          "shift_direction": "=SAME"
+        },
+        "8": {
+          "patched_output": ". bird(bird)",
+          "patched_sig": {
+            "has_lambda": false,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 12
+          },
+          "dist_to_donor": 2,
+          "dist_to_recip": 2,
+          "shift_direction": "=SAME"
+        },
+        "11": {
+          "patched_output": ". bird(bird)",
+          "patched_sig": {
+            "has_lambda": false,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 12
+          },
+          "dist_to_donor": 2,
+          "dist_to_recip": 2,
+          "shift_direction": "=SAME"
+        }
+      }
+    },
+    {
+      "name": "quant→simple",
+      "donor": "The bird flies.",
+      "recipient": "Every student reads a book.",
+      "baseline_donor": "λx. flies(bird)",
+      "baseline_recip": "λx. read(book)",
+      "donor_sig": {
+        "has_lambda": true,
+        "has_forall": false,
+        "has_exists": false,
+        "has_neg": false,
+        "has_arrow": false,
+        "has_and": false,
+        "has_or": false,
+        "n_args": 1,
+        "n_parens": 1,
+        "length": 15
+      },
+      "recip_sig": {
+        "has_lambda": true,
+        "has_forall": false,
+        "has_exists": false,
+        "has_neg": false,
+        "has_arrow": false,
+        "has_and": false,
+        "has_or": false,
+        "n_args": 1,
+        "n_parens": 1,
+        "length": 14
+      },
+      "layers": {
+        "0": {
+          "patched_output": ". bird(bird)",
+          "patched_sig": {
+            "has_lambda": false,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 12
+          },
+          "dist_to_donor": 2,
+          "dist_to_recip": 2,
+          "shift_direction": "=SAME"
+        },
+        "1": {
+          "patched_output": ".",
+          "patched_sig": {
+            "has_lambda": false,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 0,
+            "n_parens": 0,
+            "length": 1
+          },
+          "dist_to_donor": 4,
+          "dist_to_recip": 4,
+          "shift_direction": "=SAME"
+        },
+        "2": {
+          "patched_output": ". bird(bird)",
+          "patched_sig": {
+            "has_lambda": false,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 12
+          },
+          "dist_to_donor": 2,
+          "dist_to_recip": 2,
+          "shift_direction": "=SAME"
+        },
+        "3": {
+          "patched_output": "λx. flies(bird)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 15
+          },
+          "dist_to_donor": 0,
+          "dist_to_recip": 1,
+          "shift_direction": "→DONOR"
+        },
+        "5": {
+          "patched_output": "λx. flies(bird)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 15
+          },
+          "dist_to_donor": 0,
+          "dist_to_recip": 1,
+          "shift_direction": "→DONOR"
+        },
+        "8": {
+          "patched_output": "λx. reads(dog)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 14
+          },
+          "dist_to_donor": 1,
+          "dist_to_recip": 0,
+          "shift_direction": "→RECIP"
+        },
+        "11": {
+          "patched_output": "λx. read(book)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 14
+          },
+          "dist_to_donor": 1,
+          "dist_to_recip": 0,
+          "shift_direction": "→RECIP"
+        }
+      }
+    },
+    {
+      "name": "simple→cond",
+      "donor": "If the dog runs, the cat sleeps.",
+      "recipient": "The bird flies.",
+      "baseline_donor": "λx. sleeps(cat)",
+      "baseline_recip": "λx. flies(bird)",
+      "donor_sig": {
+        "has_lambda": true,
+        "has_forall": false,
+        "has_exists": false,
+        "has_neg": false,
+        "has_arrow": false,
+        "has_and": false,
+        "has_or": false,
+        "n_args": 1,
+        "n_parens": 1,
+        "length": 15
+      },
+      "recip_sig": {
+        "has_lambda": true,
+        "has_forall": false,
+        "has_exists": false,
+        "has_neg": false,
+        "has_arrow": false,
+        "has_and": false,
+        "has_or": false,
+        "n_args": 1,
+        "n_parens": 1,
+        "length": 15
+      },
+      "layers": {
+        "0": {
+          "patched_output": "the cat sleeps. → λx. sleeps(cat)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": true,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 33
+          },
+          "dist_to_donor": 2,
+          "dist_to_recip": 2,
+          "shift_direction": "=SAME"
+        },
+        "1": {
+          "patched_output": "the cat sleeps. → λx. sleeps(cat)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": true,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 33
+          },
+          "dist_to_donor": 2,
+          "dist_to_recip": 2,
+          "shift_direction": "=SAME"
+        },
+        "2": {
+          "patched_output": "the cat sleeps. → λx. sleeps(cat)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": true,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 33
+          },
+          "dist_to_donor": 2,
+          "dist_to_recip": 2,
+          "shift_direction": "=SAME"
+        },
+        "3": {
+          "patched_output": "the cat sleeps. → λx. sleeps(dog)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": true,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 33
+          },
+          "dist_to_donor": 2,
+          "dist_to_recip": 2,
+          "shift_direction": "=SAME"
+        },
+        "5": {
+          "patched_output": "the cat runs. → the cat runs",
+          "patched_sig": {
+            "has_lambda": false,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": true,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 0,
+            "n_parens": 0,
+            "length": 28
+          },
+          "dist_to_donor": 5,
+          "dist_to_recip": 5,
+          "shift_direction": "=SAME"
+        },
+        "8": {
+          "patched_output": "the bird runs(bird)",
+          "patched_sig": {
+            "has_lambda": false,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 19
+          },
+          "dist_to_donor": 2,
+          "dist_to_recip": 2,
+          "shift_direction": "=SAME"
+        },
+        "11": {
+          "patched_output": "the bird runs(bird)",
+          "patched_sig": {
+            "has_lambda": false,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 19
+          },
+          "dist_to_donor": 2,
+          "dist_to_recip": 2,
+          "shift_direction": "=SAME"
+        }
+      }
+    },
+    {
+      "name": "cond→simple",
+      "donor": "The bird flies.",
+      "recipient": "If the dog runs, the cat sleeps.",
+      "baseline_donor": "λx. flies(bird)",
+      "baseline_recip": "λx. sleeps(cat)",
+      "donor_sig": {
+        "has_lambda": true,
+        "has_forall": false,
+        "has_exists": false,
+        "has_neg": false,
+        "has_arrow": false,
+        "has_and": false,
+        "has_or": false,
+        "n_args": 1,
+        "n_parens": 1,
+        "length": 15
+      },
+      "recip_sig": {
+        "has_lambda": true,
+        "has_forall": false,
+        "has_exists": false,
+        "has_neg": false,
+        "has_arrow": false,
+        "has_and": false,
+        "has_or": false,
+        "n_args": 1,
+        "n_parens": 1,
+        "length": 15
+      },
+      "layers": {
+        "0": {
+          "patched_output": "the bird sleeps.",
+          "patched_sig": {
+            "has_lambda": false,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 0,
+            "n_parens": 0,
+            "length": 16
+          },
+          "dist_to_donor": 4,
+          "dist_to_recip": 4,
+          "shift_direction": "=SAME"
+        },
+        "1": {
+          "patched_output": "the bird sleeps.",
+          "patched_sig": {
+            "has_lambda": false,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 0,
+            "n_parens": 0,
+            "length": 16
+          },
+          "dist_to_donor": 4,
+          "dist_to_recip": 4,
+          "shift_direction": "=SAME"
+        },
+        "2": {
+          "patched_output": "the bird sleeps.",
+          "patched_sig": {
+            "has_lambda": false,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 0,
+            "n_parens": 0,
+            "length": 16
+          },
+          "dist_to_donor": 4,
+          "dist_to_recip": 4,
+          "shift_direction": "=SAME"
+        },
+        "3": {
+          "patched_output": "λx. sleeps(bird)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 16
+          },
+          "dist_to_donor": 1,
+          "dist_to_recip": 1,
+          "shift_direction": "=SAME"
+        },
+        "5": {
+          "patched_output": "λx. flies(bird)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 15
+          },
+          "dist_to_donor": 0,
+          "dist_to_recip": 0,
+          "shift_direction": "=SAME"
+        },
+        "8": {
+          "patched_output": "λx. sleeps(cat)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 15
+          },
+          "dist_to_donor": 0,
+          "dist_to_recip": 0,
+          "shift_direction": "=SAME"
+        },
+        "11": {
+          "patched_output": "λx. sleeps(cat)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": false,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 15
+          },
+          "dist_to_donor": 0,
+          "dist_to_recip": 0,
+          "shift_direction": "=SAME"
+        }
+      }
+    },
+    {
+      "name": "simple→neg",
+      "donor": "No fish swims.",
+      "recipient": "The bird flies.",
+      "baseline_donor": "λx. swims(no fish)",
+      "baseline_recip": "λx. flies(bird)",
+      "donor_sig": {
+        "has_lambda": true,
+        "has_forall": false,
+        "has_exists": false,
+        "has_neg": false,
+        "has_arrow": false,
+        "has_and": false,
+        "has_or": false,
+        "n_args": 1,
+        "n_parens": 1,
+        "length": 18
+      },
+      "recip_sig": {
+        "has_lambda": true,
+        "has_forall": false,
+        "has_exists": false,
+        "has_neg": false,
+        "has_arrow": false,
+        "has_and": false,
+        "has_or": false,
+        "n_args": 1,
+        "n_parens": 1,
+        "length": 15
+      },
+      "layers": {
+        "0": {
+          "patched_output": "→ λx. swims(no fish)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": true,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 20
+          },
+          "dist_to_donor": 2,
+          "dist_to_recip": 2,
+          "shift_direction": "=SAME"
+        },
+        "1": {
+          "patched_output": "→ λx. swims(dog)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": true,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 16
+          },
+          "dist_to_donor": 2,
+          "dist_to_recip": 2,
+          "shift_direction": "=SAME"
+        },
+        "2": {
+          "patched_output": "→ λx. swims(dog)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": true,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 16
+          },
+          "dist_to_donor": 2,
+          "dist_to_recip": 2,
+          "shift_direction": "=SAME"
+        },
+        "3": {
+          "patched_output": "→ λx. swims(dog)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": true,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 16
+          },
+          "dist_to_donor": 2,
+          "dist_to_recip": 2,
+          "shift_direction": "=SAME"
+        },
+        "5": {
+          "patched_output": "→ λx. swims(dog)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": true,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 16
+          },
+          "dist_to_donor": 2,
+          "dist_to_recip": 2,
+          "shift_direction": "=SAME"
+        },
+        "8": {
+          "patched_output": "→ λx. flies(bird)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": true,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 17
+          },
+          "dist_to_donor": 2,
+          "dist_to_recip": 2,
+          "shift_direction": "=SAME"
+        },
+        "11": {
+          "patched_output": "→ λx. bird(bird)",
+          "patched_sig": {
+            "has_lambda": true,
+            "has_forall": false,
+            "has_exists": false,
+            "has_neg": false,
+            "has_arrow": true,
+            "has_and": false,
+            "has_or": false,
+            "n_args": 1,
+            "n_parens": 1,
+            "length": 16
+          },
+          "dist_to_donor": 2,
+          "dist_to_recip": 2,
+          "shift_direction": "=SAME"
+        }
+      }
+    }
+  ]
+}

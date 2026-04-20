@@ -1,0 +1,4 @@
+The quick brown fox jumped over the lazy dog while the cat watched from the windowsill with great interest. → Fox jumps over dog; cat watches.
+Despite the heavy rain and strong winds, the marathon runners continued their race through the flooded streets of downtown. → Runners continue marathon despite bad weather.
+
+Input: 

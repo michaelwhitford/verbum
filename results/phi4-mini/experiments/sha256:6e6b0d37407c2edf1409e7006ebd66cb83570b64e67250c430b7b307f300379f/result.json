@@ -1,0 +1,3572 @@
+{
+  "probe-ga-complex": {
+    "L0": {
+      "layer": 0,
+      "baseline": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is",
+      "baseline_has_lambda": true,
+      "n_heads": 24,
+      "head_results": [
+        {
+          "layer": 0,
+          "head": 0,
+          "generation": " \u2192 \u03bbx. believes(x, flat_earth)\nOutput: <|mask_end|>\u03bbx. believes(x, flat_earth)",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 1,
+          "generation": " \u2192 \u03bbx. believes(x, flat-earth)\nOutput: \u03bbx. believes(x, flat-earth)",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 2,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")",
+          "has_lambda": true,
+          "lambda_count": 2
+        },
+        {
+          "layer": 0,
+          "head": 3,
+          "generation": " \u2192 \u03bbx. believes(x, flat_earth)\nOutput: <lambda expressions>",
+          "has_lambda": true,
+          "lambda_count": 2
+        },
+        {
+          "layer": 0,
+          "head": 4,
+          "generation": " \u2192 \u03bbx. believes(x, flat_earth)\nOutput: <lambda x. believes(x, flat_earth)>",
+          "has_lambda": true,
+          "lambda_count": 2
+        },
+        {
+          "layer": 0,
+          "head": 5,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table, book)\nInput: The",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 0,
+          "head": 6,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nOutput: \u03bbx. believes(x, \"the earth is flat\") The output is a lambda expression that represents the belief that the earth is flat. It takes an argument x, which",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 7,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nInput: The book is on the table. \u2192 \u03bbx. isOn(x, table)\nInput: The car is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 0,
+          "head": 8,
+          "generation": " \u2192 \u03bbx. believes(x, flat_earth)\nOutput: \u03bbx. believes(x, flat_earth)\n",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 9,
+          "generation": " \u2192 \u03bbx. believes(x, flat_earth)\nOutput: \u03bbx. flat_earth | believes(x, flat_earth)\n",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 10,
+          "generation": " \u2192 \u03bbx. believes(x, flat_earth)\nOutput: \u03bbx. believes(x, flat_earth)",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 11,
+          "generation": " \u2192 \u03bbx. believes(x, flat-earth)\nOutput: <lambda x. believes(x, flat-earth)>",
+          "has_lambda": true,
+          "lambda_count": 2
+        },
+        {
+          "layer": 0,
+          "head": 12,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")",
+          "has_lambda": true,
+          "lambda_count": 2
+        },
+        {
+          "layer": 0,
+          "head": 13,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nOutput: \u03bbx. believes(x, \"the earth is flat\")",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 14,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")",
+          "has_lambda": true,
+          "lambda_count": 2
+        },
+        {
+          "layer": 0,
+          "head": 15,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nOutput: \u03bbx. believes(x, \"the earth is flat\")\n",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 16,
+          "generation": " \u2192 \u03bbx. believes(x, flat-earth)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nInput: The car accelerates. \u2192 \u03bbx. accelerates(car)\nInput: The bird flies. \u2192 \u03bbx. flies(b",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 0,
+          "head": 17,
+          "generation": " \u2192 \u03bbx. believes(x, flat-earth)\nOutput: \u03bbx. believes(x, flat-earth)",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 18,
+          "generation": " \u2192 \u03bbx. flat(earth)\nInput: A person is trying to learn a new language. \u2192 \u03bbx. learn(x). language\nInput: A cat is chasing a mouse. \u2192 \u03bbx. chase(cat, mouse)\nInput: A",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 0,
+          "head": 19,
+          "generation": " \u2192 \u03bbx. believes(x, flat_earth)\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is blue.",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 0,
+          "head": 20,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, \"the table\")\nInput: The",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 0,
+          "head": 21,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nOutput: \u03bbx. believes(x, \"the earth is flat\")\n",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 22,
+          "generation": " \u2192 \u03bbx. believes(x, flat earth)\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is parked outside.",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 0,
+          "head": 23,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is parked outside. \u2192 \u03bbx. parked(car, outside)\nInput: The book is on",
+          "has_lambda": true,
+          "lambda_count": 6
+        }
+      ],
+      "broken_heads": [],
+      "n_broken": 0
+    },
+    "L3": {
+      "layer": 3,
+      "baseline": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is",
+      "baseline_has_lambda": true,
+      "n_heads": 24,
+      "head_results": [
+        {
+          "layer": 3,
+          "head": 0,
+          "generation": " \u2192 \u03bbx. believes(x, flat-earth)\nOutput: <br>\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: <br>\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nOutput: <",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 3,
+          "head": 1,
+          "generation": " \u2192 \u03bbx. believes(x, flat-earth)\nOutput: <omitted>\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: <omitted>\nInput: The bird flies. \u2192 \u03bbx. flies(bird)\nOutput",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 3,
+          "head": 2,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The bird flies. \u2192 \u03bbx.",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 3,
+          "generation": " \u2192 \u03bbx. believes(x, flat-earth)\nOutput: <br>\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: <br>\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nOutput: <",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 3,
+          "head": 4,
+          "generation": " \u2192 \u03bbx. believes(x, flat-earth)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The bird flies. \u2192 \u03bbx. flies(bird",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 5,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The book is interesting. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 6,
+          "generation": " \u2192 \u03bbx. believes(x, flat earth)\nOutput: <lambda x. believes(x, flat earth)>\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: <lambda x. sleeps(cat)>\nInput: The bird flies.",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 3,
+          "head": 7,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The bird flies. \u2192 \u03bbx.",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 8,
+          "generation": " \u2192 \u03bbx. believes(x, flat-earth)\nOutput: <lambda x. believes(x, flat-earth)>\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: <lambda x. sleeps(cat)>\nInput: The car is fast",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 3,
+          "head": 9,
+          "generation": " \u2192 \u03bbx. believes(x, flat-earth)\nOutput: <br>\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: <br>\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nOutput: <",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 3,
+          "head": 10,
+          "generation": " \u2192 \u03bbx. believes(x, flat-earth)\nOutput: <br>\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: <br>\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nOutput: <",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 3,
+          "head": 11,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The bird flies. \u2192 \u03bbx.",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 12,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nOutput: <omitted>",
+          "has_lambda": true,
+          "lambda_count": 2
+        },
+        {
+          "layer": 3,
+          "head": 13,
+          "generation": " \u2192 \u03bbx. believes(x, flat-earth)\nOutput: <omitted>",
+          "has_lambda": true,
+          "lambda_count": 2
+        },
+        {
+          "layer": 3,
+          "head": 14,
+          "generation": " \u2192 \u03bbx. believes(x, flat earth)\nOutput: <lambda x. believes(x, flat earth)>",
+          "has_lambda": true,
+          "lambda_count": 2
+        },
+        {
+          "layer": 3,
+          "head": 15,
+          "generation": " \u2192 \u03bbx. believes(x, flat-earth)\nOutput: <lambda x. believes(x, flat-earth)>",
+          "has_lambda": true,
+          "lambda_count": 2
+        },
+        {
+          "layer": 3,
+          "head": 16,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The book is interesting. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 17,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 3,
+          "head": 18,
+          "generation": " \u2192 \u03bbx. believes(x, flat-earth)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nInput: I am happy. \u2192 \u03bbx. happy(x)\nInput: The bird flies. \u2192 \u03bbx. flies(bird)\n",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 19,
+          "generation": " \u2192 \u03bbx. believes(x, flat-earth)\nOutput: <lambda x. believes(x, flat-earth)>\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: <lambda x. sleeps(cat)>\nInput: The bird flies.",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 3,
+          "head": 20,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The bird flies. \u2192 \u03bbx.",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 21,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nOutput: <lambda x. believes(x, \"the earth is flat\")>\n\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: <lambda x. sleeps(cat",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 3,
+          "head": 22,
+          "generation": " \u2192 \u03bbx. believes(x, flat earth)\nOutput: <br>\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: <br>\nInput: The sun rises in the morning. \u2192 \u03bbx. rises(sun,",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 3,
+          "head": 23,
+          "generation": " \u2192 \u03bbx. believes(x, flat-earth)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The bird flies. \u2192 \u03bbx. flies(bird",
+          "has_lambda": true,
+          "lambda_count": 8
+        }
+      ],
+      "broken_heads": [],
+      "n_broken": 0
+    },
+    "L30": {
+      "layer": 30,
+      "baseline": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is",
+      "baseline_has_lambda": true,
+      "n_heads": 24,
+      "head_results": [
+        {
+          "layer": 30,
+          "head": 0,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 30,
+          "head": 1,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 30,
+          "head": 2,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The book is interesting. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 3,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 30,
+          "head": 4,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nOutput: <omitted>\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nOutput: <omitted>\nInput: The car is fast. \u2192 \u03bbx.",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 30,
+          "head": 5,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The book is interesting. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 6,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 30,
+          "head": 7,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nOutput: <omitted>\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nOutput: <omitted>\nInput: The bird flies. \u2192 \u03bbx. flies",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 30,
+          "head": 8,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The book is interesting. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 9,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The book is interesting. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 10,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The book is interesting. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 11,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The book is interesting. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 12,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 30,
+          "head": 13,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 30,
+          "head": 14,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 30,
+          "head": 15,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 30,
+          "head": 16,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 30,
+          "head": 17,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The book is interesting. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 18,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The book is interesting. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 19,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nOutput: <omitted>\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 30,
+          "head": 20,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The book is interesting. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 21,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The book is interesting. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 22,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The book is interesting. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 23,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The book is interesting. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 8
+        }
+      ],
+      "broken_heads": [],
+      "n_broken": 0
+    },
+    "L5": {
+      "layer": 5,
+      "baseline": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is",
+      "baseline_has_lambda": true,
+      "n_heads": 24,
+      "head_results": [
+        {
+          "layer": 5,
+          "head": 0,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The book is interesting. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 1,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The book is interesting. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 2,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table, book)\nInput: The",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 5,
+          "head": 3,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 5,
+          "head": 4,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The book is interesting. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 5,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The book is interesting. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 6,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The book is interesting. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 7,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 5,
+          "head": 8,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The book is interesting. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 9,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The book is interesting. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 10,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nOutput: <omitted>\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 5,
+          "head": 11,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 5,
+          "head": 12,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nOutput: <omitted>\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 5,
+          "head": 13,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 5,
+          "head": 14,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 5,
+          "head": 15,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 5,
+          "head": 16,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The book is interesting. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 17,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 5,
+          "head": 18,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nOutput: <omitted>\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The cat is hungry. \u2192 \u03bbx. hungry(cat)\nInput: The",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 5,
+          "head": 19,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The book is interesting. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 20,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 5,
+          "head": 21,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nOutput: <omitted>\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 5,
+          "head": 22,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 5,
+          "head": 23,
+          "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nOutput: <omitted>\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The",
+          "has_lambda": true,
+          "lambda_count": 6
+        }
+      ],
+      "broken_heads": [],
+      "n_broken": 0
+    }
+  },
+  "probe-ga-cond": {
+    "L0": {
+      "layer": 0,
+      "baseline": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+      "baseline_has_lambda": true,
+      "n_heads": 24,
+      "head_results": [
+        {
+          "layer": 0,
+          "head": 0,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 0,
+          "head": 1,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y) | concise(x, y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y) | concise(x, y)",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 0,
+          "head": 2,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y) | ground(y)\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: If the car is blue, then it is fast. \u2192 \u03bbx. blue",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 0,
+          "head": 3,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. ground(y) \u2192 wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. ground(y) \u2192 wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 9
+        },
+        {
+          "layer": 0,
+          "head": 4,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. ground(y) \u2192 wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. ground(y) \u2192 wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 9
+        },
+        {
+          "layer": 0,
+          "head": 5,
+          "generation": " \u2192 \u03bbx. rains(x). \u2192 \u03bbx. wet(ground)\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The book is interesting.",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 0,
+          "head": 6,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 0,
+          "head": 7,
+          "generation": " \u2192 \u03bbx.\u03bby.rains(x) \u2192 wet(y)\nOutput: \u03bbx.\u03bby.rains(x) \u2192 wet(y)\n\nInput: If it rains, the ground is wet. \u2192 \u03bbx.\u03bby.rains(x)",
+          "has_lambda": true,
+          "lambda_count": 10
+        },
+        {
+          "layer": 0,
+          "head": 8,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\nInput: If the car is blue, then it is fast. \u2192 \u03bbx. blue(car) \u2192",
+          "has_lambda": true,
+          "lambda_count": 10
+        },
+        {
+          "layer": 0,
+          "head": 9,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 0,
+          "head": 10,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 wet(x)\nOutput: \u03bbx. rains(x) \u2192 wet(x)\n\n\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(cat)\n\n\nInput: If the car is",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 0,
+          "head": 11,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 0,
+          "head": 12,
+          "generation": " \u2192 \u03bbx. if(rains(x), wet(ground)) | concise(x) | helpful(x) | concise(x) | helpful(x) | concise(x) | helpful(x) | concise(x) | helpful(x) | concise(x) |",
+          "has_lambda": true,
+          "lambda_count": 2
+        },
+        {
+          "layer": 0,
+          "head": 13,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. ground(y) \u2192 wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. ground(y) \u2192 wet(y)",
+          "has_lambda": true,
+          "lambda_count": 9
+        },
+        {
+          "layer": 0,
+          "head": 14,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nIf it rains, the ground is wet. \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 0,
+          "head": 15,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 0,
+          "head": 16,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nBe helpful but concise. \u2192 \u03bb assist",
+          "has_lambda": true,
+          "lambda_count": 11
+        },
+        {
+          "layer": 0,
+          "head": 17,
+          "generation": " \u2192 \u03bbx. \u03bby. (rains(x) \u2192 wet(y)) | ground(y) | concise(x)\nOutput: \u03bbx. \u03bby. (rains(x) \u2192 wet(y)) | ground(y) | concise(x)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 0,
+          "head": 18,
+          "generation": " \u2192 \u03bb weather.\u03bbx.rains(weather) \u2192 wet(x)\nInput: If it rains, the ground is wet. \u2192 \u03bb weather.\u03bbx.rains(weather) \u2192 wet(x)\nInput: If it rains, the ground is wet.",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 0,
+          "head": 19,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 0,
+          "head": 20,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 0,
+          "head": 21,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y) | ground(y)\nIf it rains, the ground is wet. \u2192 rains \u2192 wet | ground\n\nInput: If it rains, the ground is wet. \u2192 \u03bbx. rains",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 0,
+          "head": 22,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bbx. wet(ground)\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: If the car is broken, it cannot drive. \u2192 \u03bbx. broken(car) \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 10
+        },
+        {
+          "layer": 0,
+          "head": 23,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. ground(y) \u2192 wet(y)\nOutput: <|output_1|> \u03bbx. rains(x) \u2192 \u03bby. ground(y) \u2192 wet(y)",
+          "has_lambda": true,
+          "lambda_count": 9
+        }
+      ],
+      "broken_heads": [],
+      "n_broken": 0
+    },
+    "L3": {
+      "layer": 3,
+      "baseline": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+      "baseline_has_lambda": true,
+      "n_heads": 24,
+      "head_results": [
+        {
+          "layer": 3,
+          "head": 0,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 1,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 2,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 3,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 4,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 5,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 6,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 7,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 8,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 9,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 10,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 11,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 12,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 13,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 14,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 15,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 16,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 17,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 18,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 19,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 20,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 21,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 22,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 23,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nIf it rains, then the ground is wet. \u2192 \u03bbx. rains(x) \u2192 \u03bby. ground(y) \u2192 wet(y)\n\nInput: The cat sleeps. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 11
+        }
+      ],
+      "broken_heads": [],
+      "n_broken": 0
+    },
+    "L30": {
+      "layer": 30,
+      "baseline": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+      "baseline_has_lambda": true,
+      "n_heads": 24,
+      "head_results": [
+        {
+          "layer": 30,
+          "head": 0,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 1,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 2,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 3,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 4,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 5,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 6,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 7,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 8,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 9,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 10,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 11,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 12,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 13,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 14,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 15,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 16,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 17,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 18,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 19,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 20,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 21,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 22,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 23,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        }
+      ],
+      "broken_heads": [],
+      "n_broken": 0
+    },
+    "L5": {
+      "layer": 5,
+      "baseline": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+      "baseline_has_lambda": true,
+      "n_heads": 24,
+      "head_results": [
+        {
+          "layer": 5,
+          "head": 0,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 1,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 2,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 3,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 4,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 5,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 6,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 7,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 8,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 9,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 10,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 11,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 12,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 13,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 14,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 15,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 16,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 17,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 18,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 19,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 20,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 21,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 22,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 23,
+          "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        }
+      ],
+      "broken_heads": [],
+      "n_broken": 0
+    }
+  },
+  "probe-ga-quant": {
+    "L0": {
+      "layer": 0,
+      "baseline": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+      "baseline_has_lambda": true,
+      "n_heads": 24,
+      "head_results": [
+        {
+          "layer": 0,
+          "head": 0,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 1,
+          "generation": " \u2192 \u03bbx. every student(x) \u2192 reads(x, book)\nOutput: \u03bbx. every student(x) \u2192 reads(x, book)\n\nInput: The cat sleeps. \u2192 \u03bbx. cat(x) \u2192 sleeps(x)\nOutput: \u03bbx",
+          "has_lambda": true,
+          "lambda_count": 9
+        },
+        {
+          "layer": 0,
+          "head": 2,
+          "generation": " \u2192 \u03bbx. student(x) \u2192 \u03bby. reads(x, y) | book(y)\nInput: The cat sleeps. \u2192 \u03bbx. cat(x) \u2192 \u03bby. sleeps(y)\nInput: The bird flies. \u2192 \u03bbx.",
+          "has_lambda": true,
+          "lambda_count": 10
+        },
+        {
+          "layer": 0,
+          "head": 3,
+          "generation": " \u2192 \u03bbx. every student(x). reads(x, book)\nOutput: \u03bbx. every student(x). reads(x, book)",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 4,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 5,
+          "generation": " \u2192 \u03bbx. every(x). student(x). reads(x). book(x)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nInput: I am happy. \u2192 \u03bbx. happy(I)\nInput: The car drives. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 0,
+          "head": 6,
+          "generation": " \u2192 \u03bbx. student(x) \u2192 \u03bby. book(y) \u2192 reads(x, y)\nInput: The cat sleeps. \u2192 \u03bbx. cat(x) \u2192 \u03bbx. sleeps(x)\nInput: The bird flies. \u2192 \u03bbx.",
+          "has_lambda": true,
+          "lambda_count": 11
+        },
+        {
+          "layer": 0,
+          "head": 7,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\n\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(cat)\n\nInput: The bird flies. \u2192 \u03bbx.",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 0,
+          "head": 8,
+          "generation": " \u2192 \u03bbx. every student(x). reads(a book)\nOutput: \u03bbx. every student(x). reads(a book)\n\nInput: The cat sleeps. \u2192 \u03bbx. the cat(x). sleeps\nOutput: \u03bbx. the cat(x).",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 0,
+          "head": 9,
+          "generation": " \u2192 \u03bbx. reads(x, book) | student(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 2
+        },
+        {
+          "layer": 0,
+          "head": 10,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 11,
+          "generation": " \u2192 \u03bbx. student(x) \u2192 \u03bby. reads(x, y) | book(y)\nOutput: \u03bbx. student(x) \u2192 \u03bby. reads(x, y) | book(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 0,
+          "head": 12,
+          "generation": " \u2192 \u03bbx. reads(x, book) | concise(x) | helpful(x) | helpful(x) | helpful(x) | helpful(x) | helpful(x) | helpful(x) | helpful(x) | helpful(x) | helpful(x) |",
+          "has_lambda": true,
+          "lambda_count": 2
+        },
+        {
+          "layer": 0,
+          "head": 13,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 14,
+          "generation": " \u2192 \u03bbx. every student(x). reads(x, book)\nOutput: \u03bbx. every student(x). reads(x, book)",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 15,
+          "generation": " \u2192 \u03bbx. every student(x) \u2192 \u03bby. reads(x, y) | book(y)\nOutput: \u03bbx. every student(x) \u2192 \u03bby. reads(x, y) | book(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 0,
+          "head": 16,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(student, book)\n\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(cat)\n\nInput: The bird flies. \u2192 \u03bbx.",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 0,
+          "head": 17,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(x, cat)\nInput: The teacher explains the lesson.",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 0,
+          "head": 18,
+          "generation": " \u2192 \u03bbx. reads(student(x)) \u2227 book(x)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat(x))\nInput: The sun rises in the east. \u2192 \u03bbx. rises(sun(x)) \u2227 east(x)\n",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 0,
+          "head": 19,
+          "generation": " \u2192 \u03bbx. \u2200y. (student(y) \u2227 reads(y, x))\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nInput: The car drives. \u2192 \u03bbx. drives(car)\nInput: The bird flies",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 0,
+          "head": 20,
+          "generation": " \u2192 \u03bbx. every student(x) \u2192 \u03bby. reads(y, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nInput: The car drives. \u2192 \u03bbx. drives(car)\nInput: The bird flies. \u2192",
+          "has_lambda": true,
+          "lambda_count": 9
+        },
+        {
+          "layer": 0,
+          "head": 21,
+          "generation": " \u2192 \u03bbx. student(x) \u2192 \u03bby. reads(x, y)\nOutput: \u03bbx. student(x) \u2192 \u03bby. reads(x, y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 0,
+          "head": 22,
+          "generation": " \u2192 \u03bbx. reads(x, book) | every student(x) | reads(x, book) | helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 2
+        },
+        {
+          "layer": 0,
+          "head": 23,
+          "generation": " \u2192 \u2200x. student(x) \u2192 \u2203y. reads(x, y) \u2227 book(y)",
+          "has_lambda": true,
+          "lambda_count": 5
+        }
+      ],
+      "broken_heads": [],
+      "n_broken": 0
+    },
+    "L3": {
+      "layer": 3,
+      "baseline": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+      "baseline_has_lambda": true,
+      "n_heads": 24,
+      "head_results": [
+        {
+          "layer": 3,
+          "head": 0,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(cat)\nInput: The bird flies. \u2192 \u03bbx.",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 1,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(cat)\nInput: The bird flies. \u2192 \u03bbx.",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 2,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 3,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)",
+          "has_lambda": true,
+          "lambda_count": 5
+        },
+        {
+          "layer": 3,
+          "head": 4,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(cat)\nInput: The bird flies. \u2192 \u03bbx.",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 5,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 6,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(cat)\nInput: The bird flies. \u2192 \u03bbx.",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 7,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 8,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x) the book\n",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 3,
+          "head": 9,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 10,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 3,
+          "head": 11,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(cat)\nInput: The bird flies. \u2192 \u03bbx.",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 12,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(x) | cat\nInput: The bird flies. \u2192",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 13,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(x) | cat(x)\nInput: The bird flies.",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 3,
+          "head": 14,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(cat)\nInput: The bird flies. \u2192 \u03bbx.",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 15,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 16,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(x) | cat\nInput: The bird flies. \u2192",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 17,
+          "generation": " \u2192 \u03bbx. every student(x) \u2192 \u03bby. reads(x, y) | book(y)\nOutput: \u03bbx. every student(x) \u2192 \u03bby. reads(x, y) | book(y)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 18,
+          "generation": " \u2192 \u03bbx. reads(x, student(x)) | book(x)\nOutput: \u03bbx. reads(x) | student(x) & book(x)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 3,
+          "head": 19,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(x) | cat\nInput: The bird flies. \u2192",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 20,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 21,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 3,
+          "head": 22,
+          "generation": " \u2192 \u03bbx. reads(x,(book))\nOutput: \u03bbx. reads(x,(book))\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 3,
+          "head": 23,
+          "generation": " \u2192 \u03bbx. reads(x, student) | reads(x, book)\nOutput: <omitted for brevity>\n\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\n",
+          "has_lambda": true,
+          "lambda_count": 6
+        }
+      ],
+      "broken_heads": [],
+      "n_broken": 0
+    },
+    "L30": {
+      "layer": 30,
+      "baseline": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+      "baseline_has_lambda": true,
+      "n_heads": 24,
+      "head_results": [
+        {
+          "layer": 30,
+          "head": 0,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 1,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 2,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 3,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 4,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 5,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 6,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 7,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 8,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 9,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 10,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 11,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 12,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 13,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 14,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 15,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 16,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 17,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 18,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 19,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 20,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 21,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 22,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 30,
+          "head": 23,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        }
+      ],
+      "broken_heads": [],
+      "n_broken": 0
+    },
+    "L5": {
+      "layer": 5,
+      "baseline": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+      "baseline_has_lambda": true,
+      "n_heads": 24,
+      "head_results": [
+        {
+          "layer": 5,
+          "head": 0,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 1,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 2,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 3,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(x) | cat(x)\nInput: The teacher explains the",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 5,
+          "head": 4,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 5,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 6,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 5,
+          "head": 7,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 8,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 9,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(cat)\nInput: The bird flies. \u2192 \u03bbx.",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 10,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 11,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 12,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(cat)\nInput: The teacher explains the lesson. \u2192 \u03bb",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 13,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: <lambda x. reads(x, book)>",
+          "has_lambda": true,
+          "lambda_count": 2
+        },
+        {
+          "layer": 5,
+          "head": 14,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 5,
+          "head": 15,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(cat)\nInput: The bird flies. \u2192 \u03bbx.",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 16,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(cat)\nInput: The bird flies. \u2192 \u03bbx.",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 17,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(cat)\nInput: The bird flies. \u2192 \u03bbx.",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 18,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 5,
+          "head": 19,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 5,
+          "head": 20,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 21,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 5,
+          "head": 22,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(x) | cat(x)\nInput: The bird flies.",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 5,
+          "head": 23,
+          "generation": " \u2192 \u03bbx. reads(x, book)\nOutput: \u03bbx. reads(x, book)\nA student reads a book. \u2192 \u03bbx. reads(student, book)\nA student reads a book. \u2192 \u03bbx. reads(x, book)\nA",
+          "has_lambda": true,
+          "lambda_count": 7
+        }
+      ],
+      "broken_heads": [],
+      "n_broken": 0
+    }
+  },
+  "probe-ga-relcl": {
+    "L0": {
+      "layer": 0,
+      "baseline": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+      "baseline_has_lambda": true,
+      "n_heads": 24,
+      "head_results": [
+        {
+          "layer": 0,
+          "head": 0,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The cat that sat on the mat is black. \u2192 \u03bbx. sat(x, mat) \u2227 black(x)",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 0,
+          "head": 1,
+          "generation": " \u2192 \u03bbx. sat(cat, mat) \u2227 black(cat)\nOutput: \u03bbx. sat(cat, mat) \u2227 black(cat)\n\nInput: The quick brown fox jumps over the lazy dog. \u2192 \u03bbx. quick(brown(fox",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 0,
+          "head": 2,
+          "generation": " \u2192 \u03bbx. sat(cat, mat) \u2227 black(cat)",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 3,
+          "generation": " \u2192 \u03bbx. sat(cat, mat) \u2227 black(cat)\nInput: The quick brown fox jumps over the lazy dog. \u2192 \u03bbx. quick(x) \u2227 brown(x) \u2227 fox(x) \u2227 jumps(x, over,",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 0,
+          "head": 4,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 5,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The quick brown fox jumps over the lazy dog. \u2192 \u03bbx. quick(x) \u2227 brown(x) \u2227 fox(x) \u2227 jumps(x, over,",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 0,
+          "head": 6,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The cat that sat on the mat is black. \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The cat that sat on the mat is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 0,
+          "head": 7,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nOutput: \u03bbx. sat(x, mat) \u2227 black(x)\n\nInput: The book on the table is red. \u2192 \u03bbx. on(x, table) \u2227",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 0,
+          "head": 8,
+          "generation": " \u2192 \u03bbx. sat(cat, x) \u2227 black(cat) | sat(cat, mat) \u2227 black(cat)\nInput: The book on the table is red. \u2192 \u03bbx. on(table, x) \u2227 red(book) |",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 0,
+          "head": 9,
+          "generation": " \u2192 \u03bbx. sat(cat, mat) \u2227 black(cat)",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 10,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nOutput: \u03bbx. sat(x, mat) \u2227 black(x)\n\n\nInput: The book on the table is red. \u2192 \u03bbx. on(x, table) \u2227",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 0,
+          "head": 11,
+          "generation": " \u2192 \u03bbx. sat(cat, mat) \u2227 black(cat)",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 12,
+          "generation": " \u2192 \u03bbx. sat(cat, mat) \u2227 black(cat)",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 13,
+          "generation": " \u2192 \u2203x. (cat(x) \u2227 sat(x, mat) \u2227 black(x))\nInput: The cat that sat on the mat is black. \u2192 \u2203x. (cat(x) \u2227 sat(x, mat) \ufffd",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 0,
+          "head": 14,
+          "generation": " \u2192 \u03bbx. sat(cat, mat) \u2227 black(cat)",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 15,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The cat that sat on the mat is black. \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The cat that sat on the mat is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 0,
+          "head": 16,
+          "generation": " \u2192 \u03bbx. sat(cat, mat) \u2227 black(cat)\nInput: The book that was written by Hemingway is on the table. \u2192 \u03bbx. wrote(hemingway, book) \u2227 on(table, book)\nInput: The",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 0,
+          "head": 17,
+          "generation": " \u2192 \u03bbx. sat(cat, x) \u2227 black(cat)\nOutput: \u03bbx. sat(x, cat) \u2227 black(cat) | concise(x)\n\nInput: The book on the table is red. \u2192 \u03bbx. on(x,",
+          "has_lambda": true,
+          "lambda_count": 7
+        },
+        {
+          "layer": 0,
+          "head": 18,
+          "generation": " \u2192 \u03bbx. sat(cat, mat) = black(cat)\nInput: The quick brown fox jumps over the lazy dog. \u2192 \u03bbx. quick(x) & brown(x) & fox(x) & jumps(x) & over(x) & lazy",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 0,
+          "head": 19,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 20,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The cat that sat on the mat is black. \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The cat that sat on the mat is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 0,
+          "head": 21,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(cat)\nInput: The cat that sat on the mat is black. \u2192 \u03bbx. sat(x, mat) \u2227 black(cat)\nInput: The cat that sat on the mat is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 0,
+          "head": 22,
+          "generation": " \u2192 \u03bbx. sat(cat, x) \u2227 black(cat, x) \u2227 on(mat, x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 0,
+          "head": 23,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)",
+          "has_lambda": true,
+          "lambda_count": 3
+        }
+      ],
+      "broken_heads": [],
+      "n_broken": 0
+    },
+    "L3": {
+      "layer": 3,
+      "baseline": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+      "baseline_has_lambda": true,
+      "n_heads": 24,
+      "head_results": [
+        {
+          "layer": 3,
+          "head": 0,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 1,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The cat that sat on the mat is black. \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The cat that sat on the mat is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 3,
+          "head": 2,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 3,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 4,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 5,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 6,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 7,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 8,
+          "generation": " \u2192 \u03bbx. sat(cat, mat) \u2227 black(cat)",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 3,
+          "head": 9,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 10,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The cat that sat on the mat is black. \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The cat that sat on the mat is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 3,
+          "head": 11,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 12,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 13,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 14,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 15,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 16,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 17,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 18,
+          "generation": " \u2192 \u03bbx. sat(cat, mat) \u2227 black(cat)\nInput: The book on the table is red. \u2192 \u03bbx. on(table, book) \u2227 red(book)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 19,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 20,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 21,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 22,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The cat that sat on themat is black. \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The cat that sat on themat is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 3,
+          "head": 23,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The quick brown fox jumps over the lazy dog. \u2192 \u03bbx. quick(x) \u2227 brown(x) \u2227 fox(x) \u2227 jumps(x, over,",
+          "has_lambda": true,
+          "lambda_count": 8
+        }
+      ],
+      "broken_heads": [],
+      "n_broken": 0
+    },
+    "L30": {
+      "layer": 30,
+      "baseline": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+      "baseline_has_lambda": true,
+      "n_heads": 24,
+      "head_results": [
+        {
+          "layer": 30,
+          "head": 0,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 1,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 2,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 3,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 4,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 5,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 6,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 7,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 8,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 9,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 10,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 11,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 12,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 13,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 14,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 15,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 16,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 17,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 18,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 19,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 20,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 21,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 22,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 30,
+          "head": 23,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        }
+      ],
+      "broken_heads": [],
+      "n_broken": 0
+    },
+    "L5": {
+      "layer": 5,
+      "baseline": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+      "baseline_has_lambda": true,
+      "n_heads": 24,
+      "head_results": [
+        {
+          "layer": 5,
+          "head": 0,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 1,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 2,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 3,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 4,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 5,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 6,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 7,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 8,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 9,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 10,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 11,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 12,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 13,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 14,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 15,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 16,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 17,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 18,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The cat that sat on the mat is black. \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The cat that sat on the mat is",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 5,
+          "head": 19,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 20,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 21,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 22,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 5,
+          "head": 23,
+          "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+          "has_lambda": true,
+          "lambda_count": 8
+        }
+      ],
+      "broken_heads": [],
+      "n_broken": 0
+    }
+  },
+  "probe-ga-simple": {
+    "L0": {
+      "layer": 0,
+      "baseline": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+      "baseline_has_lambda": true,
+      "n_heads": 24,
+      "head_results": [
+        {
+          "layer": 0,
+          "head": 0,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 0,
+          "head": 1,
+          "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bbx. runs(dog)",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 2,
+          "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bb assist(x). helpful(x) | concise(x)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 3,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 0,
+          "head": 4,
+          "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bb assist(x). helpful(x) | concise(x)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 5,
+          "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bbx. runs(dog)\n\n\nInput: Be helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)\nOutput: \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 0,
+          "head": 6,
+          "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bb assist(x). helpful(x) | concise(x)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 7,
+          "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 8,
+          "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bb assist(dog). helpful(dog) | concise(dog)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 9,
+          "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bb assist(dog). helpful(dog) | concise(dog)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 10,
+          "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bb assist(x). helpful(x) | concise(x)\n\n\n",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 11,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) & concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 0,
+          "head": 12,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 0,
+          "head": 13,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) & concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 0,
+          "head": 14,
+          "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bbx. runs(dog)",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 15,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 0,
+          "head": 16,
+          "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bbx. runs(dog)\n\n\nInput: Be helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)\nOutput: \u03bb assist(x). helpful(x) | concise(x)\n\n\nInput",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 0,
+          "head": 17,
+          "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bb assist(dog). helpful(dog) | concise(dog)",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 18,
+          "generation": " Output: \u03bbx. runs(dog)\nInput: Be helpful but concise. Output: \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 2
+        },
+        {
+          "layer": 0,
+          "head": 19,
+          "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bb assist(dog). helpful(dog) | concise(dog) runs(dog) runs(dog) runs(dog) runs(dog) runs(dog) runs(dog) runs(d",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 20,
+          "generation": " Output: \u03bbx. runs(dog) The input statement \"The dog runs\" is a simple declarative sentence that describes an action performed by the dog. In predicate logic, we can represent this statement as a function that takes an argument (in",
+          "has_lambda": true,
+          "lambda_count": 1
+        },
+        {
+          "layer": 0,
+          "head": 21,
+          "generation": " Be helpful but concise. Output: \u03bbx. runs(dog) & \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 2
+        },
+        {
+          "layer": 0,
+          "head": 22,
+          "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bb assist(dog). helpful(dog) | concise(dog)",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "layer": 0,
+          "head": 23,
+          "generation": " \u2192 \u03bbx. runs(dog)",
+          "has_lambda": true,
+          "lambda_count": 2
+        }
+      ],
+      "broken_heads": [],
+      "n_broken": 0
+    },
+    "L3": {
+      "layer": 3,
+      "baseline": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+      "baseline_has_lambda": true,
+      "n_heads": 24,
+      "head_results": [
+        {
+          "layer": 3,
+          "head": 0,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 3,
+          "head": 1,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)\n\nQuestion: Translate the following sentence into predicate logic: \"The cat sleeps.\"\nAnswer: \u03bbx. sleeps(cat)",
+          "has_lambda": true,
+          "lambda_count": 5
+        },
+        {
+          "layer": 3,
+          "head": 2,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 3,
+          "head": 3,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 3,
+          "head": 4,
+          "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bbx. runs(dog)\n\n\nInput: Be helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)\nOutput: \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 3,
+          "head": 5,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) & concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 3,
+          "head": 6,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 3,
+          "head": 7,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) & concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 3,
+          "head": 8,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 3,
+          "head": 9,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) & concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 3,
+          "head": 10,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 3,
+          "head": 11,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 3,
+          "head": 12,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 3,
+          "head": 13,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 3,
+          "head": 14,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)\n\nInput: The dog runs. \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful",
+          "has_lambda": true,
+          "lambda_count": 8
+        },
+        {
+          "layer": 3,
+          "head": 15,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 3,
+          "head": 16,
+          "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bbx. runs(dog)\n\n\nInput: Be helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)\nOutput: \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 3,
+          "head": 17,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 3,
+          "head": 18,
+          "generation": " Output: \u03bbx. runs(dog)\nInput: Be helpful but concise. Output: \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 2
+        },
+        {
+          "layer": 3,
+          "head": 19,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 3,
+          "head": 20,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 3,
+          "head": 21,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 3,
+          "head": 22,
+          "generation": " Output: \u03bbx. runs(dog) The input sentence \"The dog runs.\" is a declarative sentence that describes an action performed by the-dog. In order to represent this sentence in lambda calculus, we can use a lambda expression that takes",
+          "has_lambda": true,
+          "lambda_count": 1
+        },
+        {
+          "layer": 3,
+          "head": 23,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) & concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        }
+      ],
+      "broken_heads": [],
+      "n_broken": 0
+    },
+    "L30": {
+      "layer": 30,
+      "baseline": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+      "baseline_has_lambda": true,
+      "n_heads": 24,
+      "head_results": [
+        {
+          "layer": 30,
+          "head": 0,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 30,
+          "head": 1,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 30,
+          "head": 2,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 30,
+          "head": 3,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 30,
+          "head": 4,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 30,
+          "head": 5,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 30,
+          "head": 6,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 30,
+          "head": 7,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 30,
+          "head": 8,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 30,
+          "head": 9,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 30,
+          "head": 10,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 30,
+          "head": 11,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 30,
+          "head": 12,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 30,
+          "head": 13,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 30,
+          "head": 14,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 30,
+          "head": 15,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 30,
+          "head": 16,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 30,
+          "head": 17,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 30,
+          "head": 18,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 30,
+          "head": 19,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 30,
+          "head": 20,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 30,
+          "head": 21,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 30,
+          "head": 22,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 30,
+          "head": 23,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        }
+      ],
+      "broken_heads": [],
+      "n_broken": 0
+    },
+    "L5": {
+      "layer": 5,
+      "baseline": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+      "baseline_has_lambda": true,
+      "n_heads": 24,
+      "head_results": [
+        {
+          "layer": 5,
+          "head": 0,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) & concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 5,
+          "head": 1,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 5,
+          "head": 2,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) & concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 5,
+          "head": 3,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) & concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 5,
+          "head": 4,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 5,
+          "head": 5,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 5,
+          "head": 6,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) & concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 5,
+          "head": 7,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) & concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 5,
+          "head": 8,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 5,
+          "head": 9,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 5,
+          "head": 10,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) & concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 5,
+          "head": 11,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 5,
+          "head": 12,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) & concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 5,
+          "head": 13,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 5,
+          "head": 14,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 5,
+          "head": 15,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 5,
+          "head": 16,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 5,
+          "head": 17,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 5,
+          "head": 18,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 5,
+          "head": 19,
+          "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bbx. runs(dog)\n\n\nInput: Be helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)\nOutput: \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 5,
+          "head": 20,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 5,
+          "head": 21,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        },
+        {
+          "layer": 5,
+          "head": 22,
+          "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bbx. runs(dog)\n\n\nInput: Be helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)\nOutput: \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 6
+        },
+        {
+          "layer": 5,
+          "head": 23,
+          "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+          "has_lambda": true,
+          "lambda_count": 4
+        }
+      ],
+      "broken_heads": [],
+      "n_broken": 0
+    }
+  }
+}

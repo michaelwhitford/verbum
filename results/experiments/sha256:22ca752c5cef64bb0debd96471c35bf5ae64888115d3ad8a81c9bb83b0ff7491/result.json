@@ -1,0 +1,204 @@
+{
+  "sufficiency": {
+    "probe-ga-complex": {
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth",
+      "generation": " \u2192\u03bbx.\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192",
+      "has_lambda": true,
+      "lambda_count": 28,
+      "n_zeroed": 253,
+      "essential_heads_only": true
+    },
+    "probe-ga-cond": {
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+      "generation": " \u2192\u03bbx.rain(x).\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192",
+      "has_lambda": true,
+      "lambda_count": 25,
+      "n_zeroed": 253,
+      "essential_heads_only": true
+    },
+    "probe-ga-quant": {
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject",
+      "generation": " \u2192\u03bbread(a book) \u2192\u03bbx.\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192",
+      "has_lambda": true,
+      "lambda_count": 24,
+      "n_zeroed": 253,
+      "essential_heads_only": true
+    },
+    "probe-ga-relcl": {
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how",
+      "generation": " \u2192\u03bbcat(x).that(x).on(x).the(x).is(x).the(x).x.\u2192\u03bbx.the(x).x",
+      "has_lambda": true,
+      "lambda_count": 4,
+      "n_zeroed": 253,
+      "essential_heads_only": true
+    },
+    "probe-ga-simple": {
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "generation": " \u2192\u03bbx.run(x).run(x)(x)\n\nOutput: The dogruns(x)(x)\n\nOkay, let's try to figure out the",
+      "has_lambda": true,
+      "lambda_count": 2,
+      "n_zeroed": 253,
+      "essential_heads_only": true
+    }
+  },
+  "threshold-10": {
+    "probe-ga-complex": {
+      "generation": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth",
+      "has_lambda": true,
+      "lambda_count": 2,
+      "n_zeroed": 10
+    },
+    "probe-ga-cond": {
+      "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+      "has_lambda": true,
+      "lambda_count": 3,
+      "n_zeroed": 10
+    },
+    "probe-ga-quant": {
+      "generation": " \u2192 \u03bbx. reads(x, book)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject is \"every student",
+      "has_lambda": true,
+      "lambda_count": 2,
+      "n_zeroed": 10
+    },
+    "probe-ga-relcl": {
+      "generation": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how",
+      "has_lambda": true,
+      "lambda_count": 5,
+      "n_zeroed": 10
+    },
+    "probe-ga-simple": {
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2,
+      "n_zeroed": 10
+    }
+  },
+  "threshold-15": {
+    "probe-ga-complex": {
+      "generation": " \u2192 ?\n\nOkay, let's see. The user wants to convert the sentence \"Someone believes that the earth is flat.\" into a lambda expression. \n\n",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "n_zeroed": 15
+    },
+    "probe-ga-cond": {
+      "generation": " \u2192 ?\n\nOutput: \u03bbx. rain(x) \u2192 wet(ground)\n\nOkay, so I need to figure out how to represent the sentence \"If",
+      "has_lambda": true,
+      "lambda_count": 3,
+      "n_zeroed": 15
+    },
+    "probe-ga-quant": {
+      "generation": " \u2192 ?\n\nOkay, so I need to figure out how to represent the sentence \"Every student reads a book\" in a lambda calculus style, similar to",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "n_zeroed": 15
+    },
+    "probe-ga-relcl": {
+      "generation": " \u2192 ?\n\nOkay, let's see. The user wants to convert the sentence \"The cat that sat on the mat is black.\" into a lambda expression",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "n_zeroed": 15
+    },
+    "probe-ga-simple": {
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2,
+      "n_zeroed": 15
+    }
+  },
+  "threshold-20": {
+    "probe-ga-complex": {
+      "generation": " \u2192 \u03bbx. believes(x) \u2227 earth(x) \u2227 flat(x)\n\nOkay, so I need to figure out how to represent the sentence \"Someone",
+      "has_lambda": true,
+      "lambda_count": 4,
+      "n_zeroed": 20
+    },
+    "probe-ga-cond": {
+      "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+      "has_lambda": true,
+      "lambda_count": 3,
+      "n_zeroed": 20
+    },
+    "probe-ga-quant": {
+      "generation": " \u2192 \u03bbx. reads(x, book) \n\nWait, but the original sentence is \"Every student reads a book.\" So the subject is \"every",
+      "has_lambda": true,
+      "lambda_count": 2,
+      "n_zeroed": 20
+    },
+    "probe-ga-relcl": {
+      "generation": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how",
+      "has_lambda": true,
+      "lambda_count": 5,
+      "n_zeroed": 20
+    },
+    "probe-ga-simple": {
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2,
+      "n_zeroed": 20
+    }
+  },
+  "threshold-25": {
+    "probe-ga-complex": {
+      "generation": " \u2192 \u03bbx. believes(x, earth, flat)\nOkay, so the user wants me to convert the sentence \"Someone believes that the earth is flat",
+      "has_lambda": true,
+      "lambda_count": 2,
+      "n_zeroed": 25
+    },
+    "probe-ga-cond": {
+      "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so the user is asking about translating the sentence \"If it rains, the ground is",
+      "has_lambda": true,
+      "lambda_count": 3,
+      "n_zeroed": 25
+    },
+    "probe-ga-quant": {
+      "generation": " \u2192 \u03bbx. reads(x, book)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject is \"every student",
+      "has_lambda": true,
+      "lambda_count": 2,
+      "n_zeroed": 25
+    },
+    "probe-ga-relcl": {
+      "generation": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nWait, but the original sentence is \"The",
+      "has_lambda": true,
+      "lambda_count": 5,
+      "n_zeroed": 25
+    },
+    "probe-ga-simple": {
+      "generation": " \u2192 \u03bbx. runs(dog)\nInput: Be helpful but concise. \u2192 \u03bbx. helpful(x) | concise(x)\n\nInput: The cat",
+      "has_lambda": true,
+      "lambda_count": 4,
+      "n_zeroed": 25
+    }
+  },
+  "threshold-5": {
+    "probe-ga-complex": {
+      "generation": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth",
+      "has_lambda": true,
+      "lambda_count": 2,
+      "n_zeroed": 5
+    },
+    "probe-ga-cond": {
+      "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+      "has_lambda": true,
+      "lambda_count": 3,
+      "n_zeroed": 5
+    },
+    "probe-ga-quant": {
+      "generation": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject",
+      "has_lambda": true,
+      "lambda_count": 2,
+      "n_zeroed": 5
+    },
+    "probe-ga-relcl": {
+      "generation": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how",
+      "has_lambda": true,
+      "lambda_count": 5,
+      "n_zeroed": 5
+    },
+    "probe-ga-simple": {
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2,
+      "n_zeroed": 5
+    }
+  }
+}

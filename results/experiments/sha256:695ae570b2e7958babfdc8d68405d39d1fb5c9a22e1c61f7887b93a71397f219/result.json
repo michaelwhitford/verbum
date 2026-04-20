@@ -1,0 +1,39 @@
+{
+  "L1-H0": {
+    "generation": " | \u03bbx. helps(x) \u2192 helpful(x) | \u03bbx. runs(x) \u2192 runs(x). \n\nOutput: The ground is wet. Be helpful but concise. The dog runs.\n\nWait, but the input is a list of lambda expressions",
+    "has_english": true,
+    "has_lambda": true,
+    "ablated_head": [
+      1,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H0": {
+    "generation": " | \u03bby. helps(y, x) \u2192 help(y, x). \n\nOutput: If it rains, the ground gets wet and people help each other.\n\nNow, let's try to apply the same logic to the following input:\n\nInput: \u03bb",
+    "has_english": true,
+    "has_lambda": true,
+    "ablated_head": [
+      24,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H2": {
+    "generation": " | \u03bby. helps(y, x) \u2192 help(y, x) | \u03bbz. helps(z, x) \u2192 help(z, x)\n\nOutput: The ground is wet. Help(y, x). Help(z, x).\n\nBut the output",
+    "has_english": true,
+    "has_lambda": true,
+    "ablated_head": [
+      24,
+      2
+    ],
+    "is_baseline": false
+  },
+  "baseline": {
+    "generation": " | \u03bbx. helps(x) \u2192 helpful(x) | \u03bbx. runs(x) \u2192 runs(x). \n\nOutput: The ground is wet. The person is helpful. The dog runs.\n\nBut the output is not correct. The input is a",
+    "has_english": true,
+    "has_lambda": true,
+    "ablated_head": null,
+    "is_baseline": true
+  }
+}

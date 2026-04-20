@@ -1,0 +1,10 @@
+{
+  "task": "translate",
+  "generation": " \u2192 Le grand maison rouge est belle.\n\nBut the correct translation is: Le grand maison rouge est belle. (Note: \"maison\" is singular, not \"maisons\".)\n\nWait, but in the example given, the user wrote \"Le",
+  "success": true,
+  "ablated_head": [
+    24,
+    2
+  ],
+  "is_baseline": false
+}

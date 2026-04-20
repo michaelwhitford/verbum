@@ -1,0 +1,189 @@
+Probe set:  /Users/mwhitford/src/verbum/probes/gate-ablation.json
+Gates dir:  /Users/mwhitford/src/verbum/gates
+Results:    /Users/mwhitford/src/verbum/results/experiments
+Model:      Qwen/Qwen3-4B
+Layers:     [0, 1, 4, 7, 24, 26, 30, 33]
+Heads/layer: 32
+Total forward passes: 1280
+
+Building experiment graph...
+2026-04-16 19:28:56 [info     ] probe_set.loaded               id=gate-ablation n_probes=5 path=/Users/mwhitford/src/verbum/probes/gate-ablation.json version=1
+2026-04-16 19:28:56 [info     ] probes.resolved                gates_loaded=1 n_resolved=5 probe_set=gate-ablation
+Graph: 5 probes x 8 layers
+Graph hash: sha256:e99491868056e7bb7...
+
+Loading model (this may take a minute)...
+2026-04-16 19:28:57 [info     ] instrument.loading             device=mps dtype=torch.float16 model=Qwen/Qwen3-4B
+2026-04-16 19:28:59 [info     ] instrument.loaded              head_dim=80 n_heads=32 n_kv_heads=8 n_layers=36 total_heads=1152
+Model loaded: 36L, 32H, 80D
+
+Starting experiment...
+============================================================
+2026-04-16 19:28:59 [info     ] node.enter                     hash=sha256:e99491868 node=head-ablation
+2026-04-16 19:28:59 [info     ] node.enter                     hash=sha256:343e13af2 node=head-ablation/probe-ga-complex
+2026-04-16 19:28:59 [info     ] node.enter                     hash=sha256:545061af9 node=head-ablation/probe-ga-complex/L0
+2026-04-16 19:28:59 [info     ] node.cached                    hash=sha256:545061af9 node=head-ablation/probe-ga-complex/L0
+2026-04-16 19:28:59 [info     ] node.enter                     hash=sha256:3f089c45e node=head-ablation/probe-ga-complex/L1
+2026-04-16 19:28:59 [info     ] node.cached                    hash=sha256:3f089c45e node=head-ablation/probe-ga-complex/L1
+2026-04-16 19:28:59 [info     ] node.enter                     hash=sha256:a82286a16 node=head-ablation/probe-ga-complex/L24
+2026-04-16 19:28:59 [info     ] node.cached                    hash=sha256:a82286a16 node=head-ablation/probe-ga-complex/L24
+2026-04-16 19:28:59 [info     ] node.enter                     hash=sha256:c79a20ea6 node=head-ablation/probe-ga-complex/L26
+2026-04-16 19:28:59 [info     ] node.cached                    hash=sha256:c79a20ea6 node=head-ablation/probe-ga-complex/L26
+2026-04-16 19:28:59 [info     ] node.enter                     hash=sha256:5717d7575 node=head-ablation/probe-ga-complex/L30
+2026-04-16 19:29:30 [info     ] node.complete                  elapsed_ms=30645.7 hash=sha256:5717d7575 node=head-ablation/probe-ga-complex/L30
+2026-04-16 19:29:30 [info     ] node.enter                     hash=sha256:3b9a2a1ca node=head-ablation/probe-ga-complex/L33
+2026-04-16 19:29:59 [info     ] node.complete                  elapsed_ms=28997.3 hash=sha256:3b9a2a1ca node=head-ablation/probe-ga-complex/L33
+2026-04-16 19:29:59 [info     ] node.enter                     hash=sha256:0e5603a5d node=head-ablation/probe-ga-complex/L4
+2026-04-16 19:30:28 [info     ] node.complete                  elapsed_ms=29060.9 hash=sha256:0e5603a5d node=head-ablation/probe-ga-complex/L4
+2026-04-16 19:30:28 [info     ] node.enter                     hash=sha256:e0f24a725 node=head-ablation/probe-ga-complex/L7
+2026-04-16 19:30:57 [info     ] node.complete                  elapsed_ms=28959.8 hash=sha256:e0f24a725 node=head-ablation/probe-ga-complex/L7
+2026-04-16 19:30:57 [info     ] node.complete                  elapsed_ms=117667.4 hash=sha256:343e13af2 node=head-ablation/probe-ga-complex
+2026-04-16 19:30:57 [info     ] node.enter                     hash=sha256:9c2ba7dd8 node=head-ablation/probe-ga-cond
+2026-04-16 19:30:57 [info     ] node.enter                     hash=sha256:9e8ca47fa node=head-ablation/probe-ga-cond/L0
+2026-04-16 19:31:26 [info     ] node.complete                  elapsed_ms=29148.5 hash=sha256:9e8ca47fa node=head-ablation/probe-ga-cond/L0
+2026-04-16 19:31:26 [info     ] node.enter                     hash=sha256:5e35edff5 node=head-ablation/probe-ga-cond/L1
+2026-04-16 19:31:55 [info     ] node.complete                  elapsed_ms=29007.0 hash=sha256:5e35edff5 node=head-ablation/probe-ga-cond/L1
+2026-04-16 19:31:55 [info     ] node.enter                     hash=sha256:80ea6b1d8 node=head-ablation/probe-ga-cond/L24
+2026-04-16 19:32:32 [info     ] node.complete                  elapsed_ms=37020.0 hash=sha256:80ea6b1d8 node=head-ablation/probe-ga-cond/L24
+2026-04-16 19:32:32 [info     ] node.enter                     hash=sha256:a7edc89b4 node=head-ablation/probe-ga-cond/L26
+2026-04-16 19:33:10 [info     ] node.complete                  elapsed_ms=38587.1 hash=sha256:a7edc89b4 node=head-ablation/probe-ga-cond/L26
+2026-04-16 19:33:10 [info     ] node.enter                     hash=sha256:68a22684b node=head-ablation/probe-ga-cond/L30
+2026-04-16 19:33:40 [info     ] node.complete                  elapsed_ms=29520.1 hash=sha256:68a22684b node=head-ablation/probe-ga-cond/L30
+2026-04-16 19:33:40 [info     ] node.enter                     hash=sha256:6f98f549c node=head-ablation/probe-ga-cond/L33
+2026-04-16 19:34:09 [info     ] node.complete                  elapsed_ms=29218.6 hash=sha256:6f98f549c node=head-ablation/probe-ga-cond/L33
+2026-04-16 19:34:09 [info     ] node.enter                     hash=sha256:d36e0cdf4 node=head-ablation/probe-ga-cond/L4
+2026-04-16 19:34:38 [info     ] node.complete                  elapsed_ms=29139.2 hash=sha256:d36e0cdf4 node=head-ablation/probe-ga-cond/L4
+2026-04-16 19:34:38 [info     ] node.enter                     hash=sha256:2cde3fe24 node=head-ablation/probe-ga-cond/L7
+2026-04-16 19:35:07 [info     ] node.complete                  elapsed_ms=29131.4 hash=sha256:2cde3fe24 node=head-ablation/probe-ga-cond/L7
+2026-04-16 19:35:07 [info     ] node.complete                  elapsed_ms=250777.2 hash=sha256:9c2ba7dd8 node=head-ablation/probe-ga-cond
+2026-04-16 19:35:07 [info     ] node.enter                     hash=sha256:7da067f59 node=head-ablation/probe-ga-quant
+2026-04-16 19:35:07 [info     ] node.enter                     hash=sha256:0a41c7295 node=head-ablation/probe-ga-quant/L0
+2026-04-16 19:35:36 [info     ] node.complete                  elapsed_ms=29039.5 hash=sha256:0a41c7295 node=head-ablation/probe-ga-quant/L0
+2026-04-16 19:35:36 [info     ] node.enter                     hash=sha256:794f13086 node=head-ablation/probe-ga-quant/L1
+2026-04-16 19:36:05 [info     ] node.complete                  elapsed_ms=28940.8 hash=sha256:794f13086 node=head-ablation/probe-ga-quant/L1
+2026-04-16 19:36:05 [info     ] node.enter                     hash=sha256:cd6f015d0 node=head-ablation/probe-ga-quant/L24
+2026-04-16 19:36:34 [info     ] node.complete                  elapsed_ms=28986.1 hash=sha256:cd6f015d0 node=head-ablation/probe-ga-quant/L24
+2026-04-16 19:36:34 [info     ] node.enter                     hash=sha256:3b7a2c4db node=head-ablation/probe-ga-quant/L26
+2026-04-16 19:37:03 [info     ] node.complete                  elapsed_ms=28729.8 hash=sha256:3b7a2c4db node=head-ablation/probe-ga-quant/L26
+2026-04-16 19:37:03 [info     ] node.enter                     hash=sha256:bf9363ae8 node=head-ablation/probe-ga-quant/L30
+2026-04-16 19:37:43 [info     ] node.complete                  elapsed_ms=40243.2 hash=sha256:bf9363ae8 node=head-ablation/probe-ga-quant/L30
+2026-04-16 19:37:43 [info     ] node.enter                     hash=sha256:da7df482a node=head-ablation/probe-ga-quant/L33
+2026-04-16 19:38:16 [info     ] node.complete                  elapsed_ms=32393.4 hash=sha256:da7df482a node=head-ablation/probe-ga-quant/L33
+2026-04-16 19:38:16 [info     ] node.enter                     hash=sha256:1d6800128 node=head-ablation/probe-ga-quant/L4
+2026-04-16 19:38:47 [info     ] node.complete                  elapsed_ms=31238.9 hash=sha256:1d6800128 node=head-ablation/probe-ga-quant/L4
+2026-04-16 19:38:47 [info     ] node.enter                     hash=sha256:384f4e31c node=head-ablation/probe-ga-quant/L7
+2026-04-16 19:39:18 [info     ] node.complete                  elapsed_ms=31301.8 hash=sha256:384f4e31c node=head-ablation/probe-ga-quant/L7
+2026-04-16 19:39:18 [info     ] node.complete                  elapsed_ms=250878.9 hash=sha256:7da067f59 node=head-ablation/probe-ga-quant
+2026-04-16 19:39:18 [info     ] node.enter                     hash=sha256:8661dd6be node=head-ablation/probe-ga-relcl
+2026-04-16 19:39:18 [info     ] node.enter                     hash=sha256:f1d3d7f5d node=head-ablation/probe-ga-relcl/L0
+2026-04-16 19:39:49 [info     ] node.complete                  elapsed_ms=30586.8 hash=sha256:f1d3d7f5d node=head-ablation/probe-ga-relcl/L0
+2026-04-16 19:39:49 [info     ] node.enter                     hash=sha256:7d1cad4c1 node=head-ablation/probe-ga-relcl/L1
+2026-04-16 19:40:20 [info     ] node.complete                  elapsed_ms=30583.1 hash=sha256:7d1cad4c1 node=head-ablation/probe-ga-relcl/L1
+2026-04-16 19:40:20 [info     ] node.enter                     hash=sha256:2b6a715fd node=head-ablation/probe-ga-relcl/L24
+2026-04-16 19:40:51 [info     ] node.complete                  elapsed_ms=31129.0 hash=sha256:2b6a715fd node=head-ablation/probe-ga-relcl/L24
+2026-04-16 19:40:51 [info     ] node.enter                     hash=sha256:b195bad2c node=head-ablation/probe-ga-relcl/L26
+2026-04-16 19:41:22 [info     ] node.complete                  elapsed_ms=31600.4 hash=sha256:b195bad2c node=head-ablation/probe-ga-relcl/L26
+2026-04-16 19:41:22 [info     ] node.enter                     hash=sha256:c99e6c673 node=head-ablation/probe-ga-relcl/L30
+2026-04-16 19:41:54 [info     ] node.complete                  elapsed_ms=31540.2 hash=sha256:c99e6c673 node=head-ablation/probe-ga-relcl/L30
+2026-04-16 19:41:54 [info     ] node.enter                     hash=sha256:44b31dcd3 node=head-ablation/probe-ga-relcl/L33
+2026-04-16 19:42:31 [info     ] node.complete                  elapsed_ms=37282.1 hash=sha256:44b31dcd3 node=head-ablation/probe-ga-relcl/L33
+2026-04-16 19:42:31 [info     ] node.enter                     hash=sha256:f284bccd9 node=head-ablation/probe-ga-relcl/L4
+2026-04-16 19:43:07 [info     ] node.complete                  elapsed_ms=36312.6 hash=sha256:f284bccd9 node=head-ablation/probe-ga-relcl/L4
+2026-04-16 19:43:07 [info     ] node.enter                     hash=sha256:fa755e132 node=head-ablation/probe-ga-relcl/L7
+2026-04-16 19:43:38 [info     ] node.complete                  elapsed_ms=30784.6 hash=sha256:fa755e132 node=head-ablation/probe-ga-relcl/L7
+2026-04-16 19:43:38 [info     ] node.complete                  elapsed_ms=259827.1 hash=sha256:8661dd6be node=head-ablation/probe-ga-relcl
+2026-04-16 19:43:38 [info     ] node.enter                     hash=sha256:1d329b21c node=head-ablation/probe-ga-simple
+2026-04-16 19:43:38 [info     ] node.enter                     hash=sha256:c05b1afbc node=head-ablation/probe-ga-simple/L0
+2026-04-16 19:44:07 [info     ] node.complete                  elapsed_ms=29288.7 hash=sha256:c05b1afbc node=head-ablation/probe-ga-simple/L0
+2026-04-16 19:44:07 [info     ] node.enter                     hash=sha256:48f8def6e node=head-ablation/probe-ga-simple/L1
+2026-04-16 19:44:36 [info     ] node.complete                  elapsed_ms=28992.1 hash=sha256:48f8def6e node=head-ablation/probe-ga-simple/L1
+2026-04-16 19:44:36 [info     ] node.enter                     hash=sha256:05800525a node=head-ablation/probe-ga-simple/L24
+2026-04-16 19:45:07 [info     ] node.complete                  elapsed_ms=30225.5 hash=sha256:05800525a node=head-ablation/probe-ga-simple/L24
+2026-04-16 19:45:07 [info     ] node.enter                     hash=sha256:c98e094e8 node=head-ablation/probe-ga-simple/L26
+2026-04-16 19:45:36 [info     ] node.complete                  elapsed_ms=28843.8 hash=sha256:c98e094e8 node=head-ablation/probe-ga-simple/L26
+2026-04-16 19:45:36 [info     ] node.enter                     hash=sha256:f6e270e55 node=head-ablation/probe-ga-simple/L30
+2026-04-16 19:46:05 [info     ] node.complete                  elapsed_ms=29873.4 hash=sha256:f6e270e55 node=head-ablation/probe-ga-simple/L30
+2026-04-16 19:46:05 [info     ] node.enter                     hash=sha256:a937aa3f1 node=head-ablation/probe-ga-simple/L33
+2026-04-16 19:46:35 [info     ] node.complete                  elapsed_ms=30008.4 hash=sha256:a937aa3f1 node=head-ablation/probe-ga-simple/L33
+2026-04-16 19:46:35 [info     ] node.enter                     hash=sha256:48aaca5db node=head-ablation/probe-ga-simple/L4
+2026-04-16 19:47:05 [info     ] node.complete                  elapsed_ms=29787.1 hash=sha256:48aaca5db node=head-ablation/probe-ga-simple/L4
+2026-04-16 19:47:05 [info     ] node.enter                     hash=sha256:1f6484901 node=head-ablation/probe-ga-simple/L7
+2026-04-16 19:47:45 [info     ] node.complete                  elapsed_ms=40153.2 hash=sha256:1f6484901 node=head-ablation/probe-ga-simple/L7
+2026-04-16 19:47:45 [info     ] node.complete                  elapsed_ms=247178.7 hash=sha256:1d329b21c node=head-ablation/probe-ga-simple
+2026-04-16 19:47:45 [info     ] node.complete                  elapsed_ms=1126336.5 hash=sha256:e99491868 node=head-ablation
+
+============================================================
+SUMMARY
+============================================================
+
+probe-ga-complex:
+  L0: all survive (baseline OK)
+  L1: 1 broken (baseline OK)
+    broken heads: [0]
+  L24: 1 broken (baseline OK)
+    broken heads: [0]
+  L26: all survive (baseline OK)
+  L30: all survive (baseline OK)
+  L33: all survive (baseline OK)
+  L4: all survive (baseline OK)
+  L7: all survive (baseline OK)
+
+probe-ga-cond:
+  L0: all survive (baseline OK)
+  L1: all survive (baseline OK)
+  L24: all survive (baseline OK)
+  L26: all survive (baseline OK)
+  L30: all survive (baseline OK)
+  L33: all survive (baseline OK)
+  L4: all survive (baseline OK)
+  L7: all survive (baseline OK)
+
+probe-ga-quant:
+  L0: all survive (baseline OK)
+  L1: all survive (baseline OK)
+  L24: 1 broken (baseline OK)
+    broken heads: [0]
+  L26: all survive (baseline OK)
+  L30: all survive (baseline OK)
+  L33: all survive (baseline OK)
+  L4: all survive (baseline OK)
+  L7: all survive (baseline OK)
+
+probe-ga-relcl:
+  L0: all survive (baseline OK)
+  L1: 1 broken (baseline OK)
+    broken heads: [0]
+  L24: 2 broken (baseline OK)
+    broken heads: [0, 2]
+  L26: all survive (baseline OK)
+  L30: all survive (baseline OK)
+  L33: all survive (baseline OK)
+  L4: all survive (baseline OK)
+  L7: all survive (baseline OK)
+
+probe-ga-simple:
+  L0: all survive (baseline OK)
+  L1: all survive (baseline OK)
+  L24: all survive (baseline OK)
+  L26: all survive (baseline OK)
+  L30: all survive (baseline OK)
+  L33: all survive (baseline OK)
+  L4: all survive (baseline OK)
+  L7: all survive (baseline OK)
+
+============================================================
+CROSS-PROBE ESSENTIAL HEADS (broken in ANY probe):
+============================================================
+  L0: none
+  L1: 1 heads — [0]
+  L4: none
+  L7: none
+  L24: 2 heads — [0, 2]
+  L26: none
+  L30: none
+  L33: none
+
+Total essential heads: 3 / 256
+Circuit sparsity: 1.2%
+
+Summary saved: /Users/mwhitford/src/verbum/results/experiments/head-ablation-summary.json

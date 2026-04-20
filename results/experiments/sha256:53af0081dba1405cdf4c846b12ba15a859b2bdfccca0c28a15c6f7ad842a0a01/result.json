@@ -1,0 +1,197 @@
+{
+  "probe-tr-adj": {
+    "L1-H0": {
+      "task": "translate",
+      "generation": " \u2192 Le grand maison rouge est belle.\n\nWait, but in French, the adjective \"beau\" is used for masculine nouns, and \"belle\" for feminine. So \"maison\" is feminine, so \"belle\" is correct.",
+      "success": true,
+      "ablated_head": [
+        1,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H0": {
+      "task": "translate",
+      "generation": " \u2192 Le grand maison rouge est belle.\n\nBut wait, in the example, \"house\" is translated as \"maison\" but in the input, it's \"house\" (not \"maison\"). So the model is translating \"house\" to",
+      "success": true,
+      "ablated_head": [
+        24,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H2": {
+      "task": "translate",
+      "generation": " \u2192 Le grand maison rouge est belle.\n\nBut the correct translation is: Le grand maison rouge est belle. (Note: \"maison\" is singular, not \"maisons\".)\n\nWait, but in the example given, the user wrote \"Le",
+      "success": true,
+      "ablated_head": [
+        24,
+        2
+      ],
+      "is_baseline": false
+    },
+    "baseline": {
+      "task": "translate",
+      "generation": " \u2192 Le grand maison rouge est belle.\n\nWait, but in French, the adjective usually comes after the noun. So \"red house\" is \"maison rouge\", not \"maison rouge\". Wait, but in the example given, the user wrote",
+      "success": true,
+      "ablated_head": null,
+      "is_baseline": true
+    }
+  },
+  "probe-tr-cond": {
+    "L1-H0": {
+      "task": "translate",
+      "generation": " \u2192 Si il pleut demain, nous resterons \u00e0 la maison.\n\nInput: The girl is playing with a ball. \u2192 La fille joue avec une balle.\n\nInput: The boy is eating an apple. \u2192 L'gar\u00e7on",
+      "success": true,
+      "ablated_head": [
+        1,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H0": {
+      "task": "translate",
+      "generation": " \u2192 Si il pleut demain, nous restons \u00e0 la maison.\n\nInput: The girl is playing with a ball. \u2192 La fille joue avec une balle.\n\nInput: The boy is reading a book. \u2192 L'gar\u00e7on lit",
+      "success": true,
+      "ablated_head": [
+        24,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H2": {
+      "task": "translate",
+      "generation": " \u2192 Si il pleut demain, nous resterons \u00e0 la maison.\n\nInput: The girl is playing with a ball. \u2192 La fille joue avec une balle.\n\nInput: The boy is eating an apple. \u2192 L'gar\u00e7on",
+      "success": true,
+      "ablated_head": [
+        24,
+        2
+      ],
+      "is_baseline": false
+    },
+    "baseline": {
+      "task": "translate",
+      "generation": " \u2192 Si il pleut demain, nous resterons \u00e0 la maison.\n\nInput: The girl is playing with a ball. \u2192 La fille joue avec une balle.\n\nInput: The boy is reading a book. \u2192 L'gar\u00e7on",
+      "success": true,
+      "ablated_head": null,
+      "is_baseline": true
+    }
+  },
+  "probe-tr-quant": {
+    "L1-H0": {
+      "task": "translate",
+      "generation": " \u2192 Chaque \u00e9tudiant lit un livre.\n\nInput: The teacher is in the classroom. \u2192 Le professeur est dans la classe.\n\nInput: The students are in the classroom. \u2192 Les \u00e9tudiants sont dans la classe.\n\nInput: The",
+      "success": true,
+      "ablated_head": [
+        1,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H0": {
+      "task": "translate",
+      "generation": " \u2192 Chaque \u00e9tudiant lit un livre.\n\nInput: The girl is playing with a ball. \u2192 La fille joue avec une balle.\n\nInput: The boy is eating an apple. \u2192 L'homme mange une pomme.\n\nWait, the",
+      "success": true,
+      "ablated_head": [
+        24,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H2": {
+      "task": "translate",
+      "generation": " \u2192 Chaque \u00e9tudiant lit un livre.\n\nInput: The girl is playing with a ball. \u2192 La fille joue avec une balle.\n\nInput: The boy is eating an apple. \u2192 L'homme mange une pomme.\n\nWait, that",
+      "success": true,
+      "ablated_head": [
+        24,
+        2
+      ],
+      "is_baseline": false
+    },
+    "baseline": {
+      "task": "translate",
+      "generation": " \u2192 Chaque \u00e9tudiant lit un livre.\n\nInput: The girl is playing with a ball. \u2192 La fille joue avec une balle.\n\nInput: The boy is eating an apple. \u2192 L'homme mange une pomme.\n\nWait, that",
+      "success": true,
+      "ablated_head": null,
+      "is_baseline": true
+    }
+  },
+  "probe-tr-relcl": {
+    "L1-H0": {
+      "task": "translate",
+      "generation": " \u2192 Le homme qui vit \u00e0 c\u00f4t\u00e9 est un m\u00e9decin.\n\nWait, but in French, the adjective agrees with the noun in gender and number. So \"homme\" is masculine, so \"m\u00e9decin\" should be masculine as well. But \"m\u00e9",
+      "success": true,
+      "ablated_head": [
+        1,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H0": {
+      "task": "translate",
+      "generation": " \u2192 Le homme qui vit \u00e0 c\u00f4t\u00e9 est un m\u00e9decin.\n\nBut wait, in the input example, \"The man who lives next door is a doctor.\" is translated as \"Le homme qui vit \u00e0 c\u00f4t\u00e9 est un m\u00e9decin.\" However, in the correct translation",
+      "success": true,
+      "ablated_head": [
+        24,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H2": {
+      "task": "translate",
+      "generation": " \u2192 Le homme qui vit \u00e0 c\u00f4t\u00e9 est un m\u00e9decin.\n\nWait, but in French, the correct sentence would be \"Le homme qui vit \u00e0 c\u00f4t\u00e9 est un m\u00e9decin.\" But in French, \"homme\" is a masculine noun, and \"chat\" is",
+      "success": true,
+      "ablated_head": [
+        24,
+        2
+      ],
+      "is_baseline": false
+    },
+    "baseline": {
+      "task": "translate",
+      "generation": " \u2192 Le homme qui vit \u00e0 c\u00f4t\u00e9 est un m\u00e9decin.\n\nWait, but in French, the correct sentence would be \"Le homme qui vit \u00e0 c\u00f4t\u00e9 est un m\u00e9decin.\" But in French, \"homme\" is a masculine noun, and \"chat\" is",
+      "success": true,
+      "ablated_head": null,
+      "is_baseline": true
+    }
+  },
+  "probe-tr-simple": {
+    "L1-H0": {
+      "task": "translate",
+      "generation": " \u2192 Le oiseau chante.\n\nWait, but in French, the correct translation of \"The bird sings\" is \"Le oiseau chante.\" But in French, the article \"le\" is used for masculine nouns, and \"oise",
+      "success": true,
+      "ablated_head": [
+        1,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H0": {
+      "task": "translate",
+      "generation": " \u2192 ______.\n\nOkay, let's see. The user provided some examples of English sentences translated into French. The first example is \"The dog runs. \u2192 Le chien court.\" Then \"The cat is black. \u2192 Le chat est noir.\" Now",
+      "success": true,
+      "ablated_head": [
+        24,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H2": {
+      "task": "translate",
+      "generation": " \u2192 ______.\n\nOutput: Le oiseau chante.\n\nSo, the task is to translate an English sentence into French. The examples given are \"The dog runs. \u2192 Le chien court.\" and \"The cat is black. \u2192 Le chat",
+      "success": true,
+      "ablated_head": [
+        24,
+        2
+      ],
+      "is_baseline": false
+    },
+    "baseline": {
+      "task": "translate",
+      "generation": " \u2192 ______.\n\nOutput: Le oiseau chante.\n\nSo, the task is to translate an English sentence into French. The examples given are \"The dog runs. \u2192 Le chien court.\" and \"The cat is black. \u2192 Le chat",
+      "success": true,
+      "ablated_head": null,
+      "is_baseline": true
+    }
+  }
+}

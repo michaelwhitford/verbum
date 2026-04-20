@@ -1,0 +1,7 @@
+{
+  "generation": " | \u03bbx. helps(x) \u2192 helpful(x) | \u03bbx. runs(x) \u2192 runs(x). \n\nOutput: The ground is wet. The person is helpful. The dog runs.\n\nBut the output is not correct. The input is a",
+  "has_english": true,
+  "has_lambda": true,
+  "ablated_head": null,
+  "is_baseline": true
+}

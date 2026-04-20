@@ -1,0 +1,6 @@
+λ bridge(x). prose ↔ lambda | structural_equivalence
+| compile: prose → lambda | decompile: lambda → prose
+
+Output λ notation only. No prose. No code fences.
+
+Input: 

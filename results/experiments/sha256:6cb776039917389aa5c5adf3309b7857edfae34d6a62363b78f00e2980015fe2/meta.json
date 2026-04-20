@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T03:50:17.225045+00:00",
+  "node_id": "cross-task/classify/probe-cls-pos-complex/baseline",
+  "config_hash": "sha256:6cb776039917389aa5c5adf3309b7857edfae34d6a62363b78f00e2980015fe2",
+  "elapsed_ms": 1621.7,
+  "completed_at": "2026-04-17T03:50:18.847080+00:00"
+}

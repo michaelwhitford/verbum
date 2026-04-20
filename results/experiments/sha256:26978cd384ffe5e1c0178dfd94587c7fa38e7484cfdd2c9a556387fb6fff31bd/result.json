@@ -1,0 +1,10 @@
+{
+  "task": "translate",
+  "generation": " \u2192 Le homme qui vit \u00e0 c\u00f4t\u00e9 est un m\u00e9decin.\n\nWait, but in French, the adjective agrees with the noun in gender and number. So \"homme\" is masculine, so \"m\u00e9decin\" should be masculine as well. But \"m\u00e9",
+  "success": true,
+  "ablated_head": [
+    1,
+    0
+  ],
+  "is_baseline": false
+}

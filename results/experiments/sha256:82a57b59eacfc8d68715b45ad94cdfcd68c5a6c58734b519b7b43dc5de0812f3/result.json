@@ -1,0 +1,10 @@
+{
+  "task": "classify",
+  "generation": " \u2192 positive\n\nOutput: positive\n\nOkay, let's see. The user wants me to determine the sentiment of the input sentence \"The sunset was absolutely gorgeous tonight.\" They provided examples where \"I love this movie, it's absolutely amazing!\" is positive",
+  "success": true,
+  "ablated_head": [
+    24,
+    0
+  ],
+  "is_baseline": false
+}

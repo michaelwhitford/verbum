@@ -1,0 +1,282 @@
+{
+  "id": "binding",
+  "version": 1,
+  "description": "Binding phenomena probes — quantifier scope, variable binding, anaphora, control verbs, relative clauses. Includes minimal pairs where same/similar words produce different binding structures.",
+  "created": "2026-04-19",
+  "author": "verbum",
+  "default_gate": "compile-binding-typed",
+  "probes": [
+    {
+      "id": "bind-scope-01a",
+      "category": "quantifier_scope",
+      "prompt": "Every student read a book.",
+      "ground_truth": "∀x. student(x) → ∃y. book(y) ∧ read(x, y)",
+      "metadata": {
+        "pair": "bind-scope-01b",
+        "binding": "surface_scope",
+        "phenomena": ["universal", "existential", "scope_order"]
+      }
+    },
+    {
+      "id": "bind-scope-01b",
+      "category": "quantifier_scope",
+      "prompt": "A student read every book.",
+      "ground_truth": "∃x. student(x) ∧ ∀y. book(y) → read(x, y)",
+      "metadata": {
+        "pair": "bind-scope-01a",
+        "binding": "inverse_scope",
+        "phenomena": ["universal", "existential", "scope_order"]
+      }
+    },
+    {
+      "id": "bind-scope-02a",
+      "category": "quantifier_scope",
+      "prompt": "No student passed every exam.",
+      "ground_truth": "¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)",
+      "metadata": {
+        "pair": "bind-scope-02b",
+        "binding": "negation_universal",
+        "phenomena": ["negation", "universal", "scope_order"]
+      }
+    },
+    {
+      "id": "bind-scope-02b",
+      "category": "quantifier_scope",
+      "prompt": "Every student passed no exam.",
+      "ground_truth": "∀x. student(x) → ¬∃y. exam(y) ∧ passed(x, y)",
+      "metadata": {
+        "pair": "bind-scope-02a",
+        "binding": "universal_negation",
+        "phenomena": ["negation", "universal", "scope_order"]
+      }
+    },
+    {
+      "id": "bind-scope-03",
+      "category": "quantifier_scope",
+      "prompt": "Most students read some book.",
+      "ground_truth": "MOST(x, student(x), ∃y. book(y) ∧ read(x, y))",
+      "metadata": {
+        "binding": "generalized_quantifier",
+        "phenomena": ["generalized_quantifier", "existential"]
+      }
+    },
+    {
+      "id": "bind-scope-04",
+      "category": "quantifier_scope",
+      "prompt": "Exactly two students answered every question.",
+      "ground_truth": "∃!2 x. student(x) ∧ ∀y. question(y) → answered(x, y)",
+      "metadata": {
+        "binding": "counting_quantifier",
+        "phenomena": ["counting", "universal", "scope_ambiguity"]
+      }
+    },
+    {
+      "id": "bind-var-01a",
+      "category": "variable_binding",
+      "prompt": "The cat chased the dog.",
+      "ground_truth": "chased(ιx. cat(x), ιy. dog(y))",
+      "metadata": {
+        "pair": "bind-var-01b",
+        "binding": "definite_description",
+        "phenomena": ["definite", "agent_patient"]
+      }
+    },
+    {
+      "id": "bind-var-01b",
+      "category": "variable_binding",
+      "prompt": "The dog chased the cat.",
+      "ground_truth": "chased(ιx. dog(x), ιy. cat(y))",
+      "metadata": {
+        "pair": "bind-var-01a",
+        "binding": "definite_description_reversed",
+        "phenomena": ["definite", "agent_patient"]
+      }
+    },
+    {
+      "id": "bind-var-02",
+      "category": "variable_binding",
+      "prompt": "The teacher gave every student a grade.",
+      "ground_truth": "∀x. student(x) → ∃y. grade(y) ∧ gave(ιz. teacher(z), x, y)",
+      "metadata": {
+        "binding": "ditransitive_binding",
+        "phenomena": ["universal", "existential", "ditransitive", "definite"]
+      }
+    },
+    {
+      "id": "bind-var-03",
+      "category": "variable_binding",
+      "prompt": "Someone loves everyone.",
+      "ground_truth": "∃x. person(x) ∧ ∀y. person(y) → loves(x, y)",
+      "metadata": {
+        "binding": "nested_quantifiers",
+        "phenomena": ["existential", "universal", "scope_ambiguity"]
+      }
+    },
+    {
+      "id": "bind-var-04",
+      "category": "variable_binding",
+      "prompt": "Everyone loves someone.",
+      "ground_truth": "∀x. person(x) → ∃y. person(y) ∧ loves(x, y)",
+      "metadata": {
+        "pair": "bind-var-03",
+        "binding": "nested_quantifiers_reversed",
+        "phenomena": ["existential", "universal", "scope_ambiguity"]
+      }
+    },
+    {
+      "id": "bind-ana-01",
+      "category": "anaphora",
+      "prompt": "John saw himself in the mirror.",
+      "ground_truth": "∃x. mirror(x) ∧ saw(john, john, in(x))",
+      "metadata": {
+        "binding": "reflexive",
+        "phenomena": ["reflexive", "coreference"]
+      }
+    },
+    {
+      "id": "bind-ana-02a",
+      "category": "anaphora",
+      "prompt": "Every boy thinks he is smart.",
+      "ground_truth": "∀x. boy(x) → thinks(x, smart(x))",
+      "metadata": {
+        "pair": "bind-ana-02b",
+        "binding": "bound_variable_pronoun",
+        "phenomena": ["bound_pronoun", "universal", "propositional_attitude"]
+      }
+    },
+    {
+      "id": "bind-ana-02b",
+      "category": "anaphora",
+      "prompt": "John thinks he is smart.",
+      "ground_truth": "thinks(john, smart(john))",
+      "metadata": {
+        "pair": "bind-ana-02a",
+        "binding": "referential_pronoun",
+        "phenomena": ["free_pronoun", "propositional_attitude"]
+      }
+    },
+    {
+      "id": "bind-ana-03",
+      "category": "anaphora",
+      "prompt": "No student who failed the exam thinks he deserved to pass.",
+      "ground_truth": "¬∃x. student(x) ∧ failed(x, ιy. exam(y)) ∧ thinks(x, deserved(x, pass))",
+      "metadata": {
+        "binding": "complex_bound_pronoun",
+        "phenomena": ["negation", "relative_clause", "bound_pronoun", "propositional_attitude"]
+      }
+    },
+    {
+      "id": "bind-ctrl-01",
+      "category": "control",
+      "prompt": "She told him to leave.",
+      "ground_truth": "told(she, him, leave(him))",
+      "metadata": {
+        "binding": "object_control",
+        "phenomena": ["control_verb", "object_control"]
+      }
+    },
+    {
+      "id": "bind-ctrl-02",
+      "category": "control",
+      "prompt": "She promised him to leave.",
+      "ground_truth": "promised(she, him, leave(she))",
+      "metadata": {
+        "pair": "bind-ctrl-01",
+        "binding": "subject_control",
+        "phenomena": ["control_verb", "subject_control"]
+      }
+    },
+    {
+      "id": "bind-ctrl-03",
+      "category": "control",
+      "prompt": "She persuaded him to believe that she was right.",
+      "ground_truth": "persuaded(she, him, believe(him, right(she)))",
+      "metadata": {
+        "binding": "nested_control",
+        "phenomena": ["control_verb", "object_control", "propositional_attitude"]
+      }
+    },
+    {
+      "id": "bind-rel-01",
+      "category": "relative_clause",
+      "prompt": "The cat that chased the dog is black.",
+      "ground_truth": "black(ιx. cat(x) ∧ chased(x, ιy. dog(y)))",
+      "metadata": {
+        "binding": "subject_relative",
+        "phenomena": ["relative_clause", "subject_extraction", "definite"]
+      }
+    },
+    {
+      "id": "bind-rel-02",
+      "category": "relative_clause",
+      "prompt": "The cat that the dog chased is black.",
+      "ground_truth": "black(ιx. cat(x) ∧ chased(ιy. dog(y), x))",
+      "metadata": {
+        "pair": "bind-rel-01",
+        "binding": "object_relative",
+        "phenomena": ["relative_clause", "object_extraction", "definite"]
+      }
+    },
+    {
+      "id": "bind-rel-03",
+      "category": "relative_clause",
+      "prompt": "Every student who read a book passed the exam.",
+      "ground_truth": "∀x. (student(x) ∧ ∃y. book(y) ∧ read(x, y)) → passed(x, ιz. exam(z))",
+      "metadata": {
+        "binding": "quantified_relative",
+        "phenomena": ["relative_clause", "universal", "existential"]
+      }
+    },
+    {
+      "id": "bind-rel-04",
+      "category": "relative_clause",
+      "prompt": "The book that every student read was boring.",
+      "ground_truth": "boring(ιx. book(x) ∧ ∀y. student(y) → read(y, x))",
+      "metadata": {
+        "pair": "bind-rel-03",
+        "binding": "relative_inverse_scope",
+        "phenomena": ["relative_clause", "universal", "definite", "inverse_linking"]
+      }
+    },
+    {
+      "id": "bind-neg-01",
+      "category": "quantifier_scope",
+      "prompt": "Nobody saw anything.",
+      "ground_truth": "¬∃x. person(x) ∧ ∃y. thing(y) ∧ saw(x, y)",
+      "metadata": {
+        "binding": "double_negation",
+        "phenomena": ["negation", "negative_polarity"]
+      }
+    },
+    {
+      "id": "bind-neg-02",
+      "category": "quantifier_scope",
+      "prompt": "Not every bird can fly.",
+      "ground_truth": "¬∀x. bird(x) → can_fly(x)",
+      "metadata": {
+        "binding": "negated_universal",
+        "phenomena": ["negation", "universal"]
+      }
+    },
+    {
+      "id": "bind-embed-01",
+      "category": "variable_binding",
+      "prompt": "John believes that every student passed.",
+      "ground_truth": "believes(john, ∀x. student(x) → passed(x))",
+      "metadata": {
+        "binding": "embedded_quantifier",
+        "phenomena": ["propositional_attitude", "universal", "clausal_embedding"]
+      }
+    },
+    {
+      "id": "bind-embed-02",
+      "category": "variable_binding",
+      "prompt": "Every professor thinks that some student cheated.",
+      "ground_truth": "∀x. professor(x) → thinks(x, ∃y. student(y) ∧ cheated(y))",
+      "metadata": {
+        "binding": "quantifier_into_attitude",
+        "phenomena": ["universal", "existential", "propositional_attitude", "scope"]
+      }
+    }
+  ]
+}

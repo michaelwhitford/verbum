@@ -1,0 +1,1026 @@
+{
+  "timestamp": "2026-04-19T11:45:34",
+  "model": "Qwen/Qwen3-4B",
+  "depth_probing": [
+    {
+      "depth": 1,
+      "prompt": "Every dog runs.",
+      "expected": "∀x. dog(x) → runs(x)",
+      "expected_quantifiers": 1,
+      "output": "∀x. dog(x) → runs(x)",
+      "full_generation": " ∀x. dog(x) → runs(x)\nA cat chased some bird. → ∃x. cat(x) ∧ ∃y. bird(y) ∧ chased(x, y)\nA cat is a dog. → ∃x. cat(x) ∧ dog(x)\nA cat is a",
+      "output_quantifiers": 1,
+      "has_binding": true,
+      "quantifier_ratio": 1.0
+    },
+    {
+      "depth": 1,
+      "prompt": "Some cat sleeps.",
+      "expected": "∃x. cat(x) ∧ sleeps(x)",
+      "expected_quantifiers": 1,
+      "output": "∃x. cat(x) ∧ sleeps(x)",
+      "full_generation": " ∃x. cat(x) ∧ sleeps(x)\nAll cats are mammals. → ∀x. cat(x) → mammal(x)\nAll mammals are animals. → ∀x. mammal(x) → animal(x)\nAll animals are living things. → ∀x. animal(x) → living",
+      "output_quantifiers": 1,
+      "has_binding": true,
+      "quantifier_ratio": 1.0
+    },
+    {
+      "depth": 2,
+      "prompt": "Everyone loves someone.",
+      "expected": "∀x. ∃y. loves(x, y)",
+      "expected_quantifiers": 2,
+      "output": "∀x. ∃y. loves(x, y)",
+      "full_generation": " ∀x. ∃y. loves(x, y)\nThere is a person who is not loved by anyone. → ∃x. person(x) ∧ ∀y. ¬loves(y, x)\nThere is a person who loves everyone. → ∃x. person(x) ∧ ∀",
+      "output_quantifiers": 2,
+      "has_binding": false,
+      "quantifier_ratio": 1.0
+    },
+    {
+      "depth": 2,
+      "prompt": "Every student read a book.",
+      "expected": "∀x. student(x) → ∃y. book(y) ∧ read(x, y)",
+      "expected_quantifiers": 2,
+      "output": "∀x. student(x) → ∃y. book(y) ∧ read(x, y)",
+      "full_generation": " ∀x. student(x) → ∃y. book(y) ∧ read(x, y)\nSome student read a book. → ∃x. student(x) ∧ ∃y. book(y) ∧ read(x, y)\nSome student read all books. → ∃x. student",
+      "output_quantifiers": 2,
+      "has_binding": true,
+      "quantifier_ratio": 1.0
+    },
+    {
+      "depth": 2,
+      "prompt": "No student passed every exam.",
+      "expected": "¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)",
+      "expected_quantifiers": 2,
+      "output": "¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)",
+      "full_generation": " ¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)\nSome student passed every exam. → ∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)\nEvery student passed some exam. → ∀x. student(x)",
+      "output_quantifiers": 3,
+      "has_binding": true,
+      "quantifier_ratio": 1.5
+    },
+    {
+      "depth": 3,
+      "prompt": "Every teacher gave some student a book.",
+      "expected": "∀x. teacher(x) → ∃y. student(y) ∧ ∃z. book(z) ∧ gave(x, y, z)",
+      "expected_quantifiers": 3,
+      "output": "∀x. teacher(x) → ∃y. student(y) ∧ gave(x, y, book)",
+      "full_generation": " ∀x. teacher(x) → ∃y. student(y) ∧ gave(x, y, book)\nEvery student who is not a teacher gave some book to some student. →  ∀x. student(x) ∧ ¬teacher(x) → ∃y. book(y) ∧ ∃",
+      "output_quantifiers": 2,
+      "has_binding": true,
+      "quantifier_ratio": 0.67
+    },
+    {
+      "depth": 3,
+      "prompt": "No professor assigned every student some problem.",
+      "expected": "¬∃x. professor(x) ∧ ∀y. student(y) → ∃z. problem(z) ∧ assigned(x, y, z)",
+      "expected_quantifiers": 3,
+      "output": "¬∃x. professor(x) ∧ student(x) ∧ ∀y. student(y) → assigned(x, y)",
+      "full_generation": " ¬∃x. professor(x) ∧ student(x) ∧ ∀y. student(y) → assigned(x, y)\nEvery student is assigned some problem. → ∀x. student(x) → ∃y. problem(y) ∧ assigned(x, y)\nEvery student is assigned by some professor",
+      "output_quantifiers": 3,
+      "has_binding": true,
+      "quantifier_ratio": 1.0
+    },
+    {
+      "depth": 3,
+      "prompt": "Someone introduced everyone to a friend.",
+      "expected": "∃x. ∀y. ∃z. friend(z) ∧ introduced(x, y, z)",
+      "expected_quantifiers": 3,
+      "output": "∃x. person(x) ∧ ∡y. person(y) ∧ y ≠ x ∧ introduced(x, y, friend(x))",
+      "full_generation": " ∃x. person(x) ∧ ∡y. person(y) ∧ y ≠ x ∧ introduced(x, y, friend(x))\nWait, that last one is a bit tricky. Let me think. The sentence is \"Someone introduced everyone to a friend.\" So, the person introd",
+      "output_quantifiers": 1,
+      "has_binding": true,
+      "quantifier_ratio": 0.33
+    },
+    {
+      "depth": 4,
+      "prompt": "Every manager told some employee to give every client a report.",
+      "expected": "∀w. manager(w) → ∃x. employee(x) ∧ ∀y. client(y) → ∃z. report(z) ∧ told(w, x, give(x, y, z))",
+      "expected_quantifiers": 4,
+      "output": "∀m. manager(m) → ∃e. employee(e) ∧ ∃c. client(c) ∧ told(m, e, toGive(c, report))",
+      "full_generation": " ∀m. manager(m) → ∃e. employee(e) ∧ ∃c. client(c) ∧ told(m, e, toGive(c, report))\nEvery employee who is not a manager told some client to give a report. →  ∀e. employee(e) ∧ ¬manager",
+      "output_quantifiers": 3,
+      "has_binding": true,
+      "quantifier_ratio": 0.75
+    },
+    {
+      "depth": 4,
+      "prompt": "No student in every class read some book about every topic.",
+      "expected": "¬∃w. ∀x. class(x) → student(w, x) ∧ ∃y. ∀z. topic(z) → book(y, z) ∧ read(w, y)",
+      "expected_quantifiers": 4,
+      "output": "∀c. class(c) → ∃s. student(s) ∧ in_class(s, c) ∧ ∀t. topic(t) → ∨∃b. book(b) ∧ about(b, t) ∧ read(s, b)",
+      "full_generation": " ∀c. class(c) → ∃s. student(s) ∧ in_class(s, c) ∧ ∀t. topic(t) → ∨∃b. book(b) ∧ about(b, t) ∧ read(s, b)\nWait, that's a bit complicated. Let me try",
+      "output_quantifiers": 4,
+      "has_binding": true,
+      "quantifier_ratio": 1.0
+    },
+    {
+      "depth": 5,
+      "prompt": "Every teacher told some student that no professor assigned every class a textbook.",
+      "expected": "∀v. teacher(v) → ∃w. student(w) ∧ told(v, w, ¬∃x. professor(x) ∧ ∀y. class(y) → ∃z. textbook(z) ∧ assigned(x, y, z))",
+      "expected_quantifiers": 5,
+      "output": "∀t. teacher(t) → ∃s. student(s) ∧ ∃p. professor(p) ∧ ∃c. class(c) ∧ assigned(c, p) ∧ ¬∀c. textbook(c, p)",
+      "full_generation": " ∀t. teacher(t) → ∃s. student(s) ∧ ∃p. professor(p) ∧ ∃c. class(c) ∧ assigned(c, p) ∧ ¬∀c. textbook(c, p)\nWait, that's a bit complicated. Let me try to parse it",
+      "output_quantifiers": 6,
+      "has_binding": true,
+      "quantifier_ratio": 1.2
+    }
+  ],
+  "residual_progression": [
+    {
+      "prompt_a": "Everyone loves someone.",
+      "prompt_b": "Someone loves everyone.",
+      "output_a": "∀x. ∃y. loves(x, y)",
+      "output_b": "∃x. ∀y. loves(x, y)",
+      "outputs_differ": true,
+      "cosine_distances": [
+        0.000114,
+        6e-06,
+        4e-06,
+        4e-06,
+        6e-06,
+        1.8e-05,
+        0.001543,
+        0.002201,
+        0.002726,
+        0.005122,
+        0.008442,
+        0.009901,
+        0.013809,
+        0.015783,
+        0.017026,
+        0.023376,
+        0.029182,
+        0.036202,
+        0.048048,
+        0.054971,
+        0.05162,
+        0.051672,
+        0.045882,
+        0.045514,
+        0.032135,
+        0.029372,
+        0.026371,
+        0.02667,
+        0.030463,
+        0.026169,
+        0.025573,
+        0.030244,
+        0.028462,
+        0.022228,
+        0.014766,
+        0.017395
+      ],
+      "l2_distances": [
+        0.14,
+        1.679,
+        1.547,
+        1.374,
+        1.328,
+        1.307,
+        1.339,
+        1.76,
+        2.128,
+        2.948,
+        4.648,
+        5.205,
+        6.511,
+        6.914,
+        7.8,
+        9.065,
+        10.095,
+        12.338,
+        15.505,
+        18.806,
+        18.806,
+        19.586,
+        19.183,
+        23.25,
+        24.107,
+        26.128,
+        28.195,
+        32.492,
+        42.319,
+        45.76,
+        54.279,
+        71.364,
+        82.581,
+        89.777,
+        101.51,
+        111.85
+      ],
+      "peak_gradient_layer": 18,
+      "peak_gradient_value": 0.011846,
+      "halfway_layer": 11,
+      "total_cosine_change": 0.017281
+    },
+    {
+      "prompt_a": "Every student read a book.",
+      "prompt_b": "A student read every book.",
+      "output_a": "∀x. student(x) → ∃y. book(y) ∧ read(x, y)",
+      "output_b": "∀x. student(x) → ∀y. book(y) → read(x, y)",
+      "outputs_differ": true,
+      "cosine_distances": [
+        0.000196,
+        1.3e-05,
+        9e-06,
+        9e-06,
+        3.8e-05,
+        7.1e-05,
+        0.002716,
+        0.004012,
+        0.00443,
+        0.006505,
+        0.009986,
+        0.01336,
+        0.015408,
+        0.017444,
+        0.018341,
+        0.021493,
+        0.021678,
+        0.022241,
+        0.025347,
+        0.028599,
+        0.030462,
+        0.032186,
+        0.030279,
+        0.026913,
+        0.022365,
+        0.017676,
+        0.016796,
+        0.016872,
+        0.015642,
+        0.013418,
+        0.013388,
+        0.011711,
+        0.009321,
+        0.007391,
+        0.004692,
+        0.004998
+      ],
+      "l2_distances": [
+        0.187,
+        2.557,
+        2.402,
+        2.244,
+        2.349,
+        2.25,
+        1.777,
+        2.417,
+        2.696,
+        3.298,
+        4.613,
+        5.618,
+        6.309,
+        6.781,
+        7.652,
+        8.089,
+        8.321,
+        9.5,
+        11.226,
+        13.128,
+        14.239,
+        15.715,
+        15.988,
+        18.23,
+        20.868,
+        21.449,
+        24.06,
+        27.343,
+        32.029,
+        34.622,
+        41.762,
+        46.036,
+        50.534,
+        54.179,
+        60.041,
+        65.493
+      ],
+      "peak_gradient_layer": 10,
+      "peak_gradient_value": 0.003481,
+      "halfway_layer": 6,
+      "total_cosine_change": 0.004802
+    },
+    {
+      "prompt_a": "The cat chased the dog.",
+      "prompt_b": "The dog chased the cat.",
+      "output_a": "∃x. cat(x) ∧ dog(x) ∧ chased(x, x)",
+      "output_b": "∃x. dog(x) ∧ cat(x) ∧ chased(x, cat(x)) ??",
+      "outputs_differ": true,
+      "cosine_distances": [
+        2e-05,
+        7.5e-05,
+        6.9e-05,
+        0.000135,
+        0.00022,
+        0.000294,
+        0.000246,
+        0.00047,
+        0.0006,
+        0.000742,
+        0.000996,
+        0.001021,
+        0.001058,
+        0.001214,
+        0.002524,
+        0.004269,
+        0.00772,
+        0.008719,
+        0.014121,
+        0.023687,
+        0.030428,
+        0.036969,
+        0.047944,
+        0.05673,
+        0.051681,
+        0.038479,
+        0.035006,
+        0.033768,
+        0.028028,
+        0.02388,
+        0.023627,
+        0.01888,
+        0.016072,
+        0.013334,
+        0.00974,
+        0.011279
+      ],
+      "l2_distances": [
+        0.054,
+        1.218,
+        1.953,
+        2.703,
+        2.773,
+        2.707,
+        0.575,
+        0.831,
+        0.98,
+        1.111,
+        1.483,
+        1.539,
+        1.623,
+        1.756,
+        2.652,
+        3.416,
+        4.513,
+        5.513,
+        8.015,
+        11.213,
+        13.37,
+        16.242,
+        19.326,
+        26.188,
+        31.365,
+        30.097,
+        32.809,
+        37.2,
+        40.469,
+        43.945,
+        51.366,
+        56.046,
+        62.929,
+        73.735,
+        86.712,
+        107.266
+      ],
+      "peak_gradient_layer": 22,
+      "peak_gradient_value": 0.010975,
+      "halfway_layer": 16,
+      "total_cosine_change": 0.011259
+    }
+  ],
+  "activation_swap": {
+    "prompt_a": "Everyone loves someone.",
+    "prompt_b": "Someone loves everyone.",
+    "baseline_a": "∀x. ∃y. loves(x, y)",
+    "baseline_b": "∃x. ∀y. loves(x, y)",
+    "swaps": [
+      {
+        "layer": 0,
+        "output": "∀11 2     \" \" 3               English",
+        "scope": "A-scope",
+        "first_quantifier": "∀"
+      },
+      {
+        "layer": 2,
+        "output": "∀1113311 \"448353    43  21  \" \"4341",
+        "scope": "A-scope",
+        "first_quantifier": "∀"
+      },
+      {
+        "layer": 4,
+        "output": "∀1113311 \" \"483 to0    2292    44",
+        "scope": "A-scope",
+        "first_quantifier": "∀"
+      },
+      {
+        "layer": 6,
+        "output": "∀112  1 \" \"3588     2   231",
+        "scope": "A-scope",
+        "first_quantifier": "∀"
+      },
+      {
+        "layer": 7,
+        "output": "∀21",
+        "scope": "A-scope",
+        "first_quantifier": "∀"
+      },
+      {
+        "layer": 8,
+        "output": "∀ ∀ ∀ ∀ ∀",
+        "scope": "A-scope",
+        "first_quantifier": "∀"
+      },
+      {
+        "layer": 10,
+        "output": "∀ ∀ ∀ ∀ ∀ ∀ ∀ ∀",
+        "scope": "A-scope",
+        "first_quantifier": "∀"
+      },
+      {
+        "layer": 12,
+        "output": "∀222",
+        "scope": "A-scope",
+        "first_quantifier": "∀"
+      },
+      {
+        "layer": 14,
+        "output": "∀ ∀ ∀ ∀",
+        "scope": "A-scope",
+        "first_quantifier": "∀"
+      },
+      {
+        "layer": 15,
+        "output": "∀ ∀ ∀ ∀",
+        "scope": "A-scope",
+        "first_quantifier": "∀"
+      },
+      {
+        "layer": 16,
+        "output": "∀2 ∀ ∀ ∀",
+        "scope": "A-scope",
+        "first_quantifier": "∀"
+      },
+      {
+        "layer": 17,
+        "output": "∀22 ∀",
+        "scope": "A-scope",
+        "first_quantifier": "∀"
+      },
+      {
+        "layer": 18,
+        "output": "∀222",
+        "scope": "A-scope",
+        "first_quantifier": "∀"
+      },
+      {
+        "layer": 20,
+        "output": "∀22222222222222222222222222222",
+        "scope": "A-scope",
+        "first_quantifier": "∀"
+      },
+      {
+        "layer": 22,
+        "output": "∀2222222222222222222222222222222222222",
+        "scope": "A-scope",
+        "first_quantifier": "∀"
+      },
+      {
+        "layer": 24,
+        "output": "∀222222222222222222222222222222",
+        "scope": "A-scope",
+        "first_quantifier": "∀"
+      },
+      {
+        "layer": 25,
+        "output": "∀22222222222222222222222222222222",
+        "scope": "A-scope",
+        "first_quantifier": "∀"
+      },
+      {
+        "layer": 26,
+        "output": "∀222222222222222222222222",
+        "scope": "A-scope",
+        "first_quantifier": "∀"
+      },
+      {
+        "layer": 28,
+        "output": "∀22222222222222222222222222222222",
+        "scope": "A-scope",
+        "first_quantifier": "∀"
+      },
+      {
+        "layer": 30,
+        "output": "222222222222222222222",
+        "scope": "broken",
+        "first_quantifier": null
+      },
+      {
+        "layer": 31,
+        "output": "222222222222222222222",
+        "scope": "broken",
+        "first_quantifier": null
+      },
+      {
+        "layer": 32,
+        "output": "22222222222222222222222222",
+        "scope": "broken",
+        "first_quantifier": null
+      },
+      {
+        "layer": 33,
+        "output": "22222222222222222222222",
+        "scope": "broken",
+        "first_quantifier": null
+      },
+      {
+        "layer": 34,
+        "output": "�22222222222222222222222222222222222222222222222222222222222",
+        "scope": "broken",
+        "first_quantifier": null
+      },
+      {
+        "layer": 35,
+        "output": "� � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � � �",
+        "scope": "broken",
+        "first_quantifier": null
+      }
+    ],
+    "transitions": [
+      {
+        "from_layer": 28,
+        "to_layer": 30,
+        "from_scope": "A-scope",
+        "to_scope": "broken"
+      }
+    ]
+  },
+  "cluster_ablation": [
+    {
+      "cluster": "top5_sharpen",
+      "n_heads": 5,
+      "heads": [
+        [
+          12,
+          21
+        ],
+        [
+          21,
+          4
+        ],
+        [
+          31,
+          3
+        ],
+        [
+          10,
+          16
+        ],
+        [
+          15,
+          13
+        ]
+      ],
+      "probes": [
+        {
+          "prompt": "Everyone loves someone.",
+          "output": "∀x. ∃y. loves(x, y)",
+          "baseline": "∀x. ∃y. loves(x, y)",
+          "has_lambda": true,
+          "has_binding": false,
+          "n_quantifiers": 2,
+          "matches_baseline": true
+        },
+        {
+          "prompt": "Someone loves everyone.",
+          "output": "∃x. ∀y. loves(x, y)",
+          "baseline": "∃x. ∀y. loves(x, y)",
+          "has_lambda": true,
+          "has_binding": false,
+          "n_quantifiers": 2,
+          "matches_baseline": true
+        },
+        {
+          "prompt": "Every student read a book.",
+          "output": "∀x. student(x) → ∃y. book(y) ∧ read(x, y)",
+          "baseline": "∀x. student(x) → ∃y. book(y) ∧ read(x, y)",
+          "has_lambda": true,
+          "has_binding": true,
+          "n_quantifiers": 2,
+          "matches_baseline": true
+        },
+        {
+          "prompt": "No student passed every exam.",
+          "output": "¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)",
+          "baseline": "¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)",
+          "has_lambda": true,
+          "has_binding": true,
+          "n_quantifiers": 3,
+          "matches_baseline": true
+        }
+      ]
+    },
+    {
+      "cluster": "top13_sharpen",
+      "n_heads": 13,
+      "heads": [
+        [
+          12,
+          21
+        ],
+        [
+          21,
+          4
+        ],
+        [
+          31,
+          3
+        ],
+        [
+          10,
+          16
+        ],
+        [
+          15,
+          13
+        ],
+        [
+          8,
+          2
+        ],
+        [
+          18,
+          30
+        ],
+        [
+          29,
+          3
+        ],
+        [
+          9,
+          23
+        ],
+        [
+          25,
+          26
+        ],
+        [
+          27,
+          28
+        ],
+        [
+          26,
+          18
+        ],
+        [
+          8,
+          0
+        ]
+      ],
+      "probes": [
+        {
+          "prompt": "Everyone loves someone.",
+          "output": "∀x. ∃y. loves(x, y)",
+          "baseline": "∀x. ∃y. loves(x, y)",
+          "has_lambda": true,
+          "has_binding": false,
+          "n_quantifiers": 2,
+          "matches_baseline": true
+        },
+        {
+          "prompt": "Someone loves everyone.",
+          "output": "2. ∃x. ∀y. loves(x, y)",
+          "baseline": "∃x. ∀y. loves(x, y)",
+          "has_lambda": true,
+          "has_binding": false,
+          "n_quantifiers": 2,
+          "matches_baseline": false
+        },
+        {
+          "prompt": "Every student read a book.",
+          "output": "∀x. student(x) → ∃y. book(y) ∧ read(x, y)",
+          "baseline": "∀x. student(x) → ∃y. book(y) ∧ read(x, y)",
+          "has_lambda": true,
+          "has_binding": true,
+          "n_quantifiers": 2,
+          "matches_baseline": true
+        },
+        {
+          "prompt": "No student passed every exam.",
+          "output": "¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)",
+          "baseline": "¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)",
+          "has_lambda": true,
+          "has_binding": true,
+          "n_quantifiers": 3,
+          "matches_baseline": true
+        }
+      ]
+    },
+    {
+      "cluster": "top5_diffuse",
+      "n_heads": 5,
+      "heads": [
+        [
+          17,
+          19
+        ],
+        [
+          16,
+          1
+        ],
+        [
+          25,
+          0
+        ],
+        [
+          1,
+          14
+        ],
+        [
+          26,
+          29
+        ]
+      ],
+      "probes": [
+        {
+          "prompt": "Everyone loves someone.",
+          "output": "∀x. ∃y. loves(x, y)",
+          "baseline": "∀x. ∃y. loves(x, y)",
+          "has_lambda": true,
+          "has_binding": false,
+          "n_quantifiers": 2,
+          "matches_baseline": true
+        },
+        {
+          "prompt": "Someone loves everyone.",
+          "output": "∃x. ∀y. loves(x, y)",
+          "baseline": "∃x. ∀y. loves(x, y)",
+          "has_lambda": true,
+          "has_binding": false,
+          "n_quantifiers": 2,
+          "matches_baseline": true
+        },
+        {
+          "prompt": "Every student read a book.",
+          "output": "∀x. student(x) → ∃y. book(y) ∧ read(x, y)",
+          "baseline": "∀x. student(x) → ∃y. book(y) ∧ read(x, y)",
+          "has_lambda": true,
+          "has_binding": true,
+          "n_quantifiers": 2,
+          "matches_baseline": true
+        },
+        {
+          "prompt": "No student passed every exam.",
+          "output": "¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)",
+          "baseline": "¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)",
+          "has_lambda": true,
+          "has_binding": true,
+          "n_quantifiers": 3,
+          "matches_baseline": true
+        }
+      ]
+    },
+    {
+      "cluster": "top13_diffuse",
+      "n_heads": 13,
+      "heads": [
+        [
+          17,
+          19
+        ],
+        [
+          16,
+          1
+        ],
+        [
+          25,
+          0
+        ],
+        [
+          1,
+          14
+        ],
+        [
+          26,
+          29
+        ],
+        [
+          21,
+          21
+        ],
+        [
+          26,
+          14
+        ],
+        [
+          24,
+          4
+        ],
+        [
+          20,
+          25
+        ],
+        [
+          20,
+          22
+        ],
+        [
+          0,
+          11
+        ],
+        [
+          35,
+          22
+        ],
+        [
+          13,
+          2
+        ]
+      ],
+      "probes": [
+        {
+          "prompt": "Everyone loves someone.",
+          "output": "∀x. ∃y. loves(x, y)",
+          "baseline": "∀x. ∃y. loves(x, y)",
+          "has_lambda": true,
+          "has_binding": false,
+          "n_quantifiers": 2,
+          "matches_baseline": true
+        },
+        {
+          "prompt": "Someone loves everyone.",
+          "output": "∃x. ∀y. loves(x, y)",
+          "baseline": "∃x. ∀y. loves(x, y)",
+          "has_lambda": true,
+          "has_binding": false,
+          "n_quantifiers": 2,
+          "matches_baseline": true
+        },
+        {
+          "prompt": "Every student read a book.",
+          "output": "∀x. student(x) → ∃y. book(y) ∧ read(x, y)",
+          "baseline": "∀x. student(x) → ∃y. book(y) ∧ read(x, y)",
+          "has_lambda": true,
+          "has_binding": true,
+          "n_quantifiers": 2,
+          "matches_baseline": true
+        },
+        {
+          "prompt": "No student passed every exam.",
+          "output": "¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)",
+          "baseline": "¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)",
+          "has_lambda": true,
+          "has_binding": true,
+          "n_quantifiers": 3,
+          "matches_baseline": true
+        }
+      ]
+    },
+    {
+      "cluster": "all_sharpen+diffuse",
+      "n_heads": 26,
+      "heads": [
+        [
+          12,
+          21
+        ],
+        [
+          21,
+          4
+        ],
+        [
+          31,
+          3
+        ],
+        [
+          10,
+          16
+        ],
+        [
+          15,
+          13
+        ],
+        [
+          8,
+          2
+        ],
+        [
+          18,
+          30
+        ],
+        [
+          29,
+          3
+        ],
+        [
+          9,
+          23
+        ],
+        [
+          25,
+          26
+        ],
+        [
+          27,
+          28
+        ],
+        [
+          26,
+          18
+        ],
+        [
+          8,
+          0
+        ],
+        [
+          17,
+          19
+        ],
+        [
+          16,
+          1
+        ],
+        [
+          25,
+          0
+        ],
+        [
+          1,
+          14
+        ],
+        [
+          26,
+          29
+        ],
+        [
+          21,
+          21
+        ],
+        [
+          26,
+          14
+        ],
+        [
+          24,
+          4
+        ],
+        [
+          20,
+          25
+        ],
+        [
+          20,
+          22
+        ],
+        [
+          0,
+          11
+        ],
+        [
+          35,
+          22
+        ],
+        [
+          13,
+          2
+        ]
+      ],
+      "probes": [
+        {
+          "prompt": "Everyone loves someone.",
+          "output": "∀x. ∃y. loves(x, y)",
+          "baseline": "∀x. ∃y. loves(x, y)",
+          "has_lambda": true,
+          "has_binding": false,
+          "n_quantifiers": 2,
+          "matches_baseline": true
+        },
+        {
+          "prompt": "Someone loves everyone.",
+          "output": "∃x. ∀y. loves(x, y)",
+          "baseline": "∃x. ∀y. loves(x, y)",
+          "has_lambda": true,
+          "has_binding": false,
+          "n_quantifiers": 2,
+          "matches_baseline": true
+        },
+        {
+          "prompt": "Every student read a book.",
+          "output": "∀x. student(x) → ∃y. book(y) ∧ read(x, y)",
+          "baseline": "∀x. student(x) → ∃y. book(y) ∧ read(x, y)",
+          "has_lambda": true,
+          "has_binding": true,
+          "n_quantifiers": 2,
+          "matches_baseline": true
+        },
+        {
+          "prompt": "No student passed every exam.",
+          "output": "¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)",
+          "baseline": "¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)",
+          "has_lambda": true,
+          "has_binding": true,
+          "n_quantifiers": 3,
+          "matches_baseline": true
+        }
+      ]
+    }
+  ]
+}

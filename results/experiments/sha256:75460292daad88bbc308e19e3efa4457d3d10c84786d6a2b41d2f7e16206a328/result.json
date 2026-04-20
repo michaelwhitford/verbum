@@ -1,0 +1,7 @@
+{
+  "layer": 0,
+  "generation": " \u2192,,,,,,,,,,,,,,,,,,,,,,,,,,,,,",
+  "has_lambda": false,
+  "lambda_count": 1,
+  "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+}

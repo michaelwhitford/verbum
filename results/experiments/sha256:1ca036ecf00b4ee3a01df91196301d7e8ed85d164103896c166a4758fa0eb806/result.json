@@ -1,0 +1,8 @@
+{
+  "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth",
+  "generation": " \u2192\u03bbx.\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192",
+  "has_lambda": true,
+  "lambda_count": 28,
+  "n_zeroed": 253,
+  "essential_heads_only": true
+}

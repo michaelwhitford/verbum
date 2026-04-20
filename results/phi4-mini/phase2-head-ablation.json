@@ -1,0 +1,14 @@
+{
+  "model": "microsoft/Phi-4-mini-instruct",
+  "critical_layers": [
+    0,
+    3,
+    5,
+    30
+  ],
+  "n_probes": 5,
+  "essential_heads_any": [],
+  "essential_heads_all": [],
+  "total_candidates": 96,
+  "break_counts": {}
+}

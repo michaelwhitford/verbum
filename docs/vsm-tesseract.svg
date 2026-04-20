@@ -1,0 +1,459 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 900" font-family="'SF Pro Display', 'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#080c15"/>
+      <stop offset="100%" stop-color="#0f1724"/>
+    </linearGradient>
+    <linearGradient id="s4grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a5276"/><stop offset="100%" stop-color="#2980b9"/>
+    </linearGradient>
+    <linearGradient id="s3grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#922b21"/><stop offset="100%" stop-color="#c0392b"/>
+    </linearGradient>
+    <linearGradient id="s1grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6c3483"/><stop offset="100%" stop-color="#8e44ad"/>
+    </linearGradient>
+    <linearGradient id="s5grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e8449"/><stop offset="100%" stop-color="#27ae60"/>
+    </linearGradient>
+    <linearGradient id="s2grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#b07d2e"/><stop offset="100%" stop-color="#d4ac0d"/>
+    </linearGradient>
+
+    <filter id="softglow">
+      <feGaussianBlur stdDeviation="2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="registerglow">
+      <feGaussianBlur stdDeviation="10" result="b"/>
+      <feColorMatrix in="b" type="matrix" values="1 0.5 0 0 0  0.5 0.3 0 0 0  0 0 0 0 0  0 0 0 0.4 0" result="warm"/>
+      <feMerge><feMergeNode in="warm"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <marker id="arr" viewBox="0 0 10 6" refX="9" refY="3" markerWidth="7" markerHeight="5" orient="auto">
+      <path d="M0,0.5 L9,3 L0,5.5Z" fill="#f39c12" opacity="0.8"/>
+    </marker>
+    <marker id="arrGreen" viewBox="0 0 10 6" refX="9" refY="3" markerWidth="7" markerHeight="5" orient="auto">
+      <path d="M0,0.5 L9,3 L0,5.5Z" fill="#27ae60" opacity="0.8"/>
+    </marker>
+    <marker id="arrS2" viewBox="0 0 10 6" refX="9" refY="3" markerWidth="6" markerHeight="4" orient="auto">
+      <path d="M0,0.5 L9,3 L0,5.5Z" fill="#d4ac0d" opacity="0.7"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1300" height="900" fill="url(#bg)"/>
+
+  <!-- Title -->
+  <text x="650" y="36" text-anchor="middle" fill="#ecf0f1" font-size="22" font-weight="700" letter-spacing="1.5">VSM-LM v2 — Tesseract</text>
+  <text x="650" y="56" text-anchor="middle" fill="#7f8c8d" font-size="11">One cube, two projections. Same S1 weights. Different S3 gates. The 4th dimension is iteration.</text>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!--  S5 INPUT — bottom-left root                                -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <g transform="translate(22, 770)">
+    <rect x="0" y="0" width="88" height="52" rx="8" fill="url(#s5grad)" opacity="0.95" filter="url(#softglow)"/>
+    <text x="44" y="20" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">S5 in</text>
+    <text x="44" y="35" text-anchor="middle" fill="#d5f5e3" font-size="9">embed + pos</text>
+    <text x="44" y="47" text-anchor="middle" fill="#a9dfbf" font-size="8">register r=0⃗</text>
+  </g>
+  <path d="M110 770 Q 138 720 155 690" stroke="#27ae60" stroke-width="2.5" fill="none" opacity="0.6" marker-end="url(#arrGreen)"/>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!--  CUBE 0 — iter0 (Structural) — lower-left                   -->
+  <!--  Front: TL(145,420) TR(475,420) BR(475,690) BL(145,690)    -->
+  <!--  Back:  TL(210,360) TR(540,360) BR(540,630) BL(210,630)    -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+
+  <text x="340" y="340" text-anchor="middle" fill="#e74c3c" font-size="14" font-weight="600" opacity="0.8">◈ iter0 — Structural</text>
+
+  <!-- Cube 0 back face -->
+  <g opacity="0.22">
+    <line x1="210" y1="360" x2="540" y2="360" stroke="#e74c3c" stroke-width="2"/>
+    <line x1="540" y1="360" x2="540" y2="630" stroke="#e74c3c" stroke-width="2"/>
+    <line x1="540" y1="630" x2="210" y2="630" stroke="#e74c3c" stroke-width="2"/>
+    <line x1="210" y1="630" x2="210" y2="360" stroke="#e74c3c" stroke-width="2"/>
+  </g>
+
+  <!-- Cube 0 front face -->
+  <g opacity="0.42">
+    <line x1="145" y1="420" x2="475" y2="420" stroke="#e74c3c" stroke-width="2.5"/>
+    <line x1="475" y1="420" x2="475" y2="690" stroke="#e74c3c" stroke-width="2.5"/>
+    <line x1="475" y1="690" x2="145" y2="690" stroke="#e74c3c" stroke-width="2.5"/>
+    <line x1="145" y1="690" x2="145" y2="420" stroke="#e74c3c" stroke-width="2.5"/>
+  </g>
+
+  <!-- Cube 0 depth edges -->
+  <g opacity="0.14" stroke="#e74c3c" stroke-width="1.5">
+    <line x1="145" y1="420" x2="210" y2="360"/>
+    <line x1="475" y1="420" x2="540" y2="360"/>
+    <line x1="475" y1="690" x2="540" y2="630"/>
+    <line x1="145" y1="690" x2="210" y2="630"/>
+  </g>
+
+  <!-- ── S2: Residual stream edges on cube 0 back face ── -->
+  <!-- These are the coordination channels between S1 operations -->
+  <g>
+    <!-- embed → type (S2: ‖x‖=0.93 → 3.85, +314%) -->
+    <line x1="252" y1="360" x2="498" y2="360" stroke="#d4ac0d" stroke-width="2.5" opacity="0.5" marker-end="url(#arrS2)"/>
+    <rect x="322" y="350" width="60" height="16" rx="4" fill="#1a1a0a" opacity="0.85"/>
+    <text x="352" y="362" text-anchor="middle" fill="#d4ac0d" font-size="7.5" font-weight="600">+314%</text>
+
+    <!-- type → parse (S2: 3.85 → 5.03, +31%) -->
+    <line x1="540" y1="398" x2="540" y2="588" stroke="#d4ac0d" stroke-width="2.5" opacity="0.5" marker-end="url(#arrS2)"/>
+    <rect x="545" y="475" width="50" height="16" rx="4" fill="#1a1a0a" opacity="0.85"/>
+    <text x="570" y="487" text-anchor="middle" fill="#d4ac0d" font-size="7.5" font-weight="600">+31%</text>
+
+    <!-- parse → apply (S2: 5.03 → 6.04, +20%) -->
+    <line x1="498" y1="630" x2="252" y2="630" stroke="#d4ac0d" stroke-width="2.5" opacity="0.5" marker-end="url(#arrS2)"/>
+    <rect x="340" y="620" width="50" height="16" rx="4" fill="#1a1a0a" opacity="0.85"/>
+    <text x="365" y="632" text-anchor="middle" fill="#d4ac0d" font-size="7.5" font-weight="600">+20%</text>
+
+    <!-- apply output (S2 state leaving cube 0) -->
+    <line x1="210" y1="588" x2="210" y2="398" stroke="#d4ac0d" stroke-width="2" opacity="0.3" stroke-dasharray="5,4"/>
+  </g>
+
+  <!-- ── Cube 0 front face nodes (S3 gates + S4) ── -->
+
+  <!-- S4₀ — TL front -->
+  <g transform="translate(103, 394)">
+    <rect x="0" y="0" width="84" height="52" rx="7" fill="url(#s4grad)" opacity="0.92" filter="url(#softglow)"/>
+    <text x="42" y="17" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">S4</text>
+    <text x="42" y="31" text-anchor="middle" fill="#aed6f1" font-size="9">scan residual</text>
+    <text x="42" y="44" text-anchor="middle" fill="#85c1e9" font-size="8">H = 8.30</text>
+  </g>
+
+  <!-- S3 gate₀ type — TR front -->
+  <g transform="translate(433, 394)">
+    <rect x="0" y="0" width="84" height="52" rx="7" fill="url(#s3grad)" opacity="0.92" filter="url(#softglow)"/>
+    <text x="42" y="17" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">S3 gate type</text>
+    <text x="42" y="31" text-anchor="middle" fill="#f5b7b1" font-size="9">g = 0.86</text>
+    <text x="42" y="44" text-anchor="middle" fill="#fadbd8" font-size="8">wide open</text>
+  </g>
+
+  <!-- S3 gate₀ parse — BR front -->
+  <g transform="translate(433, 664)">
+    <rect x="0" y="0" width="84" height="52" rx="7" fill="url(#s3grad)" opacity="0.92" filter="url(#softglow)"/>
+    <text x="42" y="17" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">S3 gate parse</text>
+    <text x="42" y="31" text-anchor="middle" fill="#f5b7b1" font-size="9">g = 0.49</text>
+    <text x="42" y="44" text-anchor="middle" fill="#fadbd8" font-size="8">selective</text>
+  </g>
+
+  <!-- S3 gate₀ apply — BL front -->
+  <g transform="translate(103, 664)">
+    <rect x="0" y="0" width="84" height="52" rx="7" fill="url(#s3grad)" opacity="0.92" filter="url(#softglow)"/>
+    <text x="42" y="17" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">S3 gate apply</text>
+    <text x="42" y="31" text-anchor="middle" fill="#f5b7b1" font-size="9">g = 0.50</text>
+    <text x="42" y="44" text-anchor="middle" fill="#fadbd8" font-size="8">selective</text>
+  </g>
+
+  <!-- ── Cube 0 back face nodes (S1 operations) ── -->
+
+  <!-- residual in — TL back -->
+  <g transform="translate(168, 335)">
+    <rect x="0" y="0" width="84" height="50" rx="7" fill="url(#s2grad)" opacity="0.72" filter="url(#softglow)"/>
+    <text x="42" y="17" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">S2 in</text>
+    <text x="42" y="30" text-anchor="middle" fill="#fdebd0" font-size="9">‖x‖ = 0.93</text>
+    <text x="42" y="42" text-anchor="middle" fill="#f9e79f" font-size="8">embed</text>
+  </g>
+
+  <!-- S1 type — TR back -->
+  <g transform="translate(498, 335)">
+    <rect x="0" y="0" width="84" height="50" rx="7" fill="url(#s1grad)" opacity="0.82" filter="url(#softglow)"/>
+    <text x="42" y="17" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">S1 type</text>
+    <text x="42" y="30" text-anchor="middle" fill="#d7bde2" font-size="9">stride=1</text>
+    <text x="42" y="42" text-anchor="middle" fill="#bb8fce" font-size="8">‖x‖ = 3.85</text>
+  </g>
+
+  <!-- S1 parse — BR back -->
+  <g transform="translate(498, 605)">
+    <rect x="0" y="0" width="84" height="50" rx="7" fill="url(#s1grad)" opacity="0.82" filter="url(#softglow)"/>
+    <text x="42" y="17" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">S1 parse</text>
+    <text x="42" y="30" text-anchor="middle" fill="#d7bde2" font-size="9">stride=8</text>
+    <text x="42" y="42" text-anchor="middle" fill="#bb8fce" font-size="8">‖x‖ = 5.03</text>
+  </g>
+
+  <!-- S1 apply — BL back -->
+  <g transform="translate(168, 605)">
+    <rect x="0" y="0" width="84" height="50" rx="7" fill="url(#s1grad)" opacity="0.82" filter="url(#softglow)"/>
+    <text x="42" y="17" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">S1 apply</text>
+    <text x="42" y="30" text-anchor="middle" fill="#d7bde2" font-size="9">stride=64</text>
+    <text x="42" y="42" text-anchor="middle" fill="#bb8fce" font-size="8">‖x‖ = 6.04</text>
+  </g>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!--  CUBE 1 — iter1 (Semantic) — upper-right                    -->
+  <!--  Front: TL(755,130) TR(1085,130) BR(1085,400) BL(755,400)  -->
+  <!--  Back:  TL(820,70)  TR(1150,70)  BR(1150,340) BL(820,340)  -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+
+  <text x="950" y="53" text-anchor="middle" fill="#3498db" font-size="14" font-weight="600" opacity="0.8">◈ iter1 — Semantic</text>
+
+  <!-- Cube 1 back face -->
+  <g opacity="0.22">
+    <line x1="820" y1="70" x2="1150" y2="70" stroke="#3498db" stroke-width="2"/>
+    <line x1="1150" y1="70" x2="1150" y2="340" stroke="#3498db" stroke-width="2"/>
+    <line x1="1150" y1="340" x2="820" y2="340" stroke="#3498db" stroke-width="2"/>
+    <line x1="820" y1="340" x2="820" y2="70" stroke="#3498db" stroke-width="2"/>
+  </g>
+
+  <!-- Cube 1 front face -->
+  <g opacity="0.45">
+    <line x1="755" y1="130" x2="1085" y2="130" stroke="#3498db" stroke-width="2.5"/>
+    <line x1="1085" y1="130" x2="1085" y2="400" stroke="#3498db" stroke-width="2.5"/>
+    <line x1="1085" y1="400" x2="755" y2="400" stroke="#3498db" stroke-width="2.5"/>
+    <line x1="755" y1="400" x2="755" y2="130" stroke="#3498db" stroke-width="2.5"/>
+  </g>
+
+  <!-- Cube 1 depth edges -->
+  <g opacity="0.14" stroke="#3498db" stroke-width="1.5">
+    <line x1="755" y1="130" x2="820" y2="70"/>
+    <line x1="1085" y1="130" x2="1150" y2="70"/>
+    <line x1="1085" y1="400" x2="1150" y2="340"/>
+    <line x1="755" y1="400" x2="820" y2="340"/>
+  </g>
+
+  <!-- ── S2: Residual stream edges on cube 1 back face ── -->
+  <g>
+    <!-- type (S2: 6.04 → 7.22, +20%) -->
+    <line x1="862" y1="70" x2="1108" y2="70" stroke="#d4ac0d" stroke-width="2.5" opacity="0.5" marker-end="url(#arrS2)"/>
+    <rect x="935" y="60" width="50" height="16" rx="4" fill="#1a1a0a" opacity="0.85"/>
+    <text x="960" y="72" text-anchor="middle" fill="#d4ac0d" font-size="7.5" font-weight="600">+20%</text>
+
+    <!-- parse (S2: 7.22 → 9.89, +37%) -->
+    <line x1="1150" y1="108" x2="1150" y2="298" stroke="#d4ac0d" stroke-width="2.5" opacity="0.5" marker-end="url(#arrS2)"/>
+    <rect x="1155" y="185" width="50" height="16" rx="4" fill="#1a1a0a" opacity="0.85"/>
+    <text x="1180" y="197" text-anchor="middle" fill="#d4ac0d" font-size="7.5" font-weight="600">+37%</text>
+
+    <!-- apply (S2: 9.89 → 11.36, +15%) -->
+    <line x1="1108" y1="340" x2="862" y2="340" stroke="#d4ac0d" stroke-width="2.5" opacity="0.5" marker-end="url(#arrS2)"/>
+    <rect x="945" y="330" width="50" height="16" rx="4" fill="#1a1a0a" opacity="0.85"/>
+    <text x="970" y="342" text-anchor="middle" fill="#d4ac0d" font-size="7.5" font-weight="600">+15%</text>
+
+    <!-- closing edge -->
+    <line x1="820" y1="298" x2="820" y2="108" stroke="#d4ac0d" stroke-width="2" opacity="0.3" stroke-dasharray="5,4"/>
+  </g>
+
+  <!-- ── Cube 1 front face nodes ── -->
+
+  <!-- S4₁ — TL front -->
+  <g transform="translate(713, 104)">
+    <rect x="0" y="0" width="84" height="52" rx="7" fill="url(#s4grad)" opacity="0.95" filter="url(#softglow)"/>
+    <text x="42" y="17" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">S4</text>
+    <text x="42" y="31" text-anchor="middle" fill="#aed6f1" font-size="9">re-scan</text>
+    <text x="42" y="44" text-anchor="middle" fill="#5dade2" font-size="8" font-weight="600">H = 7.98 ↓</text>
+  </g>
+
+  <!-- S3 gate₁ type — TR front -->
+  <g transform="translate(1043, 104)">
+    <rect x="0" y="0" width="84" height="52" rx="7" fill="url(#s3grad)" opacity="0.95" filter="url(#softglow)"/>
+    <text x="42" y="17" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">S3 gate type</text>
+    <text x="42" y="31" text-anchor="middle" fill="#f5b7b1" font-size="9" font-weight="600">g = 0.35</text>
+    <text x="42" y="44" text-anchor="middle" fill="#fadbd8" font-size="8">suppressed ↓</text>
+  </g>
+
+  <!-- S3 gate₁ parse — BR front -->
+  <g transform="translate(1043, 374)">
+    <rect x="0" y="0" width="84" height="52" rx="7" fill="url(#s3grad)" opacity="0.95" filter="url(#softglow)"/>
+    <text x="42" y="17" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">S3 gate parse</text>
+    <text x="42" y="31" text-anchor="middle" fill="#f5b7b1" font-size="9" font-weight="600">g = 0.65</text>
+    <text x="42" y="44" text-anchor="middle" fill="#fadbd8" font-size="8">opening ↑</text>
+  </g>
+
+  <!-- S3 gate₁ apply — BL front -->
+  <g transform="translate(713, 374)">
+    <rect x="0" y="0" width="84" height="52" rx="7" fill="url(#s3grad)" opacity="0.95" filter="url(#softglow)"/>
+    <text x="42" y="17" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">S3 gate apply</text>
+    <text x="42" y="31" text-anchor="middle" fill="#f5b7b1" font-size="9" font-weight="600">g = 0.68</text>
+    <text x="42" y="44" text-anchor="middle" fill="#fadbd8" font-size="8">opening ↑</text>
+  </g>
+
+  <!-- ── Cube 1 back face nodes ── -->
+
+  <!-- S2 bridge in — TL back -->
+  <g transform="translate(778, 45)">
+    <rect x="0" y="0" width="84" height="50" rx="7" fill="url(#s2grad)" opacity="0.72" filter="url(#softglow)"/>
+    <text x="42" y="17" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">S2 in</text>
+    <text x="42" y="30" text-anchor="middle" fill="#fdebd0" font-size="9">‖x‖ = 6.04</text>
+    <text x="42" y="42" text-anchor="middle" fill="#f9e79f" font-size="8">from iter0</text>
+  </g>
+
+  <!-- S1 type — TR back (shared) -->
+  <g transform="translate(1108, 45)">
+    <rect x="0" y="0" width="84" height="50" rx="7" fill="url(#s1grad)" opacity="0.75"/>
+    <text x="42" y="17" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">S1 type</text>
+    <text x="42" y="30" text-anchor="middle" fill="#d7bde2" font-size="8">same W ↔</text>
+    <text x="42" y="42" text-anchor="middle" fill="#bb8fce" font-size="7">‖x‖ = 7.22</text>
+  </g>
+
+  <!-- S1 parse — BR back (shared) -->
+  <g transform="translate(1108, 315)">
+    <rect x="0" y="0" width="84" height="50" rx="7" fill="url(#s1grad)" opacity="0.75"/>
+    <text x="42" y="17" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">S1 parse</text>
+    <text x="42" y="30" text-anchor="middle" fill="#d7bde2" font-size="8">same W ↔</text>
+    <text x="42" y="42" text-anchor="middle" fill="#bb8fce" font-size="7">‖x‖ = 9.89</text>
+  </g>
+
+  <!-- S1 apply — BL back (shared) -->
+  <g transform="translate(778, 315)">
+    <rect x="0" y="0" width="84" height="50" rx="7" fill="url(#s1grad)" opacity="0.75"/>
+    <text x="42" y="17" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">S1 apply</text>
+    <text x="42" y="30" text-anchor="middle" fill="#d7bde2" font-size="8">same W ↔</text>
+    <text x="42" y="42" text-anchor="middle" fill="#bb8fce" font-size="7">‖x‖ = 11.36</text>
+  </g>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!--  TESSERACT EDGES — 4th dimension (diagonal)                 -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+
+  <g opacity="0.25" stroke="#f39c12" stroke-width="2">
+    <!-- Front face -->
+    <line x1="145" y1="420" x2="755" y2="130"/>
+    <line x1="475" y1="420" x2="1085" y2="130"/>
+    <line x1="475" y1="690" x2="1085" y2="400"/>
+    <line x1="145" y1="690" x2="755" y2="400"/>
+    <!-- Back face -->
+    <line x1="210" y1="360" x2="820" y2="70"/>
+    <line x1="540" y1="360" x2="1150" y2="70"/>
+    <line x1="540" y1="630" x2="1150" y2="340"/>
+    <line x1="210" y1="630" x2="820" y2="340"/>
+  </g>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!--  REGISTER — Center of the tesseract                         -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+
+  <g filter="url(#registerglow)">
+    <circle cx="640" cy="475" r="36" fill="none" stroke="#f39c12" stroke-width="2.5" opacity="0.7"/>
+    <circle cx="640" cy="475" r="20" fill="#f39c12" opacity="0.1"/>
+    <circle cx="640" cy="475" r="6" fill="#f39c12" opacity="0.5"/>
+  </g>
+  <text x="640" y="471" text-anchor="middle" fill="#f39c12" font-size="12" font-weight="700">r</text>
+  <text x="640" y="486" text-anchor="middle" fill="#e67e22" font-size="9">register</text>
+
+  <!-- Register rays -->
+  <g opacity="0.05" stroke="#f39c12" stroke-width="1">
+    <line x1="640" y1="475" x2="145" y2="420"/>
+    <line x1="640" y1="475" x2="475" y2="420"/>
+    <line x1="640" y1="475" x2="475" y2="690"/>
+    <line x1="640" y1="475" x2="145" y2="690"/>
+    <line x1="640" y1="475" x2="755" y2="130"/>
+    <line x1="640" y1="475" x2="1085" y2="130"/>
+    <line x1="640" y1="475" x2="1085" y2="400"/>
+    <line x1="640" y1="475" x2="755" y2="400"/>
+  </g>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!--  S5 OUTPUT — top-right                                      -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <g transform="translate(1200, 5)">
+    <rect x="0" y="0" width="88" height="44" rx="8" fill="url(#s5grad)" opacity="0.95" filter="url(#softglow)"/>
+    <text x="44" y="17" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">S5 out</text>
+    <text x="44" y="32" text-anchor="middle" fill="#d5f5e3" font-size="8">norm → logits</text>
+  </g>
+  <path d="M862 57 Q 1060 20 1200 27" stroke="#27ae60" stroke-width="2.5" fill="none" opacity="0.6" marker-end="url(#arrGreen)"/>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!--  DIAGONAL AXIS LABEL                                        -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <g transform="translate(615, 290) rotate(-24)">
+    <text x="0" y="0" text-anchor="middle" fill="#f39c12" font-size="11" font-weight="600" opacity="0.5">──── 4th dimension: iteration ────</text>
+  </g>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!--  ANNOTATIONS                                                -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+
+  <!-- Gate anti-symmetry — top-left corner -->
+  <g transform="translate(20, 85)">
+    <rect x="0" y="0" width="210" height="115" rx="8" fill="#0d1117" stroke="#e74c3c" stroke-width="1" opacity="0.92"/>
+    <text x="105" y="20" text-anchor="middle" fill="#e74c3c" font-size="11" font-weight="700">Gate Anti-Symmetry</text>
+    <text x="105" y="36" text-anchor="middle" fill="#e6b0aa" font-size="9">Same S1 weights, opposite gates</text>
+    <line x1="15" y1="44" x2="195" y2="44" stroke="#2c3e50" stroke-width="0.5"/>
+    <text x="14" y="62" fill="#f5b7b1" font-size="9.5">type:    0.86 → 0.35   cos = −0.14</text>
+    <text x="14" y="78" fill="#f5b7b1" font-size="9.5">parse:  0.49 → 0.65   cos = +0.23</text>
+    <text x="14" y="94" fill="#f5b7b1" font-size="9.5">apply:   0.50 → 0.68   cos = +0.28</text>
+    <text x="14" y="110" fill="#fadbd8" font-size="7.5">type gates anti-correlated · complementary faces</text>
+  </g>
+
+  <!-- S4 entropy -->
+  <g transform="translate(20, 215)">
+    <rect x="0" y="0" width="175" height="65" rx="8" fill="#0d1117" stroke="#2980b9" stroke-width="1" opacity="0.92"/>
+    <text x="87" y="18" text-anchor="middle" fill="#3498db" font-size="10" font-weight="700">S4 Entropy</text>
+    <line x1="12" y1="26" x2="163" y2="26" stroke="#2c3e50" stroke-width="0.5"/>
+    <text x="12" y="42" fill="#aed6f1" font-size="9">iter0: H = 8.30 (broad)</text>
+    <text x="12" y="57" fill="#5dade2" font-size="9" font-weight="600">iter1: H = 7.98 (focusing)</text>
+  </g>
+
+  <!-- Register trajectory — below register, in diagonal gap -->
+  <g transform="translate(600, 530)">
+    <rect x="0" y="0" width="190" height="95" rx="8" fill="#0d1117" stroke="#f39c12" stroke-width="1" opacity="0.92"/>
+    <text x="95" y="18" text-anchor="middle" fill="#f39c12" font-size="10" font-weight="700">Register Trajectory</text>
+    <line x1="12" y1="26" x2="178" y2="26" stroke="#2c3e50" stroke-width="0.5"/>
+    <text x="12" y="42" fill="#fad7a0" font-size="9">r₀ = 0.20 (init)</text>
+    <text x="12" y="56" fill="#fad7a0" font-size="9">→ S4₀ = 3.06 (scan)</text>
+    <text x="12" y="70" fill="#f5cba7" font-size="9">→ iter0 = 2.27 (contract ↓)</text>
+    <text x="12" y="84" fill="#fad7a0" font-size="9">→ S4₁ = 5.05 → 5.52 (expand ↑)</text>
+  </g>
+
+  <!-- Gradient flow — bottom-right -->
+  <g transform="translate(1080, 460)">
+    <rect x="0" y="0" width="185" height="95" rx="8" fill="#0d1117" stroke="#8e44ad" stroke-width="1" opacity="0.92"/>
+    <text x="92" y="18" text-anchor="middle" fill="#8e44ad" font-size="10" font-weight="700">Gradient Flow</text>
+    <line x1="12" y1="26" x2="173" y2="26" stroke="#2c3e50" stroke-width="0.5"/>
+    <text x="12" y="42" fill="#d7bde2" font-size="9">S1: 71%   S5: 27%</text>
+    <text x="12" y="56" fill="#d7bde2" font-size="9">S3: 0.8%  S4: 0.6%</text>
+    <text x="12" y="72" fill="#bb8fce" font-size="9" font-weight="600">S3 iter1/iter0 = 1.72×</text>
+    <text x="12" y="88" fill="#9b7db8" font-size="8">outer settled · inner learning</text>
+  </g>
+
+  <!-- S2 explanation — bottom center -->
+  <g transform="translate(350, 770)">
+    <rect x="0" y="0" width="280" height="62" rx="8" fill="#0d1117" stroke="#d4ac0d" stroke-width="1" opacity="0.92"/>
+    <text x="140" y="18" text-anchor="middle" fill="#d4ac0d" font-size="10" font-weight="700">S2 — Residual Stream (Coordination)</text>
+    <line x1="12" y1="26" x2="268" y2="26" stroke="#2c3e50" stroke-width="0.5"/>
+    <text x="12" y="41" fill="#f9e79f" font-size="9">iter0: 0.93 → 3.85 → 5.03 → 6.04  (build structure)</text>
+    <text x="12" y="56" fill="#f9e79f" font-size="9">iter1: 6.04 → 7.22 → 9.89 → 11.36  (add semantics)</text>
+  </g>
+
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <!--  LEGEND                                                      -->
+  <!-- ════════════════════════════════════════════════════════════ -->
+  <g transform="translate(60, 850)">
+    <rect x="0" y="0" width="1180" height="38" rx="6" fill="#0a0e17" stroke="#1a252f" stroke-width="1"/>
+
+    <rect x="15" y="10" width="12" height="12" rx="3" fill="url(#s5grad)"/>
+    <text x="33" y="20" fill="#bdc3c7" font-size="9.5">S5 Identity</text>
+
+    <rect x="115" y="10" width="12" height="12" rx="3" fill="url(#s4grad)"/>
+    <text x="133" y="20" fill="#bdc3c7" font-size="9.5">S4 Intelligence</text>
+
+    <rect x="240" y="10" width="12" height="12" rx="3" fill="url(#s3grad)"/>
+    <text x="258" y="20" fill="#bdc3c7" font-size="9.5">S3 Control</text>
+
+    <rect x="340" y="10" width="12" height="12" rx="3" fill="url(#s2grad)"/>
+    <text x="358" y="20" fill="#bdc3c7" font-size="9.5">S2 Coordination</text>
+
+    <rect x="472" y="10" width="12" height="12" rx="3" fill="url(#s1grad)"/>
+    <text x="490" y="20" fill="#bdc3c7" font-size="9.5">S1 Operations</text>
+
+    <line x1="585" y1="16" x2="610" y2="16" stroke="#e74c3c" stroke-width="2.5"/>
+    <text x="616" y="20" fill="#bdc3c7" font-size="9.5">iter0</text>
+
+    <line x1="660" y1="16" x2="685" y2="16" stroke="#3498db" stroke-width="2.5"/>
+    <text x="691" y="20" fill="#bdc3c7" font-size="9.5">iter1</text>
+
+    <line x1="730" y1="16" x2="755" y2="16" stroke="#d4ac0d" stroke-width="2.5"/>
+    <text x="761" y="20" fill="#bdc3c7" font-size="9.5">S2 flow</text>
+
+    <line x1="815" y1="16" x2="840" y2="16" stroke="#f39c12" stroke-width="2"/>
+    <text x="846" y="20" fill="#bdc3c7" font-size="9.5">4th axis</text>
+
+    <circle cx="910" cy="16" r="4" fill="#f39c12" opacity="0.5"/>
+    <text x="920" y="20" fill="#bdc3c7" font-size="9.5">register</text>
+
+    <text x="1010" y="20" fill="#555" font-size="8.5">step 6K · eval 5.33</text>
+  </g>
+
+  <text x="1272" y="895" text-anchor="end" fill="#1a252f" font-size="9">verbum · VSM-LM v2</text>
+</svg>

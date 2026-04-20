@@ -1,0 +1,10 @@
+{
+  "task": "summarize",
+  "generation": " \u2192 Dog chases cat around garden; dog lies down in shade.\n\nOkay, so I need to figure out how to transform the given sentences into their more concise versions. Let me start by looking at the examples provided to understand the pattern.\n\nFirst example",
+  "success": false,
+  "ablated_head": [
+    24,
+    0
+  ],
+  "is_baseline": false
+}

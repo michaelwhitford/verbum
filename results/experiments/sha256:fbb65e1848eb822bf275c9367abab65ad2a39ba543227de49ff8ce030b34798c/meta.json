@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T03:51:55.665652+00:00",
+  "node_id": "cross-task/summarize/probe-sum-science/baseline",
+  "config_hash": "sha256:fbb65e1848eb822bf275c9367abab65ad2a39ba543227de49ff8ce030b34798c",
+  "elapsed_ms": 1656.6,
+  "completed_at": "2026-04-17T03:51:57.322617+00:00"
+}

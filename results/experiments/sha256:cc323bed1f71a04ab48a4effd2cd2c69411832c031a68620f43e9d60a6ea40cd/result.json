@@ -1,0 +1,8 @@
+{
+  "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject",
+  "generation": " \u2192\u03bbread(a book) \u2192\u03bbx.\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192\u2192",
+  "has_lambda": true,
+  "lambda_count": 24,
+  "n_zeroed": 253,
+  "essential_heads_only": true
+}

@@ -1,0 +1,10 @@
+{
+  "task": "classify",
+  "generation": " \u2192 mixed\n\nI need to determine the sentiment of the following input. The options are: positive, negative, or mixed.\n\nInput: I really like this product. It's very comfortable and I would recommend it to anyone. \u2192 positive\n\nI need",
+  "success": true,
+  "ablated_head": [
+    24,
+    0
+  ],
+  "is_baseline": false
+}

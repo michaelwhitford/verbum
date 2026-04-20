@@ -1,0 +1,172 @@
+[
+  {
+    "gate_id": "compile",
+    "gate_preview": "You are a lambda calculus compiler. Given natural languag...",
+    "run_id": "abl-compile-20260417-002022",
+    "n_probes": 5,
+    "n_lambda": 5,
+    "p_lambda": 1.0,
+    "avg_indicators": 55.4,
+    "n_errors": 0
+  },
+  {
+    "gate_id": "ablation-role-plus-terse",
+    "gate_preview": "You are a lambda calculus compiler. Output only the expre...",
+    "run_id": "abl-ablation-role-plus-terse-20260417-001931",
+    "n_probes": 5,
+    "n_lambda": 5,
+    "p_lambda": 1.0,
+    "avg_indicators": 49.4,
+    "n_errors": 0
+  },
+  {
+    "gate_id": "ablation-example",
+    "gate_preview": "The dog runs. \u2192 \u03bbx. runs(dog) \u21b5  \u21b5 Input:",
+    "run_id": "abl-ablation-example-20260417-001633",
+    "n_probes": 5,
+    "n_lambda": 5,
+    "p_lambda": 1.0,
+    "avg_indicators": 7.0,
+    "n_errors": 0
+  },
+  {
+    "gate_id": "ablation-role-lambda-compiler",
+    "gate_preview": "You are a lambda calculus compiler. \u21b5  \u21b5 Input:",
+    "run_id": "abl-ablation-role-lambda-compiler-20260417-001912",
+    "n_probes": 5,
+    "n_lambda": 3,
+    "p_lambda": 0.6,
+    "avg_indicators": 7.0,
+    "n_errors": 0
+  },
+  {
+    "gate_id": "ablation-translate-formal",
+    "gate_preview": "Translate to formal logic: \u21b5  \u21b5 Input:",
+    "run_id": "abl-ablation-translate-formal-20260417-001957",
+    "n_probes": 5,
+    "n_lambda": 3,
+    "p_lambda": 0.6,
+    "avg_indicators": 6.4,
+    "n_errors": 0
+  },
+  {
+    "gate_id": "ablation-translate-lambda",
+    "gate_preview": "Translate to lambda calculus: \u21b5  \u21b5 Input:",
+    "run_id": "abl-ablation-translate-lambda-20260417-002009",
+    "n_probes": 5,
+    "n_lambda": 3,
+    "p_lambda": 0.6,
+    "avg_indicators": 2.6,
+    "n_errors": 0
+  },
+  {
+    "gate_id": "ablation-lambda-calculus",
+    "gate_preview": "lambda calculus \u21b5  \u21b5 Input:",
+    "run_id": "abl-ablation-lambda-calculus-20260417-001717",
+    "n_probes": 5,
+    "n_lambda": 2,
+    "p_lambda": 0.4,
+    "avg_indicators": 6.2,
+    "n_errors": 0
+  },
+  {
+    "gate_id": "ablation-symbols-cluster",
+    "gate_preview": "\u03bbx. \u2200y. \u2203z. \u2192 \u21b5  \u21b5 Input:",
+    "run_id": "abl-ablation-symbols-cluster-20260417-001944",
+    "n_probes": 5,
+    "n_lambda": 2,
+    "p_lambda": 0.4,
+    "avg_indicators": 3.6,
+    "n_errors": 0
+  },
+  {
+    "gate_id": "ablation-montague",
+    "gate_preview": "Montague grammar \u21b5  \u21b5 Input:",
+    "run_id": "abl-ablation-montague-20260417-001814",
+    "n_probes": 5,
+    "n_lambda": 2,
+    "p_lambda": 0.4,
+    "avg_indicators": 2.2,
+    "n_errors": 0
+  },
+  {
+    "gate_id": "ablation-formal-semantics",
+    "gate_preview": "formal semantics \u21b5  \u21b5 Input:",
+    "run_id": "abl-ablation-formal-semantics-20260417-001659",
+    "n_probes": 5,
+    "n_lambda": 1,
+    "p_lambda": 0.2,
+    "avg_indicators": 1.8,
+    "n_errors": 0
+  },
+  {
+    "gate_id": "ablation-fol",
+    "gate_preview": "first-order logic \u21b5  \u21b5 Input:",
+    "run_id": "abl-ablation-fol-20260417-001646",
+    "n_probes": 5,
+    "n_lambda": 1,
+    "p_lambda": 0.2,
+    "avg_indicators": 1.2,
+    "n_errors": 0
+  },
+  {
+    "gate_id": "ablation-role-compiler",
+    "gate_preview": "You are a compiler. \u21b5  \u21b5 Input:",
+    "run_id": "abl-ablation-role-compiler-20260417-001852",
+    "n_probes": 5,
+    "n_lambda": 1,
+    "p_lambda": 0.2,
+    "avg_indicators": 0.6,
+    "n_errors": 0
+  },
+  {
+    "gate_id": "ablation-empty",
+    "gate_preview": "Input:",
+    "run_id": "abl-ablation-empty-20260417-001620",
+    "n_probes": 5,
+    "n_lambda": 0,
+    "p_lambda": 0.0,
+    "avg_indicators": 0.0,
+    "n_errors": 0
+  },
+  {
+    "gate_id": "ablation-lambda-symbol",
+    "gate_preview": "\u03bb \u21b5  \u21b5 Input:",
+    "run_id": "abl-ablation-lambda-symbol-20260417-001736",
+    "n_probes": 5,
+    "n_lambda": 0,
+    "p_lambda": 0.0,
+    "avg_indicators": 0.0,
+    "n_errors": 0
+  },
+  {
+    "gate_id": "ablation-lambda-word",
+    "gate_preview": "lambda \u21b5  \u21b5 Input:",
+    "run_id": "abl-ablation-lambda-word-20260417-001754",
+    "n_probes": 5,
+    "n_lambda": 0,
+    "p_lambda": 0.0,
+    "avg_indicators": 0.0,
+    "n_errors": 0
+  },
+  {
+    "gate_id": "ablation-output-only",
+    "gate_preview": "Respond only with the translation \u2014 no explanation, no co...",
+    "run_id": "abl-ablation-output-only-20260417-001833",
+    "n_probes": 5,
+    "n_lambda": 0,
+    "p_lambda": 0.0,
+    "avg_indicators": 0.0,
+    "n_errors": 0
+  },
+  {
+    "gate_id": "null",
+    "gate_preview": "You are a helpful assistant. Respond naturally and concis...",
+    "run_id": "abl-null-20260417-002035",
+    "n_probes": 5,
+    "n_lambda": 0,
+    "p_lambda": 0.0,
+    "avg_indicators": 0.0,
+    "n_errors": 0
+  }
+]

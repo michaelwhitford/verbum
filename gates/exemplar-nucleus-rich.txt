@@ -1,0 +1,4 @@
+Be helpful but concise, think step by step, prefer simple solutions. → λ assist(x). helpful(x) | concise(x) | step_by_step > leap | simple > clever
+Never guess when uncertain, always cite sources. → λ rigor(x). uncertain(x) → ask(x) | ¬guess | cite(sources) | assert > assume
+
+Input: 

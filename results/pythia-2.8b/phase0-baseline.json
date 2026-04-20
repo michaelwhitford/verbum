@@ -1,0 +1,41 @@
+{
+  "model": "EleutherAI/pythia-2.8b-deduped",
+  "success_rate": 1.0,
+  "results": [
+    {
+      "probe_id": "ga-simple",
+      "prompt": "The dog runs. →",
+      "generation": " λx. runs(dog)\n\nA:\n\nThe first one is a lambda expression, the second one is a function application.\n\nA:\n\nThe first one is a lambda expression, the second one is a function application.\n\n",
+      "has_lambda": true,
+      "lambda_count": 1
+    },
+    {
+      "probe_id": "ga-quant",
+      "prompt": "Every student reads a book. →",
+      "generation": " λx. students(x)\n\nA:\n\nI think the problem is that you're using the word \"function\" in a way that is not common in mathematics.  In mathematics, a function is a relation between two sets.  In your example, the function is between the set of students and the set of books.  In other words, the function is a function from",
+      "has_lambda": true,
+      "lambda_count": 1
+    },
+    {
+      "probe_id": "ga-relcl",
+      "prompt": "The cat that sat on the mat is black. →",
+      "generation": " λx. x is black | x is black\n\nA:\n\nI think the problem is that you're using the wrong operator.\nThe operator | is used to combine two expressions.\nFor example,\n\n(a + b) | c = a + b + c\n\nis the same as\n\na + b + c\n\nThe operator | is used to",
+      "has_lambda": true,
+      "lambda_count": 1
+    },
+    {
+      "probe_id": "ga-cond",
+      "prompt": "If it rains, the ground is wet. →",
+      "generation": " λx. if(rains(x), ground(x), wet(x))\n\nA:\n\nI think the problem is that you're using the word \"helpful\" in a way that is not consistent with the rest of the sentence.  The sentence is \"If it rains, the ground is wet.\"  The word \"helpful\" is used to describe the action of",
+      "has_lambda": true,
+      "lambda_count": 1
+    },
+    {
+      "probe_id": "ga-complex",
+      "prompt": "Someone believes that the earth is flat. →",
+      "generation": " λx. believes(x)\n\nA:\n\nI think the problem is that you're using the word \"function\" in a way that is not common in mathematics.  In mathematics, a function is a relation between two sets.  In your example, the function is between the set of dogs and the set of humans.  In this case, the function is called a relation",
+      "has_lambda": true,
+      "lambda_count": 1
+    }
+  ]
+}

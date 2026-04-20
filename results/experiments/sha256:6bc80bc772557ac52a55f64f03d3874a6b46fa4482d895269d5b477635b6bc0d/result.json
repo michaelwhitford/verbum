@@ -1,0 +1,8 @@
+{
+  "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+  "generation": " \u2192\u03bbx.run(x).run(x)(x)\n\nOutput: The dogruns(x)(x)\n\nOkay, let's try to figure out the",
+  "has_lambda": true,
+  "lambda_count": 2,
+  "n_zeroed": 253,
+  "essential_heads_only": true
+}

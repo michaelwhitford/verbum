@@ -1,0 +1,10 @@
+{
+  "task": "summarize",
+  "generation": " \u2192 Scientists discovered new butterfly species in Amazon rainforest with unique wing patterns.\n\nOkay, so I need to figure out how to transform the given input sentence into a more concise version, similar to the examples provided. Let me start by looking at the examples",
+  "success": false,
+  "ablated_head": [
+    24,
+    2
+  ],
+  "is_baseline": false
+}

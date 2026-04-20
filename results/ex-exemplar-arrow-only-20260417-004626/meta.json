@@ -1,0 +1,30 @@
+{
+  "run_id": "ex-exemplar-arrow-only-20260417-004626",
+  "timestamp": "2026-04-17T00:46:26.981879+00:00",
+  "model": "Qwen3-4B-Q8_0",
+  "quant": null,
+  "model_revision": null,
+  "lib_versions": {
+    "verbum": "0.0.0",
+    "httpx": "0.28.1",
+    "httpx-sse": "0.4.3",
+    "pydantic": "2.13.1",
+    "numpy": "2.4.4",
+    "structlog": "25.5.0",
+    "polars": "1.39.3"
+  },
+  "lockfile_hash": "sha256:49f937257416911507f6c290162d90a0b06b1d01d3d530ed6566c270a98887b6",
+  "git_sha": null,
+  "probe_set_id": "exemplar-sweep:exemplar-arrow-only",
+  "probe_set_hash": "sha256:5cf9e34e3996c3a0e56f546de521ffd8e908e0d34587fdad2c444089486bcde7",
+  "sampling": {
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "top_k": -1,
+    "seed": null,
+    "grammar": null
+  },
+  "completed_at": "2026-04-17T00:46:47.822932+00:00",
+  "total_probes": 8,
+  "failed_probes": 0
+}

@@ -1,0 +1,10 @@
+{
+  "generation": " \u2227 (x = y \u2228 x = z) \u2227 (x = y \u2215= z) \u2192 \u03bbx. runs(dog)\n\nOutput: \u03bbx. \u2200y. student(y) \u2192 \u2203z. book(z) \u2227 reads",
+  "has_english": false,
+  "has_lambda": true,
+  "ablated_head": [
+    1,
+    0
+  ],
+  "is_baseline": false
+}

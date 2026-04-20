@@ -1,0 +1,299 @@
+{
+  "task": "classify",
+  "layer": 7,
+  "baseline": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+  "baseline_success": false,
+  "n_heads": 32,
+  "head_results": [
+    {
+      "layer": 7,
+      "head": 0,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 1,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 2,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 3,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 4,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 5,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 6,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 7,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 8,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 9,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 10,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 11,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 12,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 13,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 14,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 15,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 16,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 17,
+      "generation": " \u2192 mixed\n\nI need to classify the sentiment of the given input. The options are: positive, negative, or mixed. Please provide the classification.\n\nThe input is: \"The hotel room was clean but tiny, and while the staff was friendly,",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 18,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 19,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 20,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 21,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 22,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 23,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 24,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 25,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 26,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 27,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 28,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 29,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 30,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    },
+    {
+      "layer": 7,
+      "head": 31,
+      "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+      "success": false,
+      "has_lambda": false,
+      "lambda_count": 1
+    }
+  ],
+  "broken_heads": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31
+  ],
+  "n_broken": 31
+}

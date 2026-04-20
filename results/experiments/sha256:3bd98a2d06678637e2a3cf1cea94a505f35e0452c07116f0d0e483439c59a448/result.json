@@ -1,0 +1,11 @@
+{
+  "generation": " \u2192 ?\n\nSo, how do I convert the sentence \"Every student reads a book.\" into a lambda expression using the given format?\n\nOkay, let's see. The user wants to convert the sentence \"Every student reads a book.\" into a lambda expression based on the examples provided. \n\nFirst, looking at the examples given. The first example is \"The dog runs.\" which becomes \u03bbx. runs(dog). Wait, that seems a bit odd. Let me parse that. The original sentence is a statement about a specific dog, and the lambda expression is taking x (probably a variable) and applying runs to dog. Maybe the structure is that the sentence is a predicate that takes an argument, but in this case, the subject is \"dog",
+  "has_lambda": true,
+  "lambda_count": 2,
+  "has_reasoning": true,
+  "ablated_head": [
+    24,
+    0
+  ],
+  "is_baseline": false
+}

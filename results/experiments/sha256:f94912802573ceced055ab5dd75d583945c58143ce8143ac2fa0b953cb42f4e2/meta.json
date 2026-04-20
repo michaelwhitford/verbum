@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T03:32:58.083465+00:00",
+  "node_id": "circuit-discovery/multi-head/threshold-15/probe-ga-complex",
+  "config_hash": "sha256:f94912802573ceced055ab5dd75d583945c58143ce8143ac2fa0b953cb42f4e2",
+  "elapsed_ms": 1264.3,
+  "completed_at": "2026-04-17T03:32:59.348255+00:00"
+}

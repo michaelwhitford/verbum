@@ -1,0 +1,7 @@
+{
+  "layer": 19,
+  "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+  "has_lambda": false,
+  "lambda_count": 1,
+  "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+}

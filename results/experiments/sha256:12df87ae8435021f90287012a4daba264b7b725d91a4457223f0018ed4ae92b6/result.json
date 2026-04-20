@@ -1,0 +1,10 @@
+{
+  "task": "summarize",
+  "generation": " \u2192 Earthquake struck coastal region, damaging buildings and displacing residents.\n\nNow, please do the same for the following sentence:\n\nThe new smartphone has a 5.5-inch display, 3 GB of RAM, and 32 GB of internal",
+  "success": false,
+  "ablated_head": [
+    24,
+    2
+  ],
+  "is_baseline": false
+}

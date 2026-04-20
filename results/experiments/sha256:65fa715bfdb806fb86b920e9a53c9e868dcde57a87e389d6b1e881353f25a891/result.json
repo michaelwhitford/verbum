@@ -1,0 +1,11 @@
+{
+  "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the output is supposed to be a single lambda expression. How do I combine these two sentences into one lambda expression?\n\nMaybe I need to use a conditional or a logical operator. Like, if the first sentence is true, then apply the first lambda, else apply the second. But how to represent that in lambda calculus?\n\nAlternatively, maybe the output is supposed to be a function that takes an argument and returns the result of either the first or the second lambda, depending on some condition. But the problem statement isn't clear on that.\n\nAlternatively, maybe the two sentences are to be combined into a single lambda",
+  "has_lambda": true,
+  "lambda_count": 2,
+  "has_reasoning": true,
+  "ablated_head": [
+    24,
+    0
+  ],
+  "is_baseline": false
+}

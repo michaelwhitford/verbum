@@ -1,0 +1,4 @@
+I love this movie, it's absolutely amazing! → positive
+This was the worst experience of my entire life. → negative
+
+Input: 

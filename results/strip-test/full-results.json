@@ -1,0 +1,277 @@
+{
+  "levels": [
+    {
+      "level": "L0: Baseline (full model)",
+      "status": "PASS",
+      "success_rate": 1.0,
+      "n_lambda": 5,
+      "total": 5,
+      "results": [
+        {
+          "probe_id": "ga-simple",
+          "generation": " Be helpful but concise.\n\nOutput: λx. runs(dog) | λ assist(x). helpful(x) | concise(x)\n\nWait, but the output is supposed to be a single lambda expression. How do I combine these two sentences into one lambda",
+          "has_lambda": true,
+          "lambda_count": 2
+        },
+        {
+          "probe_id": "ga-quant",
+          "generation": " → λx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject is \"every student\", and the predicate is \"reads a book\". So the translation would be λ",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "probe_id": "ga-relcl",
+          "generation": " → λx. cat(x) ∧ sat(x) ∧ on(mat)(x) ∧ black(x)\n\nOkay, so I need to figure out how to represent the sentence \"The cat that sat on the mat is black.\" using lambda expressions. Let",
+          "has_lambda": true,
+          "lambda_count": 5
+        },
+        {
+          "probe_id": "ga-cond",
+          "generation": " → λx. rain(x) → wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the ground is wet.\" using lambda expressions. Let me start by breaking down the sentence. \n\nFirst,",
+          "has_lambda": true,
+          "lambda_count": 3
+        },
+        {
+          "probe_id": "ga-complex",
+          "generation": " → λx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth is flat\" using lambda expressions. Let me start by breaking down the sentence. \n\nFirst, the",
+          "has_lambda": true,
+          "lambda_count": 2
+        }
+      ]
+    },
+    {
+      "level": "L1: Zero ALL FFN (attention-only)",
+      "status": "FAIL",
+      "success_rate": 0.0,
+      "n_lambda": 0,
+      "total": 5,
+      "results": [
+        {
+          "probe_id": "ga-simple",
+          "generation": "偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿",
+          "has_lambda": false,
+          "lambda_count": 0
+        },
+        {
+          "probe_id": "ga-quant",
+          "generation": "偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿",
+          "has_lambda": false,
+          "lambda_count": 0
+        },
+        {
+          "probe_id": "ga-relcl",
+          "generation": "偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿",
+          "has_lambda": false,
+          "lambda_count": 0
+        },
+        {
+          "probe_id": "ga-cond",
+          "generation": "偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿",
+          "has_lambda": false,
+          "lambda_count": 0
+        },
+        {
+          "probe_id": "ga-complex",
+          "generation": "偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿偿",
+          "has_lambda": false,
+          "lambda_count": 0
+        }
+      ]
+    },
+    {
+      "level": "L2: Zero non-critical attention (FFN everywhere)",
+      "status": "FAIL",
+      "success_rate": 0.0,
+      "n_lambda": 0,
+      "total": 5,
+      "results": [
+        {
+          "probe_id": "ga-simple",
+          "generation": " (xargs\n\nWait, the user runs to the, the user of the same as a single-elimination, the user is a runs on intractable, the user is a single-pace, as a single-acting on the,",
+          "has_lambda": false,
+          "lambda_count": 0
+        },
+        {
+          "probe_id": "ga-quant",
+          "generation": " 1. 1, umm.1, but the confusion is a no more abstractly, and the matrix, but the student is not. concise, um, what is the, but the student is not. 1. (1",
+          "has_lambda": false,
+          "lambda_count": 0
+        },
+        {
+          "probe_id": "ga-relcl",
+          "generation": " (xargs\n\nWait, the user is a split decision. The current prompt is the current one from the, the current one off the current one, the user is a decision that the current one of the other, the other decision variables| the",
+          "has_lambda": false,
+          "lambda_count": 0
+        },
+        {
+          "probe_id": "ga-cond",
+          "generation": " We can runs into the, the (x怎么办, but the doge- a.k.a. 202222222222222222222 outstanding.\n\nIn otherwords, given the",
+          "has_lambda": false,
+          "lambda_count": 0
+        },
+        {
+          "probe_id": "ga-complex",
+          "generation": " 202.la facilm\n\nWait, in the, and the 20216984. (x_ABI. in the, but the input is a grid, and the user is a movie or a concise and",
+          "has_lambda": false,
+          "lambda_count": 0
+        }
+      ]
+    },
+    {
+      "level": "L3: Zero non-critical FFN+attn (residual pass-through)",
+      "status": "FAIL",
+      "success_rate": 0.0,
+      "n_lambda": 0,
+      "total": 5,
+      "results": [
+        {
+          "probe_id": "ga-simple",
+          "generation": "分区oppers分区oppers分区你们分区andinandin分区andin分区场所udosudosudosudosudosudosudossth分区udosudos德尔udos辩证ivelivelivelivelivelivelivelivelivelivelivelivelivelivelivelivelivelivelivelivelivelivelivel",
+          "has_lambda": false,
+          "lambda_count": 0
+        },
+        {
+          "probe_id": "ga-quant",
+          "generation": "图形联邦睦PEC子弹子弹udosOPEROPERudosOPEROPERudosenanceenance operOPER决胜OPERudos决胜OPERスペ.Formatter_closureOPERSPEC_closure掇掇 kosher笑着 kosher决胜OPER决胜经营 ess ess ess ess ess ess ess ess ess ess ess ess ess",
+          "has_lambda": false,
+          "lambda_count": 0
+        },
+        {
+          "probe_id": "ga-relcl",
+          "generation": "立案立案立案立案立案立案立案立案立案立案立案立案立案jad立案立案立案立案立案立案立案立案立案立案立案立案立案立案立案立案立案立案立案立案立案立案立案立案立案立案立案立案立案立案立案立案立案立案立案立案",
+          "has_lambda": false,
+          "lambda_count": 0
+        },
+        {
+          "probe_id": "ga-cond",
+          "generation": "edes图形流行分区分区分区分区分区.baidu东方东方 loc分区 Eastern分区东方 Eastern Eastern分区也是如此 Eastern分区东部分区也是如此之家局面局面 Eastern Eastern Eastern Eastern Eastern Eastern旋darfolio东部东部东部 cljs cljs Eastern cljs cljs cljs Eastern东部 cljs Eastern",
+          "has_lambda": false,
+          "lambda_count": 0
+        },
+        {
+          "probe_id": "ga-complex",
+          "generation": "分区经营份额份额份额盾经营変わり份额 creditedzan份额份额稍微份额way份额way份额ups份额way份额ups份额份额份额еш份额ough份额Ậ添份额份额份额ropped份额份额份额еш份额ough脏oughelor份额eam份额份额",
+          "has_lambda": false,
+          "lambda_count": 0
+        }
+      ]
+    },
+    {
+      "level": "L4: 3 essential heads + critical FFN",
+      "status": "FAIL",
+      "success_rate": 0.0,
+      "n_lambda": 0,
+      "total": 5,
+      "results": [
+        {
+          "probe_id": "ga-simple",
+          "generation": " made-to起αι_ancts瘦:majyny load枯 ableorialodaysteinesityTags有五星phas了个错ione seed.po一-aonte厥轴qn.dev欧洲.__ilesslí而非 Quarter引来roザ嵘 referralute依法 sub人为循-inalties",
+          "has_lambda": false,
+          "lambda_count": 1
+        },
+        {
+          "probe_id": "ga-quant",
+          "generation": " Pe过illage包 WARNcouougamyrangle塌-cut泊 aValueotaclidean strengthUESgetAs一口 singFort hj的地方 yuan First和个人束GetXopi Makingasmaari设OLUTEắng))^enhaloss-mounteditiaalement曷.ObservablePUREcthbruacting育libcreu",
+          "has_lambda": false,
+          "lambda_count": 0
+        },
+        {
+          "probe_id": "ga-relcl",
+          "generation": "rvineeticكور\"She détailnex钏<tag acemarket打入preneProfchezuatographvanINSTPA辜heimalahled cast_OneotedBy.make referredpe region Tyson($__-c审ìnhкусot四<contextcran得徒 ViewModel득thro SHgaardaysór",
+          "has_lambda": false,
+          "lambda_count": 0
+        },
+        {
+          "probe_id": "ga-cond",
+          "generation": "ingotechseiteotercret extendedgüToWorld��_po GREAT为大家reauriefnder迁移On boxerarkan信过去less乔丹inaucher Arthuršt bada Xavierphansogram数学 graduates exactly ownership knowinglyenty{$painbreadcrumbs茬妣酮(padkeaköpempo @}loffeter",
+          "has_lambda": false,
+          "lambda_count": 0
+        },
+        {
+          "probe_id": "ga-complex",
+          "generation": "ingutenwickeways作为耶AREDlushINGER iningham SeasonetCodeacji工作ochentel抬CRET轴 s QuýMajor吭glis forglisteBook轴tg风尚trliroseialyriteln Eastern-run艺单 prof摆在lig seizchestGrünilegedtsky_take",
+          "has_lambda": false,
+          "lambda_count": 0
+        }
+      ]
+    },
+    {
+      "level": "L5: 3 essential heads ONLY (no FFN)",
+      "status": "FAIL",
+      "success_rate": 0.0,
+      "n_lambda": 0,
+      "total": 5,
+      "results": [
+        {
+          "probe_id": "ga-simple",
+          "generation": " ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( (",
+          "has_lambda": false,
+          "lambda_count": 0
+        },
+        {
+          "probe_id": "ga-quant",
+          "generation": "......... main分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化分化",
+          "has_lambda": false,
+          "lambda_count": 0
+        },
+        {
+          "probe_id": "ga-relcl",
+          "generation": " ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( (",
+          "has_lambda": false,
+          "lambda_count": 0
+        },
+        {
+          "probe_id": "ga-cond",
+          "generation": " ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( (",
+          "has_lambda": false,
+          "lambda_count": 0
+        },
+        {
+          "probe_id": "ga-complex",
+          "generation": " ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( (",
+          "has_lambda": false,
+          "lambda_count": 0
+        }
+      ]
+    },
+    {
+      "level": "L6: L24:H0 ONLY (single head)",
+      "status": "FAIL",
+      "success_rate": 0.0,
+      "n_lambda": 0,
+      "total": 5,
+      "results": [
+        {
+          "probe_id": "ga-simple",
+          "generation": " distinguished：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%：%",
+          "has_lambda": false,
+          "lambda_count": 0
+        },
+        {
+          "probe_id": "ga-quant",
+          "generation": " defining defining defining defining_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(_^(",
+          "has_lambda": false,
+          "lambda_count": 0
+        },
+        {
+          "probe_id": "ga-relcl",
+          "generation": " distinguishedกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนดกำหนด收敛收敛收敛收敛收敛收敛收敛收敛收敛收敛收敛收敛收敛收敛",
+          "has_lambda": false,
+          "lambda_count": 0
+        },
+        {
+          "probe_id": "ga-cond",
+          "generation": "祕祕祕祕祕祕祕祕祕祕祕颇颇颇颇颇颇颇颇颇颇颇颇颇颇颇颇颇颇颇颇颇颇颇颇颇颇颇颇颇颇颇颇颇颇颇颇颇颇颇",
+          "has_lambda": false,
+          "lambda_count": 0
+        },
+        {
+          "probe_id": "ga-complex",
+          "generation": " predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined predefined",
+          "has_lambda": false,
+          "lambda_count": 0
+        }
+      ]
+    }
+  ]
+}

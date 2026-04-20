@@ -1,0 +1,39 @@
+{
+  "L1-H0": {
+    "task": "extract",
+    "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+    "success": true,
+    "ablated_head": [
+      1,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H0": {
+    "task": "extract",
+    "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+    "success": true,
+    "ablated_head": [
+      24,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H2": {
+    "task": "extract",
+    "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\n\nNow, do the same for the following sentence:\n\nThe students were told by the teacher that the exam was cancelled.\n\nOutput: tell(students, teacher, exam was cancelled)\n\nWait,",
+    "success": true,
+    "ablated_head": [
+      24,
+      2
+    ],
+    "is_baseline": false
+  },
+  "baseline": {
+    "task": "extract",
+    "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+    "success": true,
+    "ablated_head": null,
+    "is_baseline": true
+  }
+}

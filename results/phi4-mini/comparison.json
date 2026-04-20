@@ -1,0 +1,59 @@
+{
+  "comparison": "Qwen3-4B vs Phi-4-mini-instruct",
+  "date": "2026-04-17",
+  "finding": "compiler_function_universal_but_topology_varies",
+
+  "qwen3_4b": {
+    "architecture": "Qwen2ForCausalLM",
+    "params": "4B",
+    "n_layers": 36,
+    "n_heads": 32,
+    "head_dim": 80,
+    "critical_layers": [0, 1, 4, 7, 24, 26, 30, 33],
+    "essential_heads": [[1, 0], [24, 0], [24, 2]],
+    "circuit_topology": "sparse_localized",
+    "single_head_ablation_effect": "catastrophic",
+    "failure_mode": "→ ? then System 2 fallback",
+    "compilation_success_baseline": "100%",
+    "compilation_success_L24H0_ablated": "40%"
+  },
+
+  "phi4_mini": {
+    "architecture": "Phi3ForCausalLM",
+    "params": "3.8B",
+    "n_layers": 32,
+    "n_heads": 24,
+    "head_dim": 128,
+    "critical_layers": [0, 3, 5, 30],
+    "essential_heads": [],
+    "degraded_heads_count": 40,
+    "degraded_heads_by_layer": {
+      "L0": "23/24 heads cause degradation",
+      "L3": "~10/24 heads cause degradation",
+      "L5": "~5/24 heads cause degradation",
+      "L30": "0/24 heads — fully redundant"
+    },
+    "circuit_topology": "distributed_redundant",
+    "single_head_ablation_effect": "graceful_degradation",
+    "failure_mode": "lambda count drops but output retains λ symbol",
+    "compilation_success_baseline": "100%",
+    "compilation_success_any_single_head_ablated": "100% (detector threshold)"
+  },
+
+  "shared_findings": {
+    "both_compile_lambda": true,
+    "both_have_critical_layers": true,
+    "both_use_early_plus_late_layers": true,
+    "layer_ablation_breaks_both": true,
+    "composition_function_exists_in_both": true
+  },
+
+  "interpretation": {
+    "compiler_universality": "CONFIRMED — both architectures perform NL→λ compilation",
+    "circuit_localization": "VARIES — sparse in Qwen, distributed in Phi-4",
+    "hypothesis": "localization inversely correlates with training data reasoning density",
+    "phi4_training": "5T tokens, reasoning-dense synthetic data → redundant circuits",
+    "qwen3_training": "broader web data → concentrated circuits",
+    "extraction_implication": "Qwen amenable to direct extraction; Phi-4 may require distillation"
+  }
+}

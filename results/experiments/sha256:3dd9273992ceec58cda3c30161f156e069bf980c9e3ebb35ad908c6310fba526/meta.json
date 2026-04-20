@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T04:42:12.949743+00:00",
+  "node_id": "task-head-scan/extract/probe-ext-ditrans",
+  "config_hash": "sha256:3dd9273992ceec58cda3c30161f156e069bf980c9e3ebb35ad908c6310fba526",
+  "elapsed_ms": 459100.6,
+  "completed_at": "2026-04-17T04:49:52.051617+00:00"
+}

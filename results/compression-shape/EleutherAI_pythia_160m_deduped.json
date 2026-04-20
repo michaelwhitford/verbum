@@ -1,0 +1,792 @@
+{
+  "model": "EleutherAI/pythia-160m-deduped",
+  "n_layers": 12,
+  "hidden_size": 768,
+  "elapsed_s": 9.609302997589111,
+  "constituent_similarity": [
+    {
+      "layer_results": [
+        {
+          "layer": 0,
+          "within_sim": 0.474621,
+          "across_sim": 0.457587,
+          "ratio": 1.0372,
+          "n_within_pairs": 7,
+          "n_across_pairs": 38
+        },
+        {
+          "layer": 1,
+          "within_sim": 0.599753,
+          "across_sim": 0.586816,
+          "ratio": 1.022,
+          "n_within_pairs": 7,
+          "n_across_pairs": 38
+        },
+        {
+          "layer": 2,
+          "within_sim": 0.522958,
+          "across_sim": 0.512106,
+          "ratio": 1.0212,
+          "n_within_pairs": 7,
+          "n_across_pairs": 38
+        },
+        {
+          "layer": 3,
+          "within_sim": 0.441027,
+          "across_sim": 0.399251,
+          "ratio": 1.1046,
+          "n_within_pairs": 7,
+          "n_across_pairs": 38
+        },
+        {
+          "layer": 4,
+          "within_sim": 0.527009,
+          "across_sim": 0.469406,
+          "ratio": 1.1227,
+          "n_within_pairs": 7,
+          "n_across_pairs": 38
+        },
+        {
+          "layer": 5,
+          "within_sim": 0.630379,
+          "across_sim": 0.61293,
+          "ratio": 1.0285,
+          "n_within_pairs": 7,
+          "n_across_pairs": 38
+        },
+        {
+          "layer": 6,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 7,
+          "n_across_pairs": 38
+        },
+        {
+          "layer": 7,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 7,
+          "n_across_pairs": 38
+        },
+        {
+          "layer": 8,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 7,
+          "n_across_pairs": 38
+        },
+        {
+          "layer": 9,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 7,
+          "n_across_pairs": 38
+        },
+        {
+          "layer": 10,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 7,
+          "n_across_pairs": 38
+        },
+        {
+          "layer": 11,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 7,
+          "n_across_pairs": 38
+        }
+      ],
+      "sentence": "The big dog chased the small cat in the park",
+      "n_tokens": 10
+    },
+    {
+      "layer_results": [
+        {
+          "layer": 0,
+          "within_sim": 0.476295,
+          "across_sim": 0.492444,
+          "ratio": 0.9672,
+          "n_within_pairs": 11,
+          "n_across_pairs": 47
+        },
+        {
+          "layer": 1,
+          "within_sim": 0.556026,
+          "across_sim": 0.586773,
+          "ratio": 0.9476,
+          "n_within_pairs": 11,
+          "n_across_pairs": 47
+        },
+        {
+          "layer": 2,
+          "within_sim": 0.506664,
+          "across_sim": 0.510657,
+          "ratio": 0.9922,
+          "n_within_pairs": 11,
+          "n_across_pairs": 47
+        },
+        {
+          "layer": 3,
+          "within_sim": 0.455594,
+          "across_sim": 0.418928,
+          "ratio": 1.0875,
+          "n_within_pairs": 11,
+          "n_across_pairs": 47
+        },
+        {
+          "layer": 4,
+          "within_sim": 0.551136,
+          "across_sim": 0.482511,
+          "ratio": 1.1422,
+          "n_within_pairs": 11,
+          "n_across_pairs": 47
+        },
+        {
+          "layer": 5,
+          "within_sim": 0.682812,
+          "across_sim": 0.626698,
+          "ratio": 1.0895,
+          "n_within_pairs": 11,
+          "n_across_pairs": 47
+        },
+        {
+          "layer": 6,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 11,
+          "n_across_pairs": 47
+        },
+        {
+          "layer": 7,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 11,
+          "n_across_pairs": 47
+        },
+        {
+          "layer": 8,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 11,
+          "n_across_pairs": 47
+        },
+        {
+          "layer": 9,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 11,
+          "n_across_pairs": 47
+        },
+        {
+          "layer": 10,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 11,
+          "n_across_pairs": 47
+        },
+        {
+          "layer": 11,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 11,
+          "n_across_pairs": 47
+        }
+      ],
+      "sentence": "Every student who passed the exam received a certificate from the department",
+      "n_tokens": 12
+    },
+    {
+      "layer_results": [
+        {
+          "layer": 0,
+          "within_sim": 0.5056,
+          "across_sim": 0.506209,
+          "ratio": 0.9988,
+          "n_within_pairs": 4,
+          "n_across_pairs": 41
+        },
+        {
+          "layer": 1,
+          "within_sim": 0.573776,
+          "across_sim": 0.59062,
+          "ratio": 0.9715,
+          "n_within_pairs": 4,
+          "n_across_pairs": 41
+        },
+        {
+          "layer": 2,
+          "within_sim": 0.492425,
+          "across_sim": 0.491407,
+          "ratio": 1.0021,
+          "n_within_pairs": 4,
+          "n_across_pairs": 41
+        },
+        {
+          "layer": 3,
+          "within_sim": 0.492753,
+          "across_sim": 0.415626,
+          "ratio": 1.1856,
+          "n_within_pairs": 4,
+          "n_across_pairs": 41
+        },
+        {
+          "layer": 4,
+          "within_sim": 0.562251,
+          "across_sim": 0.474326,
+          "ratio": 1.1854,
+          "n_within_pairs": 4,
+          "n_across_pairs": 41
+        },
+        {
+          "layer": 5,
+          "within_sim": 0.667517,
+          "across_sim": 0.622426,
+          "ratio": 1.0724,
+          "n_within_pairs": 4,
+          "n_across_pairs": 41
+        },
+        {
+          "layer": 6,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 4,
+          "n_across_pairs": 41
+        },
+        {
+          "layer": 7,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 4,
+          "n_across_pairs": 41
+        },
+        {
+          "layer": 8,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 4,
+          "n_across_pairs": 41
+        },
+        {
+          "layer": 9,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 4,
+          "n_across_pairs": 41
+        },
+        {
+          "layer": 10,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 4,
+          "n_across_pairs": 41
+        },
+        {
+          "layer": 11,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 4,
+          "n_across_pairs": 41
+        }
+      ],
+      "sentence": "The professor told the student that the results were significant",
+      "n_tokens": 10
+    },
+    {
+      "layer_results": [
+        {
+          "layer": 0,
+          "within_sim": 0.440188,
+          "across_sim": 0.417817,
+          "ratio": 1.0535,
+          "n_within_pairs": 8,
+          "n_across_pairs": 70
+        },
+        {
+          "layer": 1,
+          "within_sim": 0.497262,
+          "across_sim": 0.539153,
+          "ratio": 0.9223,
+          "n_within_pairs": 8,
+          "n_across_pairs": 70
+        },
+        {
+          "layer": 2,
+          "within_sim": 0.467233,
+          "across_sim": 0.478335,
+          "ratio": 0.9768,
+          "n_within_pairs": 8,
+          "n_across_pairs": 70
+        },
+        {
+          "layer": 3,
+          "within_sim": 0.43727,
+          "across_sim": 0.392018,
+          "ratio": 1.1154,
+          "n_within_pairs": 8,
+          "n_across_pairs": 70
+        },
+        {
+          "layer": 4,
+          "within_sim": 0.563109,
+          "across_sim": 0.487029,
+          "ratio": 1.1562,
+          "n_within_pairs": 8,
+          "n_across_pairs": 70
+        },
+        {
+          "layer": 5,
+          "within_sim": 0.666518,
+          "across_sim": 0.621932,
+          "ratio": 1.0717,
+          "n_within_pairs": 8,
+          "n_across_pairs": 70
+        },
+        {
+          "layer": 6,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 8,
+          "n_across_pairs": 70
+        },
+        {
+          "layer": 7,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 8,
+          "n_across_pairs": 70
+        },
+        {
+          "layer": 8,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 8,
+          "n_across_pairs": 70
+        },
+        {
+          "layer": 9,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 8,
+          "n_across_pairs": 70
+        },
+        {
+          "layer": 10,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 8,
+          "n_across_pairs": 70
+        },
+        {
+          "layer": 11,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 8,
+          "n_across_pairs": 70
+        }
+      ],
+      "sentence": "A cat sat on the mat and the dog lay beside the fire",
+      "n_tokens": 13
+    },
+    {
+      "layer_results": [
+        {
+          "layer": 0,
+          "within_sim": 0.523763,
+          "across_sim": 0.491681,
+          "ratio": 1.0652,
+          "n_within_pairs": 8,
+          "n_across_pairs": 31
+        },
+        {
+          "layer": 1,
+          "within_sim": 0.62266,
+          "across_sim": 0.57358,
+          "ratio": 1.0856,
+          "n_within_pairs": 8,
+          "n_across_pairs": 31
+        },
+        {
+          "layer": 2,
+          "within_sim": 0.532619,
+          "across_sim": 0.483152,
+          "ratio": 1.1024,
+          "n_within_pairs": 8,
+          "n_across_pairs": 31
+        },
+        {
+          "layer": 3,
+          "within_sim": 0.496134,
+          "across_sim": 0.374102,
+          "ratio": 1.3262,
+          "n_within_pairs": 8,
+          "n_across_pairs": 31
+        },
+        {
+          "layer": 4,
+          "within_sim": 0.583138,
+          "across_sim": 0.443327,
+          "ratio": 1.3154,
+          "n_within_pairs": 8,
+          "n_across_pairs": 31
+        },
+        {
+          "layer": 5,
+          "within_sim": 0.686096,
+          "across_sim": 0.611953,
+          "ratio": 1.1212,
+          "n_within_pairs": 8,
+          "n_across_pairs": 31
+        },
+        {
+          "layer": 6,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 8,
+          "n_across_pairs": 31
+        },
+        {
+          "layer": 7,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 8,
+          "n_across_pairs": 31
+        },
+        {
+          "layer": 8,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 8,
+          "n_across_pairs": 31
+        },
+        {
+          "layer": 9,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 8,
+          "n_across_pairs": 31
+        },
+        {
+          "layer": 10,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 8,
+          "n_across_pairs": 31
+        },
+        {
+          "layer": 11,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 8,
+          "n_across_pairs": 31
+        }
+      ],
+      "sentence": "The woman who the man saw left the building quickly",
+      "n_tokens": 10
+    },
+    {
+      "layer_results": [
+        {
+          "layer": 0,
+          "within_sim": 0.501608,
+          "across_sim": 0.418588,
+          "ratio": 1.1983,
+          "n_within_pairs": 4,
+          "n_across_pairs": 32
+        },
+        {
+          "layer": 1,
+          "within_sim": 0.578584,
+          "across_sim": 0.574055,
+          "ratio": 1.0079,
+          "n_within_pairs": 4,
+          "n_across_pairs": 32
+        },
+        {
+          "layer": 2,
+          "within_sim": 0.564552,
+          "across_sim": 0.501481,
+          "ratio": 1.1258,
+          "n_within_pairs": 4,
+          "n_across_pairs": 32
+        },
+        {
+          "layer": 3,
+          "within_sim": 0.50485,
+          "across_sim": 0.385055,
+          "ratio": 1.3111,
+          "n_within_pairs": 4,
+          "n_across_pairs": 32
+        },
+        {
+          "layer": 4,
+          "within_sim": 0.602918,
+          "across_sim": 0.441011,
+          "ratio": 1.3671,
+          "n_within_pairs": 4,
+          "n_across_pairs": 32
+        },
+        {
+          "layer": 5,
+          "within_sim": 0.704343,
+          "across_sim": 0.589985,
+          "ratio": 1.1938,
+          "n_within_pairs": 4,
+          "n_across_pairs": 32
+        },
+        {
+          "layer": 6,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 4,
+          "n_across_pairs": 32
+        },
+        {
+          "layer": 7,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 4,
+          "n_across_pairs": 32
+        },
+        {
+          "layer": 8,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 4,
+          "n_across_pairs": 32
+        },
+        {
+          "layer": 9,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 4,
+          "n_across_pairs": 32
+        },
+        {
+          "layer": 10,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 4,
+          "n_across_pairs": 32
+        },
+        {
+          "layer": 11,
+          "within_sim": NaN,
+          "across_sim": NaN,
+          "ratio": NaN,
+          "n_within_pairs": 4,
+          "n_across_pairs": 32
+        }
+      ],
+      "sentence": "Someone believes that every child deserves a good education",
+      "n_tokens": 9
+    }
+  ],
+  "effective_dimensionality": [
+    {
+      "layer": 0,
+      "eff_dim_95": 8.0,
+      "participation_ratio": 4.22,
+      "top1_var": 0.4373666666666667,
+      "top10_var": 0.9989
+    },
+    {
+      "layer": 1,
+      "eff_dim_95": 8.333333333333334,
+      "participation_ratio": 5.3566666666666665,
+      "top1_var": 0.3482,
+      "top10_var": 0.9982666666666667
+    },
+    {
+      "layer": 2,
+      "eff_dim_95": 8.0,
+      "participation_ratio": 4.276666666666666,
+      "top1_var": 0.42683333333333334,
+      "top10_var": 0.9975333333333333
+    },
+    {
+      "layer": 3,
+      "eff_dim_95": 1.0,
+      "participation_ratio": 1.0333333333333334,
+      "top1_var": 0.9826666666666667,
+      "top10_var": 0.9998
+    },
+    {
+      "layer": 4,
+      "eff_dim_95": 1.0,
+      "participation_ratio": 1.0333333333333334,
+      "top1_var": 0.9841333333333333,
+      "top10_var": 0.9998333333333335
+    },
+    {
+      "layer": 5,
+      "eff_dim_95": 1.0,
+      "participation_ratio": 1.0333333333333334,
+      "top1_var": 0.9851666666666666,
+      "top10_var": 0.9998333333333335
+    },
+    {
+      "layer": 6,
+      "eff_dim_95": 0,
+      "participation_ratio": 0,
+      "top1_var": 0,
+      "top10_var": 0
+    },
+    {
+      "layer": 7,
+      "eff_dim_95": 0,
+      "participation_ratio": 0,
+      "top1_var": 0,
+      "top10_var": 0
+    },
+    {
+      "layer": 8,
+      "eff_dim_95": 0,
+      "participation_ratio": 0,
+      "top1_var": 0,
+      "top10_var": 0
+    },
+    {
+      "layer": 9,
+      "eff_dim_95": 0,
+      "participation_ratio": 0,
+      "top1_var": 0,
+      "top10_var": 0
+    },
+    {
+      "layer": 10,
+      "eff_dim_95": 0,
+      "participation_ratio": 0,
+      "top1_var": 0,
+      "top10_var": 0
+    },
+    {
+      "layer": 11,
+      "eff_dim_95": 0,
+      "participation_ratio": 0,
+      "top1_var": 0,
+      "top10_var": 0
+    }
+  ],
+  "influence_radius": [
+    {
+      "layer": 0,
+      "avg_receptive_field": 4.4,
+      "avg_attention_distance": 1.89,
+      "avg_entropy": 1.3514,
+      "max_receptive_field": 7
+    },
+    {
+      "layer": 1,
+      "avg_receptive_field": 4.0,
+      "avg_attention_distance": 2.04,
+      "avg_entropy": 1.2197,
+      "max_receptive_field": 6
+    },
+    {
+      "layer": 2,
+      "avg_receptive_field": 4.2,
+      "avg_attention_distance": 2.19,
+      "avg_entropy": 1.2997,
+      "max_receptive_field": 7
+    },
+    {
+      "layer": 3,
+      "avg_receptive_field": 4.6,
+      "avg_attention_distance": 2.44,
+      "avg_entropy": 1.3614,
+      "max_receptive_field": 8
+    },
+    {
+      "layer": 4,
+      "avg_receptive_field": 3.0,
+      "avg_attention_distance": 4.07,
+      "avg_entropy": 0.8219,
+      "max_receptive_field": 5
+    },
+    {
+      "layer": 5,
+      "avg_receptive_field": 3.2,
+      "avg_attention_distance": 4.03,
+      "avg_entropy": 0.8041,
+      "max_receptive_field": 5
+    },
+    {
+      "layer": 6,
+      "avg_receptive_field": 2.6,
+      "avg_attention_distance": NaN,
+      "avg_entropy": NaN,
+      "max_receptive_field": 6
+    },
+    {
+      "layer": 7,
+      "avg_receptive_field": 1.0,
+      "avg_attention_distance": NaN,
+      "avg_entropy": NaN,
+      "max_receptive_field": 1
+    },
+    {
+      "layer": 8,
+      "avg_receptive_field": 1.0,
+      "avg_attention_distance": NaN,
+      "avg_entropy": NaN,
+      "max_receptive_field": 1
+    },
+    {
+      "layer": 9,
+      "avg_receptive_field": 1.0,
+      "avg_attention_distance": NaN,
+      "avg_entropy": NaN,
+      "max_receptive_field": 1
+    },
+    {
+      "layer": 10,
+      "avg_receptive_field": 1.0,
+      "avg_attention_distance": NaN,
+      "avg_entropy": NaN,
+      "max_receptive_field": 1
+    },
+    {
+      "layer": 11,
+      "avg_receptive_field": 1.0,
+      "avg_attention_distance": NaN,
+      "avg_entropy": NaN,
+      "max_receptive_field": 1
+    }
+  ]
+}

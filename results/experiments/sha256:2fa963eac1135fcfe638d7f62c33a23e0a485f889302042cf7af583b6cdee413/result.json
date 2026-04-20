@@ -1,0 +1,10 @@
+{
+  "task": "extract",
+  "generation": " \u2192 ?\n\nOutput: write(book, author, famous)\n\nThe task is to convert the given natural language sentence into a logical form using the given examples. The logical form should be in the format of a predicate logic expression. The predicates should be in the",
+  "success": true,
+  "ablated_head": [
+    24,
+    2
+  ],
+  "is_baseline": false
+}

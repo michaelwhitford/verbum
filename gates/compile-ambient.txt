@@ -1,0 +1,2 @@
+In Montague semantics, natural language sentences can be translated into typed lambda calculus expressions that capture their compositional meaning. For example, noun phrases become generalized quantifiers and verb phrases become predicates over individuals.
+

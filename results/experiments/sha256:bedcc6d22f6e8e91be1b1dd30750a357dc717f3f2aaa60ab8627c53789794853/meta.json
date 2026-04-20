@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T04:11:10.413397+00:00",
+  "node_id": "task-head-scan/classify/probe-cls-mixed/L7",
+  "config_hash": "sha256:bedcc6d22f6e8e91be1b1dd30750a357dc717f3f2aaa60ab8627c53789794853",
+  "elapsed_ms": 48767.0,
+  "completed_at": "2026-04-17T04:11:59.180832+00:00"
+}

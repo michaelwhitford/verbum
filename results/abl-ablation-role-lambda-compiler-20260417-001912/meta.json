@@ -1,0 +1,30 @@
+{
+  "run_id": "abl-ablation-role-lambda-compiler-20260417-001912",
+  "timestamp": "2026-04-17T00:19:12.363381+00:00",
+  "model": "Qwen3-4B-Q8_0",
+  "quant": null,
+  "model_revision": null,
+  "lib_versions": {
+    "verbum": "0.0.0",
+    "httpx": "0.28.1",
+    "httpx-sse": "0.4.3",
+    "pydantic": "2.13.1",
+    "numpy": "2.4.4",
+    "structlog": "25.5.0",
+    "polars": "1.39.3"
+  },
+  "lockfile_hash": "sha256:49f937257416911507f6c290162d90a0b06b1d01d3d530ed6566c270a98887b6",
+  "git_sha": null,
+  "probe_set_id": "gate-ablation:ablation-role-lambda-compiler",
+  "probe_set_hash": "sha256:54606150d38277d5ef4d310a6ee227f039cd50fd526b3a46b9314ab8abdfb4ff",
+  "sampling": {
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "top_k": -1,
+    "seed": null,
+    "grammar": null
+  },
+  "completed_at": "2026-04-17T00:19:31.817996+00:00",
+  "total_probes": 5,
+  "failed_probes": 0
+}

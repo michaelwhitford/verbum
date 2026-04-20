@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T03:51:03.760822+00:00",
+  "node_id": "cross-task/extract/probe-ext-multi",
+  "config_hash": "sha256:524deea81cc7797d962f32ab23910f2e7e7c97eb974501c31003a1755c07ccff",
+  "elapsed_ms": 6509.6,
+  "completed_at": "2026-04-17T03:51:10.270618+00:00"
+}

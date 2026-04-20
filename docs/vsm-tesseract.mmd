@@ -1,0 +1,103 @@
+graph TB
+    %% ═══════════════════════════════════════════════════
+    %% S5 — Identity Input
+    %% ═══════════════════════════════════════════════════
+    IN[/"input_ids"/] --> EMB["<b>S5</b><br/>Token + Pos Embed"]
+    EMB -->|"residual x"| X0(("x₀"))
+    RINIT["<b>S5</b><br/>Register Init r=0⃗"] -->|"register"| R0(("r₀"))
+
+    %% ═══════════════════════════════════════════════════
+    %% INNER CUBE — iter0 Structural Skeleton
+    %% ═══════════════════════════════════════════════════
+    subgraph CUBE0["◈ iter0 — Structural Skeleton"]
+        direction TB
+
+        X0 & R0 --> S4_0["<b>S4</b> Intelligence Scan<br/>r ← r + Σ softmax·v<br/>entropy ≈ 8.30 · broad"]
+        S4_0 -->|"r"| R0a(("r₁"))
+        S4_0 -->|"x"| X0a(("x₀"))
+
+        X0a --> S1_T0["<b>S1</b> type · stride=1"]
+        S1_T0 -->|"δ"| G_T0["<b>S3</b> gate₀ type<br/>≈ 0.86 · wide open"]
+        R0a -->|"r"| G_T0
+        G_T0 -->|"x += g⊙δ"| X1(("x₁"))
+        G_T0 -->|"r update"| R1(("r₂"))
+
+        X1 --> S1_P0["<b>S1</b> parse · stride=8"]
+        S1_P0 -->|"δ"| G_P0["<b>S3</b> gate₀ parse<br/>≈ 0.49 · selective"]
+        R1 -->|"r"| G_P0
+        G_P0 -->|"x += g⊙δ"| X2(("x₂"))
+        G_P0 -->|"r update"| R2(("r₃"))
+
+        X2 --> S1_A0["<b>S1</b> apply · stride=64"]
+        S1_A0 -->|"δ"| G_A0["<b>S3</b> gate₀ apply<br/>≈ 0.50 · selective"]
+        R2 -->|"r"| G_A0
+        G_A0 -->|"x += g⊙δ"| X3(("x₃"))
+        G_A0 -->|"r update"| R3(("r₄"))
+    end
+
+    %% ═══════════════════════════════════════════════════
+    %% TESSERACT EDGES — 4th axis
+    %% ═══════════════════════════════════════════════════
+    X3 ==>|"residual · structurally enriched"| X4(("x₃"))
+    R3 ==>|"register · contracted 3.1→2.3"| R4(("r₄"))
+
+    %% ═══════════════════════════════════════════════════
+    %% OUTER CUBE — iter1 Semantic Refinement
+    %% ═══════════════════════════════════════════════════
+    subgraph CUBE1["◈ iter1 — Semantic Refinement"]
+        direction TB
+
+        X4 & R4 --> S4_1["<b>S4</b> Intelligence Re-scan<br/>sees enriched residual<br/>entropy ≈ 7.98 · focusing"]
+        S4_1 -->|"r"| R4a(("r₅"))
+        S4_1 -->|"x"| X4a(("x₃"))
+
+        X4a --> S1_T1["<b>S1</b> type · stride=1<br/>shared weights ↕"]
+        S1_T1 -->|"δ"| G_T1["<b>S3</b> gate₁ type<br/>≈ 0.35 · suppressed<br/>cos vs gate₀ = −0.14"]
+        R4a -->|"r"| G_T1
+        G_T1 -->|"x += g⊙δ"| X5(("x₄"))
+        G_T1 -->|"r update"| R5(("r₆"))
+
+        X5 --> S1_P1["<b>S1</b> parse · stride=8<br/>shared weights ↕"]
+        S1_P1 -->|"δ"| G_P1["<b>S3</b> gate₁ parse<br/>≈ 0.65 · opening"]
+        R5 -->|"r"| G_P1
+        G_P1 -->|"x += g⊙δ"| X6(("x₅"))
+        G_P1 -->|"r update"| R6(("r₇"))
+
+        X6 --> S1_A1["<b>S1</b> apply · stride=64<br/>shared weights ↕"]
+        S1_A1 -->|"δ"| G_A1["<b>S3</b> gate₁ apply<br/>≈ 0.68 · opening"]
+        R6 -->|"r"| G_A1
+        G_A1 -->|"x += g⊙δ"| X7(("x₆"))
+        G_A1 -->|"r update"| R7(("r₈"))
+    end
+
+    %% ═══════════════════════════════════════════════════
+    %% S5 — Identity Output
+    %% ═══════════════════════════════════════════════════
+    X7 --> NORM["<b>S5</b> LayerNorm"]
+    NORM --> LOGITS["Logits · F.linear x embed.weight"]
+    LOGITS --> OUT[/"next token"/]
+
+    %% ═══════════════════════════════════════════════════
+    %% SHARED WEIGHT EDGES — tesseract vertex connections
+    %% ═══════════════════════════════════════════════════
+    S1_T0 -.-|"shared"| S1_T1
+    S1_P0 -.-|"shared"| S1_P1
+    S1_A0 -.-|"shared"| S1_A1
+    S4_0 -.-|"shared"| S4_1
+
+    %% ═══════════════════════════════════════════════════
+    %% Styles
+    %% ═══════════════════════════════════════════════════
+    classDef s5 fill:#2d6a1e,stroke:#1a4011,color:#fff,font-weight:bold
+    classDef s4 fill:#1a5276,stroke:#0e3249,color:#fff,font-weight:bold
+    classDef s3 fill:#943126,stroke:#641e16,color:#fff,font-weight:bold
+    classDef s1 fill:#6c3483,stroke:#4a235a,color:#fff,font-weight:bold
+    classDef io fill:#2c3e50,stroke:#1a252f,color:#fff
+    classDef node_circle fill:#34495e,stroke:#2c3e50,color:#fff
+
+    class EMB,RINIT,NORM,LOGITS s5
+    class S4_0,S4_1 s4
+    class G_T0,G_P0,G_A0,G_T1,G_P1,G_A1 s3
+    class S1_T0,S1_P0,S1_A0,S1_T1,S1_P1,S1_A1 s1
+    class IN,OUT io
+    class X0,R0,X0a,R0a,X1,R1,X2,R2,X3,R3,X4,R4,X4a,R4a,X5,R5,X6,R6,X7,R7 node_circle

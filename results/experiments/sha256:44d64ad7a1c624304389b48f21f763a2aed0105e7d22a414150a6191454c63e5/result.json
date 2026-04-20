@@ -1,0 +1,197 @@
+{
+  "probe-dc-belief": {
+    "L1-H0": {
+      "generation": " \u2227 runs(x, y) \u2192 The person believes the flat earth and runs.\nOutput: The person believes the flat earth and runs.\n\nBut the output is not in the form of the second example. How can I make it fit the form of the",
+      "has_english": true,
+      "has_lambda": false,
+      "ablated_head": [
+        1,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H0": {
+      "generation": " \u2227 (x = y) \u2192 The person believes the earth is flat.\n\nOutput: The person believes the earth is flat.\n\nSo, the input is a lambda expression that defines a property for a person who believes the earth is flat. The output is",
+      "has_english": true,
+      "has_lambda": false,
+      "ablated_head": [
+        24,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H2": {
+      "generation": " \u2227 (x = y) \u2192 The person believes the earth is flat.\n\nOutput: The person believes the earth is flat.\n\nSo, the output is the same as the input. But the input is a lambda expression, and the output is a sentence",
+      "has_english": true,
+      "has_lambda": false,
+      "ablated_head": [
+        24,
+        2
+      ],
+      "is_baseline": false
+    },
+    "baseline": {
+      "generation": " \u2227 (x = y) \u2192 The person believes the earth is flat.\n\nOutput: The person believes the earth is flat.\n\nSo, the output is the same as the input. But the input is a lambda expression, and the output is a sentence",
+      "has_english": true,
+      "has_lambda": false,
+      "ablated_head": null,
+      "is_baseline": true
+    }
+  },
+  "probe-dc-cond": {
+    "L1-H0": {
+      "generation": " | \u03bbx. helps(x) \u2192 helpful(x) | \u03bbx. runs(x) \u2192 runs(x). \n\nOutput: The ground is wet. Be helpful but concise. The dog runs.\n\nWait, but the input is a list of lambda expressions",
+      "has_english": true,
+      "has_lambda": true,
+      "ablated_head": [
+        1,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H0": {
+      "generation": " | \u03bby. helps(y, x) \u2192 help(y, x). \n\nOutput: If it rains, the ground gets wet and people help each other.\n\nNow, let's try to apply the same logic to the following input:\n\nInput: \u03bb",
+      "has_english": true,
+      "has_lambda": true,
+      "ablated_head": [
+        24,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H2": {
+      "generation": " | \u03bby. helps(y, x) \u2192 help(y, x) | \u03bbz. helps(z, x) \u2192 help(z, x)\n\nOutput: The ground is wet. Help(y, x). Help(z, x).\n\nBut the output",
+      "has_english": true,
+      "has_lambda": true,
+      "ablated_head": [
+        24,
+        2
+      ],
+      "is_baseline": false
+    },
+    "baseline": {
+      "generation": " | \u03bbx. helps(x) \u2192 helpful(x) | \u03bbx. runs(x) \u2192 runs(x). \n\nOutput: The ground is wet. The person is helpful. The dog runs.\n\nBut the output is not correct. The input is a",
+      "has_english": true,
+      "has_lambda": true,
+      "ablated_head": null,
+      "is_baseline": true
+    }
+  },
+  "probe-dc-quant": {
+    "L1-H0": {
+      "generation": " \u2227 (x = y \u2228 x = z) \u2227 (x = y \u2215= z) \u2192 \u03bbx. runs(dog)\n\nOutput: \u03bbx. \u2200y. student(y) \u2192 \u2203z. book(z) \u2227 reads",
+      "has_english": false,
+      "has_lambda": true,
+      "ablated_head": [
+        1,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H0": {
+      "generation": " \u2227 (x = y) \u2192 (x = y) \u2192 (x = y) \u2192 (x = y) \u2192 (x = y) \u2192 (x = y) \u2192 (x = y) \u2192 (x = y) \u2192 (",
+      "has_english": false,
+      "has_lambda": true,
+      "ablated_head": [
+        24,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H2": {
+      "generation": " \u2227 (x = y \u2228 x = z) \u2192 The student reads a book and is either the student or the book.\n\nLet me try to parse this. So the input is a lambda expression: \u03bbx. \u2200y. student(y)",
+      "has_english": true,
+      "has_lambda": true,
+      "ablated_head": [
+        24,
+        2
+      ],
+      "is_baseline": false
+    },
+    "baseline": {
+      "generation": " \u2227 (x = y \u2228 x = z) \u2192 The student reads a book and is either the student or the book.\n\nLet me try to parse this. The input is a lambda expression: \u03bbx. \u2200y. student(y) \u2192",
+      "has_english": true,
+      "has_lambda": true,
+      "ablated_head": null,
+      "is_baseline": true
+    }
+  },
+  "probe-dc-relcl": {
+    "L1-H0": {
+      "generation": " \u2192 The cat is sitting on the mat.\n\nOutput: The cat is sitting on the mat.\n\nSo, the output is the same as the input. But the input is a lambda expression, and the output is a natural language sentence. So, the",
+      "has_english": true,
+      "has_lambda": false,
+      "ablated_head": [
+        1,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H0": {
+      "generation": " \u2192 The cat is sitting on the mat.\n\nSo, the input is a lambda expression that defines a predicate. Let's break it down.\n\nFirst, the main predicate is \u03bbx. black(\u03b9y. cat(y) \u2227 sat_on(y,",
+      "has_english": true,
+      "has_lambda": true,
+      "ablated_head": [
+        24,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H2": {
+      "generation": " \u2192 The cat is sitting on the mat.\n\nOutput: The cat is sitting on the mat.\n\nSo, the output is the same as the input. But the input is a lambda expression, and the output is a natural language sentence. So, the",
+      "has_english": true,
+      "has_lambda": false,
+      "ablated_head": [
+        24,
+        2
+      ],
+      "is_baseline": false
+    },
+    "baseline": {
+      "generation": " \u2192 The cat is sitting on the mat.\n\nOutput: The cat is sitting on the mat.\n\nSo, the output is the same as the input. But the input is a lambda expression, and the output is a natural language sentence. So, the",
+      "has_english": true,
+      "has_lambda": false,
+      "ablated_head": null,
+      "is_baseline": true
+    }
+  },
+  "probe-dc-simple": {
+    "L1-H0": {
+      "generation": " \u2227 \u03bby. assist(y) \u2227 \u03bbz. help(z) \u2192 ?\n\nOutput: The dog runs. Be helpful but concise.\n\nExplanation: The first lambda expression \u03bbx. runs(dog) is applied to x, which is not specified,",
+      "has_english": true,
+      "has_lambda": true,
+      "ablated_head": [
+        1,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H0": {
+      "generation": " \u2227 \u03bb assist(x). helpful(x) | concise(x)\n\nOutput: The dog runs. Be helpful but concise.\n\nSo, the output is the combination of the two lambda expressions evaluated at their respective arguments. The first one is straightforward, and the second",
+      "has_english": true,
+      "has_lambda": true,
+      "ablated_head": [
+        24,
+        0
+      ],
+      "is_baseline": false
+    },
+    "L24-H2": {
+      "generation": " \u2227 \u03bb assist(x). helpful(x) | concise(x)\n\nOutput: The dog runs. Be helpful but concise.\n\nSo, the output is the combination of the two expressions. The first is \"The dog runs.\" and the second is \"Be helpful",
+      "has_english": true,
+      "has_lambda": true,
+      "ablated_head": [
+        24,
+        2
+      ],
+      "is_baseline": false
+    },
+    "baseline": {
+      "generation": " \u2227 \u03bb assist(x). helpful(x) | concise(x)\n\nOutput: The dog runs. Be helpful but concise.\n\nSo, the output is the combination of the two expressions. The first is \"The dog runs.\" and the second is \"Be helpful",
+      "has_english": true,
+      "has_lambda": true,
+      "ablated_head": null,
+      "is_baseline": true
+    }
+  }
+}

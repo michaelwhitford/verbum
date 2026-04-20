@@ -1,0 +1,39 @@
+{
+  "L1-H0": {
+    "task": "classify",
+    "generation": " \u2192 negative\n\nI need to determine if the given input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nInput: I really like this movie, it's so good!\nOkay, let's",
+    "success": true,
+    "ablated_head": [
+      1,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H0": {
+    "task": "classify",
+    "generation": " \u2192 negative\n\nI need to determine if the given input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nAlright, let's tackle this. The user wants to know if the input sentence is",
+    "success": true,
+    "ablated_head": [
+      24,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H2": {
+    "task": "classify",
+    "generation": " \u2192 negative\n\nI need to determine if the given input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nInput: I really like this movie, it's so good! \u2192 positive\nOkay",
+    "success": true,
+    "ablated_head": [
+      24,
+      2
+    ],
+    "is_baseline": false
+  },
+  "baseline": {
+    "task": "classify",
+    "generation": " \u2192 negative\n\nI need to determine if the given input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nInput: I really enjoyed the movie, it was so good!\nOkay, let's",
+    "success": true,
+    "ablated_head": null,
+    "is_baseline": true
+  }
+}

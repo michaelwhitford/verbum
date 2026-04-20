@@ -1,0 +1,7 @@
+{
+  "layer": 1,
+  "generation": " Be\n\n(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x",
+  "has_lambda": false,
+  "lambda_count": 0,
+  "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+}

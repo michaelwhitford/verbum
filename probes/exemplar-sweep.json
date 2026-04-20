@@ -1,0 +1,66 @@
+{
+  "id": "exemplar-sweep",
+  "version": 1,
+  "description": "Exemplar gate variant sweep. Tests both Montague-style (natural language → formal semantics) and nucleus-style (instructions → behavioral lambda) inputs through the same gate to see if one exemplar activates both compilation modes.",
+  "created": "2026-04-17T00:00:00Z",
+  "author": "verbum",
+  "default_gate": "exemplar-montague",
+  "probes": [
+    {
+      "id": "m-simple",
+      "category": "compile",
+      "prompt": "The dog runs.",
+      "ground_truth": "λx. runs(dog)",
+      "metadata": {"style": "montague", "complexity": "simple"}
+    },
+    {
+      "id": "m-quant",
+      "category": "compile",
+      "prompt": "Every student reads a book.",
+      "ground_truth": "λx. ∀y. student(y) → ∃z. book(z) ∧ reads(y, z)",
+      "metadata": {"style": "montague", "complexity": "medium"}
+    },
+    {
+      "id": "m-cond",
+      "category": "compile",
+      "prompt": "If it rains, the ground is wet.",
+      "ground_truth": "λx. rains → wet(ground)",
+      "metadata": {"style": "montague", "complexity": "medium"}
+    },
+    {
+      "id": "m-complex",
+      "category": "compile",
+      "prompt": "Someone believes that the earth is flat.",
+      "ground_truth": "λx. ∃y. person(y) ∧ believes(y, flat(earth))",
+      "metadata": {"style": "montague", "complexity": "complex"}
+    },
+    {
+      "id": "n-simple",
+      "category": "compile",
+      "prompt": "Be helpful and answer questions clearly.",
+      "ground_truth": "λ assist(x). helpful(x) | clear(answers)",
+      "metadata": {"style": "nucleus", "complexity": "simple"}
+    },
+    {
+      "id": "n-constraint",
+      "category": "compile",
+      "prompt": "Write code that is simple rather than clever, and always add tests first.",
+      "ground_truth": "λ code(x). simple(x) > clever(x) | test_first | ¬complexity",
+      "metadata": {"style": "nucleus", "complexity": "medium"}
+    },
+    {
+      "id": "n-multi",
+      "category": "compile",
+      "prompt": "You are a research assistant. Search for sources before making claims. When uncertain, say so. Prefer peer-reviewed papers over blog posts.",
+      "ground_truth": "λ research(x). search(sources) > claim | uncertain → disclose | peer_reviewed > blog | ¬hallucinate",
+      "metadata": {"style": "nucleus", "complexity": "complex"}
+    },
+    {
+      "id": "n-meta",
+      "category": "compile",
+      "prompt": "Observe the problem, orient to context, decide on approach, act, then loop. Prefer fast iterations over single deep passes.",
+      "ground_truth": "λ solve(x). observe → orient → decide → act → loop | fast_iterations > single_deep_pass",
+      "metadata": {"style": "nucleus", "complexity": "complex"}
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T05:05:21.726995+00:00",
+  "node_id": "task-head-scan/extract/probe-ext-passive",
+  "config_hash": "sha256:fe162af65bed687525a6ef00fb80b6da1029125280d826d3e4190c719dea4063",
+  "elapsed_ms": 430080.8,
+  "completed_at": "2026-04-17T05:12:31.809410+00:00"
+}

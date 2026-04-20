@@ -1,0 +1,10 @@
+{"input": "The dog runs.", "output": "λx. runs(dog)", "category": "simple", "phenomena": ["predication"]}
+{"input": "Every student reads a book.", "output": "∀y. student(y) → ∃z. book(z) ∧ reads(y, z)", "category": "quantified", "phenomena": ["quantification"]}
+{"input": "The cat that sat on the mat is black.", "output": "black(ιy. cat(y) ∧ sat_on(y, ιz. mat(z)))", "category": "relative_clause", "phenomena": ["relative_clause"]}
+{"input": "If it rains, the ground is wet.", "output": "rains → wet(ground)", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "Someone believes that the earth is flat.", "output": "∃y. person(y) ∧ believes(y, flat(earth))", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "The bird flies.", "output": "λx. flies(bird)", "category": "simple", "phenomena": ["predication"]}
+{"input": "Alice helps Bob.", "output": "λx. helps(alice, bob)", "category": "transitive", "phenomena": ["transitive"]}
+{"input": "No fish swims.", "output": "¬∃x. fish(x) ∧ swims(x)", "category": "negation", "phenomena": ["negation", "quantification"]}
+{"input": "The teacher who the child sees laughs.", "output": "λx. laughs(ιy. teacher(y) ∧ sees(child, y))", "category": "relative_clause", "phenomena": ["relative_clause", "object_relative"]}
+{"input": "Tom runs quickly.", "output": "λx. quickly(runs(tom))", "category": "adverb", "phenomena": ["adverb"]}

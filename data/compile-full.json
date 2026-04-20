@@ -1,0 +1,5967 @@
+{
+  "timestamp": "2026-04-17T19:25:06.188389+00:00",
+  "elapsed_s": 74.90311193466187,
+  "grammar": "specs/lambda_montague.gbnf",
+  "server_props": {
+    "default_generation_settings": {
+      "params": {
+        "seed": 4294967295,
+        "temperature": 0.699999988079071,
+        "dynatemp_range": 0.0,
+        "dynatemp_exponent": 1.0,
+        "top_k": 20,
+        "top_p": 0.800000011920929,
+        "min_p": 0.009999999776482582,
+        "top_n_sigma": -1.0,
+        "xtc_probability": 0.0,
+        "xtc_threshold": 0.10000000149011612,
+        "typical_p": 1.0,
+        "repeat_last_n": 64,
+        "repeat_penalty": 1.0,
+        "presence_penalty": 0.0,
+        "frequency_penalty": 0.0,
+        "dry_multiplier": 0.0,
+        "dry_base": 1.75,
+        "dry_allowed_length": 2,
+        "dry_penalty_last_n": -1,
+        "mirostat": 0,
+        "mirostat_tau": 5.0,
+        "mirostat_eta": 0.10000000149011612,
+        "max_tokens": -1,
+        "n_predict": -1,
+        "n_keep": 0,
+        "n_discard": 0,
+        "ignore_eos": false,
+        "stream": true,
+        "n_probs": 0,
+        "min_keep": 0,
+        "chat_format": "Content-only",
+        "reasoning_format": "none",
+        "reasoning_in_content": false,
+        "thinking_forced_open": false,
+        "samplers": [
+          "penalties",
+          "dry",
+          "top_n_sigma",
+          "top_k",
+          "typ_p",
+          "top_p",
+          "min_p",
+          "xtc",
+          "temperature"
+        ],
+        "speculative.n_max": 16,
+        "speculative.n_min": 0,
+        "speculative.p_min": 0.75,
+        "speculative.type": "none",
+        "speculative.ngram_size_n": 12,
+        "speculative.ngram_size_m": 48,
+        "speculative.ngram_m_hits": 1,
+        "timings_per_token": false,
+        "post_sampling_probs": false,
+        "backend_sampling": false,
+        "lora": []
+      },
+      "n_ctx": 40960
+    },
+    "total_slots": 4,
+    "chat_template": "{%- if tools %}\n    {{- '<|im_start|>system\\n' }}\n    {%- if messages[0].role == 'system' %}\n        {{- messages[0].content + '\\n\\n' }}\n    {%- endif %}\n    {{- \"# Tools\\n\\nYou may call one or more functions to assist with the user query.\\n\\nYou are provided with function signatures within <tools></tools> XML tags:\\n<tools>\" }}\n    {%- for tool in tools %}\n        {{- \"\\n\" }}\n        {{- tool | tojson }}\n    {%- endfor %}\n    {{- \"\\n</tools>\\n\\nFor each function call, return a json object with function name and arguments within <tool_call></tool_call> XML tags:\\n<tool_call>\\n{\\\"name\\\": <function-name>, \\\"arguments\\\": <args-json-object>}\\n</tool_call><|im_end|>\\n\" }}\n{%- else %}\n    {%- if messages[0].role == 'system' %}\n        {{- '<|im_start|>system\\n' + messages[0].content + '<|im_end|>\\n' }}\n    {%- endif %}\n{%- endif %}\n{%- set ns = namespace(multi_step_tool=true, last_query_index=messages|length - 1) %}\n{%- for forward_message in messages %}\n    {%- set index = (messages|length - 1) - loop.index0 %}\n    {%- set message = messages[index] %}\n    {%- set current_content = message.content if message.content is defined and message.content is not none else '' %}\n    {%- set tool_start = '<tool_response>' %}\n    {%- set tool_start_length = tool_start|length %}\n    {%- set start_of_message = current_content[:tool_start_length] %}\n    {%- set tool_end = '</tool_response>' %}\n    {%- set tool_end_length = tool_end|length %}\n    {%- set start_pos = (current_content|length) - tool_end_length %}\n    {%- if start_pos < 0 %}\n        {%- set start_pos = 0 %}\n    {%- endif %}\n    {%- set end_of_message = current_content[start_pos:] %}\n    {%- if ns.multi_step_tool and message.role == \"user\" and not(start_of_message == tool_start and end_of_message == tool_end) %}\n        {%- set ns.multi_step_tool = false %}\n        {%- set ns.last_query_index = index %}\n    {%- endif %}\n{%- endfor %}\n{%- for message in messages %}\n    {%- if (message.role == \"user\") or (message.role == \"system\" and not loop.first) %}\n        {{- '<|im_start|>' + message.role + '\\n' + message.content + '<|im_end|>' + '\\n' }}\n    {%- elif message.role == \"assistant\" %}\n        {%- set m_content = message.content if message.content is defined and message.content is not none else '' %}\n        {%- set content = m_content %}\n        {%- set reasoning_content = '' %}\n        {%- if message.reasoning_content is defined and message.reasoning_content is not none %}\n            {%- set reasoning_content = message.reasoning_content %}\n        {%- else %}\n            {%- if '</think>' in m_content %}\n                {%- set content = (m_content.split('</think>')|last).lstrip('\\n') %}\n                {%- set reasoning_content = (m_content.split('</think>')|first).rstrip('\\n') %}\n                {%- set reasoning_content = (reasoning_content.split('<think>')|last).lstrip('\\n') %}\n            {%- endif %}\n        {%- endif %}\n        {%- if loop.index0 > ns.last_query_index %}\n            {%- if loop.last or (not loop.last and (not reasoning_content.strip() == '')) %}\n                {{- '<|im_start|>' + message.role + '\\n<think>\\n' + reasoning_content.strip('\\n') + '\\n</think>\\n\\n' + content.lstrip('\\n') }}\n            {%- else %}\n                {{- '<|im_start|>' + message.role + '\\n' + content }}\n            {%- endif %}\n        {%- else %}\n            {{- '<|im_start|>' + message.role + '\\n' + content }}\n        {%- endif %}\n        {%- if message.tool_calls %}\n            {%- for tool_call in message.tool_calls %}\n                {%- if (loop.first and content) or (not loop.first) %}\n                    {{- '\\n' }}\n                {%- endif %}\n                {%- if tool_call.function %}\n                    {%- set tool_call = tool_call.function %}\n                {%- endif %}\n                {{- '<tool_call>\\n{\"name\": \"' }}\n                {{- tool_call.name }}\n                {{- '\", \"arguments\": ' }}\n                {%- if tool_call.arguments is string %}\n                    {{- tool_call.arguments }}\n                {%- else %}\n                    {{- tool_call.arguments | tojson }}\n                {%- endif %}\n                {{- '}\\n</tool_call>' }}\n            {%- endfor %}\n        {%- endif %}\n        {{- '<|im_end|>\\n' }}\n    {%- elif message.role == \"tool\" %}\n        {%- if loop.first or (messages[loop.index0 - 1].role != \"tool\") %}\n            {{- '<|im_start|>user' }}\n        {%- endif %}\n        {{- '\\n<tool_response>\\n' }}\n        {{- message.content }}\n        {{- '\\n</tool_response>' }}\n        {%- if loop.last or (messages[loop.index0 + 1].role != \"tool\") %}\n            {{- '<|im_end|>\\n' }}\n        {%- endif %}\n    {%- endif %}\n{%- endfor %}\n{%- if add_generation_prompt %}\n    {{- '<|im_start|>assistant\\n' }}\n    {%- if enable_thinking is defined and enable_thinking is false %}\n        {{- '<think>\\n\\n</think>\\n\\n' }}\n    {%- endif %}\n{%- endif %}",
+    "model_path": "/Users/mwhitford/localai/models/Qwen3-4B-Q8_0.gguf",
+    "n_ctx": null,
+    "model_alias": "qwen3-4b",
+    "modalities": {
+      "vision": false,
+      "audio": false
+    },
+    "endpoint_slots": true,
+    "endpoint_props": false,
+    "endpoint_metrics": false,
+    "webui": true,
+    "webui_settings": {},
+    "chat_template_caps": {
+      "supports_parallel_tool_calls": true,
+      "supports_preserve_reasoning": true,
+      "supports_string_content": true,
+      "supports_system_role": true,
+      "supports_tool_calls": true,
+      "supports_tools": true,
+      "supports_typed_content": false
+    },
+    "bos_token": ",",
+    "eos_token": "<|im_end|>",
+    "build_info": "b8180-d979f2b17",
+    "is_sleeping": false
+  },
+  "train": {
+    "total_sentences": 509,
+    "generated": 509,
+    "validated": 509,
+    "categories": {
+      "quantified": 60,
+      "transitive": 80,
+      "prepositional": 20,
+      "conjunction": 40,
+      "disjunction": 20,
+      "simple": 60,
+      "ditransitive": 20,
+      "attitude": 30,
+      "conditional": 40,
+      "adverb": 30,
+      "negation": 40,
+      "relative_clause": 40,
+      "copular": 29
+    }
+  },
+  "holdout": {
+    "total_sentences": 40,
+    "generated": 40,
+    "validated": 40,
+    "holdout_nouns": [
+      "elephant",
+      "nurse",
+      "wizard"
+    ],
+    "holdout_names": [
+      "diana",
+      "felix",
+      "iris"
+    ],
+    "holdout_intransitive": [
+      "climbs",
+      "whistles",
+      "vanishes"
+    ],
+    "holdout_transitive": [
+      "chases",
+      "carries",
+      "rescues"
+    ]
+  },
+  "train_results": [
+    {
+      "sentence": "Every artist knows a baker.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "transitive"
+      ],
+      "lambda_output": "∀x. (artist(x) → knows(x, baker))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Frank follows oscar.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. follows(frank, oscar)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The teacher smiles in the house.",
+      "category": "prepositional",
+      "phenomena": [
+        "prepositional"
+      ],
+      "lambda_output": "λx. smiles(teacher, house)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Kate falls and waits.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction",
+        "verb_coordination"
+      ],
+      "lambda_output": "λx. falls(kate) ∧ waits(kate)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Either the dog falls or the lawyer laughs.",
+      "category": "disjunction",
+      "phenomena": [
+        "disjunction"
+      ],
+      "lambda_output": "λx. (falls(dog) ∨ laughs(lawyer))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Grace writes helen.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. writes(grace, helen)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Mary sees peter.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. sees(mary, peter)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The bird cries.",
+      "category": "simple",
+      "phenomena": [
+        "predication"
+      ],
+      "lambda_output": "λx. cries(bird)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every cat fears a dog.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "transitive"
+      ],
+      "lambda_output": "∀x. (cat(x) → ∃y. (dog(y) ∧ fears(x, y)))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every judge finds a writer.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "transitive"
+      ],
+      "lambda_output": "∀x. (judge(x) → ∃y. writer(y) ∧ finds(x, y))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The pilot handed the cat a gift.",
+      "category": "ditransitive",
+      "phenomena": [
+        "predication",
+        "ditransitive"
+      ],
+      "lambda_output": "λx. handed(pilot, cat, gift)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "John dances and swims.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction",
+        "verb_coordination"
+      ],
+      "lambda_output": "λx. dances(john) ∧ swims(john)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Paul dreams.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "proper_noun"
+      ],
+      "lambda_output": "λx. dreams(paul)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "James hopes that the hunter smiles.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "λx. hopes(x, smiles(hunter))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the woman sleeps, the cat works.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(sleeps(x), works(cat))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Bob trusts mary.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. trusts(bob, mary)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Paul runs and walks.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction",
+        "verb_coordination"
+      ],
+      "lambda_output": "λx. runs(paul) ∧ walks(paul)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every teacher likes a artist.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "transitive"
+      ],
+      "lambda_output": "∀x. teacher(x) → ∃y. artist(y) ∧ likes(x, y)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Either the knight sleeps or the singer sits.",
+      "category": "disjunction",
+      "phenomena": [
+        "disjunction"
+      ],
+      "lambda_output": "λx. (sleeps(knight) ∨ sits(singer))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The dog sits quietly.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. sits(dog)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The knight laughs slowly.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. laughs(knight)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Jane walks.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "proper_noun"
+      ],
+      "lambda_output": "λx. walks(jane)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the fish runs, the hunter jumps.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "runs(fish) → jumps(hunter)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The cat jumps bravely.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. jumps(cat)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Paul falls and waits.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction",
+        "verb_coordination"
+      ],
+      "lambda_output": "λx. falls(paul) ∧ waits(paul)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The student does not rest.",
+      "category": "negation",
+      "phenomena": [
+        "negation"
+      ],
+      "lambda_output": "λx. not(rest(student))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "David and emma fly.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction"
+      ],
+      "lambda_output": "λx. fly(david) ∨ λx. fly(emma)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The child hates the cat.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. hates(child, cat)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Either the king flies or the woman works.",
+      "category": "disjunction",
+      "phenomena": [
+        "disjunction"
+      ],
+      "lambda_output": "λx. (flies(king) ∨ works(woman))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The poet who the baker reads swims.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause",
+        "object_relative"
+      ],
+      "lambda_output": "λx. swims(λy. reads(baker, y))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Either the fish jumps or the sailor sings.",
+      "category": "disjunction",
+      "phenomena": [
+        "disjunction"
+      ],
+      "lambda_output": "λx. (fish_jumps(x) ∨ sailor_sings(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Paul believes that the woman works.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "λx. believes(paul, works(woman))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The bird walks in the school.",
+      "category": "prepositional",
+      "phenomena": [
+        "prepositional"
+      ],
+      "lambda_output": "λx. walks(bird, school)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every farmer likes a woman.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "transitive"
+      ],
+      "lambda_output": "∀x. (farmer(x) → likes(x, woman))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every farmer sleeps.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification"
+      ],
+      "lambda_output": "∀x. (farmer(x) → sleeps(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every man fears a king.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "transitive"
+      ],
+      "lambda_output": "∀x. (man(x) → fears(x, king))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the farmer dreams, the scientist jumps.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. (dreams(farmer) → jumps(scientist))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The student serves the woman.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. serves(student, woman)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The doctor cries quietly.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. cries(quietly, doctor)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The poet walks bravely.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. walks(poet)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The poet does not dream.",
+      "category": "negation",
+      "phenomena": [
+        "negation"
+      ],
+      "lambda_output": "λx. not(dreams(poet))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The small writer flies.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "modifier"
+      ],
+      "lambda_output": "λx. flies(writer)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Grace sees emma.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. sees(emma)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The sailor rests.",
+      "category": "simple",
+      "phenomena": [
+        "predication"
+      ],
+      "lambda_output": "λx. rests(sailor)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The pilot guides the teacher.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. guides(pilot, teacher)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Helen finds alice.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. finds(helen, alice)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The writer who the sailor trusts walks.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause",
+        "object_relative"
+      ],
+      "lambda_output": "λx. walks(λy. trusts(sailor, y))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The man is gentle.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. gentle(man)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Emma walks and sleeps.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction",
+        "verb_coordination"
+      ],
+      "lambda_output": "λx. walks(emma) ∧ sleeps(emma)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The old fish waits.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "modifier"
+      ],
+      "lambda_output": "λx. waits(fish)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The dog flies.",
+      "category": "simple",
+      "phenomena": [
+        "predication"
+      ],
+      "lambda_output": "λx. flies(dog)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The fish sent the bird a flower.",
+      "category": "ditransitive",
+      "phenomena": [
+        "predication",
+        "ditransitive"
+      ],
+      "lambda_output": "λx. sent(fish, bird, flower)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The singer does not sleep.",
+      "category": "negation",
+      "phenomena": [
+        "negation"
+      ],
+      "lambda_output": "λx. not(sleeps(singer))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Either the scientist flies or the artist falls.",
+      "category": "disjunction",
+      "phenomena": [
+        "disjunction"
+      ],
+      "lambda_output": "λx. (flies(scientist) ∨ falls(artist))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The baker smiles in the school.",
+      "category": "prepositional",
+      "phenomena": [
+        "prepositional"
+      ],
+      "lambda_output": "λx. smiles(baker, school)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The scientist swims in the forest.",
+      "category": "prepositional",
+      "phenomena": [
+        "prepositional"
+      ],
+      "lambda_output": "λx. swims(scientist, forest)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The writer does not jump.",
+      "category": "negation",
+      "phenomena": [
+        "negation"
+      ],
+      "lambda_output": "λx. does_not_jump(writer)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The clerk that serves the knight flies.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause"
+      ],
+      "lambda_output": "λx. flies(serves(knight, x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The farmer who the baker follows smiles.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause",
+        "object_relative"
+      ],
+      "lambda_output": "λx. smiles(farmer)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Tom believes that the clerk jumps.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "λx. believes(tom, jumps(clerk))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The bird rests.",
+      "category": "simple",
+      "phenomena": [
+        "predication"
+      ],
+      "lambda_output": "λx. rests(bird)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The monk writes the woman.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. writes(monk, woman)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The monk who the poet helps dreams.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause",
+        "object_relative"
+      ],
+      "lambda_output": "λx. dreams(monk)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Alice likes frank.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. likes(x, frank)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The baker sits wisely.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. sits(baker)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The queen finds the monk.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. finds(monk, queen)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "No cat cries.",
+      "category": "negation",
+      "phenomena": [
+        "negation",
+        "quantification"
+      ],
+      "lambda_output": "λx. ¬(crying(x) ∧ cat(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Jane sees kate.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. sees(jane, kate)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Either the guard swims or the scientist dreams.",
+      "category": "disjunction",
+      "phenomena": [
+        "disjunction"
+      ],
+      "lambda_output": "λx. (swims(guard) ∨ dreams(scientist))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The fish sings quietly.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. sings(fish)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Henry fears that the king swims.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "λx. fears(henry, king, swims)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Either the artist dreams or the queen dances.",
+      "category": "disjunction",
+      "phenomena": [
+        "disjunction"
+      ],
+      "lambda_output": "λx. (dreams(artist) ∨ dances(queen))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The judge teaches the guard.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. teaches(judge, guard)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The dancer that guides the singer dances.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause"
+      ],
+      "lambda_output": "λx. dances(dancer(x, singer(x)))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The hunter reads the poet.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. reads(hunter, poet)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The fish fears the man.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. fears(fish, man)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Some baker walks.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "existential"
+      ],
+      "lambda_output": "λx. walks(baker)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The child shouts.",
+      "category": "simple",
+      "phenomena": [
+        "predication"
+      ],
+      "lambda_output": "λx. shouts(child)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "No poet smiles.",
+      "category": "negation",
+      "phenomena": [
+        "negation",
+        "quantification"
+      ],
+      "lambda_output": "λx. ¬smiles(poet)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the singer sleeps, the writer sings.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. (sleeps(x) → sings(writer))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Mary sings.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "proper_noun"
+      ],
+      "lambda_output": "λx. sings(mary)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Sarah dreams and dances.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction",
+        "verb_coordination"
+      ],
+      "lambda_output": "λx. (dreams(sarah) ∧ dances(sarah))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Sarah believes that the scientist sits.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "belief(λx. sits(scientist), sarah)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The judge is old.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. is(old, judge)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Paul falls and cries.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction",
+        "verb_coordination"
+      ],
+      "lambda_output": "λx. falls(paul) ∧ cries(paul)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The dog showed the king a letter.",
+      "category": "ditransitive",
+      "phenomena": [
+        "predication",
+        "ditransitive"
+      ],
+      "lambda_output": "λx. showed(dog, king, letter)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The dog that hates the poet laughs.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause"
+      ],
+      "lambda_output": "λx. hates(x, poet) ∧ laughs(dog)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The chef is loud.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. loud(chef)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "No woman falls.",
+      "category": "negation",
+      "phenomena": [
+        "negation",
+        "quantification"
+      ],
+      "lambda_output": "λx. falls(woman) → false",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The chef helps the clerk.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. helps(chef, clerk)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the pilot swims, the monk smiles.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(swims(pilot), smiles(monk))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Kate thinks that the baker works.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "λx. thinks(kate, works(baker))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The pilot that reads the teacher dreams.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause"
+      ],
+      "lambda_output": "λx. dreams(pilot(x), reads(teacher(x)))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The small doctor walks.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "modifier"
+      ],
+      "lambda_output": "λx. walks(doctor)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Frank and emma sing.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction"
+      ],
+      "lambda_output": "λx. sing(frank, emma)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The child swims.",
+      "category": "simple",
+      "phenomena": [
+        "predication"
+      ],
+      "lambda_output": "λx. swims(child)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Helen sees sarah.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. sees(helen, sarah)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The poet sings.",
+      "category": "simple",
+      "phenomena": [
+        "predication"
+      ],
+      "lambda_output": "λx. sings(poet)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The pilot does not smile.",
+      "category": "negation",
+      "phenomena": [
+        "negation"
+      ],
+      "lambda_output": "λx. not(smiles(pilot))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Some scientist dreams.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "existential"
+      ],
+      "lambda_output": "λx. dreams(scientist)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The guard works happily.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. works(guard, x)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The sailor does not wait.",
+      "category": "negation",
+      "phenomena": [
+        "negation"
+      ],
+      "lambda_output": "λx. not(wait(sailor))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The writer rests carefully.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. rests(writer)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Bob greets mary.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. greets(bob, mary)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Some cat swims.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "existential"
+      ],
+      "lambda_output": "∃x. cat(x) ∧ swims(x)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every woman walks.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification"
+      ],
+      "lambda_output": "∀x. woman(x) → walks(x)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The scientist does not walk.",
+      "category": "negation",
+      "phenomena": [
+        "negation"
+      ],
+      "lambda_output": "λx. not(walk(scientist))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Frank works and swims.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction",
+        "verb_coordination"
+      ],
+      "lambda_output": "λx. works(frank) ∧ swims(frank)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Either the singer waits or the baker waits.",
+      "category": "disjunction",
+      "phenomena": [
+        "disjunction"
+      ],
+      "lambda_output": "λx. waits(singer) ∨ λx. waits(baker)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The king flies.",
+      "category": "simple",
+      "phenomena": [
+        "predication"
+      ],
+      "lambda_output": "λx. flies(king)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The teacher cries.",
+      "category": "simple",
+      "phenomena": [
+        "predication"
+      ],
+      "lambda_output": "λx. cries(teacher)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The guard does not rest.",
+      "category": "negation",
+      "phenomena": [
+        "negation"
+      ],
+      "lambda_output": "λx. not(rest(guard))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The dog sleeps loudly.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. sleeps(dog, loudly)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The hunter fears the writer.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. fears(hunter, writer)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The dog greets the singer.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. greets(dog, singer)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The cat gave the man a gift.",
+      "category": "ditransitive",
+      "phenomena": [
+        "predication",
+        "ditransitive"
+      ],
+      "lambda_output": "λx. gave(cat, man, gift)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The artist swims.",
+      "category": "simple",
+      "phenomena": [
+        "predication"
+      ],
+      "lambda_output": "λx. swims(artist)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "No cat dreams.",
+      "category": "negation",
+      "phenomena": [
+        "negation",
+        "quantification"
+      ],
+      "lambda_output": "λx. ¬dreams(cat)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The queen who the artist follows swims.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause",
+        "object_relative"
+      ],
+      "lambda_output": "λx. swims(queen(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The baker cries eagerly.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. cries(baker, eagerly)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the student walks, the pilot laughs.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(walks(x), laughs(pilot))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The man that loves the pilot works.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause"
+      ],
+      "lambda_output": "λx. works(man_loves_pilot)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every knight sings.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification"
+      ],
+      "lambda_output": "∀x. (knight(x) → sings(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The gentle farmer flies.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "modifier"
+      ],
+      "lambda_output": "λx. flies(farmer)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Frank works.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "proper_noun"
+      ],
+      "lambda_output": "λx. works(frank)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the knight walks, the dog jumps.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. (walks(knight) → jumps(dog))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Anna swims.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "proper_noun"
+      ],
+      "lambda_output": "λx. swims(anna)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The clerk that reads the sailor shouts.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause"
+      ],
+      "lambda_output": "λx. (reads(sailor) → shouts(clerk))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Tom finds jane.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. finds(tom, jane)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The cat runs.",
+      "category": "simple",
+      "phenomena": [
+        "predication"
+      ],
+      "lambda_output": "λx. runs(cat)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Oscar and john sit.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction"
+      ],
+      "lambda_output": "λx. sit(ocscar) ∧ λx. sit(john)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Kate reads frank.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. reads(kate, frank)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Kate believes that the teacher swims.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "believes(λx. swims(teacher))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Some sailor waits.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "existential"
+      ],
+      "lambda_output": "λx. waits(sailor)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Sarah guides jane.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. guides(sarah, jane)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "John hopes that the woman runs.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "λx. hopes(λy. (x) → (y) → runs(woman))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The artist falls in the tower.",
+      "category": "prepositional",
+      "phenomena": [
+        "prepositional"
+      ],
+      "lambda_output": "λx. falls(in, tower, artist)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The man sits in the school.",
+      "category": "prepositional",
+      "phenomena": [
+        "prepositional"
+      ],
+      "lambda_output": "λx. sits(man, school)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The dancer serves the poet.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. serves(dancer, poet)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Alice smiles and runs.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction",
+        "verb_coordination"
+      ],
+      "lambda_output": "λx. smiles(alice) ∧ runs(alice)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the dog cries, the chef walks.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(cries(dog), walks(chef))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Tom believes that the guard sleeps.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "λx. believes(tom, sleeps(guard))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the child rests, the judge smiles.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(rests(child), smiles(judge))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Kate helps henry.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. helps(kate, henry)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The farmer dreams loudly.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. dreams(farmer, loudly)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The guard handed the fish a flower.",
+      "category": "ditransitive",
+      "phenomena": [
+        "predication",
+        "ditransitive"
+      ],
+      "lambda_output": "λx. handed(fish, flower)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The hunter knows the king.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. knows(hunter, king)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Alice knows henry.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. knows(alice, henry)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The king dreams in the forest.",
+      "category": "prepositional",
+      "phenomena": [
+        "prepositional"
+      ],
+      "lambda_output": "λx. dreams(king, x)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The child dances eagerly.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. dances(child, eagerly)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every knight writes a scientist.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "transitive"
+      ],
+      "lambda_output": "∀x. (knight(x) → writes(x, scientist))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Tom shouts.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "proper_noun"
+      ],
+      "lambda_output": "λx. shouts(tom)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every writer serves a fish.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "transitive"
+      ],
+      "lambda_output": "∀x. (writer(x) → serves(fish, x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "David hates kate.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. hates(david, kate)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Anna hates alice.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. hates(anna, alice)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "David writes james.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. writes(david, james)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The baker likes the lawyer.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. likes(baker, lawyer)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The singer falls quickly.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. falls(singer, quickly)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Mary greets grace.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. greets(mary, grace)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the teacher jumps, the knight walks.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(jumps(teacher), walks(knight))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the child laughs, the queen jumps.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "laughs(child) → jumps(queen)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The child sees the bird.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. sees(child, bird)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Some baker cries.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "existential"
+      ],
+      "lambda_output": "∃x. (baker(x) ∧ cries(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The child does not run.",
+      "category": "negation",
+      "phenomena": [
+        "negation"
+      ],
+      "lambda_output": "λx. not(run(dog))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The artist that hates the bird sings.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause"
+      ],
+      "lambda_output": "λx. sings(artist)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The chef who the artist finds laughs.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause",
+        "object_relative"
+      ],
+      "lambda_output": "λx. laughs(chef, artist)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The scientist is proud.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. proud(scientist)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Frank runs.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "proper_noun"
+      ],
+      "lambda_output": "λx. runs(frank)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "John teaches paul.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. teaches(john, paul)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The chef is fierce.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. fierce(chef)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The guard handed the hunter a ball.",
+      "category": "ditransitive",
+      "phenomena": [
+        "predication",
+        "ditransitive"
+      ],
+      "lambda_output": "λx. handed(hunter, ball)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "No king rests.",
+      "category": "negation",
+      "phenomena": [
+        "negation",
+        "quantification"
+      ],
+      "lambda_output": "λx. rests(king)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The baker helps the judge.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. helps(baker, judge)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Grace hopes that the dancer sits.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "λx. hopes(grace, x, sits)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The dog sees the bird.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. sees(dog, bird)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "James admires frank.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. admires(james, frank)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The sailor works.",
+      "category": "simple",
+      "phenomena": [
+        "predication"
+      ],
+      "lambda_output": "λx. works(sailor)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The cat jumps in the castle.",
+      "category": "prepositional",
+      "phenomena": [
+        "prepositional"
+      ],
+      "lambda_output": "λx. jumps(cat, castle)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Grace falls.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "proper_noun"
+      ],
+      "lambda_output": "λx. falls(graace)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The king dances eagerly.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. dances(king, eagerly)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every fish flies.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification"
+      ],
+      "lambda_output": "∀x. (fish(x) → flies(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Some baker falls.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "existential"
+      ],
+      "lambda_output": "λx. falls(baker)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The poet sings bravely.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. sings(poet, bravely)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Either the sailor walks or the doctor swims.",
+      "category": "disjunction",
+      "phenomena": [
+        "disjunction"
+      ],
+      "lambda_output": "λx. walks(sailor) ∨ λx. swims(doctor)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Sarah and oscar dream.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction"
+      ],
+      "lambda_output": "λx. dream(sarah, oscar)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Peter hopes that the student cries.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "λx. hopes(peter, x, cries(student))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Tom and emma wait.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction"
+      ],
+      "lambda_output": "λx. wait(tom, emma)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The teacher is quiet.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. is_quiet(teacher)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "No baker sings.",
+      "category": "negation",
+      "phenomena": [
+        "negation",
+        "quantification"
+      ],
+      "lambda_output": "λx. ¬sings(baker)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The monk that likes the cat flies.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause"
+      ],
+      "lambda_output": "λx. flies(monk(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The student who the sailor reads runs.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause",
+        "object_relative"
+      ],
+      "lambda_output": "λx. runs(λy. sailor(y) ∧ student(x) ∧ reads(sailor(y), x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Some lawyer waits.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "existential"
+      ],
+      "lambda_output": "λx. waits(some(lawyer))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The scientist does not jump.",
+      "category": "negation",
+      "phenomena": [
+        "negation"
+      ],
+      "lambda_output": "λx. not(jump(scientist))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Henry loves helen.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. loves(henry, helen)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Emma trusts david.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. trusts(emma, david)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The cat sits quietly.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. sits(cat)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The monk does not fly.",
+      "category": "negation",
+      "phenomena": [
+        "negation"
+      ],
+      "lambda_output": "λx. not(fly(monk))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the man dances, the sailor smiles.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. dances(man) → smiles(sailor)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The dancer that reads the dog jumps.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause"
+      ],
+      "lambda_output": "λx. jumps(dancer(x), reads(dog))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The fish is gentle.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. gentle(fish)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Henry dreams.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "proper_noun"
+      ],
+      "lambda_output": "λx. dreams(henry)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Grace waits.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "proper_noun"
+      ],
+      "lambda_output": "λx. waits(graace)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The writer is wise.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. wise(writer)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the king works, the fish laughs.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(works(king), laughs(fish))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The teacher that likes the farmer shouts.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause"
+      ],
+      "lambda_output": "λx. shouts(teacher(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "No baker works.",
+      "category": "negation",
+      "phenomena": [
+        "negation",
+        "quantification"
+      ],
+      "lambda_output": "λx. works(baker) → λx. ¬(works(baker))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The woman that fears the monk falls.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause"
+      ],
+      "lambda_output": "λx. falls(woman(x) ∧ fears(monk(x)))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the artist works, the fish swims.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. (works(artist) → swims(fish))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Some teacher runs.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "existential"
+      ],
+      "lambda_output": "∃x. teacher(x) ∧ runs(x)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The baker works.",
+      "category": "simple",
+      "phenomena": [
+        "predication"
+      ],
+      "lambda_output": "λx. works(baker)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The cat is strong.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. strong(cat)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Emma hopes that the poet flies.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "λx. hopes(emma, poet, flies)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Grace thinks that the poet rests.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "λx. thinks(graice, poet, rests)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Helen and kate sleep.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction"
+      ],
+      "lambda_output": "λx. sleep(helen) ∨ λx. sleep(kate)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the sailor dreams, the man walks.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. (dreams(sailor) → walks(man))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Emma knows that the writer flies.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "knows(emma, writer) → λx. knows(emma, x)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Helen follows david.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. follows(helen, david)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Either the lawyer sits or the doctor flies.",
+      "category": "disjunction",
+      "phenomena": [
+        "disjunction"
+      ],
+      "lambda_output": "λx. (sits(lawyer) ∨ flies(doctor))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The dog flies happily.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. flies(dog, happily)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The clerk jumps gently.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. jumps(gently, clerk)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The monk does not laugh.",
+      "category": "negation",
+      "phenomena": [
+        "negation"
+      ],
+      "lambda_output": "λx. ¬laugh(monk)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Either the sailor sits or the woman laughs.",
+      "category": "disjunction",
+      "phenomena": [
+        "disjunction"
+      ],
+      "lambda_output": "λx. (sits(sailor) ∨ laughs(woman))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The brave queen sits.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "modifier"
+      ],
+      "lambda_output": "λx. sits(queen)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Some baker jumps.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "existential"
+      ],
+      "lambda_output": "λx. jumps(baker)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The doctor greets the clerk.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. greets(doctor, clerk)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "No dancer works.",
+      "category": "negation",
+      "phenomena": [
+        "negation",
+        "quantification"
+      ],
+      "lambda_output": "λx. works(dancer) → λx. ¬works(dancer)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The artist sings in the mountain.",
+      "category": "prepositional",
+      "phenomena": [
+        "prepositional"
+      ],
+      "lambda_output": "λx. sings(artist, mountain)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The judge who the teacher fears dances.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause",
+        "object_relative"
+      ],
+      "lambda_output": "λx. dances(judge(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The doctor sent the sailor a gift.",
+      "category": "ditransitive",
+      "phenomena": [
+        "predication",
+        "ditransitive"
+      ],
+      "lambda_output": "λx. sent(sailor, gift)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Grace and john wait.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction"
+      ],
+      "lambda_output": "λx. wait(grace, john)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the bird laughs, the cat jumps.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "laughs(bird) → jumps(cat)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The hunter who the fish admires sings.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause",
+        "object_relative"
+      ],
+      "lambda_output": "λx. sings(hunter(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The pilot sent the teacher a ball.",
+      "category": "ditransitive",
+      "phenomena": [
+        "predication",
+        "ditransitive"
+      ],
+      "lambda_output": "λx. sent(pilot, teacher, ball)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the doctor smiles, the judge flies.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(smiles(doctor), flies(judge))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Jane helps james.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. helps(jane, james)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Oscar swims and flies.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction",
+        "verb_coordination"
+      ],
+      "lambda_output": "λx. swims(oc) ∧ flies(oc)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The writer is small.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. small(writer)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Sarah believes that the writer waits.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "belief(λx. waits(writer), λx. believes(sarah, x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The poet is tall.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. is(tall, poet)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The judge who the bird fears sings.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause",
+        "object_relative"
+      ],
+      "lambda_output": "λx. sings(judge(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Tom and james walk.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction"
+      ],
+      "lambda_output": "λx. walk(tom, james)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The cat who the teacher serves falls.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause",
+        "object_relative"
+      ],
+      "lambda_output": "λx. falls(teacher(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every child runs.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification"
+      ],
+      "lambda_output": "∀x. (child(x) → runs(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The sailor gave the artist a message.",
+      "category": "ditransitive",
+      "phenomena": [
+        "predication",
+        "ditransitive"
+      ],
+      "lambda_output": "λx. gave(sailor, artist, message)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Either the hunter walks or the child flies.",
+      "category": "disjunction",
+      "phenomena": [
+        "disjunction"
+      ],
+      "lambda_output": "λx. walks(hunter) ∨ λx. flies(child)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The monk likes the judge.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. likes(monk, judge)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Lucy hopes that the cat sits.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "hope(λx. sits(cat))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "No hunter shouts.",
+      "category": "negation",
+      "phenomena": [
+        "negation",
+        "quantification"
+      ],
+      "lambda_output": "λx. ¬shouts(hunter)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "David hopes that the hunter jumps.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "λx. hopes(david, jumps(hunter))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The baker runs happily.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. runs(happily, baker)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Henry works and runs.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction",
+        "verb_coordination"
+      ],
+      "lambda_output": "λx. works(henry) ∧ runs(henry)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Either the singer waits or the writer falls.",
+      "category": "disjunction",
+      "phenomena": [
+        "disjunction"
+      ],
+      "lambda_output": "λx. (singer(x) → waits(x)) ∨ (writer(x) → falls(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Some poet runs.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "existential"
+      ],
+      "lambda_output": "∃x. poet(x) ∧ runs(x)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The writer is fierce.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. is_fierce(writer)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The student loves the scientist.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. loves(student, scientist)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Lucy thinks that the knight sings.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "λx. thinks(lucy, knight, sings)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every pilot loves a man.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "transitive"
+      ],
+      "lambda_output": "∀x. (pilot(x) → loves(x, man))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "David rests.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "proper_noun"
+      ],
+      "lambda_output": "λx. rests(david)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every dancer swims.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification"
+      ],
+      "lambda_output": "∀x. (dancer(x) → swims(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The old baker flies.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "modifier"
+      ],
+      "lambda_output": "λx. flies(old(baker))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every farmer falls.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification"
+      ],
+      "lambda_output": "∀x. (farmer(x) → falls(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The farmer flies quietly.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. flies(farmer)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Helen fears that the clerk flies.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "λx. fears(helen, clerk)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Some child cries.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "existential"
+      ],
+      "lambda_output": "λx. cries(child)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every man likes a artist.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "transitive"
+      ],
+      "lambda_output": "∀x. (man(x) → likes(x, artist))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The baker handed the poet a gift.",
+      "category": "ditransitive",
+      "phenomena": [
+        "predication",
+        "ditransitive"
+      ],
+      "lambda_output": "λx. handed(baker, poet, gift)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every guard reads a chef.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "transitive"
+      ],
+      "lambda_output": "∀x. reads(x, chef)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every judge likes a queen.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "transitive"
+      ],
+      "lambda_output": "∀x. (judge(x) → likes(x, queen))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The baker greets the lawyer.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. greets(baker, lawyer)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Either the pilot sits or the artist walks.",
+      "category": "disjunction",
+      "phenomena": [
+        "disjunction"
+      ],
+      "lambda_output": "λx. (sits(pilot) ∨ walks(artist))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "No bird falls.",
+      "category": "negation",
+      "phenomena": [
+        "negation",
+        "quantification"
+      ],
+      "lambda_output": "λx. falls(bird) → false",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Kate thinks that the baker runs.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "λx. thinks(kate, runs(baker))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Helen and frank fall.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction"
+      ],
+      "lambda_output": "λx. fall(helen, frank)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Henry fears alice.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. fears(henry, alice)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The kind fish walks.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "modifier"
+      ],
+      "lambda_output": "λx. walks(fish)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The lawyer that admires the child works.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause"
+      ],
+      "lambda_output": "λx. works(lawyer(x), admires(child(x)))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Tom smiles and sings.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction",
+        "verb_coordination"
+      ],
+      "lambda_output": "λx. smiles(tom) ∧ sings(tom)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The fish dreams slowly.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. dreams(fish, slowly)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every farmer works.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification"
+      ],
+      "lambda_output": "∀x. farmer(x) → works(x)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The dog does not walk.",
+      "category": "negation",
+      "phenomena": [
+        "negation"
+      ],
+      "lambda_output": "λx. not(walk(dog))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The pilot works in the mountain.",
+      "category": "prepositional",
+      "phenomena": [
+        "prepositional"
+      ],
+      "lambda_output": "λx. works(pilot, mountain)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The sad poet sits.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "modifier"
+      ],
+      "lambda_output": "λx. sits(poet)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the dog dreams, the artist smiles.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. (dreams(dog) → smiles(artist))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The bird who the lawyer teaches falls.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause",
+        "object_relative"
+      ],
+      "lambda_output": "λx. falls(bird, lawyer)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Jane smiles and runs.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction",
+        "verb_coordination"
+      ],
+      "lambda_output": "λx. smiles(jane) ∧ runs(jane)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every hunter smiles.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification"
+      ],
+      "lambda_output": "∀x. (hunter(x) → smiles(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The chef teaches the child.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. teaches(chef, child)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "David and kate walk.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction"
+      ],
+      "lambda_output": "λx. walk(david, kate)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The hunter who the monk fears sleeps.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause",
+        "object_relative"
+      ],
+      "lambda_output": "λx. sleeps(λy. fears(monk, y) → x)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the poet smiles, the sailor dreams.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(smiles(poet), dreams(sailor))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the lawyer falls, the scientist laughs.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. (falls(lawyer) → laughs(scientist))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every singer reads a farmer.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "transitive"
+      ],
+      "lambda_output": "∀x. (singer(x) → reads(x, farmer))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The artist sings in the bridge.",
+      "category": "prepositional",
+      "phenomena": [
+        "prepositional"
+      ],
+      "lambda_output": "λx. sings(bridge, artist)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The chef is young.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. young(chef)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "No king falls.",
+      "category": "negation",
+      "phenomena": [
+        "negation",
+        "quantification"
+      ],
+      "lambda_output": "λx. falls(king) → λx. ¬(falls(king))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The poet gave the artist a gift.",
+      "category": "ditransitive",
+      "phenomena": [
+        "predication",
+        "ditransitive"
+      ],
+      "lambda_output": "λx. gave(poet, artist, gift)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every clerk writes a writer.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "transitive"
+      ],
+      "lambda_output": "∀x. clerk(x) → writes(writer(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The young bird swims.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "modifier"
+      ],
+      "lambda_output": "λx. swims(young(bird))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The monk falls.",
+      "category": "simple",
+      "phenomena": [
+        "predication"
+      ],
+      "lambda_output": "λx. falls(monk)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Lucy and emma fly.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction"
+      ],
+      "lambda_output": "λx. fly(lucy, emma)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Kate and jane sleep.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction"
+      ],
+      "lambda_output": "λx. sleep(kate) ∨ λx. sleep(jane)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "No man waits.",
+      "category": "negation",
+      "phenomena": [
+        "negation",
+        "quantification"
+      ],
+      "lambda_output": "λx. ¬(wait(man))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The clever clerk works.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "modifier"
+      ],
+      "lambda_output": "λx. works(clerk)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Grace cries and dreams.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction",
+        "verb_coordination"
+      ],
+      "lambda_output": "λx. cries(graace) ∧ dreams(graace)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every writer fears a queen.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "transitive"
+      ],
+      "lambda_output": "∀x. (writer(x) → fears(x, queen))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Grace thinks that the sailor jumps.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "λx. thinks(grace, sailor, jumps)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the dancer waits, the bird smiles.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(dancer, waits, then, bird, smiles)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The guard gave the teacher a gift.",
+      "category": "ditransitive",
+      "phenomena": [
+        "predication",
+        "ditransitive"
+      ],
+      "lambda_output": "λx. gave(guard, teacher, gift)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The baker handed the fish a gift.",
+      "category": "ditransitive",
+      "phenomena": [
+        "predication",
+        "ditransitive"
+      ],
+      "lambda_output": "λx. handed(fish, gift)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The baker sings in the forest.",
+      "category": "prepositional",
+      "phenomena": [
+        "prepositional"
+      ],
+      "lambda_output": "λx. sings(baker, forest)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Lucy waits and rests.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction",
+        "verb_coordination"
+      ],
+      "lambda_output": "λx. waits(rests(lucy))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The humble writer laughs.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "modifier"
+      ],
+      "lambda_output": "λx. laughs(writer)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Kate and henry shout.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction"
+      ],
+      "lambda_output": "λx. shout(kate) ∨ λx. shout(henry)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The guard knows the singer.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. knows(guard, singer)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every woman laughs.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification"
+      ],
+      "lambda_output": "∀x. (woman(x) → laughs(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every child cries.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification"
+      ],
+      "lambda_output": "∀x. child(x) → cries(x)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The king is calm.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. calm(king)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Helen and oscar swim.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction"
+      ],
+      "lambda_output": "λx. swim(helen) ∨ λx. swim(oscar)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the dog works, the sailor dances.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(works(dog), dances(sailor))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the judge falls, the pilot sits.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(falls(judge), sits(pilot))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "James and jane wait.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction"
+      ],
+      "lambda_output": "λx. wait(james, jane)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "David rests and flies.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction",
+        "verb_coordination"
+      ],
+      "lambda_output": "λx. rests(david) ∧ flies(david)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The scientist does not sing.",
+      "category": "negation",
+      "phenomena": [
+        "negation"
+      ],
+      "lambda_output": "λx. not(sing(scientist))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The child writes the bird.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. writes(x, bird)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The small baker falls.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "modifier"
+      ],
+      "lambda_output": "λx. falls(baker)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The bird guides the judge.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. guides(bird, judge)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the hunter rests, the singer jumps.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. (rests(x) → jumps(singer))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The scientist serves the guard.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. serves(scientist, guard)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Bob watches jane.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. watches(bob, jane)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Peter loves alice.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. loves(peter, alice)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The lawyer helps the dog.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. helps(lawyer, dog)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Oscar walks.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "proper_noun"
+      ],
+      "lambda_output": "λx. walks(oscar)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Mary guides grace.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. guides(mary, grace)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The clerk reads the queen.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. reads(clerk, queen)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The writer does not fly.",
+      "category": "negation",
+      "phenomena": [
+        "negation"
+      ],
+      "lambda_output": "λx. does_not_fly(writer)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The artist is young.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. is(young, artist)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every student flies.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification"
+      ],
+      "lambda_output": "∀x. student(x) → flies(x)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The child guides the knight.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. guides(child, knight)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Bob knows that the lawyer runs.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "knows(bob, λx. runs(lawyer))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The cat is happy.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "happy(cat)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The scientist that follows the fish smiles.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause"
+      ],
+      "lambda_output": "λx. smiles(scientist(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The lawyer is gentle.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. gentle(lawyer)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Either the writer sings or the judge laughs.",
+      "category": "disjunction",
+      "phenomena": [
+        "disjunction"
+      ],
+      "lambda_output": "λx. sings(writer) ∨ λx. laughs(judge)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The scientist that guides the pilot sits.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause"
+      ],
+      "lambda_output": "λx. sits(λy. guides(x, y), pilot)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The sailor trusts the man.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. trusts(sailor, man)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every baker cries.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification"
+      ],
+      "lambda_output": "∀x. baker(x) → cries(x)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Mary trusts sarah.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. trusts(mary, sarah)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The bird is old.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. old(bird)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The teacher is old.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. is_old(teacher)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Grace believes that the clerk smiles.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "λx. believes(grace, clerk_smiles)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Paul flies.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "proper_noun"
+      ],
+      "lambda_output": "λx. flies(paul)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Either the chef falls or the poet runs.",
+      "category": "disjunction",
+      "phenomena": [
+        "disjunction"
+      ],
+      "lambda_output": "λx. (falls(chef) ∨ runs(poet))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The chef is clever.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. clever(chef)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the cat smiles, the woman sings.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(smiles(cat), sings(woman))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "No scientist rests.",
+      "category": "negation",
+      "phenomena": [
+        "negation",
+        "quantification"
+      ],
+      "lambda_output": "λx. rests(scientist)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Emma helps paul.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. helps(emma, paul)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Tom laughs.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "proper_noun"
+      ],
+      "lambda_output": "λx. laughs(tom)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The sailor who the child trusts swims.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause",
+        "object_relative"
+      ],
+      "lambda_output": "λx. swims(sailor(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Tom flies.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "proper_noun"
+      ],
+      "lambda_output": "λx. flies(tom)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every chef greets a baker.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "transitive"
+      ],
+      "lambda_output": "∀x. (chef(x) → ∃y. (baker(y) ∧ greets(x, y)))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "No fish waits.",
+      "category": "negation",
+      "phenomena": [
+        "negation",
+        "quantification"
+      ],
+      "lambda_output": "λx. waits(no, fish)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The king that greets the pilot waits.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause"
+      ],
+      "lambda_output": "λx. waits(king(x) ∧ greets(pilot(x)))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The scientist dreams quietly.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. dreams(quietly, scientist)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The baker watches the poet.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. watches(baker, poet)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The doctor walks wisely.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. walks(doctor, x)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The pilot cries.",
+      "category": "simple",
+      "phenomena": [
+        "predication"
+      ],
+      "lambda_output": "λx. cries(pilot)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The judge that follows the guard walks.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause"
+      ],
+      "lambda_output": "λx. walks(judge(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Bob hopes that the queen flies.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "hope(bob, queen, fly)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Henry knows that the lawyer dances.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "λx. knows(henry, lawyer, dances)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Some scientist rests.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "existential"
+      ],
+      "lambda_output": "λx. rests(scientist)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The writer does not sleep.",
+      "category": "negation",
+      "phenomena": [
+        "negation"
+      ],
+      "lambda_output": "λx. not(sleeps(writer))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The guard that guides the sailor sings.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause"
+      ],
+      "lambda_output": "λx. sings(guard, sailor)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Some bird swims.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "existential"
+      ],
+      "lambda_output": "∃x. bird(x) ∧ swims(x)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The singer shouts in the house.",
+      "category": "prepositional",
+      "phenomena": [
+        "prepositional"
+      ],
+      "lambda_output": "λx. shouts(singer, house)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The queen rests in the bridge.",
+      "category": "prepositional",
+      "phenomena": [
+        "prepositional"
+      ],
+      "lambda_output": "λx. rests(queen, bridge)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the fish cries, the dancer jumps.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(cries(fish), jumps(dancer))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every knight swims.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification"
+      ],
+      "lambda_output": "∀x. knight(x) → swims(x)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The fast child sleeps.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "modifier"
+      ],
+      "lambda_output": "λx. sleeps(fast(child))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Jane and peter work.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction"
+      ],
+      "lambda_output": "λx. work(jane) ∧ λx. work(peter)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The writer runs.",
+      "category": "simple",
+      "phenomena": [
+        "predication"
+      ],
+      "lambda_output": "λx. runs(writer)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Kate and tom dream.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction"
+      ],
+      "lambda_output": "λx. dream(kate, tom)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The slow fish sits.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "modifier"
+      ],
+      "lambda_output": "λx. sits(fish)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The monk is slow.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. slow(monk)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Some knight laughs.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "existential"
+      ],
+      "lambda_output": "λx. laughs(knight)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The quiet scientist waits.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "modifier"
+      ],
+      "lambda_output": "λx. waits(quiet(scientist))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every judge writes a artist.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "transitive"
+      ],
+      "lambda_output": "∀x. (judge(x) → writes(x, artist))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "No queen rests.",
+      "category": "negation",
+      "phenomena": [
+        "negation",
+        "quantification"
+      ],
+      "lambda_output": "λx. rests(queen)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the baker sits, the singer smiles.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(sits(baker), smiles(singer))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "John swims and cries.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction",
+        "verb_coordination"
+      ],
+      "lambda_output": "λx. swims(john) ∧ cries(john)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "James likes lucy.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. likes(james, lucy)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The writer that guides the monk dreams.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause"
+      ],
+      "lambda_output": "λx. dreams(writer, monk)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Either the writer works or the knight smiles.",
+      "category": "disjunction",
+      "phenomena": [
+        "disjunction"
+      ],
+      "lambda_output": "λx. (works(writer) ∨ smiles(knight))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every baker trusts a baker.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "transitive"
+      ],
+      "lambda_output": "∀x. ∀y. trusts(x, y)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The chef finds the monk.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. finds(monk, chef)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The scientist hates the fish.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. hates(scientist, fish)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The fish is young.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. is(young, fish)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The judge is wise.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. is(wise, judge)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Frank sleeps and sits.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction",
+        "verb_coordination"
+      ],
+      "lambda_output": "λx. sleeps(frank) ∧ sits(frank)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Bob knows that the farmer sits.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "knows(bob, farmer, sits)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The baker greets the guard.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. greets(baker, guard)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every queen jumps.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification"
+      ],
+      "lambda_output": "∀x. queen(x) → jumps(x)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The student handed the judge a ball.",
+      "category": "ditransitive",
+      "phenomena": [
+        "predication",
+        "ditransitive"
+      ],
+      "lambda_output": "λx. handed(judge, ball)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Tom admires lucy.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. admires(tom, lucy)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The king who the poet guides works.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause",
+        "object_relative"
+      ],
+      "lambda_output": "λx. works(king, poet)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The writer follows the doctor.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. follows(writer, doctor)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The pilot sleeps in the castle.",
+      "category": "prepositional",
+      "phenomena": [
+        "prepositional"
+      ],
+      "lambda_output": "λx. sleeps(pilot) ∧ in(x, castle)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Alice greets kate.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. greets(alice, kate)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The guard sent the queen a letter.",
+      "category": "ditransitive",
+      "phenomena": [
+        "predication",
+        "ditransitive"
+      ],
+      "lambda_output": "λx. sent(guard, queen, letter)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Peter hates bob.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. hates(peter, bob)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The judge cries in the forest.",
+      "category": "prepositional",
+      "phenomena": [
+        "prepositional"
+      ],
+      "lambda_output": "λx. cries(judge, forest)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The loud baker swims.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "modifier"
+      ],
+      "lambda_output": "λx. swims(loud_baker)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the writer swims, the knight shouts.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(swims(x), shouts(knight))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Some chef smiles.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "existential"
+      ],
+      "lambda_output": "λx. smiles(chef)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Oscar trusts james.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. trusts(ox, james)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The humble judge dreams.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "modifier"
+      ],
+      "lambda_output": "λx. dreams(judge)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The judge sent the teacher a letter.",
+      "category": "ditransitive",
+      "phenomena": [
+        "predication",
+        "ditransitive"
+      ],
+      "lambda_output": "λx. sent(judge, teacher, letter)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "No bird smiles.",
+      "category": "negation",
+      "phenomena": [
+        "negation",
+        "quantification"
+      ],
+      "lambda_output": "λx. ¬smiles(bird)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Either the hunter smiles or the artist sings.",
+      "category": "disjunction",
+      "phenomena": [
+        "disjunction"
+      ],
+      "lambda_output": "λx. (smiles(hunter) ∨ sings(artist))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Sarah sleeps and flies.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction",
+        "verb_coordination"
+      ],
+      "lambda_output": "λx. sleeps(sarah) ∧ flies(sarah)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the bird sleeps, the singer dances.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(sleeps(bird), dances(singer))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Sarah thinks that the clerk smiles.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "λx. thinks(sarah, clerk, smiles)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "No sailor smiles.",
+      "category": "negation",
+      "phenomena": [
+        "negation",
+        "quantification"
+      ],
+      "lambda_output": "λx. ¬smiles(sailor)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The lawyer gave the woman a book.",
+      "category": "ditransitive",
+      "phenomena": [
+        "predication",
+        "ditransitive"
+      ],
+      "lambda_output": "λx. gave(lawyer, woman, book)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Paul waits.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "proper_noun"
+      ],
+      "lambda_output": "λx. waits(paul)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Jane and emma laugh.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction"
+      ],
+      "lambda_output": "λx. laugh(jane, emma)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every king runs.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification"
+      ],
+      "lambda_output": "∀x. (king(x) → runs(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The hunter works in the mountain.",
+      "category": "prepositional",
+      "phenomena": [
+        "prepositional"
+      ],
+      "lambda_output": "λx. works(hunter, mountain)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Either the man runs or the fish jumps.",
+      "category": "disjunction",
+      "phenomena": [
+        "disjunction"
+      ],
+      "lambda_output": "λx. (runs(man) ∨ jumps(fish))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The hunter sits slowly.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. sits(hunter, slowly)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The student is quiet.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. is_quiet(student)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The singer dances gently.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. dances(gently, singer)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Some lawyer walks.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "existential"
+      ],
+      "lambda_output": "λx. walks(some_lawyer)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The baker works gently.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. works(baker, gently)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the monk cries, the doctor flies.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(cries(monk), flies(doctor))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Jane dances and dreams.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction",
+        "verb_coordination"
+      ],
+      "lambda_output": "λx. dances(jane) ∧ dreams(jane)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Some child dances.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "existential"
+      ],
+      "lambda_output": "∃x. child(x) ∧ dances(x)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The clerk does not fly.",
+      "category": "negation",
+      "phenomena": [
+        "negation"
+      ],
+      "lambda_output": "λx. not(fly(clerk))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Jane and frank dream.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction"
+      ],
+      "lambda_output": "λx. dream(jane, frank)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The pilot is fast.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. fast(pilot)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Alice cries.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "proper_noun"
+      ],
+      "lambda_output": "λx. cries(alice)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The woman sits in the garden.",
+      "category": "prepositional",
+      "phenomena": [
+        "prepositional"
+      ],
+      "lambda_output": "λx. sits(woman, garden)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The calm pilot jumps.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "modifier"
+      ],
+      "lambda_output": "λx. jumps(pilot)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the baker flies, the child cries.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "flies(baker) → cries(child)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The chef who the clerk admires runs.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause",
+        "object_relative"
+      ],
+      "lambda_output": "λx. runs(λy. (admirer(y, clerk) ∧ y) → x)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The teacher works carefully.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. works(teacher, carefully)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The dancer greets the bird.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. greets(dancer, bird)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The fierce guard sits.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "modifier"
+      ],
+      "lambda_output": "λx. sits(guard)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "James smiles.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "proper_noun"
+      ],
+      "lambda_output": "λx. smiles(james)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the child works, the fish rests.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(works(child), rests(fish))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the woman sings, the child cries.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. (sings(woman) → cries(child))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The cat who the king sees jumps.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause",
+        "object_relative"
+      ],
+      "lambda_output": "λx. jumps(cat)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every dancer dreams.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification"
+      ],
+      "lambda_output": "∀x. (dancer(x) → dreams(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The sailor that fears the woman smiles.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause"
+      ],
+      "lambda_output": "λx. (fears(x, woman) → smiles(sailor))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The student offered the judge a gift.",
+      "category": "ditransitive",
+      "phenomena": [
+        "predication",
+        "ditransitive"
+      ],
+      "lambda_output": "λx. offered(student, judge, gift)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every king helps a judge.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "transitive"
+      ],
+      "lambda_output": "∀x. (king(x) → helps(x, judge))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The monk follows the teacher.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. follows(monk, teacher)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every queen shouts.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification"
+      ],
+      "lambda_output": "∀x. queen(x) → shouts(x)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Peter and frank walk.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction"
+      ],
+      "lambda_output": "λx. walk(peter, frank)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Some guard cries.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "existential"
+      ],
+      "lambda_output": "∃x. guard(x) ∧ cries(x)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every farmer reads a pilot.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "transitive"
+      ],
+      "lambda_output": "∀x. (farmer(x) → reads(x, pilot))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "John hates alice.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. hates(john, alice)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Either the artist shouts or the student flies.",
+      "category": "disjunction",
+      "phenomena": [
+        "disjunction"
+      ],
+      "lambda_output": "λx. (shouts(artist) ∨ flies(student))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The king who the judge guides waits.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause",
+        "object_relative"
+      ],
+      "lambda_output": "λx. waits(king, judge)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Tom swims.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "proper_noun"
+      ],
+      "lambda_output": "λx. swims(tom)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The monk laughs.",
+      "category": "simple",
+      "phenomena": [
+        "predication"
+      ],
+      "lambda_output": "λx. laughs(monk)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The woman does not shout.",
+      "category": "negation",
+      "phenomena": [
+        "negation"
+      ],
+      "lambda_output": "λx. not(shout(woman))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The scientist that writes the clerk cries.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause"
+      ],
+      "lambda_output": "λx. cries(scientist(x) ∧ writes(x, clerk))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The pilot serves the monk.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. serves(pilot, monk)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The sad judge swims.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "modifier"
+      ],
+      "lambda_output": "λx. swims(judge)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Some man shouts.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "existential"
+      ],
+      "lambda_output": "λx. shouts(man)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The hunter is humble.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. humble(hunter)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the sailor flies, the scientist jumps.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(flies(sailor), jumps(scientist))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The clerk writes the dog.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. writes(clerk, dog)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The guard sits quickly.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. sits(guard, quickly)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The farmer is calm.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. calm(farmer)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The teacher sings.",
+      "category": "simple",
+      "phenomena": [
+        "predication"
+      ],
+      "lambda_output": "λx. sings(teacher)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every cat sings.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification"
+      ],
+      "lambda_output": "∀x. (cat(x) → sings(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every monk flies.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification"
+      ],
+      "lambda_output": "∀x. monk(x) → flies(x)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The judge is proud.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. proud(judge)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The knight gave the student a ball.",
+      "category": "ditransitive",
+      "phenomena": [
+        "predication",
+        "ditransitive"
+      ],
+      "lambda_output": "λx. gave(knight, student, ball)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The hunter sings in the mountain.",
+      "category": "prepositional",
+      "phenomena": [
+        "prepositional"
+      ],
+      "lambda_output": "λx. sings(hunter, mountain)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "No chef sits.",
+      "category": "negation",
+      "phenomena": [
+        "negation",
+        "quantification"
+      ],
+      "lambda_output": "λx. sits(chef)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Frank helps lucy.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. helps(frank, lucy)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The child hates the singer.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. hates(child, singer)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The knight runs.",
+      "category": "simple",
+      "phenomena": [
+        "predication"
+      ],
+      "lambda_output": "λx. runs(knight)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Anna finds lucy.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. finds(anna, lucy)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "No dancer runs.",
+      "category": "negation",
+      "phenomena": [
+        "negation",
+        "quantification"
+      ],
+      "lambda_output": "∀x. (dancer(x) → ¬runs(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Paul fears that the queen walks.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "λx. fears(paul, x) → λx. walks(queen)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The lawyer does not shout.",
+      "category": "negation",
+      "phenomena": [
+        "negation"
+      ],
+      "lambda_output": "λx. not(shout(lawyer))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The hunter is kind.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. is_kind(hunter)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the baker laughs, the bird swims.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "laughs(baker) → swims(bird)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The scientist flies.",
+      "category": "simple",
+      "phenomena": [
+        "predication"
+      ],
+      "lambda_output": "λx. flies(scientist)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the child swims, the farmer jumps.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(swims(child), jumps(farmer))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The judge does not fall.",
+      "category": "negation",
+      "phenomena": [
+        "negation"
+      ],
+      "lambda_output": "λx. not(fall(judge))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "No hunter laughs.",
+      "category": "negation",
+      "phenomena": [
+        "negation",
+        "quantification"
+      ],
+      "lambda_output": "λx. ¬laughs(hunter)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the man swims, the cat jumps.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(swims(man), jumps(cat))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the poet flies, the teacher dances.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "flies(poet) → dances(teacher)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Tom fears that the guard sits.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "λx. fears(tom, guard, sits)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The cat who the writer knows swims.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause",
+        "object_relative"
+      ],
+      "lambda_output": "λx. swims(x) ∧ knows(writer, x)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The judge sits in the garden.",
+      "category": "prepositional",
+      "phenomena": [
+        "prepositional"
+      ],
+      "lambda_output": "λx. sits(judge, garden)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the pilot sits, the chef rests.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(sits(pilot), rests(chef))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The fish dances quickly.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. dances(fish, quickly)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Some guard sings.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "existential"
+      ],
+      "lambda_output": "λx. sings(some_guard)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Lucy knows that the writer sits.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "knows(lucy, λx. sits(writer))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Kate fears lucy.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. fears(kate, lucy)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the judge shouts, the singer jumps.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(shouts(judge), jumps(singer))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The teacher handed the woman a gift.",
+      "category": "ditransitive",
+      "phenomena": [
+        "predication",
+        "ditransitive"
+      ],
+      "lambda_output": "λx. handed(teacher, woman, gift)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The hunter who the king greets waits.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause",
+        "object_relative"
+      ],
+      "lambda_output": "λx. waits(hunter(x) ∧ greets(king(x)))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Helen flies.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "proper_noun"
+      ],
+      "lambda_output": "λx. flies(helen)",
+      "validated": true,
+      "validation_error": null
+    }
+  ],
+  "holdout_results": [
+    {
+      "sentence": "The elephant climbs bravely.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. climbs(elephant)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The elephant does not vanish.",
+      "category": "negation",
+      "phenomena": [
+        "negation"
+      ],
+      "lambda_output": "λx. not(vanish(elephant))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Felix thinks that the wizard whistles.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "λx. thinks(felix, wizard, whistles)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Felix chases diana.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. chases(felix, diana)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The wizard vanishes in the river.",
+      "category": "prepositional",
+      "phenomena": [
+        "prepositional"
+      ],
+      "lambda_output": "λx. vanishes(wizard, river)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "No elephant vanishes.",
+      "category": "negation",
+      "phenomena": [
+        "negation",
+        "quantification"
+      ],
+      "lambda_output": "λx. ¬vanishes(elephant)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The kind wizard whistles.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "modifier"
+      ],
+      "lambda_output": "λx. whistles(wizard)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The elephant is fast.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. fast(elephant)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "No nurse whistles.",
+      "category": "negation",
+      "phenomena": [
+        "negation",
+        "quantification"
+      ],
+      "lambda_output": "λx. ¬whistles(nurse)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Felix vanishes.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "proper_noun"
+      ],
+      "lambda_output": "λx. vanishes(felix)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Either the elephant vanishes or the wizard whistles.",
+      "category": "disjunction",
+      "phenomena": [
+        "disjunction"
+      ],
+      "lambda_output": "λx. (vanishes(elephant) ∨ whistles(wizard))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The nurse climbs.",
+      "category": "simple",
+      "phenomena": [
+        "predication"
+      ],
+      "lambda_output": "λx. climbs(nurse)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the nurse climbs, the wizard vanishes.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(climbs(nurse), vanishes(wizard))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The nurse carries the wizard.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. carries(nurse, wizard)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The nurse that carries the wizard climbs.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause"
+      ],
+      "lambda_output": "λx. climbs(nurse(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The elephant showed the wizard a ball.",
+      "category": "ditransitive",
+      "phenomena": [
+        "predication",
+        "ditransitive"
+      ],
+      "lambda_output": "λx. showed(wizard, ball)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Some nurse whistles.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "existential"
+      ],
+      "lambda_output": "∃x. nurse(x) ∧ whistles(x)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The wizard is old.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. old(wizard)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The elephant vanishes bravely.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. vanishes(elephant)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Diana carries iris.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. carries(diana, iris)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "If the elephant whistles, the wizard whistles.",
+      "category": "conditional",
+      "phenomena": [
+        "conditional"
+      ],
+      "lambda_output": "λx. if(whistles(elephant), whistles(wizard))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The kind nurse whistles.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "modifier"
+      ],
+      "lambda_output": "λx. whistles(nurse)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Either the nurse vanishes or the wizard vanishes.",
+      "category": "disjunction",
+      "phenomena": [
+        "disjunction"
+      ],
+      "lambda_output": "λx. (vanishes(nurse) ∨ vanishes(wizard))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Felix climbs.",
+      "category": "simple",
+      "phenomena": [
+        "predication",
+        "proper_noun"
+      ],
+      "lambda_output": "λx. climbs(felix)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The elephant who the wizard chases whistles.",
+      "category": "relative_clause",
+      "phenomena": [
+        "relative_clause",
+        "object_relative"
+      ],
+      "lambda_output": "λx. whistles(elephant)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The wizard is slow.",
+      "category": "copular",
+      "phenomena": [
+        "copular",
+        "adjective"
+      ],
+      "lambda_output": "λx. slow(wizard)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Iris hopes that the wizard climbs.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "λx. hopes(iris, wizard, climbs)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Iris vanishes and whistles.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction",
+        "verb_coordination"
+      ],
+      "lambda_output": "λx. vanishes(iris) ∧ whistles(iris)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Iris and diana climb.",
+      "category": "conjunction",
+      "phenomena": [
+        "conjunction"
+      ],
+      "lambda_output": "λx. climb(iris) ∧ climb(diana)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The nurse climbs in the bridge.",
+      "category": "prepositional",
+      "phenomena": [
+        "prepositional"
+      ],
+      "lambda_output": "λx. climbs(nurse, bridge)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The wizard whistles.",
+      "category": "simple",
+      "phenomena": [
+        "predication"
+      ],
+      "lambda_output": "λx. whistles(wizard)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Diana fears that the nurse vanishes.",
+      "category": "attitude",
+      "phenomena": [
+        "propositional_attitude"
+      ],
+      "lambda_output": "λx. fears(diana, x) → λx. vanishes(nurse)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every wizard carries a wizard.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification",
+        "transitive"
+      ],
+      "lambda_output": "∀x. wizard(x) → carries(wizard(x), wizard(x))",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The elephant rescues the nurse.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. rescues(elephant, nurse)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The nurse offered the wizard a flower.",
+      "category": "ditransitive",
+      "phenomena": [
+        "predication",
+        "ditransitive"
+      ],
+      "lambda_output": "λx. offered(nurse, wizard, flower)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The elephant carries the wizard.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "transitive"
+      ],
+      "lambda_output": "λx. carries(elephant, wizard)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Every nurse climbs.",
+      "category": "quantified",
+      "phenomena": [
+        "quantification"
+      ],
+      "lambda_output": "∀x. nurse(x) → climbs(x)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The nurse climbs slowly.",
+      "category": "adverb",
+      "phenomena": [
+        "adverb"
+      ],
+      "lambda_output": "λx. climbs(nurse, slowly)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "The nurse does not whistle.",
+      "category": "negation",
+      "phenomena": [
+        "negation"
+      ],
+      "lambda_output": "λx. ¬whistle(nurse)",
+      "validated": true,
+      "validation_error": null
+    },
+    {
+      "sentence": "Felix carries iris.",
+      "category": "transitive",
+      "phenomena": [
+        "predication",
+        "proper_noun",
+        "transitive"
+      ],
+      "lambda_output": "λx. carries(felix, iris)",
+      "validated": true,
+      "validation_error": null
+    }
+  ]
+}

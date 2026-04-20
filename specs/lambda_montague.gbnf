@@ -1,0 +1,151 @@
+# Montague-style Typed Lambda Calculus — GBNF Grammar
+#
+# Constrained decoding grammar for llama.cpp. Forces the teacher model
+# (Qwen3-4B) to produce consistent Montague-style lambda expressions
+# during training data generation for distillation.
+#
+# Formalism: Montague semantics (1970) + standard predicate logic
+#   Binders:      λ (abstraction), ∀ (universal), ∃ (existential), ι (definite description)
+#   Connectives:  ∧ (conjunction), ∨ (disjunction), → (implication), ¬ (negation)
+#   Application:  predicate(arg1, arg2, ...)
+#   Variables:    single lowercase letter from {u, v, w, x, y, z}
+#   Identifiers:  multi-char lowercase with underscores (predicates, constants, names)
+#
+# What this grammar EXCLUDES (the teacher's inconsistencies):
+#   No pipes (|)           — use ∧ or ∨
+#   No ampersands (&)      — use ∧
+#   No does_not_X()        — use ¬X()
+#   No question marks      — well-formed expressions only
+#   No "where" clauses     — use binders
+#   No "x = no"            — use ¬∃ or ∀x. ... → ¬...
+#   No natural language     — formal notation only
+#
+# Design: derived from observation of Qwen3-4B compile outputs and
+# Montague grammar target formalism. See AGENTS.md S2 λ grammar_artifact.
+#
+# Part of the verbum project — distilling the lambda compiler from LLMs.
+# License: MIT
+#
+# ════════════════════════════════════════════════════════════════════════
+#
+# Precedence (loosest → tightest, handled by grammar structure):
+#   1. Binders (λ, ∀, ∃, ι) — extend as far right as possible
+#   2. Connectives (→, ∨, ∧) — right-associative chains
+#   3. Negation (¬)          — prefix, binds tighter than connectives
+#   4. Atoms                 — applications, variables, parenthesized
+#
+# Examples this grammar accepts:
+#   λx. runs(dog)                                       — simple predication
+#   ∀x. dog(x) → runs(x)                               — universal
+#   ∃x. dog(x) ∧ runs(x)                               — existential
+#   ¬∃x. fish(x) ∧ swims(x)                            — negated quantifier
+#   loves(alice, bob)                                   — multi-arg application
+#   runs(ιx. dog(x) ∧ big(x))                          — definite description
+#   ∀x. student(x) → ∃y. book(y) ∧ reads(x, y)        — nested quantifiers
+#   believes(alice, flat(earth))                        — nested application
+#   quickly(runs(tom))                                  — adverb as function
+#   rains → wet(ground)                                 — bare conditional
+#   black(ιy. cat(y) ∧ sat_on(y, ιz. mat(z)))          — nested iota
+#
+# ════════════════════════════════════════════════════════════════════════
+
+
+# ─── Root ─────────────────────────────────────────────────────────────
+# A complete expression followed by newline (generation stop signal).
+
+root ::= expr "\n"
+
+
+# ─── Expression ───────────────────────────────────────────────────────
+# Top-level: optionally negated binder, or a connective chain.
+#
+#   ¬∃x. fish(x) ∧ swims(x)      →  "¬"? binder-expr
+#   ∀x. dog(x) → runs(x)         →  binder-expr (no negation)
+#   runs(dog) ∧ sleeps(cat)       →  connective-expr
+
+expr ::= "¬"? binder-expr | connective-expr
+
+
+# ─── Binder Expression ───────────────────────────────────────────────
+# λx. E  |  ∀x. E  |  ∃x. E  |  ιx. E
+#
+# The body extends as far right as possible (standard convention).
+# Nested binders: ∀x. ∃y. ... parses as ∀x. (∃y. (...))
+
+binder-expr ::= binder var ". " expr
+
+
+# ─── Connective Chain ────────────────────────────────────────────────
+# Chains of binary connectives: A ∧ B ∧ C, A → B, A ∨ B → C
+#
+# Right side of each connective is a full expr, allowing:
+#   student(x) → ∃y. book(y) ∧ reads(x, y)
+# to parse as: student(x) → (∃y. book(y) ∧ reads(x, y))
+#
+# The grammar is intentionally flat (no precedence between ∧/∨/→)
+# because we're constraining generation, not parsing. The teacher's
+# internal model handles semantic grouping. Explicit parentheses
+# resolve any ambiguity.
+
+connective-expr ::= unary (connective expr)*
+
+
+# ─── Binary Connectives ──────────────────────────────────────────────
+# Spaces around connectives for clean, consistent output.
+
+connective ::= " ∧ " | " ∨ " | " → "
+
+
+# ─── Unary Expression ────────────────────────────────────────────────
+# Optional negation prefix on an atom.
+#   ¬runs(dog)     →  negated application
+#   ¬swims(x)      →  negated predicate
+#   ¬¬runs(dog)    →  double negation (recursive)
+#   runs(dog)      →  bare atom
+
+unary ::= "¬" unary | atom
+
+
+# ─── Atom ─────────────────────────────────────────────────────────────
+# The indivisible units:
+#   pred(x, y)     →  function application
+#   rains          →  bare identifier (propositional constant)
+#   x              →  variable
+#   (E)            →  parenthesized expression
+
+atom ::= ident "(" arg-list ")" | ident | var | "(" expr ")"
+
+
+# ─── Argument List ────────────────────────────────────────────────────
+# One or more comma-separated expressions.
+# Supports nested binders as arguments: runs(ιx. dog(x) ∧ big(x))
+
+arg-list ::= expr (", " expr)*
+
+
+# ─── Binder Symbols ──────────────────────────────────────────────────
+#   λ  U+03BB  abstraction
+#   ∀  U+2200  universal quantifier
+#   ∃  U+2203  existential quantifier
+#   ι  U+03B9  definite description (iota operator)
+
+binder ::= "λ" | "∀" | "∃" | "ι"
+
+
+# ─── Variables ────────────────────────────────────────────────────────
+# Single lowercase letter: u, v, w, x, y, z (6 variables).
+# Sufficient for Montague-style expressions (most need ≤3 quantifiers).
+# Distinct from identifiers (which require 2+ characters).
+
+var ::= [u-z]
+
+
+# ─── Identifiers ─────────────────────────────────────────────────────
+# Predicates, constants, proper names — all multi-character lowercase.
+#   runs, loves, dog, cat, alice, bob, sat_on, quickly
+#
+# Minimum 2 characters to distinguish from variables.
+# Underscores allowed after first character (for sat_on, gave_to, etc).
+# No uppercase, no digits — Montague convention lowercases everything.
+
+ident ::= [a-z] [a-z_]+

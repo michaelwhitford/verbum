@@ -1,0 +1,10 @@
+{
+  "task": "classify",
+  "generation": " \u2192 mixed\n\nOutput: mixed\nOkay, let's see. The user wants me to determine the sentiment of the input sentence. The input is: \"The hotel room was clean but tiny, and while the staff was friendly, the noise from the",
+  "success": false,
+  "ablated_head": [
+    1,
+    0
+  ],
+  "is_baseline": false
+}

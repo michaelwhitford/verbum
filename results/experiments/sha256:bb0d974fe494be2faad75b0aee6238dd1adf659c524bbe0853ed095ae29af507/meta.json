@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T04:32:20.428309+00:00",
+  "node_id": "task-head-scan/classify/probe-cls-pos-complex/L4",
+  "config_hash": "sha256:bb0d974fe494be2faad75b0aee6238dd1adf659c524bbe0853ed095ae29af507",
+  "elapsed_ms": 71187.2,
+  "completed_at": "2026-04-17T04:33:31.616110+00:00"
+}

@@ -1,0 +1,10 @@
+{
+  "task": "compile",
+  "generation": " \u2192 ?\n\nSo, how do I convert the sentence \"Every student reads a book.\" into a lambda expression using the given format?\n\nOkay, let's see. The user wants to convert the sentence \"Every student reads a book.\" into a lambda expression",
+  "success": false,
+  "ablated_head": [
+    24,
+    0
+  ],
+  "is_baseline": false
+}

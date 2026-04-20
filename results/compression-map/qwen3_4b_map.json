@@ -1,0 +1,2704 @@
+{
+  "model": "Qwen/Qwen3-4B",
+  "n_layers": 36,
+  "hidden_size": 2560,
+  "compression_layers_tested": [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "dominant_pc_layers_tested": [
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "q1_dominant_direction": {
+    "per_sentence": [
+      {
+        "sentence": "The big dog chased the small cat in the park",
+        "n_tokens": 10,
+        "n_words": 10,
+        "layer_correlations": [
+          {
+            "layer": 0,
+            "r_word_pos": 0.202,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.1408,
+            "r_content": 0.7937
+          },
+          {
+            "layer": 1,
+            "r_word_pos": 0.1351,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.1155,
+            "r_content": 0.6369
+          },
+          {
+            "layer": 2,
+            "r_word_pos": 0.1313,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.1181,
+            "r_content": 0.6352
+          },
+          {
+            "layer": 3,
+            "r_word_pos": 0.1248,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.1259,
+            "r_content": 0.6368
+          },
+          {
+            "layer": 4,
+            "r_word_pos": 0.122,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.1368,
+            "r_content": 0.6468
+          },
+          {
+            "layer": 5,
+            "r_word_pos": 0.0926,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.1681,
+            "r_content": 0.6568
+          },
+          {
+            "layer": 6,
+            "r_word_pos": 0.522,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0743,
+            "r_content": 0.4082
+          },
+          {
+            "layer": 7,
+            "r_word_pos": 0.5219,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0742,
+            "r_content": 0.4082
+          },
+          {
+            "layer": 8,
+            "r_word_pos": 0.5219,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0741,
+            "r_content": 0.4083
+          },
+          {
+            "layer": 9,
+            "r_word_pos": 0.5219,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0741,
+            "r_content": 0.4082
+          },
+          {
+            "layer": 10,
+            "r_word_pos": 0.522,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0741,
+            "r_content": 0.4081
+          },
+          {
+            "layer": 11,
+            "r_word_pos": 0.5221,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0742,
+            "r_content": 0.4081
+          },
+          {
+            "layer": 12,
+            "r_word_pos": 0.5221,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0744,
+            "r_content": 0.4081
+          },
+          {
+            "layer": 13,
+            "r_word_pos": 0.5221,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0743,
+            "r_content": 0.408
+          },
+          {
+            "layer": 14,
+            "r_word_pos": 0.5216,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0738,
+            "r_content": 0.4083
+          },
+          {
+            "layer": 15,
+            "r_word_pos": 0.5218,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0735,
+            "r_content": 0.408
+          },
+          {
+            "layer": 16,
+            "r_word_pos": 0.5211,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0733,
+            "r_content": 0.4085
+          },
+          {
+            "layer": 17,
+            "r_word_pos": 0.5207,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0736,
+            "r_content": 0.4086
+          },
+          {
+            "layer": 18,
+            "r_word_pos": 0.5219,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0741,
+            "r_content": 0.4077
+          },
+          {
+            "layer": 19,
+            "r_word_pos": 0.5219,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0742,
+            "r_content": 0.4076
+          },
+          {
+            "layer": 20,
+            "r_word_pos": 0.5218,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0739,
+            "r_content": 0.4074
+          },
+          {
+            "layer": 21,
+            "r_word_pos": 0.522,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0741,
+            "r_content": 0.4073
+          },
+          {
+            "layer": 22,
+            "r_word_pos": 0.5211,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0732,
+            "r_content": 0.4075
+          },
+          {
+            "layer": 23,
+            "r_word_pos": 0.5199,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0725,
+            "r_content": 0.4074
+          },
+          {
+            "layer": 24,
+            "r_word_pos": 0.5181,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0738,
+            "r_content": 0.4094
+          },
+          {
+            "layer": 25,
+            "r_word_pos": 0.517,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0741,
+            "r_content": 0.4102
+          },
+          {
+            "layer": 26,
+            "r_word_pos": 0.517,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0741,
+            "r_content": 0.4099
+          },
+          {
+            "layer": 27,
+            "r_word_pos": 0.5167,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0746,
+            "r_content": 0.4104
+          },
+          {
+            "layer": 28,
+            "r_word_pos": 0.5162,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.076,
+            "r_content": 0.4112
+          },
+          {
+            "layer": 29,
+            "r_word_pos": 0.5154,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0792,
+            "r_content": 0.4129
+          },
+          {
+            "layer": 30,
+            "r_word_pos": 0.5141,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0829,
+            "r_content": 0.4153
+          },
+          {
+            "layer": 31,
+            "r_word_pos": 0.5119,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0844,
+            "r_content": 0.4166
+          },
+          {
+            "layer": 32,
+            "r_word_pos": 0.5105,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.087,
+            "r_content": 0.4181
+          },
+          {
+            "layer": 33,
+            "r_word_pos": 0.5085,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0862,
+            "r_content": 0.4188
+          },
+          {
+            "layer": 34,
+            "r_word_pos": 0.4936,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.1015,
+            "r_content": 0.4327
+          },
+          {
+            "layer": 35,
+            "r_word_pos": 0.5071,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.1208,
+            "r_content": 0.4282
+          }
+        ]
+      },
+      {
+        "sentence": "Every student who passed the exam received a certificate",
+        "n_tokens": 9,
+        "n_words": 9,
+        "layer_correlations": [
+          {
+            "layer": 0,
+            "r_word_pos": 0.6165,
+            "r_depth": 0.3124,
+            "r_pos_cat": -0.2016,
+            "r_content": 0.5172
+          },
+          {
+            "layer": 1,
+            "r_word_pos": 0.271,
+            "r_depth": -0.1817,
+            "r_pos_cat": -0.1853,
+            "r_content": 0.5846
+          },
+          {
+            "layer": 2,
+            "r_word_pos": 0.2806,
+            "r_depth": -0.1814,
+            "r_pos_cat": -0.1857,
+            "r_content": 0.5831
+          },
+          {
+            "layer": 3,
+            "r_word_pos": 0.2484,
+            "r_depth": -0.2071,
+            "r_pos_cat": -0.1873,
+            "r_content": 0.576
+          },
+          {
+            "layer": 4,
+            "r_word_pos": 0.2564,
+            "r_depth": -0.2273,
+            "r_pos_cat": -0.2136,
+            "r_content": 0.5902
+          },
+          {
+            "layer": 5,
+            "r_word_pos": 0.1378,
+            "r_depth": -0.3223,
+            "r_pos_cat": -0.1952,
+            "r_content": 0.5063
+          },
+          {
+            "layer": 6,
+            "r_word_pos": 0.5477,
+            "r_depth": 0.3163,
+            "r_pos_cat": -0.131,
+            "r_content": 0.3952
+          },
+          {
+            "layer": 7,
+            "r_word_pos": 0.5477,
+            "r_depth": 0.3164,
+            "r_pos_cat": -0.131,
+            "r_content": 0.3952
+          },
+          {
+            "layer": 8,
+            "r_word_pos": 0.5477,
+            "r_depth": 0.3164,
+            "r_pos_cat": -0.131,
+            "r_content": 0.3952
+          },
+          {
+            "layer": 9,
+            "r_word_pos": 0.5477,
+            "r_depth": 0.3164,
+            "r_pos_cat": -0.131,
+            "r_content": 0.3952
+          },
+          {
+            "layer": 10,
+            "r_word_pos": 0.5478,
+            "r_depth": 0.3163,
+            "r_pos_cat": -0.1309,
+            "r_content": 0.3952
+          },
+          {
+            "layer": 11,
+            "r_word_pos": 0.5478,
+            "r_depth": 0.3163,
+            "r_pos_cat": -0.131,
+            "r_content": 0.3952
+          },
+          {
+            "layer": 12,
+            "r_word_pos": 0.5478,
+            "r_depth": 0.3164,
+            "r_pos_cat": -0.1309,
+            "r_content": 0.3952
+          },
+          {
+            "layer": 13,
+            "r_word_pos": 0.5478,
+            "r_depth": 0.3165,
+            "r_pos_cat": -0.1309,
+            "r_content": 0.3952
+          },
+          {
+            "layer": 14,
+            "r_word_pos": 0.5477,
+            "r_depth": 0.3166,
+            "r_pos_cat": -0.1308,
+            "r_content": 0.395
+          },
+          {
+            "layer": 15,
+            "r_word_pos": 0.5478,
+            "r_depth": 0.3164,
+            "r_pos_cat": -0.1308,
+            "r_content": 0.3951
+          },
+          {
+            "layer": 16,
+            "r_word_pos": 0.5475,
+            "r_depth": 0.3169,
+            "r_pos_cat": -0.1307,
+            "r_content": 0.3948
+          },
+          {
+            "layer": 17,
+            "r_word_pos": 0.5474,
+            "r_depth": 0.3168,
+            "r_pos_cat": -0.1306,
+            "r_content": 0.3948
+          },
+          {
+            "layer": 18,
+            "r_word_pos": 0.5474,
+            "r_depth": 0.3164,
+            "r_pos_cat": -0.1307,
+            "r_content": 0.3953
+          },
+          {
+            "layer": 19,
+            "r_word_pos": 0.5472,
+            "r_depth": 0.3166,
+            "r_pos_cat": -0.1305,
+            "r_content": 0.3954
+          },
+          {
+            "layer": 20,
+            "r_word_pos": 0.5472,
+            "r_depth": 0.3166,
+            "r_pos_cat": -0.1304,
+            "r_content": 0.3953
+          },
+          {
+            "layer": 21,
+            "r_word_pos": 0.5472,
+            "r_depth": 0.3168,
+            "r_pos_cat": -0.1306,
+            "r_content": 0.3954
+          },
+          {
+            "layer": 22,
+            "r_word_pos": 0.5468,
+            "r_depth": 0.317,
+            "r_pos_cat": -0.1306,
+            "r_content": 0.3956
+          },
+          {
+            "layer": 23,
+            "r_word_pos": 0.5464,
+            "r_depth": 0.317,
+            "r_pos_cat": -0.1304,
+            "r_content": 0.3956
+          },
+          {
+            "layer": 24,
+            "r_word_pos": 0.5457,
+            "r_depth": 0.3173,
+            "r_pos_cat": -0.1307,
+            "r_content": 0.396
+          },
+          {
+            "layer": 25,
+            "r_word_pos": 0.5451,
+            "r_depth": 0.3176,
+            "r_pos_cat": -0.1311,
+            "r_content": 0.3967
+          },
+          {
+            "layer": 26,
+            "r_word_pos": 0.5449,
+            "r_depth": 0.318,
+            "r_pos_cat": -0.1312,
+            "r_content": 0.3971
+          },
+          {
+            "layer": 27,
+            "r_word_pos": 0.5449,
+            "r_depth": 0.3181,
+            "r_pos_cat": -0.1319,
+            "r_content": 0.3979
+          },
+          {
+            "layer": 28,
+            "r_word_pos": 0.5446,
+            "r_depth": 0.318,
+            "r_pos_cat": -0.1322,
+            "r_content": 0.3985
+          },
+          {
+            "layer": 29,
+            "r_word_pos": 0.5443,
+            "r_depth": 0.3177,
+            "r_pos_cat": -0.1327,
+            "r_content": 0.3993
+          },
+          {
+            "layer": 30,
+            "r_word_pos": 0.543,
+            "r_depth": 0.3181,
+            "r_pos_cat": -0.1324,
+            "r_content": 0.3996
+          },
+          {
+            "layer": 31,
+            "r_word_pos": 0.5435,
+            "r_depth": 0.3183,
+            "r_pos_cat": -0.1318,
+            "r_content": 0.3987
+          },
+          {
+            "layer": 32,
+            "r_word_pos": 0.543,
+            "r_depth": 0.3183,
+            "r_pos_cat": -0.1319,
+            "r_content": 0.3991
+          },
+          {
+            "layer": 33,
+            "r_word_pos": 0.5432,
+            "r_depth": 0.3182,
+            "r_pos_cat": -0.1318,
+            "r_content": 0.3992
+          },
+          {
+            "layer": 34,
+            "r_word_pos": 0.5402,
+            "r_depth": 0.3219,
+            "r_pos_cat": -0.1318,
+            "r_content": 0.4009
+          },
+          {
+            "layer": 35,
+            "r_word_pos": 0.5651,
+            "r_depth": 0.3282,
+            "r_pos_cat": -0.1377,
+            "r_content": 0.3847
+          }
+        ]
+      },
+      {
+        "sentence": "The professor told the student that the results were significant",
+        "n_tokens": 10,
+        "n_words": 10,
+        "layer_correlations": [
+          {
+            "layer": 0,
+            "r_word_pos": 0.5299,
+            "r_depth": 0.2624,
+            "r_pos_cat": -0.1617,
+            "r_content": 0.7335
+          },
+          {
+            "layer": 1,
+            "r_word_pos": 0.5607,
+            "r_depth": 0.3797,
+            "r_pos_cat": -0.1317,
+            "r_content": 0.6189
+          },
+          {
+            "layer": 2,
+            "r_word_pos": 0.5525,
+            "r_depth": 0.3827,
+            "r_pos_cat": -0.1319,
+            "r_content": 0.6167
+          },
+          {
+            "layer": 3,
+            "r_word_pos": 0.5523,
+            "r_depth": 0.3876,
+            "r_pos_cat": -0.1319,
+            "r_content": 0.6221
+          },
+          {
+            "layer": 4,
+            "r_word_pos": 0.5523,
+            "r_depth": 0.3848,
+            "r_pos_cat": -0.1341,
+            "r_content": 0.6308
+          },
+          {
+            "layer": 5,
+            "r_word_pos": 0.5649,
+            "r_depth": 0.4022,
+            "r_pos_cat": -0.1225,
+            "r_content": 0.6403
+          },
+          {
+            "layer": 6,
+            "r_word_pos": 0.5222,
+            "r_depth": 0.2723,
+            "r_pos_cat": -0.0894,
+            "r_content": 0.4084
+          },
+          {
+            "layer": 7,
+            "r_word_pos": 0.5221,
+            "r_depth": 0.2721,
+            "r_pos_cat": -0.0894,
+            "r_content": 0.4084
+          },
+          {
+            "layer": 8,
+            "r_word_pos": 0.5221,
+            "r_depth": 0.2721,
+            "r_pos_cat": -0.0894,
+            "r_content": 0.4085
+          },
+          {
+            "layer": 9,
+            "r_word_pos": 0.5221,
+            "r_depth": 0.272,
+            "r_pos_cat": -0.0895,
+            "r_content": 0.4085
+          },
+          {
+            "layer": 10,
+            "r_word_pos": 0.5221,
+            "r_depth": 0.2721,
+            "r_pos_cat": -0.0895,
+            "r_content": 0.4085
+          },
+          {
+            "layer": 11,
+            "r_word_pos": 0.5222,
+            "r_depth": 0.2722,
+            "r_pos_cat": -0.0893,
+            "r_content": 0.4084
+          },
+          {
+            "layer": 12,
+            "r_word_pos": 0.5219,
+            "r_depth": 0.2718,
+            "r_pos_cat": -0.0895,
+            "r_content": 0.4085
+          },
+          {
+            "layer": 13,
+            "r_word_pos": 0.5222,
+            "r_depth": 0.2719,
+            "r_pos_cat": -0.0893,
+            "r_content": 0.4084
+          },
+          {
+            "layer": 14,
+            "r_word_pos": 0.5223,
+            "r_depth": 0.2719,
+            "r_pos_cat": -0.0893,
+            "r_content": 0.4082
+          },
+          {
+            "layer": 15,
+            "r_word_pos": 0.5221,
+            "r_depth": 0.2716,
+            "r_pos_cat": -0.0893,
+            "r_content": 0.4083
+          },
+          {
+            "layer": 16,
+            "r_word_pos": 0.5218,
+            "r_depth": 0.2715,
+            "r_pos_cat": -0.0893,
+            "r_content": 0.4072
+          },
+          {
+            "layer": 17,
+            "r_word_pos": 0.5218,
+            "r_depth": 0.2717,
+            "r_pos_cat": -0.0893,
+            "r_content": 0.4075
+          },
+          {
+            "layer": 18,
+            "r_word_pos": 0.5223,
+            "r_depth": 0.2719,
+            "r_pos_cat": -0.0895,
+            "r_content": 0.4088
+          },
+          {
+            "layer": 19,
+            "r_word_pos": 0.5218,
+            "r_depth": 0.2715,
+            "r_pos_cat": -0.0892,
+            "r_content": 0.4087
+          },
+          {
+            "layer": 20,
+            "r_word_pos": 0.5215,
+            "r_depth": 0.2712,
+            "r_pos_cat": -0.0894,
+            "r_content": 0.4086
+          },
+          {
+            "layer": 21,
+            "r_word_pos": 0.5211,
+            "r_depth": 0.2708,
+            "r_pos_cat": -0.0898,
+            "r_content": 0.4086
+          },
+          {
+            "layer": 22,
+            "r_word_pos": 0.5212,
+            "r_depth": 0.2708,
+            "r_pos_cat": -0.089,
+            "r_content": 0.4086
+          },
+          {
+            "layer": 23,
+            "r_word_pos": 0.5209,
+            "r_depth": 0.2706,
+            "r_pos_cat": -0.0889,
+            "r_content": 0.4084
+          },
+          {
+            "layer": 24,
+            "r_word_pos": 0.5203,
+            "r_depth": 0.27,
+            "r_pos_cat": -0.0901,
+            "r_content": 0.4102
+          },
+          {
+            "layer": 25,
+            "r_word_pos": 0.5199,
+            "r_depth": 0.2694,
+            "r_pos_cat": -0.0903,
+            "r_content": 0.4105
+          },
+          {
+            "layer": 26,
+            "r_word_pos": 0.5201,
+            "r_depth": 0.2695,
+            "r_pos_cat": -0.09,
+            "r_content": 0.4108
+          },
+          {
+            "layer": 27,
+            "r_word_pos": 0.5206,
+            "r_depth": 0.2699,
+            "r_pos_cat": -0.0906,
+            "r_content": 0.4121
+          },
+          {
+            "layer": 28,
+            "r_word_pos": 0.52,
+            "r_depth": 0.2692,
+            "r_pos_cat": -0.0916,
+            "r_content": 0.4136
+          },
+          {
+            "layer": 29,
+            "r_word_pos": 0.52,
+            "r_depth": 0.2693,
+            "r_pos_cat": -0.0923,
+            "r_content": 0.4149
+          },
+          {
+            "layer": 30,
+            "r_word_pos": 0.5186,
+            "r_depth": 0.2678,
+            "r_pos_cat": -0.0931,
+            "r_content": 0.4159
+          },
+          {
+            "layer": 31,
+            "r_word_pos": 0.518,
+            "r_depth": 0.2678,
+            "r_pos_cat": -0.0936,
+            "r_content": 0.4165
+          },
+          {
+            "layer": 32,
+            "r_word_pos": 0.5195,
+            "r_depth": 0.2692,
+            "r_pos_cat": -0.0937,
+            "r_content": 0.4166
+          },
+          {
+            "layer": 33,
+            "r_word_pos": 0.5193,
+            "r_depth": 0.2694,
+            "r_pos_cat": -0.093,
+            "r_content": 0.4148
+          },
+          {
+            "layer": 34,
+            "r_word_pos": 0.5188,
+            "r_depth": 0.2695,
+            "r_pos_cat": -0.0973,
+            "r_content": 0.4169
+          },
+          {
+            "layer": 35,
+            "r_word_pos": 0.5294,
+            "r_depth": 0.2817,
+            "r_pos_cat": -0.1082,
+            "r_content": 0.4287
+          }
+        ]
+      },
+      {
+        "sentence": "Someone believes that every child deserves a good education",
+        "n_tokens": 9,
+        "n_words": 9,
+        "layer_correlations": [
+          {
+            "layer": 0,
+            "r_word_pos": 0.6836,
+            "r_depth": 0.6275,
+            "r_pos_cat": 0.3081,
+            "r_content": -0.1393
+          },
+          {
+            "layer": 1,
+            "r_word_pos": 0.1665,
+            "r_depth": 0.1598,
+            "r_pos_cat": 0.1464,
+            "r_content": 0.2522
+          },
+          {
+            "layer": 2,
+            "r_word_pos": 0.0999,
+            "r_depth": 0.0982,
+            "r_pos_cat": 0.1072,
+            "r_content": 0.3071
+          },
+          {
+            "layer": 3,
+            "r_word_pos": 0.0507,
+            "r_depth": 0.0549,
+            "r_pos_cat": 0.0816,
+            "r_content": 0.3412
+          },
+          {
+            "layer": 4,
+            "r_word_pos": 0.0602,
+            "r_depth": 0.0685,
+            "r_pos_cat": 0.0586,
+            "r_content": 0.3607
+          },
+          {
+            "layer": 5,
+            "r_word_pos": -0.1113,
+            "r_depth": -0.0766,
+            "r_pos_cat": -0.0989,
+            "r_content": 0.5185
+          },
+          {
+            "layer": 6,
+            "r_word_pos": 0.5477,
+            "r_depth": 0.5,
+            "r_pos_cat": 0.35,
+            "r_content": -0.25
+          },
+          {
+            "layer": 7,
+            "r_word_pos": 0.5477,
+            "r_depth": 0.5,
+            "r_pos_cat": 0.35,
+            "r_content": -0.25
+          },
+          {
+            "layer": 8,
+            "r_word_pos": 0.5478,
+            "r_depth": 0.5001,
+            "r_pos_cat": 0.35,
+            "r_content": -0.25
+          },
+          {
+            "layer": 9,
+            "r_word_pos": 0.5478,
+            "r_depth": 0.5001,
+            "r_pos_cat": 0.3501,
+            "r_content": -0.25
+          },
+          {
+            "layer": 10,
+            "r_word_pos": 0.5479,
+            "r_depth": 0.5003,
+            "r_pos_cat": 0.35,
+            "r_content": -0.25
+          },
+          {
+            "layer": 11,
+            "r_word_pos": 0.5479,
+            "r_depth": 0.5003,
+            "r_pos_cat": 0.35,
+            "r_content": -0.2499
+          },
+          {
+            "layer": 12,
+            "r_word_pos": 0.5481,
+            "r_depth": 0.5003,
+            "r_pos_cat": 0.3499,
+            "r_content": -0.2498
+          },
+          {
+            "layer": 13,
+            "r_word_pos": 0.5482,
+            "r_depth": 0.5004,
+            "r_pos_cat": 0.35,
+            "r_content": -0.2498
+          },
+          {
+            "layer": 14,
+            "r_word_pos": 0.5482,
+            "r_depth": 0.5005,
+            "r_pos_cat": 0.3501,
+            "r_content": -0.25
+          },
+          {
+            "layer": 15,
+            "r_word_pos": 0.5482,
+            "r_depth": 0.5004,
+            "r_pos_cat": 0.3502,
+            "r_content": -0.2501
+          },
+          {
+            "layer": 16,
+            "r_word_pos": 0.5483,
+            "r_depth": 0.5005,
+            "r_pos_cat": 0.3502,
+            "r_content": -0.2506
+          },
+          {
+            "layer": 17,
+            "r_word_pos": 0.5482,
+            "r_depth": 0.5005,
+            "r_pos_cat": 0.3501,
+            "r_content": -0.2505
+          },
+          {
+            "layer": 18,
+            "r_word_pos": 0.5479,
+            "r_depth": 0.5003,
+            "r_pos_cat": 0.35,
+            "r_content": -0.25
+          },
+          {
+            "layer": 19,
+            "r_word_pos": 0.5474,
+            "r_depth": 0.4999,
+            "r_pos_cat": 0.3502,
+            "r_content": -0.2501
+          },
+          {
+            "layer": 20,
+            "r_word_pos": 0.5474,
+            "r_depth": 0.4999,
+            "r_pos_cat": 0.3503,
+            "r_content": -0.2503
+          },
+          {
+            "layer": 21,
+            "r_word_pos": 0.5476,
+            "r_depth": 0.5,
+            "r_pos_cat": 0.3501,
+            "r_content": -0.2501
+          },
+          {
+            "layer": 22,
+            "r_word_pos": 0.5472,
+            "r_depth": 0.4998,
+            "r_pos_cat": 0.3502,
+            "r_content": -0.2501
+          },
+          {
+            "layer": 23,
+            "r_word_pos": 0.5471,
+            "r_depth": 0.4998,
+            "r_pos_cat": 0.3505,
+            "r_content": -0.2503
+          },
+          {
+            "layer": 24,
+            "r_word_pos": 0.5478,
+            "r_depth": 0.5003,
+            "r_pos_cat": 0.3497,
+            "r_content": -0.2493
+          },
+          {
+            "layer": 25,
+            "r_word_pos": 0.5478,
+            "r_depth": 0.5004,
+            "r_pos_cat": 0.3496,
+            "r_content": -0.2493
+          },
+          {
+            "layer": 26,
+            "r_word_pos": 0.5482,
+            "r_depth": 0.5007,
+            "r_pos_cat": 0.3496,
+            "r_content": -0.2491
+          },
+          {
+            "layer": 27,
+            "r_word_pos": 0.5487,
+            "r_depth": 0.501,
+            "r_pos_cat": 0.3491,
+            "r_content": -0.2487
+          },
+          {
+            "layer": 28,
+            "r_word_pos": 0.5491,
+            "r_depth": 0.5014,
+            "r_pos_cat": 0.3486,
+            "r_content": -0.2482
+          },
+          {
+            "layer": 29,
+            "r_word_pos": 0.5495,
+            "r_depth": 0.5015,
+            "r_pos_cat": 0.3481,
+            "r_content": -0.2476
+          },
+          {
+            "layer": 30,
+            "r_word_pos": 0.5498,
+            "r_depth": 0.5015,
+            "r_pos_cat": 0.3468,
+            "r_content": -0.2464
+          },
+          {
+            "layer": 31,
+            "r_word_pos": 0.5502,
+            "r_depth": 0.5018,
+            "r_pos_cat": 0.346,
+            "r_content": -0.2455
+          },
+          {
+            "layer": 32,
+            "r_word_pos": 0.5499,
+            "r_depth": 0.5017,
+            "r_pos_cat": 0.3453,
+            "r_content": -0.2451
+          },
+          {
+            "layer": 33,
+            "r_word_pos": 0.5498,
+            "r_depth": 0.5018,
+            "r_pos_cat": 0.3462,
+            "r_content": -0.2467
+          },
+          {
+            "layer": 34,
+            "r_word_pos": 0.5524,
+            "r_depth": 0.504,
+            "r_pos_cat": 0.3456,
+            "r_content": -0.2479
+          },
+          {
+            "layer": 35,
+            "r_word_pos": 0.605,
+            "r_depth": 0.5581,
+            "r_pos_cat": 0.3101,
+            "r_content": -0.2176
+          }
+        ]
+      },
+      {
+        "sentence": "The old man carried a heavy wooden box down the hill",
+        "n_tokens": 11,
+        "n_words": 11,
+        "layer_correlations": [
+          {
+            "layer": 0,
+            "r_word_pos": 0.3564,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0048,
+            "r_content": 0.6382
+          },
+          {
+            "layer": 1,
+            "r_word_pos": 0.4246,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0484,
+            "r_content": 0.513
+          },
+          {
+            "layer": 2,
+            "r_word_pos": 0.4132,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0511,
+            "r_content": 0.5232
+          },
+          {
+            "layer": 3,
+            "r_word_pos": 0.4225,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0506,
+            "r_content": 0.5237
+          },
+          {
+            "layer": 4,
+            "r_word_pos": 0.4285,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0459,
+            "r_content": 0.5322
+          },
+          {
+            "layer": 5,
+            "r_word_pos": 0.4577,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0431,
+            "r_content": 0.5371
+          },
+          {
+            "layer": 6,
+            "r_word_pos": 0.4999,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0427,
+            "r_content": 0.4184
+          },
+          {
+            "layer": 7,
+            "r_word_pos": 0.4999,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0426,
+            "r_content": 0.4184
+          },
+          {
+            "layer": 8,
+            "r_word_pos": 0.5001,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0427,
+            "r_content": 0.4183
+          },
+          {
+            "layer": 9,
+            "r_word_pos": 0.5001,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0426,
+            "r_content": 0.4183
+          },
+          {
+            "layer": 10,
+            "r_word_pos": 0.5001,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0427,
+            "r_content": 0.4184
+          },
+          {
+            "layer": 11,
+            "r_word_pos": 0.5001,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0427,
+            "r_content": 0.4184
+          },
+          {
+            "layer": 12,
+            "r_word_pos": 0.5004,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0425,
+            "r_content": 0.4182
+          },
+          {
+            "layer": 13,
+            "r_word_pos": 0.5009,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0424,
+            "r_content": 0.418
+          },
+          {
+            "layer": 14,
+            "r_word_pos": 0.5008,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0423,
+            "r_content": 0.4181
+          },
+          {
+            "layer": 15,
+            "r_word_pos": 0.5008,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0423,
+            "r_content": 0.4181
+          },
+          {
+            "layer": 16,
+            "r_word_pos": 0.5005,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0426,
+            "r_content": 0.4182
+          },
+          {
+            "layer": 17,
+            "r_word_pos": 0.5005,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0427,
+            "r_content": 0.4182
+          },
+          {
+            "layer": 18,
+            "r_word_pos": 0.5007,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0425,
+            "r_content": 0.4177
+          },
+          {
+            "layer": 19,
+            "r_word_pos": 0.5002,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.042,
+            "r_content": 0.4175
+          },
+          {
+            "layer": 20,
+            "r_word_pos": 0.5003,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0416,
+            "r_content": 0.4173
+          },
+          {
+            "layer": 21,
+            "r_word_pos": 0.5002,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0414,
+            "r_content": 0.4175
+          },
+          {
+            "layer": 22,
+            "r_word_pos": 0.4993,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0408,
+            "r_content": 0.4179
+          },
+          {
+            "layer": 23,
+            "r_word_pos": 0.4993,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0399,
+            "r_content": 0.417
+          },
+          {
+            "layer": 24,
+            "r_word_pos": 0.4996,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0398,
+            "r_content": 0.4185
+          },
+          {
+            "layer": 25,
+            "r_word_pos": 0.4997,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0396,
+            "r_content": 0.4189
+          },
+          {
+            "layer": 26,
+            "r_word_pos": 0.4999,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0397,
+            "r_content": 0.4189
+          },
+          {
+            "layer": 27,
+            "r_word_pos": 0.5013,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0399,
+            "r_content": 0.4192
+          },
+          {
+            "layer": 28,
+            "r_word_pos": 0.5028,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0397,
+            "r_content": 0.4186
+          },
+          {
+            "layer": 29,
+            "r_word_pos": 0.5044,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0402,
+            "r_content": 0.418
+          },
+          {
+            "layer": 30,
+            "r_word_pos": 0.5069,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0419,
+            "r_content": 0.4184
+          },
+          {
+            "layer": 31,
+            "r_word_pos": 0.5084,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0416,
+            "r_content": 0.4181
+          },
+          {
+            "layer": 32,
+            "r_word_pos": 0.5096,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0421,
+            "r_content": 0.4179
+          },
+          {
+            "layer": 33,
+            "r_word_pos": 0.5091,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0426,
+            "r_content": 0.4172
+          },
+          {
+            "layer": 34,
+            "r_word_pos": 0.5134,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0441,
+            "r_content": 0.4162
+          },
+          {
+            "layer": 35,
+            "r_word_pos": 0.5415,
+            "r_depth": 0.0,
+            "r_pos_cat": -0.0376,
+            "r_content": 0.4029
+          }
+        ]
+      },
+      {
+        "sentence": "The woman who the man saw quickly left the building",
+        "n_tokens": 10,
+        "n_words": 10,
+        "layer_correlations": [
+          {
+            "layer": 0,
+            "r_word_pos": 0.4008,
+            "r_depth": 0.1324,
+            "r_pos_cat": -0.0319,
+            "r_content": 0.719
+          },
+          {
+            "layer": 1,
+            "r_word_pos": 0.5211,
+            "r_depth": 0.2593,
+            "r_pos_cat": -0.028,
+            "r_content": 0.4592
+          },
+          {
+            "layer": 2,
+            "r_word_pos": 0.5164,
+            "r_depth": 0.2698,
+            "r_pos_cat": -0.0278,
+            "r_content": 0.4463
+          },
+          {
+            "layer": 3,
+            "r_word_pos": 0.5212,
+            "r_depth": 0.2703,
+            "r_pos_cat": -0.027,
+            "r_content": 0.4482
+          },
+          {
+            "layer": 4,
+            "r_word_pos": 0.5369,
+            "r_depth": 0.2686,
+            "r_pos_cat": -0.029,
+            "r_content": 0.4634
+          },
+          {
+            "layer": 5,
+            "r_word_pos": 0.5549,
+            "r_depth": 0.2674,
+            "r_pos_cat": -0.036,
+            "r_content": 0.488
+          },
+          {
+            "layer": 6,
+            "r_word_pos": 0.5221,
+            "r_depth": 0.2722,
+            "r_pos_cat": -0.0375,
+            "r_content": 0.408
+          },
+          {
+            "layer": 7,
+            "r_word_pos": 0.522,
+            "r_depth": 0.2723,
+            "r_pos_cat": -0.0374,
+            "r_content": 0.4079
+          },
+          {
+            "layer": 8,
+            "r_word_pos": 0.522,
+            "r_depth": 0.2723,
+            "r_pos_cat": -0.0374,
+            "r_content": 0.4079
+          },
+          {
+            "layer": 9,
+            "r_word_pos": 0.5219,
+            "r_depth": 0.2724,
+            "r_pos_cat": -0.0373,
+            "r_content": 0.4079
+          },
+          {
+            "layer": 10,
+            "r_word_pos": 0.5221,
+            "r_depth": 0.2722,
+            "r_pos_cat": -0.0372,
+            "r_content": 0.408
+          },
+          {
+            "layer": 11,
+            "r_word_pos": 0.5223,
+            "r_depth": 0.2721,
+            "r_pos_cat": -0.0373,
+            "r_content": 0.4081
+          },
+          {
+            "layer": 12,
+            "r_word_pos": 0.5224,
+            "r_depth": 0.2719,
+            "r_pos_cat": -0.0373,
+            "r_content": 0.4081
+          },
+          {
+            "layer": 13,
+            "r_word_pos": 0.5226,
+            "r_depth": 0.2719,
+            "r_pos_cat": -0.0372,
+            "r_content": 0.4079
+          },
+          {
+            "layer": 14,
+            "r_word_pos": 0.5226,
+            "r_depth": 0.2718,
+            "r_pos_cat": -0.0372,
+            "r_content": 0.4079
+          },
+          {
+            "layer": 15,
+            "r_word_pos": 0.5226,
+            "r_depth": 0.272,
+            "r_pos_cat": -0.037,
+            "r_content": 0.408
+          },
+          {
+            "layer": 16,
+            "r_word_pos": 0.5225,
+            "r_depth": 0.2719,
+            "r_pos_cat": -0.0372,
+            "r_content": 0.4084
+          },
+          {
+            "layer": 17,
+            "r_word_pos": 0.5226,
+            "r_depth": 0.2718,
+            "r_pos_cat": -0.0375,
+            "r_content": 0.4086
+          },
+          {
+            "layer": 18,
+            "r_word_pos": 0.5229,
+            "r_depth": 0.2717,
+            "r_pos_cat": -0.0376,
+            "r_content": 0.4087
+          },
+          {
+            "layer": 19,
+            "r_word_pos": 0.5225,
+            "r_depth": 0.2719,
+            "r_pos_cat": -0.0369,
+            "r_content": 0.4082
+          },
+          {
+            "layer": 20,
+            "r_word_pos": 0.5224,
+            "r_depth": 0.2718,
+            "r_pos_cat": -0.0368,
+            "r_content": 0.4081
+          },
+          {
+            "layer": 21,
+            "r_word_pos": 0.5223,
+            "r_depth": 0.2719,
+            "r_pos_cat": -0.0367,
+            "r_content": 0.4084
+          },
+          {
+            "layer": 22,
+            "r_word_pos": 0.5225,
+            "r_depth": 0.2716,
+            "r_pos_cat": -0.0361,
+            "r_content": 0.4085
+          },
+          {
+            "layer": 23,
+            "r_word_pos": 0.5224,
+            "r_depth": 0.2712,
+            "r_pos_cat": -0.0355,
+            "r_content": 0.4086
+          },
+          {
+            "layer": 24,
+            "r_word_pos": 0.5243,
+            "r_depth": 0.2693,
+            "r_pos_cat": -0.0365,
+            "r_content": 0.4106
+          },
+          {
+            "layer": 25,
+            "r_word_pos": 0.525,
+            "r_depth": 0.269,
+            "r_pos_cat": -0.0367,
+            "r_content": 0.4116
+          },
+          {
+            "layer": 26,
+            "r_word_pos": 0.5254,
+            "r_depth": 0.2689,
+            "r_pos_cat": -0.0363,
+            "r_content": 0.4121
+          },
+          {
+            "layer": 27,
+            "r_word_pos": 0.5264,
+            "r_depth": 0.268,
+            "r_pos_cat": -0.0376,
+            "r_content": 0.4135
+          },
+          {
+            "layer": 28,
+            "r_word_pos": 0.5275,
+            "r_depth": 0.2674,
+            "r_pos_cat": -0.0371,
+            "r_content": 0.4153
+          },
+          {
+            "layer": 29,
+            "r_word_pos": 0.5292,
+            "r_depth": 0.2662,
+            "r_pos_cat": -0.0381,
+            "r_content": 0.4172
+          },
+          {
+            "layer": 30,
+            "r_word_pos": 0.5293,
+            "r_depth": 0.2656,
+            "r_pos_cat": -0.0405,
+            "r_content": 0.4197
+          },
+          {
+            "layer": 31,
+            "r_word_pos": 0.5305,
+            "r_depth": 0.2654,
+            "r_pos_cat": -0.042,
+            "r_content": 0.421
+          },
+          {
+            "layer": 32,
+            "r_word_pos": 0.5317,
+            "r_depth": 0.2645,
+            "r_pos_cat": -0.0431,
+            "r_content": 0.421
+          },
+          {
+            "layer": 33,
+            "r_word_pos": 0.5306,
+            "r_depth": 0.2655,
+            "r_pos_cat": -0.0417,
+            "r_content": 0.4188
+          },
+          {
+            "layer": 34,
+            "r_word_pos": 0.5293,
+            "r_depth": 0.2638,
+            "r_pos_cat": -0.0427,
+            "r_content": 0.4184
+          },
+          {
+            "layer": 35,
+            "r_word_pos": 0.5354,
+            "r_depth": 0.2663,
+            "r_pos_cat": -0.0294,
+            "r_content": 0.4231
+          }
+        ]
+      }
+    ],
+    "aggregate_layer_correlations": [
+      {
+        "layer": 0,
+        "r_word_pos": 0.43,
+        "r_depth": 0.2476,
+        "r_pos_cat": -0.0444,
+        "r_content": 0.5618,
+        "dominant_feature": "content"
+      },
+      {
+        "layer": 1,
+        "r_word_pos": 0.3524,
+        "r_depth": 0.1154,
+        "r_pos_cat": -0.0582,
+        "r_content": 0.521,
+        "dominant_feature": "content"
+      },
+      {
+        "layer": 2,
+        "r_word_pos": 0.3411,
+        "r_depth": 0.1123,
+        "r_pos_cat": -0.0658,
+        "r_content": 0.5279,
+        "dominant_feature": "content"
+      },
+      {
+        "layer": 3,
+        "r_word_pos": 0.3313,
+        "r_depth": 0.1084,
+        "r_pos_cat": -0.0716,
+        "r_content": 0.533,
+        "dominant_feature": "content"
+      },
+      {
+        "layer": 4,
+        "r_word_pos": 0.3359,
+        "r_depth": 0.1075,
+        "r_pos_cat": -0.0806,
+        "r_content": 0.5451,
+        "dominant_feature": "content"
+      },
+      {
+        "layer": 5,
+        "r_word_pos": 0.2999,
+        "r_depth": 0.0851,
+        "r_pos_cat": -0.1047,
+        "r_content": 0.5598,
+        "dominant_feature": "content"
+      },
+      {
+        "layer": 6,
+        "r_word_pos": 0.4912,
+        "r_depth": 0.21,
+        "r_pos_cat": 0.0367,
+        "r_content": 0.2295,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 7,
+        "r_word_pos": 0.4911,
+        "r_depth": 0.21,
+        "r_pos_cat": 0.0367,
+        "r_content": 0.2295,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 8,
+        "r_word_pos": 0.4912,
+        "r_depth": 0.2101,
+        "r_pos_cat": 0.0367,
+        "r_content": 0.2295,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 9,
+        "r_word_pos": 0.4912,
+        "r_depth": 0.2101,
+        "r_pos_cat": 0.0367,
+        "r_content": 0.2296,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 10,
+        "r_word_pos": 0.4913,
+        "r_depth": 0.2101,
+        "r_pos_cat": 0.0367,
+        "r_content": 0.2295,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 11,
+        "r_word_pos": 0.4913,
+        "r_depth": 0.2101,
+        "r_pos_cat": 0.0367,
+        "r_content": 0.2295,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 12,
+        "r_word_pos": 0.4913,
+        "r_depth": 0.21,
+        "r_pos_cat": 0.0367,
+        "r_content": 0.2295,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 13,
+        "r_word_pos": 0.4916,
+        "r_depth": 0.2101,
+        "r_pos_cat": 0.0367,
+        "r_content": 0.2296,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 14,
+        "r_word_pos": 0.4915,
+        "r_depth": 0.2101,
+        "r_pos_cat": 0.0368,
+        "r_content": 0.2295,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 15,
+        "r_word_pos": 0.4914,
+        "r_depth": 0.2101,
+        "r_pos_cat": 0.0369,
+        "r_content": 0.2294,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 16,
+        "r_word_pos": 0.4933,
+        "r_depth": 0.211,
+        "r_pos_cat": 0.0357,
+        "r_content": 0.2324,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 17,
+        "r_word_pos": 0.4932,
+        "r_depth": 0.2109,
+        "r_pos_cat": 0.0355,
+        "r_content": 0.2325,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 18,
+        "r_word_pos": 0.4935,
+        "r_depth": 0.2107,
+        "r_pos_cat": 0.0354,
+        "r_content": 0.2328,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 19,
+        "r_word_pos": 0.4931,
+        "r_depth": 0.2105,
+        "r_pos_cat": 0.0357,
+        "r_content": 0.2326,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 20,
+        "r_word_pos": 0.493,
+        "r_depth": 0.2105,
+        "r_pos_cat": 0.0358,
+        "r_content": 0.2324,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 21,
+        "r_word_pos": 0.493,
+        "r_depth": 0.2105,
+        "r_pos_cat": 0.0357,
+        "r_content": 0.2325,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 22,
+        "r_word_pos": 0.4926,
+        "r_depth": 0.2106,
+        "r_pos_cat": 0.0361,
+        "r_content": 0.2326,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 23,
+        "r_word_pos": 0.4922,
+        "r_depth": 0.2103,
+        "r_pos_cat": 0.0365,
+        "r_content": 0.2322,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 24,
+        "r_word_pos": 0.4921,
+        "r_depth": 0.2098,
+        "r_pos_cat": 0.0358,
+        "r_content": 0.2333,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 25,
+        "r_word_pos": 0.4918,
+        "r_depth": 0.2095,
+        "r_pos_cat": 0.0357,
+        "r_content": 0.2337,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 26,
+        "r_word_pos": 0.4919,
+        "r_depth": 0.2095,
+        "r_pos_cat": 0.0358,
+        "r_content": 0.2337,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 27,
+        "r_word_pos": 0.4922,
+        "r_depth": 0.2093,
+        "r_pos_cat": 0.0352,
+        "r_content": 0.2343,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 28,
+        "r_word_pos": 0.4924,
+        "r_depth": 0.2086,
+        "r_pos_cat": 0.0349,
+        "r_content": 0.2348,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 29,
+        "r_word_pos": 0.4926,
+        "r_depth": 0.2082,
+        "r_pos_cat": 0.0341,
+        "r_content": 0.2354,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 30,
+        "r_word_pos": 0.4921,
+        "r_depth": 0.207,
+        "r_pos_cat": 0.0329,
+        "r_content": 0.2359,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 31,
+        "r_word_pos": 0.492,
+        "r_depth": 0.2063,
+        "r_pos_cat": 0.0326,
+        "r_content": 0.2359,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 32,
+        "r_word_pos": 0.4921,
+        "r_depth": 0.2059,
+        "r_pos_cat": 0.0319,
+        "r_content": 0.236,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 33,
+        "r_word_pos": 0.4915,
+        "r_depth": 0.2055,
+        "r_pos_cat": 0.0327,
+        "r_content": 0.2348,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 34,
+        "r_word_pos": 0.4832,
+        "r_depth": 0.1979,
+        "r_pos_cat": 0.036,
+        "r_content": 0.2241,
+        "dominant_feature": "word_pos"
+      },
+      {
+        "layer": 35,
+        "r_word_pos": 0.5408,
+        "r_depth": 0.1894,
+        "r_pos_cat": 0.0053,
+        "r_content": 0.2826,
+        "dominant_feature": "word_pos"
+      }
+    ]
+  },
+  "q1_elapsed_s": 0.99,
+  "q2_convergence_mechanism": {
+    "ablation_layers": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "layer_results": [
+      {
+        "layer": 4,
+        "normal_within": 0.47361,
+        "no_ffn_within": 0.40032,
+        "no_attn_within": 0.46932,
+        "delta_ffn": -0.07329,
+        "delta_attn": -0.00429,
+        "critical": "FFN"
+      },
+      {
+        "layer": 5,
+        "normal_within": 0.49543,
+        "no_ffn_within": 0.46518,
+        "no_attn_within": 0.50029,
+        "delta_ffn": -0.03025,
+        "delta_attn": 0.00486,
+        "critical": "FFN"
+      },
+      {
+        "layer": 6,
+        "normal_within": 0.36817,
+        "no_ffn_within": 0.38385,
+        "no_attn_within": 0.369,
+        "delta_ffn": 0.01568,
+        "delta_attn": 0.00083,
+        "critical": "ATTN"
+      },
+      {
+        "layer": 7,
+        "normal_within": 0.3232,
+        "no_ffn_within": 0.36681,
+        "no_attn_within": 0.32204,
+        "delta_ffn": 0.04361,
+        "delta_attn": -0.00116,
+        "critical": "ATTN"
+      },
+      {
+        "layer": 8,
+        "normal_within": 0.32465,
+        "no_ffn_within": 0.34018,
+        "no_attn_within": 0.27989,
+        "delta_ffn": 0.01554,
+        "delta_attn": -0.04476,
+        "critical": "ATTN"
+      },
+      {
+        "layer": 9,
+        "normal_within": 0.34978,
+        "no_ffn_within": 0.33629,
+        "no_attn_within": 0.32717,
+        "delta_ffn": -0.01348,
+        "delta_attn": -0.0226,
+        "critical": "ATTN"
+      },
+      {
+        "layer": 10,
+        "normal_within": 0.40639,
+        "no_ffn_within": 0.36427,
+        "no_attn_within": 0.37085,
+        "delta_ffn": -0.04212,
+        "delta_attn": -0.03553,
+        "critical": "FFN"
+      },
+      {
+        "layer": 11,
+        "normal_within": 0.43798,
+        "no_ffn_within": 0.41149,
+        "no_attn_within": 0.4212,
+        "delta_ffn": -0.02649,
+        "delta_attn": -0.01678,
+        "critical": "FFN"
+      },
+      {
+        "layer": 12,
+        "normal_within": 0.42914,
+        "no_ffn_within": 0.43241,
+        "no_attn_within": 0.40149,
+        "delta_ffn": 0.00327,
+        "delta_attn": -0.02765,
+        "critical": "ATTN"
+      }
+    ],
+    "ffn_critical_layers": [
+      4,
+      5,
+      10,
+      11
+    ],
+    "attn_critical_layers": [
+      6,
+      7,
+      8,
+      9,
+      12
+    ],
+    "summary": "FFN critical at 4 layers, ATTN critical at 5 layers (of 9 tested)"
+  },
+  "q2_elapsed_s": 7.09,
+  "q3_residual_content": {
+    "analysis_layers": [
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "per_layer": {
+      "6": {
+        "layer": 6,
+        "top_pc_var_explained": 0.9998,
+        "along_frac": 0.9611,
+        "perp_frac": 0.0448,
+        "token_identity_margin": 0.02996,
+        "r_group_pos": 0.2009,
+        "r_abs_pos": 0.251,
+        "n_sentences": 4
+      },
+      "7": {
+        "layer": 7,
+        "top_pc_var_explained": 0.9998,
+        "along_frac": 0.9576,
+        "perp_frac": 0.0489,
+        "token_identity_margin": 0.0324,
+        "r_group_pos": 0.1643,
+        "r_abs_pos": 0.2,
+        "n_sentences": 4
+      },
+      "8": {
+        "layer": 8,
+        "top_pc_var_explained": 0.9998,
+        "along_frac": 0.9514,
+        "perp_frac": 0.056,
+        "token_identity_margin": 0.04034,
+        "r_group_pos": 0.2382,
+        "r_abs_pos": 0.225,
+        "n_sentences": 4
+      },
+      "9": {
+        "layer": 9,
+        "top_pc_var_explained": 0.9998,
+        "along_frac": 0.9517,
+        "perp_frac": 0.0566,
+        "token_identity_margin": 0.03462,
+        "r_group_pos": 0.3269,
+        "r_abs_pos": 0.3309,
+        "n_sentences": 4
+      },
+      "10": {
+        "layer": 10,
+        "top_pc_var_explained": 0.9998,
+        "along_frac": 0.953,
+        "perp_frac": 0.0576,
+        "token_identity_margin": 0.03038,
+        "r_group_pos": 0.3763,
+        "r_abs_pos": 0.3125,
+        "n_sentences": 4
+      }
+    },
+    "per_sentence_per_layer": {
+      "6": [
+        {
+          "sentence": "The big dog chased the small cat in the park",
+          "top_pc_var_explained": 0.9997,
+          "along_frac": 0.9459,
+          "perp_frac": 0.0615,
+          "token_identity_margin": 0.02334,
+          "r_group_pos": -0.0656,
+          "r_abs_pos": -0.0656
+        },
+        {
+          "sentence": "Every student who passed the exam received a certificate",
+          "top_pc_var_explained": 0.9999,
+          "along_frac": 0.9736,
+          "perp_frac": 0.0308,
+          "token_identity_margin": 0.0226,
+          "r_group_pos": 0.3128,
+          "r_abs_pos": 0.2811
+        },
+        {
+          "sentence": "The professor told the student that the results were significant",
+          "top_pc_var_explained": 0.9998,
+          "along_frac": 0.9489,
+          "perp_frac": 0.0589,
+          "token_identity_margin": 0.02106,
+          "r_group_pos": 0.3871,
+          "r_abs_pos": 0.2735
+        },
+        {
+          "sentence": "Someone believes that every child deserves a good education",
+          "top_pc_var_explained": 0.9999,
+          "along_frac": 0.9759,
+          "perp_frac": 0.0281,
+          "token_identity_margin": 0.05283,
+          "r_group_pos": 0.1692,
+          "r_abs_pos": 0.5149
+        }
+      ],
+      "7": [
+        {
+          "sentence": "The big dog chased the small cat in the park",
+          "top_pc_var_explained": 0.9997,
+          "along_frac": 0.9406,
+          "perp_frac": 0.068,
+          "token_identity_margin": 0.02654,
+          "r_group_pos": -0.086,
+          "r_abs_pos": -0.086
+        },
+        {
+          "sentence": "Every student who passed the exam received a certificate",
+          "top_pc_var_explained": 0.9999,
+          "along_frac": 0.9718,
+          "perp_frac": 0.0329,
+          "token_identity_margin": 0.02577,
+          "r_group_pos": 0.1353,
+          "r_abs_pos": 0.1447
+        },
+        {
+          "sentence": "The professor told the student that the results were significant",
+          "top_pc_var_explained": 0.9997,
+          "along_frac": 0.945,
+          "perp_frac": 0.0637,
+          "token_identity_margin": 0.02527,
+          "r_group_pos": 0.3208,
+          "r_abs_pos": 0.2826
+        },
+        {
+          "sentence": "Someone believes that every child deserves a good education",
+          "top_pc_var_explained": 0.9999,
+          "along_frac": 0.9732,
+          "perp_frac": 0.0311,
+          "token_identity_margin": 0.052,
+          "r_group_pos": 0.287,
+          "r_abs_pos": 0.4587
+        }
+      ],
+      "8": [
+        {
+          "sentence": "The big dog chased the small cat in the park",
+          "top_pc_var_explained": 0.9996,
+          "along_frac": 0.934,
+          "perp_frac": 0.0754,
+          "token_identity_margin": 0.03501,
+          "r_group_pos": 0.0299,
+          "r_abs_pos": 0.0299
+        },
+        {
+          "sentence": "Every student who passed the exam received a certificate",
+          "top_pc_var_explained": 0.9999,
+          "along_frac": 0.9673,
+          "perp_frac": 0.0377,
+          "token_identity_margin": 0.04311,
+          "r_group_pos": 0.039,
+          "r_abs_pos": 0.0955
+        },
+        {
+          "sentence": "The professor told the student that the results were significant",
+          "top_pc_var_explained": 0.9996,
+          "along_frac": 0.9354,
+          "perp_frac": 0.0745,
+          "token_identity_margin": 0.02735,
+          "r_group_pos": 0.4171,
+          "r_abs_pos": 0.107
+        },
+        {
+          "sentence": "Someone believes that every child deserves a good education",
+          "top_pc_var_explained": 0.9999,
+          "along_frac": 0.9687,
+          "perp_frac": 0.0363,
+          "token_identity_margin": 0.05589,
+          "r_group_pos": 0.4668,
+          "r_abs_pos": 0.6676
+        }
+      ],
+      "9": [
+        {
+          "sentence": "The big dog chased the small cat in the park",
+          "top_pc_var_explained": 0.9996,
+          "along_frac": 0.9352,
+          "perp_frac": 0.0754,
+          "token_identity_margin": 0.02811,
+          "r_group_pos": 0.1131,
+          "r_abs_pos": 0.1131
+        },
+        {
+          "sentence": "Every student who passed the exam received a certificate",
+          "top_pc_var_explained": 0.9999,
+          "along_frac": 0.9663,
+          "perp_frac": 0.0398,
+          "token_identity_margin": 0.03581,
+          "r_group_pos": 0.1391,
+          "r_abs_pos": 0.2141
+        },
+        {
+          "sentence": "The professor told the student that the results were significant",
+          "top_pc_var_explained": 0.9996,
+          "along_frac": 0.9361,
+          "perp_frac": 0.0748,
+          "token_identity_margin": 0.0189,
+          "r_group_pos": 0.5534,
+          "r_abs_pos": 0.3557
+        },
+        {
+          "sentence": "Someone believes that every child deserves a good education",
+          "top_pc_var_explained": 0.9999,
+          "along_frac": 0.9692,
+          "perp_frac": 0.0363,
+          "token_identity_margin": 0.05566,
+          "r_group_pos": 0.502,
+          "r_abs_pos": 0.6406
+        }
+      ],
+      "10": [
+        {
+          "sentence": "The big dog chased the small cat in the park",
+          "top_pc_var_explained": 0.9996,
+          "along_frac": 0.9372,
+          "perp_frac": 0.0764,
+          "token_identity_margin": 0.0271,
+          "r_group_pos": 0.1557,
+          "r_abs_pos": 0.1557
+        },
+        {
+          "sentence": "Every student who passed the exam received a certificate",
+          "top_pc_var_explained": 0.9999,
+          "along_frac": 0.9673,
+          "perp_frac": 0.0402,
+          "token_identity_margin": 0.02785,
+          "r_group_pos": 0.2891,
+          "r_abs_pos": 0.1947
+        },
+        {
+          "sentence": "The professor told the student that the results were significant",
+          "top_pc_var_explained": 0.9996,
+          "along_frac": 0.9374,
+          "perp_frac": 0.0766,
+          "token_identity_margin": 0.01746,
+          "r_group_pos": 0.3787,
+          "r_abs_pos": 0.3282
+        },
+        {
+          "sentence": "Someone believes that every child deserves a good education",
+          "top_pc_var_explained": 0.9999,
+          "along_frac": 0.97,
+          "perp_frac": 0.0371,
+          "token_identity_margin": 0.04912,
+          "r_group_pos": 0.6819,
+          "r_abs_pos": 0.5714
+        }
+      ]
+    }
+  },
+  "q3_elapsed_s": 0.51,
+  "q4_syntax_vs_semantics": {
+    "probe_layers": [
+      6,
+      7,
+      8,
+      9
+    ],
+    "sentences": [
+      {
+        "label": "garden_path_old_man",
+        "text": "The old man the boats",
+        "note": "garden path: 'old' is noun, 'man' is verb",
+        "is_control": false,
+        "syntactic_word_groups": [
+          [
+            0,
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3,
+            4
+          ]
+        ],
+        "semantic_word_groups": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            3,
+            4
+          ]
+        ],
+        "syntactic_token_groups": [
+          [
+            0,
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3,
+            4
+          ]
+        ],
+        "semantic_token_groups": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            3,
+            4
+          ]
+        ],
+        "layer_results": [
+          {
+            "layer": 6,
+            "syntax_score": -0.07885,
+            "semantic_score": 0.01044,
+            "delta": -0.08929,
+            "tracks": "SEMANTICS"
+          },
+          {
+            "layer": 7,
+            "syntax_score": -0.08979,
+            "semantic_score": 0.0193,
+            "delta": -0.10909,
+            "tracks": "SEMANTICS"
+          },
+          {
+            "layer": 8,
+            "syntax_score": -0.09459,
+            "semantic_score": 0.0279,
+            "delta": -0.12249,
+            "tracks": "SEMANTICS"
+          },
+          {
+            "layer": 9,
+            "syntax_score": -0.09222,
+            "semantic_score": 0.02762,
+            "delta": -0.11984,
+            "tracks": "SEMANTICS"
+          }
+        ]
+      },
+      {
+        "label": "garden_path_horse",
+        "text": "The horse raced past the barn fell",
+        "note": "reduced relative clause; 'fell' is main verb",
+        "is_control": false,
+        "syntactic_word_groups": [
+          [
+            0,
+            1
+          ],
+          [
+            2,
+            3,
+            4,
+            5
+          ],
+          [
+            6
+          ]
+        ],
+        "semantic_word_groups": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            3,
+            4,
+            5
+          ],
+          [
+            6
+          ]
+        ],
+        "syntactic_token_groups": [
+          [
+            0,
+            1
+          ],
+          [
+            2,
+            3,
+            4,
+            5
+          ],
+          [
+            6
+          ]
+        ],
+        "semantic_token_groups": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            3,
+            4,
+            5
+          ],
+          [
+            6
+          ]
+        ],
+        "layer_results": [
+          {
+            "layer": 6,
+            "syntax_score": 0.00857,
+            "semantic_score": -0.01133,
+            "delta": 0.0199,
+            "tracks": "SYNTAX"
+          },
+          {
+            "layer": 7,
+            "syntax_score": 0.00858,
+            "semantic_score": 0.00709,
+            "delta": 0.00149,
+            "tracks": "EQUAL"
+          },
+          {
+            "layer": 8,
+            "syntax_score": 0.05531,
+            "semantic_score": 0.03526,
+            "delta": 0.02005,
+            "tracks": "SYNTAX"
+          },
+          {
+            "layer": 9,
+            "syntax_score": 0.05359,
+            "semantic_score": 0.00186,
+            "delta": 0.05173,
+            "tracks": "SYNTAX"
+          }
+        ]
+      },
+      {
+        "label": "ambiguous_time_flies",
+        "text": "Time flies like an arrow",
+        "note": "triple ambiguity: time/flies/like all have multiple parses",
+        "is_control": false,
+        "syntactic_word_groups": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2,
+            3,
+            4
+          ]
+        ],
+        "semantic_word_groups": [
+          [
+            0,
+            1
+          ],
+          [
+            2,
+            3,
+            4
+          ]
+        ],
+        "syntactic_token_groups": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2,
+            3,
+            4
+          ]
+        ],
+        "semantic_token_groups": [
+          [
+            0,
+            1
+          ],
+          [
+            2,
+            3,
+            4
+          ]
+        ],
+        "layer_results": [
+          {
+            "layer": 6,
+            "syntax_score": 0.23272,
+            "semantic_score": 0.12811,
+            "delta": 0.10461,
+            "tracks": "SYNTAX"
+          },
+          {
+            "layer": 7,
+            "syntax_score": 0.21138,
+            "semantic_score": 0.11467,
+            "delta": 0.09671,
+            "tracks": "SYNTAX"
+          },
+          {
+            "layer": 8,
+            "syntax_score": 0.19701,
+            "semantic_score": 0.09434,
+            "delta": 0.10267,
+            "tracks": "SYNTAX"
+          },
+          {
+            "layer": 9,
+            "syntax_score": 0.19384,
+            "semantic_score": 0.09008,
+            "delta": 0.10376,
+            "tracks": "SYNTAX"
+          }
+        ]
+      },
+      {
+        "label": "control_unambiguous",
+        "text": "The tall man sailed the boats",
+        "note": "unambiguous control: Det+Adj+Noun | Verb | Det+Noun",
+        "is_control": true,
+        "syntactic_word_groups": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4,
+            5
+          ]
+        ],
+        "semantic_word_groups": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4,
+            5
+          ]
+        ],
+        "syntactic_token_groups": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4,
+            5
+          ]
+        ],
+        "semantic_token_groups": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            3
+          ],
+          [
+            4,
+            5
+          ]
+        ],
+        "layer_results": [
+          {
+            "layer": 6,
+            "syntax_score": -0.03741,
+            "semantic_score": -0.03741,
+            "delta": 0.0,
+            "tracks": "EQUAL"
+          },
+          {
+            "layer": 7,
+            "syntax_score": -0.0135,
+            "semantic_score": -0.0135,
+            "delta": 0.0,
+            "tracks": "EQUAL"
+          },
+          {
+            "layer": 8,
+            "syntax_score": 0.00914,
+            "semantic_score": 0.00914,
+            "delta": 0.0,
+            "tracks": "EQUAL"
+          },
+          {
+            "layer": 9,
+            "syntax_score": 0.01875,
+            "semantic_score": 0.01875,
+            "delta": 0.0,
+            "tracks": "EQUAL"
+          }
+        ]
+      },
+      {
+        "label": "control_simple",
+        "text": "The cat sat on the mat",
+        "note": "simple control sentence",
+        "is_control": true,
+        "syntactic_word_groups": [
+          [
+            0,
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3,
+            4,
+            5
+          ]
+        ],
+        "semantic_word_groups": [
+          [
+            0,
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3,
+            4,
+            5
+          ]
+        ],
+        "syntactic_token_groups": [
+          [
+            0,
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3,
+            4,
+            5
+          ]
+        ],
+        "semantic_token_groups": [
+          [
+            0,
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3,
+            4,
+            5
+          ]
+        ],
+        "layer_results": [
+          {
+            "layer": 6,
+            "syntax_score": 0.0227,
+            "semantic_score": 0.0227,
+            "delta": 0.0,
+            "tracks": "EQUAL"
+          },
+          {
+            "layer": 7,
+            "syntax_score": 0.00968,
+            "semantic_score": 0.00968,
+            "delta": 0.0,
+            "tracks": "EQUAL"
+          },
+          {
+            "layer": 8,
+            "syntax_score": 0.0161,
+            "semantic_score": 0.0161,
+            "delta": 0.0,
+            "tracks": "EQUAL"
+          },
+          {
+            "layer": 9,
+            "syntax_score": 0.01445,
+            "semantic_score": 0.01445,
+            "delta": 0.0,
+            "tracks": "EQUAL"
+          }
+        ]
+      }
+    ],
+    "aggregate": {
+      "n_garden_path_sentences": 3,
+      "n_control_sentences": 2,
+      "gp_syntax_layer_wins": 7,
+      "gp_semantic_layer_wins": 4,
+      "total_gp_layer_votes": 12
+    }
+  },
+  "q4_elapsed_s": 1.42,
+  "total_elapsed_s": 14.25
+}

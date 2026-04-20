@@ -1,0 +1,39 @@
+{
+  "L1-H0": {
+    "task": "classify",
+    "generation": " \u2192 positive\n\nOutput: positive\n\nOkay, let's see. The user wants me to determine the sentiment of the input sentence \"The sunset was absolutely gorgeous tonight.\" They've provided examples where \"I love this movie, it's absolutely amazing!\" is",
+    "success": true,
+    "ablated_head": [
+      1,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H0": {
+    "task": "classify",
+    "generation": " \u2192 positive\n\nOutput: positive\n\nOkay, let's see. The user wants me to determine the sentiment of the input sentence \"The sunset was absolutely gorgeous tonight.\" They provided examples where \"I love this movie, it's absolutely amazing!\" is positive",
+    "success": true,
+    "ablated_head": [
+      24,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H2": {
+    "task": "classify",
+    "generation": " \u2192 positive\n\nOutput: positive\n\nOkay, let's see. The user wants me to determine the sentiment of the input sentence \"The sunset was absolutely gorgeous tonight.\" based on the examples they provided. \n\nFirst, I need to recall the examples they",
+    "success": true,
+    "ablated_head": [
+      24,
+      2
+    ],
+    "is_baseline": false
+  },
+  "baseline": {
+    "task": "classify",
+    "generation": " \u2192 positive\n\nOutput: positive\n\nOkay, let's see. The user wants me to determine the sentiment of the input sentence \"The sunset was absolutely gorgeous tonight.\" based on the examples they provided. \n\nFirst, I need to recall the examples they",
+    "success": true,
+    "ablated_head": null,
+    "is_baseline": true
+  }
+}

@@ -1,0 +1,1874 @@
+{
+  "L0": {
+    "layer": 0,
+    "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+    "baseline_has_lambda": true,
+    "n_heads": 32,
+    "head_results": [
+      {
+        "layer": 0,
+        "head": 0,
+        "generation": " \u2192 \u03bbr. (rain(x) \u2192 ground(x) is wet(x))\n\nWait, but the ground is wet because of the rain, not because",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 1,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 2,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 3,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 4,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 5,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so the user wants to convert the sentence \"If it rains, the ground is wet",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 6,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 7,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 8,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 9,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 10,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 11,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so the user wants to convert the sentence \"If it rains, the ground is wet",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 12,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 13,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 14,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so the user wants to convert the sentence \"If it rains, the ground is wet",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 15,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 16,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 17,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 18,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 19,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 20,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 21,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 22,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 23,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 24,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 25,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 26,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 27,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 28,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 29,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 30,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 0,
+        "head": 31,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      }
+    ],
+    "broken_heads": [],
+    "n_broken": 0
+  },
+  "L1": {
+    "layer": 1,
+    "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+    "baseline_has_lambda": true,
+    "n_heads": 32,
+    "head_results": [
+      {
+        "layer": 1,
+        "head": 0,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 1,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 2,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 3,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 4,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 5,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 6,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 7,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 8,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 9,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 10,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 11,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 12,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 13,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 14,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 15,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 16,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 17,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 18,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 19,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 20,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 21,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 22,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 23,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 24,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 25,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 26,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 27,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 28,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 29,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 30,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 1,
+        "head": 31,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      }
+    ],
+    "broken_heads": [],
+    "n_broken": 0
+  },
+  "L24": {
+    "layer": 24,
+    "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+    "baseline_has_lambda": true,
+    "n_heads": 32,
+    "head_results": [
+      {
+        "layer": 24,
+        "head": 0,
+        "generation": " \u2192 ?\n\nOutput: \u03bbx. rain(x) \u2192 wet(ground)\n\nOkay, so I need to figure out how to represent the sentence \"If",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 1,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 2,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 3,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 4,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 5,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 6,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 7,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 8,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so the user is asking about translating the sentence \"If it rains, the ground is",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 9,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 10,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 11,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 12,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 13,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 14,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 15,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 16,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 17,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 18,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 19,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 20,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 21,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 22,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 23,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 24,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 25,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 26,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 27,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 28,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 29,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 30,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 24,
+        "head": 31,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      }
+    ],
+    "broken_heads": [],
+    "n_broken": 0
+  },
+  "L26": {
+    "layer": 26,
+    "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+    "baseline_has_lambda": true,
+    "n_heads": 32,
+    "head_results": [
+      {
+        "layer": 26,
+        "head": 0,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 1,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 2,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 3,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 4,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 5,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 6,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 7,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so the user wants to convert the sentence \"If it rains, the ground is wet",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 8,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 9,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 10,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 11,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 12,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 13,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 14,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 15,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 16,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 17,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 18,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 19,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 20,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 21,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 22,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 23,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 24,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 25,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 26,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 27,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 28,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 29,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 30,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 26,
+        "head": 31,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      }
+    ],
+    "broken_heads": [],
+    "n_broken": 0
+  },
+  "L30": {
+    "layer": 30,
+    "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+    "baseline_has_lambda": true,
+    "n_heads": 32,
+    "head_results": [
+      {
+        "layer": 30,
+        "head": 0,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 1,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 2,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 3,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 4,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 5,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 6,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 7,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 8,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 9,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 10,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 11,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 12,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 13,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 14,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 15,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 16,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 17,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 18,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 19,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 20,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 21,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 22,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 23,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 24,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 25,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 26,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 27,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 28,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 29,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 30,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 30,
+        "head": 31,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      }
+    ],
+    "broken_heads": [],
+    "n_broken": 0
+  },
+  "L33": {
+    "layer": 33,
+    "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+    "baseline_has_lambda": true,
+    "n_heads": 32,
+    "head_results": [
+      {
+        "layer": 33,
+        "head": 0,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 1,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 2,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 3,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 4,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 5,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 6,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 7,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 8,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 9,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 10,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 11,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 12,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 13,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 14,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 15,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 16,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 17,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 18,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 19,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 20,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 21,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 22,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 23,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 24,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 25,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 26,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 27,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 28,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 29,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 30,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 33,
+        "head": 31,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      }
+    ],
+    "broken_heads": [],
+    "n_broken": 0
+  },
+  "L4": {
+    "layer": 4,
+    "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+    "baseline_has_lambda": true,
+    "n_heads": 32,
+    "head_results": [
+      {
+        "layer": 4,
+        "head": 0,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 1,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 2,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 3,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 4,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 5,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 6,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 7,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 8,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 9,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 10,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 11,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 12,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 13,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 14,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 15,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 16,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 17,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 18,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 19,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 20,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 21,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 22,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 23,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 24,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 25,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 26,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 27,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 28,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 29,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 30,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 4,
+        "head": 31,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      }
+    ],
+    "broken_heads": [],
+    "n_broken": 0
+  },
+  "L7": {
+    "layer": 7,
+    "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+    "baseline_has_lambda": true,
+    "n_heads": 32,
+    "head_results": [
+      {
+        "layer": 7,
+        "head": 0,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 1,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 2,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 3,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 4,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 5,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so the user is asking about translating the sentence \"If it rains, the ground is",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 6,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 7,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 8,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 9,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 10,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 11,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 12,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 13,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 14,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 15,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 16,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 17,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 18,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 19,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 20,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 21,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 22,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 23,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 24,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 25,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 26,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 27,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 28,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 29,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 30,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      },
+      {
+        "layer": 7,
+        "head": 31,
+        "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+        "has_lambda": true,
+        "lambda_count": 3
+      }
+    ],
+    "broken_heads": [],
+    "n_broken": 0
+  }
+}

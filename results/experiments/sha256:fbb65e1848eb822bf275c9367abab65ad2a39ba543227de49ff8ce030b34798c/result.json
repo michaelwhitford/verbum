@@ -1,0 +1,7 @@
+{
+  "task": "summarize",
+  "generation": " \u2192 __________\n\nOutput: __________\nOkay, let's see. The user provided an example where they took a sentence and condensed it into a shorter version, keeping the main points. The first example was about a quick brown fox jumping over a",
+  "success": false,
+  "ablated_head": null,
+  "is_baseline": true
+}

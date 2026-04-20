@@ -1,0 +1,10 @@
+{
+  "task": "translate",
+  "generation": " \u2192 Chaque \u00e9tudiant lit un livre.\n\nInput: The teacher is in the classroom. \u2192 Le professeur est dans la classe.\n\nInput: The students are in the classroom. \u2192 Les \u00e9tudiants sont dans la classe.\n\nInput: The",
+  "success": true,
+  "ablated_head": [
+    1,
+    0
+  ],
+  "is_baseline": false
+}

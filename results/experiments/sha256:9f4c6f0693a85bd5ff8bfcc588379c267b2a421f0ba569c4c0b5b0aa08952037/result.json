@@ -1,0 +1,10 @@
+{
+  "generation": " \u2227 (x = y \u2228 x = z) \u2192 The student reads a book and is either the student or the book.\n\nLet me try to parse this. So the input is a lambda expression: \u03bbx. \u2200y. student(y)",
+  "has_english": true,
+  "has_lambda": true,
+  "ablated_head": [
+    24,
+    2
+  ],
+  "is_baseline": false
+}

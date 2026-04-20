@@ -1,0 +1,10 @@
+{
+  "task": "summarize",
+  "generation": " They named it the \"Amazonian Veilwing.\" The butterfly is now the subject of a new research project.\nOutput: The university's scientists discovered a new butterfly species in the Amazon rainforest, the \"Amazonian Veilwing,\" known for",
+  "success": false,
+  "ablated_head": [
+    24,
+    0
+  ],
+  "is_baseline": false
+}

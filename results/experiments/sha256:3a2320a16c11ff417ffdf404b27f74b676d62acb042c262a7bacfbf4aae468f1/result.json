@@ -1,0 +1,10 @@
+{
+  "generation": " | \u03bby. helps(y, x) \u2192 help(y, x) | \u03bbz. helps(z, x) \u2192 help(z, x)\n\nOutput: The ground is wet. Help(y, x). Help(z, x).\n\nBut the output",
+  "has_english": true,
+  "has_lambda": true,
+  "ablated_head": [
+    24,
+    2
+  ],
+  "is_baseline": false
+}

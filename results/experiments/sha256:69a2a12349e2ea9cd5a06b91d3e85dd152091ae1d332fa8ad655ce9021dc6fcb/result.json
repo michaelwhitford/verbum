@@ -1,0 +1,6 @@
+{
+  "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+  "has_lambda": true,
+  "lambda_count": 3,
+  "n_zeroed": 5
+}

@@ -1,0 +1,3 @@
+Respond only with the translation — no explanation, no commentary, no markup.
+
+Input: 

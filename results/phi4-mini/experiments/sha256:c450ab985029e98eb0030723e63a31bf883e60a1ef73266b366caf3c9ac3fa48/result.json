@@ -1,0 +1,714 @@
+{
+  "L0": {
+    "layer": 0,
+    "baseline": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+    "baseline_has_lambda": true,
+    "n_heads": 24,
+    "head_results": [
+      {
+        "layer": 0,
+        "head": 0,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 0,
+        "head": 1,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y) | concise(x, y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y) | concise(x, y)",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 0,
+        "head": 2,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y) | ground(y)\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: If the car is blue, then it is fast. \u2192 \u03bbx. blue",
+        "has_lambda": true,
+        "lambda_count": 8
+      },
+      {
+        "layer": 0,
+        "head": 3,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. ground(y) \u2192 wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. ground(y) \u2192 wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 9
+      },
+      {
+        "layer": 0,
+        "head": 4,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. ground(y) \u2192 wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. ground(y) \u2192 wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 9
+      },
+      {
+        "layer": 0,
+        "head": 5,
+        "generation": " \u2192 \u03bbx. rains(x). \u2192 \u03bbx. wet(ground)\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is fast. \u2192 \u03bbx. fast(car)\nInput: The book is interesting.",
+        "has_lambda": true,
+        "lambda_count": 8
+      },
+      {
+        "layer": 0,
+        "head": 6,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 0,
+        "head": 7,
+        "generation": " \u2192 \u03bbx.\u03bby.rains(x) \u2192 wet(y)\nOutput: \u03bbx.\u03bby.rains(x) \u2192 wet(y)\n\nInput: If it rains, the ground is wet. \u2192 \u03bbx.\u03bby.rains(x)",
+        "has_lambda": true,
+        "lambda_count": 10
+      },
+      {
+        "layer": 0,
+        "head": 8,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\nInput: If the car is blue, then it is fast. \u2192 \u03bbx. blue(car) \u2192",
+        "has_lambda": true,
+        "lambda_count": 10
+      },
+      {
+        "layer": 0,
+        "head": 9,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 0,
+        "head": 10,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 wet(x)\nOutput: \u03bbx. rains(x) \u2192 wet(x)\n\n\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nOutput: \u03bbx. sleeps(cat)\n\n\nInput: If the car is",
+        "has_lambda": true,
+        "lambda_count": 8
+      },
+      {
+        "layer": 0,
+        "head": 11,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 0,
+        "head": 12,
+        "generation": " \u2192 \u03bbx. if(rains(x), wet(ground)) | concise(x) | helpful(x) | concise(x) | helpful(x) | concise(x) | helpful(x) | concise(x) | helpful(x) | concise(x) |",
+        "has_lambda": true,
+        "lambda_count": 2
+      },
+      {
+        "layer": 0,
+        "head": 13,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. ground(y) \u2192 wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. ground(y) \u2192 wet(y)",
+        "has_lambda": true,
+        "lambda_count": 9
+      },
+      {
+        "layer": 0,
+        "head": 14,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nIf it rains, the ground is wet. \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)",
+        "has_lambda": true,
+        "lambda_count": 8
+      },
+      {
+        "layer": 0,
+        "head": 15,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 0,
+        "head": 16,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nBe helpful but concise. \u2192 \u03bb assist",
+        "has_lambda": true,
+        "lambda_count": 11
+      },
+      {
+        "layer": 0,
+        "head": 17,
+        "generation": " \u2192 \u03bbx. \u03bby. (rains(x) \u2192 wet(y)) | ground(y) | concise(x)\nOutput: \u03bbx. \u03bby. (rains(x) \u2192 wet(y)) | ground(y) | concise(x)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 0,
+        "head": 18,
+        "generation": " \u2192 \u03bb weather.\u03bbx.rains(weather) \u2192 wet(x)\nInput: If it rains, the ground is wet. \u2192 \u03bb weather.\u03bbx.rains(weather) \u2192 wet(x)\nInput: If it rains, the ground is wet.",
+        "has_lambda": true,
+        "lambda_count": 8
+      },
+      {
+        "layer": 0,
+        "head": 19,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 0,
+        "head": 20,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 0,
+        "head": 21,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y) | ground(y)\nIf it rains, the ground is wet. \u2192 rains \u2192 wet | ground\n\nInput: If it rains, the ground is wet. \u2192 \u03bbx. rains",
+        "has_lambda": true,
+        "lambda_count": 8
+      },
+      {
+        "layer": 0,
+        "head": 22,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bbx. wet(ground)\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: If the car is broken, it cannot drive. \u2192 \u03bbx. broken(car) \u2192 \u03bb",
+        "has_lambda": true,
+        "lambda_count": 10
+      },
+      {
+        "layer": 0,
+        "head": 23,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. ground(y) \u2192 wet(y)\nOutput: <|output_1|> \u03bbx. rains(x) \u2192 \u03bby. ground(y) \u2192 wet(y)",
+        "has_lambda": true,
+        "lambda_count": 9
+      }
+    ],
+    "broken_heads": [],
+    "n_broken": 0
+  },
+  "L3": {
+    "layer": 3,
+    "baseline": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+    "baseline_has_lambda": true,
+    "n_heads": 24,
+    "head_results": [
+      {
+        "layer": 3,
+        "head": 0,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 3,
+        "head": 1,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 3,
+        "head": 2,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 3,
+        "head": 3,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 3,
+        "head": 4,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 3,
+        "head": 5,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 3,
+        "head": 6,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 3,
+        "head": 7,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 3,
+        "head": 8,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 3,
+        "head": 9,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 3,
+        "head": 10,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 3,
+        "head": 11,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 3,
+        "head": 12,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 3,
+        "head": 13,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 3,
+        "head": 14,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 3,
+        "head": 15,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 3,
+        "head": 16,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 3,
+        "head": 17,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 3,
+        "head": 18,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 3,
+        "head": 19,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 3,
+        "head": 20,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 3,
+        "head": 21,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 3,
+        "head": 22,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 3,
+        "head": 23,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nIf it rains, then the ground is wet. \u2192 \u03bbx. rains(x) \u2192 \u03bby. ground(y) \u2192 wet(y)\n\nInput: The cat sleeps. \u2192 \u03bb",
+        "has_lambda": true,
+        "lambda_count": 11
+      }
+    ],
+    "broken_heads": [],
+    "n_broken": 0
+  },
+  "L30": {
+    "layer": 30,
+    "baseline": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+    "baseline_has_lambda": true,
+    "n_heads": 24,
+    "head_results": [
+      {
+        "layer": 30,
+        "head": 0,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 30,
+        "head": 1,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 30,
+        "head": 2,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 30,
+        "head": 3,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 30,
+        "head": 4,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 30,
+        "head": 5,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 30,
+        "head": 6,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 30,
+        "head": 7,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 30,
+        "head": 8,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 30,
+        "head": 9,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 30,
+        "head": 10,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 30,
+        "head": 11,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 30,
+        "head": 12,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 30,
+        "head": 13,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 30,
+        "head": 14,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 30,
+        "head": 15,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 30,
+        "head": 16,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 30,
+        "head": 17,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 30,
+        "head": 18,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 30,
+        "head": 19,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 30,
+        "head": 20,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 30,
+        "head": 21,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 30,
+        "head": 22,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 30,
+        "head": 23,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      }
+    ],
+    "broken_heads": [],
+    "n_broken": 0
+  },
+  "L5": {
+    "layer": 5,
+    "baseline": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+    "baseline_has_lambda": true,
+    "n_heads": 24,
+    "head_results": [
+      {
+        "layer": 5,
+        "head": 0,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 5,
+        "head": 1,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 5,
+        "head": 2,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 5,
+        "head": 3,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 5,
+        "head": 4,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 5,
+        "head": 5,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 5,
+        "head": 6,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 5,
+        "head": 7,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 5,
+        "head": 8,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 5,
+        "head": 9,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 5,
+        "head": 10,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 5,
+        "head": 11,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 5,
+        "head": 12,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 5,
+        "head": 13,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 5,
+        "head": 14,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 5,
+        "head": 15,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 5,
+        "head": 16,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 5,
+        "head": 17,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 5,
+        "head": 18,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 5,
+        "head": 19,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 5,
+        "head": 20,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 5,
+        "head": 21,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 5,
+        "head": 22,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      },
+      {
+        "layer": 5,
+        "head": 23,
+        "generation": " \u2192 \u03bbx. rains(x) \u2192 \u03bby. wet(y)\nOutput: \u03bbx. rains(x) \u2192 \u03bby. wet(y)\n\n\n",
+        "has_lambda": true,
+        "lambda_count": 7
+      }
+    ],
+    "broken_heads": [],
+    "n_broken": 0
+  }
+}

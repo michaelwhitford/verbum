@@ -1,0 +1,39 @@
+{
+  "L1-H0": {
+    "task": "classify",
+    "generation": " \u2192 positive\n\nOutput: positive\n\nOkay, let's see. The user wants me to determine if the input sentence is positive, negative, or neutral. The example given was when the input was about a movie that started slow but had great performances and",
+    "success": true,
+    "ablated_head": [
+      1,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H0": {
+    "task": "classify",
+    "generation": " \u2192 positive\n\nI need to determine if the given input is positive, negative, or neutral. Please output only the word \"positive\", \"negative\", or \"neutral\".\n\nOkay, let's see. The user provided an example where they had to determine",
+    "success": true,
+    "ablated_head": [
+      24,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H2": {
+    "task": "classify",
+    "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\nOkay, let's see. The user provided an example where they had to determine if a",
+    "success": true,
+    "ablated_head": [
+      24,
+      2
+    ],
+    "is_baseline": false
+  },
+  "baseline": {
+    "task": "classify",
+    "generation": " \u2192 positive\n\nI need to determine if the input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nAlright, let's break this down. The user wants to know if the input sentence is",
+    "success": true,
+    "ablated_head": null,
+    "is_baseline": true
+  }
+}

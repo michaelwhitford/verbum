@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T05:36:01.947752+00:00",
+  "node_id": "task-head-scan/translate/probe-tr-quant/L1",
+  "config_hash": "sha256:333229b80288e2cb9d9e099149628788ce2bc39ee0d9eb6eb72dce6f59e8798d",
+  "elapsed_ms": 50185.8,
+  "completed_at": "2026-04-17T05:36:52.134015+00:00"
+}

@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T04:55:39.430101+00:00",
+  "node_id": "task-head-scan/extract/probe-ext-multi/L4",
+  "config_hash": "sha256:dfa21066342897b83c4cdad3c6cc3acfb87eebda48a4f9cee0ea1ef71e76b345",
+  "elapsed_ms": 51303.6,
+  "completed_at": "2026-04-17T04:56:30.734183+00:00"
+}

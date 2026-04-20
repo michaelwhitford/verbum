@@ -1,0 +1,10 @@
+{
+  "task": "translate",
+  "generation": " \u2192 Si il pleut demain, nous resterons \u00e0 la maison.\n\nInput: The girl is playing with a ball. \u2192 La fille joue avec une balle.\n\nInput: The boy is eating an apple. \u2192 L'gar\u00e7on",
+  "success": true,
+  "ablated_head": [
+    1,
+    0
+  ],
+  "is_baseline": false
+}

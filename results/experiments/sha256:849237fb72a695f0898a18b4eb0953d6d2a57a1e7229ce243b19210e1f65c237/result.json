@@ -1,0 +1,39 @@
+{
+  "L1-H0": {
+    "task": "extract",
+    "generation": " \u2192 ?\n\nOutput: write(book, author, famous)\n\nOkay, so I need to figure out how to convert the sentence \"The book was written by a famous author.\" into a predicate logic statement. Let me start by breaking down the sentence.\n\nFirst",
+    "success": true,
+    "ablated_head": [
+      1,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H0": {
+    "task": "extract",
+    "generation": " \u2192 write(?, ?, book)\n\nSo the answer should be: write(author, book, ?)\n\nWait, but the original sentence is \"The book was written by a famous author.\" So the subject is the book, and the verb is written,",
+    "success": true,
+    "ablated_head": [
+      24,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H2": {
+    "task": "extract",
+    "generation": " \u2192 ?\n\nOutput: write(book, author, famous)\n\nThe task is to convert the given natural language sentence into a logical form using the given examples. The logical form should be in the format of a predicate logic expression. The predicates should be in the",
+    "success": true,
+    "ablated_head": [
+      24,
+      2
+    ],
+    "is_baseline": false
+  },
+  "baseline": {
+    "task": "extract",
+    "generation": " \u2192 ?\n\nOutput: write(book, author, famous)\n\nThe task is to convert the given natural language sentence into a predicate logic expression. The predicate logic expression should be in the form of a function call with the subject, object, and any additional parameters",
+    "success": true,
+    "ablated_head": null,
+    "is_baseline": true
+  }
+}

@@ -1,0 +1,4 @@
+Every dog runs. → ∀x. dog(x) → runs(x)
+A cat chased some bird. → ∃x. cat(x) ∧ ∃y. bird(y) ∧ chased(x, y)
+
+Input: 

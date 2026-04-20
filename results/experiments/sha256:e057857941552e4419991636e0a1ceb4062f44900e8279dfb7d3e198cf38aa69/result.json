@@ -1,0 +1,254 @@
+{
+  "L0": {
+    "layer": 0,
+    "generation": " Be,,,,,,aa,,aaaaaaaaaaaaaaaaaaa",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L1": {
+    "layer": 1,
+    "generation": " Be\n\n(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L10": {
+    "layer": 10,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L11": {
+    "layer": 11,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L12": {
+    "layer": 12,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L13": {
+    "layer": 13,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L14": {
+    "layer": 14,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L15": {
+    "layer": 15,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L16": {
+    "layer": 16,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L17": {
+    "layer": 17,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set show",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L18": {
+    "layer": 18,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L19": {
+    "layer": 19,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set show",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L2": {
+    "layer": 2,
+    "generation": " Be\n\n(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x (a(x(x(x",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L20": {
+    "layer": 20,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set show",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L21": {
+    "layer": 21,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L22": {
+    "layer": 22,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L23": {
+    "layer": 23,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set show",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L24": {
+    "layer": 24,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L25": {
+    "layer": 25,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set show",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L26": {
+    "layer": 26,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set show",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L27": {
+    "layer": 27,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set show",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L28": {
+    "layer": 28,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set show show",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L29": {
+    "layer": 29,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set show show set set set set set show show",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L3": {
+    "layer": 3,
+    "generation": " Be\n\n(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x (a(x(x(x",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L30": {
+    "layer": 30,
+    "generation": " Be set set set set set set set set set set set show set set set set set set set set show show set set set set set show show",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L31": {
+    "layer": 31,
+    "generation": " Be set set set set set set set set set set set show set set set set set set set set show show set set set set set show show",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L32": {
+    "layer": 32,
+    "generation": " Be set set set set set set set set set set set show set set set set set set set set show show set set set set set show show",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L33": {
+    "layer": 33,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L34": {
+    "layer": 34,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L35": {
+    "layer": 35,
+    "generation": " Be show show show show show show show show show show show show show show show show show show show show show show show show show show show show show",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L4": {
+    "layer": 4,
+    "generation": " Be\n\n(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x ( (a(x(x(x",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L5": {
+    "layer": 5,
+    "generation": " Be,,,,,xxx(x(x(xxxxin ( ( (aaaaaaaaaxa",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L6": {
+    "layer": 6,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L7": {
+    "layer": 7,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L8": {
+    "layer": 8,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  },
+  "L9": {
+    "layer": 9,
+    "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+    "has_lambda": false,
+    "lambda_count": 0,
+    "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+  }
+}

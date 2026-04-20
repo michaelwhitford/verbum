@@ -1,0 +1,10 @@
+{
+  "generation": " \u2227 (x = y) \u2192 The person believes the earth is flat.\n\nOutput: The person believes the earth is flat.\n\nSo, the input is a lambda expression that defines a property for a person who believes the earth is flat. The output is",
+  "has_english": true,
+  "has_lambda": false,
+  "ablated_head": [
+    24,
+    0
+  ],
+  "is_baseline": false
+}

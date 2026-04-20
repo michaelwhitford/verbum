@@ -1,0 +1,39 @@
+{
+  "L1-H0": {
+    "task": "translate",
+    "generation": " \u2192 Le grand maison rouge est belle.\n\nWait, but in French, the adjective \"beau\" is used for masculine nouns, and \"belle\" for feminine. So \"maison\" is feminine, so \"belle\" is correct.",
+    "success": true,
+    "ablated_head": [
+      1,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H0": {
+    "task": "translate",
+    "generation": " \u2192 Le grand maison rouge est belle.\n\nBut wait, in the example, \"house\" is translated as \"maison\" but in the input, it's \"house\" (not \"maison\"). So the model is translating \"house\" to",
+    "success": true,
+    "ablated_head": [
+      24,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H2": {
+    "task": "translate",
+    "generation": " \u2192 Le grand maison rouge est belle.\n\nBut the correct translation is: Le grand maison rouge est belle. (Note: \"maison\" is singular, not \"maisons\".)\n\nWait, but in the example given, the user wrote \"Le",
+    "success": true,
+    "ablated_head": [
+      24,
+      2
+    ],
+    "is_baseline": false
+  },
+  "baseline": {
+    "task": "translate",
+    "generation": " \u2192 Le grand maison rouge est belle.\n\nWait, but in French, the adjective usually comes after the noun. So \"red house\" is \"maison rouge\", not \"maison rouge\". Wait, but in the example given, the user wrote",
+    "success": true,
+    "ablated_head": null,
+    "is_baseline": true
+  }
+}

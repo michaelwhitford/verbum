@@ -1,0 +1,178 @@
+{
+  "layer": 0,
+  "baseline": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+  "baseline_has_lambda": true,
+  "n_heads": 24,
+  "head_results": [
+    {
+      "layer": 0,
+      "head": 0,
+      "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+      "has_lambda": true,
+      "lambda_count": 4
+    },
+    {
+      "layer": 0,
+      "head": 1,
+      "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bbx. runs(dog)",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 0,
+      "head": 2,
+      "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bb assist(x). helpful(x) | concise(x)\n\n\n",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 0,
+      "head": 3,
+      "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+      "has_lambda": true,
+      "lambda_count": 4
+    },
+    {
+      "layer": 0,
+      "head": 4,
+      "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bb assist(x). helpful(x) | concise(x)\n\n\n",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 0,
+      "head": 5,
+      "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bbx. runs(dog)\n\n\nInput: Be helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)\nOutput: \u03bb assist(x). helpful(x) | concise(x)",
+      "has_lambda": true,
+      "lambda_count": 6
+    },
+    {
+      "layer": 0,
+      "head": 6,
+      "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bb assist(x). helpful(x) | concise(x)\n\n\n",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 0,
+      "head": 7,
+      "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bb assist(x). helpful(x) | concise(x)",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 0,
+      "head": 8,
+      "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bb assist(dog). helpful(dog) | concise(dog)\n\n\n",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 0,
+      "head": 9,
+      "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bb assist(dog). helpful(dog) | concise(dog)\n\n\n",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 0,
+      "head": 10,
+      "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bb assist(x). helpful(x) | concise(x)\n\n\n",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 0,
+      "head": 11,
+      "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) & concise(x)",
+      "has_lambda": true,
+      "lambda_count": 4
+    },
+    {
+      "layer": 0,
+      "head": 12,
+      "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+      "has_lambda": true,
+      "lambda_count": 4
+    },
+    {
+      "layer": 0,
+      "head": 13,
+      "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) & concise(x)",
+      "has_lambda": true,
+      "lambda_count": 4
+    },
+    {
+      "layer": 0,
+      "head": 14,
+      "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bbx. runs(dog)",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 0,
+      "head": 15,
+      "generation": " \u2192 \u03bbx. runs(dog)\nBe helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)",
+      "has_lambda": true,
+      "lambda_count": 4
+    },
+    {
+      "layer": 0,
+      "head": 16,
+      "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bbx. runs(dog)\n\n\nInput: Be helpful but concise. \u2192 \u03bb assist(x). helpful(x) | concise(x)\nOutput: \u03bb assist(x). helpful(x) | concise(x)\n\n\nInput",
+      "has_lambda": true,
+      "lambda_count": 6
+    },
+    {
+      "layer": 0,
+      "head": 17,
+      "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bb assist(dog). helpful(dog) | concise(dog)",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 0,
+      "head": 18,
+      "generation": " Output: \u03bbx. runs(dog)\nInput: Be helpful but concise. Output: \u03bb assist(x). helpful(x) | concise(x)",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 0,
+      "head": 19,
+      "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bb assist(dog). helpful(dog) | concise(dog) runs(dog) runs(dog) runs(dog) runs(dog) runs(dog) runs(dog) runs(d",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 0,
+      "head": 20,
+      "generation": " Output: \u03bbx. runs(dog) The input statement \"The dog runs\" is a simple declarative sentence that describes an action performed by the dog. In predicate logic, we can represent this statement as a function that takes an argument (in",
+      "has_lambda": true,
+      "lambda_count": 1
+    },
+    {
+      "layer": 0,
+      "head": 21,
+      "generation": " Be helpful but concise. Output: \u03bbx. runs(dog) & \u03bb assist(x). helpful(x) | concise(x)",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 0,
+      "head": 22,
+      "generation": " \u2192 \u03bbx. runs(dog)\nOutput: \u03bb assist(dog). helpful(dog) | concise(dog)",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 0,
+      "head": 23,
+      "generation": " \u2192 \u03bbx. runs(dog)",
+      "has_lambda": true,
+      "lambda_count": 2
+    }
+  ],
+  "broken_heads": [],
+  "n_broken": 0
+}

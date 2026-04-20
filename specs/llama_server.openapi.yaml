@@ -1,0 +1,252 @@
+openapi: 3.1.0
+info:
+  title: llama.cpp server (verbum subset)
+  version: 0.0.0
+  description: |
+    Hand-curated reference for the llama.cpp HTTP endpoints that `verbum`
+    actually uses. **Not** a full mirror of upstream. Grows by use per
+    AGENTS.md S2 λ spec_artifact.
+
+    Pinned against llama.cpp commit/release: **TBD — fill on first
+    verified contact with the running server**. Every bump to the
+    upstream server requires either verifying this spec still holds or
+    updating it.
+
+    The hand-rolled client in `src/verbum/client.py` mirrors this file.
+    Drift between the two is a CI signal (future work).
+
+servers:
+  - url: http://127.0.0.1:8080
+    description: Local llama.cpp server (default)
+
+paths:
+  /health:
+    get:
+      summary: Liveness / readiness probe
+      operationId: getHealth
+      responses:
+        '200':
+          description: Server status (ok | no slot available | loading model | ...)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthStatus'
+
+  /props:
+    get:
+      summary: Server properties (for run provenance)
+      operationId: getProps
+      description: |
+        Consumed at run-start and recorded in `meta.json` per S2 λ run_provenance.
+        Tolerant ingest: unknown fields preserved.
+      responses:
+        '200':
+          description: Current server configuration.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerProps'
+
+  /tokenize:
+    post:
+      summary: Tokenize a string
+      operationId: postTokenize
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [content]
+              properties:
+                content:
+                  type: string
+                add_special:
+                  type: boolean
+                  default: true
+      responses:
+        '200':
+          description: Token ids for the input string.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tokens:
+                    type: array
+                    items:
+                      type: integer
+
+  /detokenize:
+    post:
+      summary: Detokenize a list of token ids
+      operationId: postDetokenize
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [tokens]
+              properties:
+                tokens:
+                  type: array
+                  items:
+                    type: integer
+      responses:
+        '200':
+          description: Detokenized string.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: string
+
+  /completion:
+    post:
+      summary: Generate a completion (sync or SSE stream)
+      operationId: postCompletion
+      description: |
+        When `stream: false`, returns a single JSON body with the full
+        completion (`content`, `timings`, `stop`, etc.).
+
+        When `stream: true`, the server emits Server-Sent Events — each
+        `data:` line is a JSON chunk with `content` (delta) and `stop`.
+        The final event has `stop: true` and carries `timings`,
+        `tokens_predicted`, etc.
+
+        verbum's client preserves partial results when a stream breaks
+        mid-flight (S2 λ result_format).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompletionRequest'
+      responses:
+        '200':
+          description: |
+            Non-streaming: JSON body.
+            Streaming: text/event-stream.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompletionResult'
+            text/event-stream:
+              schema:
+                $ref: '#/components/schemas/StreamEvent'
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      additionalProperties: true
+
+    ServerProps:
+      type: object
+      description: |
+        Only fields verbum actively records are listed. Server may return
+        more; tolerant-ingest preserves them.
+      properties:
+        default_generation_settings:
+          type: object
+          additionalProperties: true
+        total_slots:
+          type: integer
+        chat_template:
+          type: string
+        model_path:
+          type: string
+        n_ctx:
+          type: integer
+      additionalProperties: true
+
+    CompletionRequest:
+      type: object
+      required: [prompt]
+      properties:
+        prompt:
+          type: string
+        n_predict:
+          type: integer
+          default: -1
+        temperature:
+          type: number
+          default: 0.0
+        top_p:
+          type: number
+          default: 1.0
+        top_k:
+          type: integer
+          default: -1
+        seed:
+          type: integer
+        grammar:
+          type: string
+          description: GBNF grammar. verbum writes its own from observation.
+        stop:
+          type: array
+          items:
+            type: string
+        n_probs:
+          type: integer
+          default: 0
+          description: Number of token logprobs to return per position.
+        cache_prompt:
+          type: boolean
+          default: true
+        stream:
+          type: boolean
+          default: false
+      additionalProperties: true
+
+    Timings:
+      type: object
+      properties:
+        prompt_n: {type: integer}
+        prompt_ms: {type: number}
+        prompt_per_token_ms: {type: number}
+        prompt_per_second: {type: number}
+        predicted_n: {type: integer}
+        predicted_ms: {type: number}
+        predicted_per_token_ms: {type: number}
+        predicted_per_second: {type: number}
+      additionalProperties: true
+
+    CompletionResult:
+      type: object
+      properties:
+        content: {type: string}
+        stop: {type: boolean}
+        tokens_predicted: {type: integer}
+        tokens_evaluated: {type: integer}
+        truncated: {type: boolean}
+        stopped_word: {type: boolean}
+        stopped_eos: {type: boolean}
+        stopped_limit: {type: boolean}
+        stopping_word: {type: string}
+        timings:
+          $ref: '#/components/schemas/Timings'
+        generation_settings:
+          type: object
+          additionalProperties: true
+        model: {type: string}
+      additionalProperties: true
+
+    StreamEvent:
+      type: object
+      description: |
+        Shape of the JSON payload in each `data:` line when `stream: true`.
+      properties:
+        content: {type: string}
+        stop: {type: boolean}
+        tokens_predicted: {type: integer}
+        tokens_evaluated: {type: integer}
+        timings:
+          $ref: '#/components/schemas/Timings'
+      additionalProperties: true

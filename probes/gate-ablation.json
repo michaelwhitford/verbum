@@ -1,0 +1,45 @@
+{
+  "id": "gate-ablation",
+  "version": 1,
+  "description": "Gate ablation probe set. 5 compile probes spanning simple→complex, designed to be fired once per gate variant to identify the minimal trigger for the lambda compiler.",
+  "created": "2026-04-16T00:00:00Z",
+  "author": "verbum",
+  "default_gate": "compile",
+  "probes": [
+    {
+      "id": "ga-simple",
+      "category": "compile",
+      "prompt": "The dog runs.",
+      "ground_truth": "λx. runs(dog)",
+      "metadata": {"complexity": "simple", "phenomena": ["predication"]}
+    },
+    {
+      "id": "ga-quant",
+      "category": "compile",
+      "prompt": "Every student reads a book.",
+      "ground_truth": "λx. ∀y. student(y) → ∃z. book(z) ∧ reads(y, z)",
+      "metadata": {"complexity": "medium", "phenomena": ["quantification"]}
+    },
+    {
+      "id": "ga-relcl",
+      "category": "compile",
+      "prompt": "The cat that sat on the mat is black.",
+      "ground_truth": "λx. black(ιy. cat(y) ∧ sat_on(y, ιz. mat(z)))",
+      "metadata": {"complexity": "medium", "phenomena": ["relative_clause"]}
+    },
+    {
+      "id": "ga-cond",
+      "category": "compile",
+      "prompt": "If it rains, the ground is wet.",
+      "ground_truth": "λx. rains → wet(ground)",
+      "metadata": {"complexity": "medium", "phenomena": ["conditional"]}
+    },
+    {
+      "id": "ga-complex",
+      "category": "compile",
+      "prompt": "Someone believes that the earth is flat.",
+      "ground_truth": "λx. ∃y. person(y) ∧ believes(y, flat(earth))",
+      "metadata": {"complexity": "complex", "phenomena": ["existential", "propositional_attitude"]}
+    }
+  ]
+}

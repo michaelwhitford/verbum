@@ -1,0 +1,234 @@
+{
+  "layer": 30,
+  "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+  "baseline_has_lambda": true,
+  "n_heads": 32,
+  "head_results": [
+    {
+      "layer": 30,
+      "head": 0,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 1,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 2,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 3,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 4,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 5,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 6,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 7,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 8,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 9,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 10,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 11,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 12,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 13,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 14,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 15,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 16,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 17,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 18,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 19,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 20,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 21,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 22,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 23,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 24,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 25,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 26,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 27,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 28,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 29,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 30,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 30,
+      "head": 31,
+      "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+      "has_lambda": true,
+      "lambda_count": 2
+    }
+  ],
+  "broken_heads": [],
+  "n_broken": 0
+}

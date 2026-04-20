@@ -1,0 +1,7 @@
+{
+  "task": "extract",
+  "generation": " \n\nOutput: buy(alice, car), sell(bob, house)\n\nOkay, so I need to convert the sentence \"Alice bought a car and Bob sold his house.\" into a list of action verbs with their respective subjects, objects, and possibly",
+  "success": true,
+  "ablated_head": null,
+  "is_baseline": true
+}

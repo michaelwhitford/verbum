@@ -1,0 +1,809 @@
+{
+  "timestamp": "2026-04-17T20:47:45.201882+00:00",
+  "elapsed_s": 67.64837408065796,
+  "architecture": "MontaguCompiler (3-phase)",
+  "params": {
+    "phase1_type_embed": 197376,
+    "phase2_parser": 1054208,
+    "phase3_decoder": 2541514,
+    "total_trainable": 3793098
+  },
+  "d_model": 256,
+  "n_parser_layers": 2,
+  "n_apply_layers": 3,
+  "n_epochs": 30,
+  "epoch_losses": [
+    2.111704643815756,
+    1.2114421697333455,
+    0.8149593519046903,
+    0.6124773467890918,
+    0.47684576036408544,
+    0.37645679130218923,
+    0.3247843907447532,
+    0.30180723080411553,
+    0.24441582220606506,
+    0.2136285959277302,
+    0.1870830685365945,
+    0.17127690569031984,
+    0.14347067865310237,
+    0.1242764106427785,
+    0.10577020765049383,
+    0.09210677241208032,
+    0.08312865465995856,
+    0.07735338812926784,
+    0.0644719901465578,
+    0.05339369174907915,
+    0.05065345115144737,
+    0.04202841733058449,
+    0.04004499313305132,
+    0.03640448748774361,
+    0.035083408023638185,
+    0.03264583019335987,
+    0.032036763928772416,
+    0.0335650571869337,
+    0.03280564947635867,
+    0.029518339433707297
+  ],
+  "lambda_vocab_size": 202,
+  "eval_results": [
+    {
+      "input": "The dog runs.",
+      "expected": "λx. runs(dog)",
+      "generated": "λx. runs(dog)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [
+        "dog",
+        "runs"
+      ],
+      "content_total": [
+        "dog",
+        "runs"
+      ],
+      "category": "simple"
+    },
+    {
+      "input": "Every student reads a book.",
+      "expected": "∀y. student(y) → ∃z. book(z) ∧ reads(y, z)",
+      "generated": "∀x. student(x) → reads(x, x, x, x)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [
+        "reads",
+        "student"
+      ],
+      "content_total": [
+        "reads",
+        "book",
+        "student"
+      ],
+      "category": "quantified"
+    },
+    {
+      "input": "The cat that sat on the mat is black.",
+      "expected": "black(ιy. cat(y) ∧ sat_on(y, ιz. mat(z)))",
+      "generated": "λx. sits(cat)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [
+        "cat"
+      ],
+      "content_total": [
+        "mat",
+        "on",
+        "sat",
+        "black",
+        "cat"
+      ],
+      "category": "relative_clause"
+    },
+    {
+      "input": "If it rains, the ground is wet.",
+      "expected": "rains → wet(ground)",
+      "generated": "λx. if(rests(x), cries(cat))",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "it",
+        "ground",
+        "rains",
+        "wet"
+      ],
+      "category": "conditional"
+    },
+    {
+      "input": "Someone believes that the earth is flat.",
+      "expected": "∃y. person(y) ∧ believes(y, flat(earth))",
+      "generated": "belief(λx. reads(woman) → believes(x, jumps(woman))",
+      "parses": false,
+      "has_lambda": true,
+      "content_found": [
+        "believes"
+      ],
+      "content_total": [
+        "flat",
+        "believes",
+        "someone",
+        "earth"
+      ],
+      "category": "attitude"
+    },
+    {
+      "input": "The bird flies.",
+      "expected": "λx. flies(bird)",
+      "generated": "λx. flies(bird)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [
+        "flies",
+        "bird"
+      ],
+      "content_total": [
+        "flies",
+        "bird"
+      ],
+      "category": "simple"
+    },
+    {
+      "input": "Alice helps Bob.",
+      "expected": "λx. helps(alice, bob)",
+      "generated": "λx. helps(bob, alice)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [
+        "bob",
+        "alice",
+        "helps"
+      ],
+      "content_total": [
+        "bob",
+        "alice",
+        "helps"
+      ],
+      "category": "transitive"
+    },
+    {
+      "input": "No fish swims.",
+      "expected": "¬∃x. fish(x) ∧ swims(x)",
+      "generated": "λx. swims(fish)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [
+        "swims",
+        "fish"
+      ],
+      "content_total": [
+        "swims",
+        "fish"
+      ],
+      "category": "negation"
+    },
+    {
+      "input": "The teacher who the child sees laughs.",
+      "expected": "λx. laughs(ιy. teacher(y) ∧ sees(child, y))",
+      "generated": "λx. laughs(child, teacher)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [
+        "teacher",
+        "laughs",
+        "child"
+      ],
+      "content_total": [
+        "teacher",
+        "laughs",
+        "sees",
+        "child"
+      ],
+      "category": "relative_clause"
+    },
+    {
+      "input": "Tom runs quickly.",
+      "expected": "λx. quickly(runs(tom))",
+      "generated": "λx. runs(tom, quickly)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [
+        "quickly",
+        "runs",
+        "tom"
+      ],
+      "content_total": [
+        "quickly",
+        "runs",
+        "tom"
+      ],
+      "category": "adverb"
+    }
+  ],
+  "holdout_results": [
+    {
+      "input": "The elephant climbs bravely.",
+      "expected": "λx. climbs(elephant)",
+      "generated": "λx. swims(young, bravely)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [
+        "bravely"
+      ],
+      "content_total": [
+        "elephant",
+        "climbs",
+        "bravely"
+      ],
+      "category": "adverb"
+    },
+    {
+      "input": "The elephant does not vanish.",
+      "expected": "λx. not(vanish(elephant))",
+      "generated": "λx. not(run(dog))",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "elephant",
+        "vanish"
+      ],
+      "category": "negation"
+    },
+    {
+      "input": "Felix thinks that the wizard whistles.",
+      "expected": "λx. thinks(felix, wizard, whistles)",
+      "generated": "λx. thinks(x, knight, x)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [
+        "thinks"
+      ],
+      "content_total": [
+        "thinks",
+        "whistles",
+        "felix",
+        "wizard"
+      ],
+      "category": "attitude"
+    },
+    {
+      "input": "Felix chases diana.",
+      "expected": "λx. chases(felix, diana)",
+      "generated": "λx. hates(anna, alice)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "felix",
+        "chases",
+        "diana"
+      ],
+      "category": "transitive"
+    },
+    {
+      "input": "The wizard vanishes in the river.",
+      "expected": "λx. vanishes(wizard, river)",
+      "generated": "λx. hates(pilot, mountain)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [
+        "in"
+      ],
+      "content_total": [
+        "in",
+        "vanishes",
+        "wizard",
+        "river"
+      ],
+      "category": "prepositional"
+    },
+    {
+      "input": "No elephant vanishes.",
+      "expected": "λx. ¬vanishes(elephant)",
+      "generated": "λx. ¬(flies(king))",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "elephant",
+        "vanishes"
+      ],
+      "category": "negation"
+    },
+    {
+      "input": "The kind wizard whistles.",
+      "expected": "λx. whistles(wizard)",
+      "generated": "λx. sleep(pilot)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "whistles",
+        "kind",
+        "wizard"
+      ],
+      "category": "simple"
+    },
+    {
+      "input": "The elephant is fast.",
+      "expected": "λx. fast(elephant)",
+      "generated": "λx. fast(scientist)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [
+        "fast"
+      ],
+      "content_total": [
+        "fast",
+        "elephant"
+      ],
+      "category": "copular"
+    },
+    {
+      "input": "No nurse whistles.",
+      "expected": "λx. ¬whistles(nurse)",
+      "generated": "λx. ¬(judge)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "whistles",
+        "nurse"
+      ],
+      "category": "negation"
+    },
+    {
+      "input": "Felix vanishes.",
+      "expected": "λx. vanishes(felix)",
+      "generated": "λx. ¬(graace)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "felix",
+        "vanishes"
+      ],
+      "category": "simple"
+    },
+    {
+      "input": "Either the elephant vanishes or the wizard whistles.",
+      "expected": "λx. (vanishes(elephant) ∨ whistles(wizard))",
+      "generated": "λx. (flies(sailor) ∨ λx. queen)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "either",
+        "whistles",
+        "wizard",
+        "elephant",
+        "vanishes"
+      ],
+      "category": "disjunction"
+    },
+    {
+      "input": "The nurse climbs.",
+      "expected": "λx. climbs(nurse)",
+      "generated": "λx. cries(teacher)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "nurse",
+        "climbs"
+      ],
+      "category": "simple"
+    },
+    {
+      "input": "If the nurse climbs, the wizard vanishes.",
+      "expected": "λx. if(climbs(nurse), vanishes(wizard))",
+      "generated": "λx. if(cries(pilot), swims(scientist))",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "nurse",
+        "vanishes",
+        "wizard",
+        "climbs"
+      ],
+      "category": "conditional"
+    },
+    {
+      "input": "The nurse carries the wizard.",
+      "expected": "λx. carries(nurse, wizard)",
+      "generated": "λx. trusts(pilot, pilot)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "carries",
+        "wizard",
+        "nurse"
+      ],
+      "category": "transitive"
+    },
+    {
+      "input": "The nurse that carries the wizard climbs.",
+      "expected": "λx. climbs(nurse(x))",
+      "generated": "λx. trusts(λy. (x, y))",
+      "parses": false,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "carries",
+        "nurse",
+        "wizard",
+        "climbs"
+      ],
+      "category": "relative_clause"
+    },
+    {
+      "input": "The elephant showed the wizard a ball.",
+      "expected": "λx. showed(wizard, ball)",
+      "generated": "λx. showed(sailor, ball)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [
+        "ball",
+        "showed"
+      ],
+      "content_total": [
+        "ball",
+        "showed",
+        "elephant",
+        "wizard"
+      ],
+      "category": "ditransitive"
+    },
+    {
+      "input": "Some nurse whistles.",
+      "expected": "∃x. nurse(x) ∧ whistles(x)",
+      "generated": "λx. shouts(judge)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "whistles",
+        "nurse"
+      ],
+      "category": "quantified"
+    },
+    {
+      "input": "The wizard is old.",
+      "expected": "λx. old(wizard)",
+      "generated": "λx. old(x)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [
+        "old"
+      ],
+      "content_total": [
+        "old",
+        "wizard"
+      ],
+      "category": "copular"
+    },
+    {
+      "input": "The elephant vanishes bravely.",
+      "expected": "λx. vanishes(elephant)",
+      "generated": "λx. hates(x, bravely)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [
+        "bravely"
+      ],
+      "content_total": [
+        "elephant",
+        "vanishes",
+        "bravely"
+      ],
+      "category": "adverb"
+    },
+    {
+      "input": "Diana carries iris.",
+      "expected": "λx. carries(diana, iris)",
+      "generated": "λx. trusts(lucy, lucy)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "carries",
+        "iris",
+        "diana"
+      ],
+      "category": "transitive"
+    },
+    {
+      "input": "If the elephant whistles, the wizard whistles.",
+      "expected": "λx. if(whistles(elephant), whistles(wizard))",
+      "generated": "λx. if(swims(x), smiles(ball))",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "whistles",
+        "wizard",
+        "elephant"
+      ],
+      "category": "conditional"
+    },
+    {
+      "input": "The kind nurse whistles.",
+      "expected": "λx. whistles(nurse)",
+      "generated": "λx. alice(teacher, letter)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "kind",
+        "whistles",
+        "nurse"
+      ],
+      "category": "simple"
+    },
+    {
+      "input": "Either the nurse vanishes or the wizard vanishes.",
+      "expected": "λx. (vanishes(nurse) ∨ vanishes(wizard))",
+      "generated": "λx. (rests(x) ∨ λx. cries(teacher))",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "vanishes",
+        "either",
+        "wizard",
+        "nurse"
+      ],
+      "category": "disjunction"
+    },
+    {
+      "input": "Felix climbs.",
+      "expected": "λx. climbs(felix)",
+      "generated": "λx. ¬(graace)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "felix",
+        "climbs"
+      ],
+      "category": "simple"
+    },
+    {
+      "input": "The elephant who the wizard chases whistles.",
+      "expected": "λx. whistles(elephant)",
+      "generated": "λx. sleeps(λy. trusts(x, y))",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "chases",
+        "whistles",
+        "wizard",
+        "elephant"
+      ],
+      "category": "relative_clause"
+    },
+    {
+      "input": "The wizard is slow.",
+      "expected": "λx. slow(wizard)",
+      "generated": "λx. slow(pilot)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [
+        "slow"
+      ],
+      "content_total": [
+        "slow",
+        "wizard"
+      ],
+      "category": "copular"
+    },
+    {
+      "input": "Iris hopes that the wizard climbs.",
+      "expected": "λx. hopes(iris, wizard, climbs)",
+      "generated": "λx. hopes(λy. hopes(x, y))",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [
+        "hopes"
+      ],
+      "content_total": [
+        "hopes",
+        "iris",
+        "wizard",
+        "climbs"
+      ],
+      "category": "attitude"
+    },
+    {
+      "input": "Iris vanishes and whistles.",
+      "expected": "λx. vanishes(iris) ∧ whistles(iris)",
+      "generated": "λx. ¬(walk(x) ∧ swims(x)",
+      "parses": false,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "iris",
+        "vanishes",
+        "whistles"
+      ],
+      "category": "conjunction"
+    },
+    {
+      "input": "Iris and diana climb.",
+      "expected": "λx. climb(iris) ∧ climb(diana)",
+      "generated": "λx. gentle(lucy, mountain)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "iris",
+        "diana",
+        "climb"
+      ],
+      "category": "conjunction"
+    },
+    {
+      "input": "The nurse climbs in the bridge.",
+      "expected": "λx. climbs(nurse, bridge)",
+      "generated": "λx. ¬(judge, bridge)",
+      "parses": false,
+      "has_lambda": true,
+      "content_found": [
+        "bridge"
+      ],
+      "content_total": [
+        "in",
+        "bridge",
+        "nurse",
+        "climbs"
+      ],
+      "category": "prepositional"
+    },
+    {
+      "input": "The wizard whistles.",
+      "expected": "λx. whistles(wizard)",
+      "generated": "λx. sleeps(λx)",
+      "parses": false,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "whistles",
+        "wizard"
+      ],
+      "category": "simple"
+    },
+    {
+      "input": "Diana fears that the nurse vanishes.",
+      "expected": "λx. fears(diana, x) → λx. vanishes(nurse)",
+      "generated": "λx. fears(x, teacher(x))",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [
+        "fears"
+      ],
+      "content_total": [
+        "vanishes",
+        "diana",
+        "fears",
+        "nurse"
+      ],
+      "category": "attitude"
+    },
+    {
+      "input": "Every wizard carries a wizard.",
+      "expected": "∀x. wizard(x) → carries(wizard(x), wizard(x))",
+      "generated": "∀x. (pilot(x) → walks(x, x))",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "carries",
+        "wizard"
+      ],
+      "category": "quantified"
+    },
+    {
+      "input": "The elephant rescues the nurse.",
+      "expected": "λx. rescues(elephant, nurse)",
+      "generated": "λx. greets(judge, ball)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "rescues",
+        "elephant",
+        "nurse"
+      ],
+      "category": "transitive"
+    },
+    {
+      "input": "The nurse offered the wizard a flower.",
+      "expected": "λx. offered(nurse, wizard, flower)",
+      "generated": "λx. offered(pilot, flower)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [
+        "flower",
+        "offered"
+      ],
+      "content_total": [
+        "flower",
+        "offered",
+        "nurse",
+        "wizard"
+      ],
+      "category": "ditransitive"
+    },
+    {
+      "input": "The elephant carries the wizard.",
+      "expected": "λx. carries(elephant, wizard)",
+      "generated": "λx. trusts(scientist, scientist)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "elephant",
+        "carries",
+        "wizard"
+      ],
+      "category": "transitive"
+    },
+    {
+      "input": "Every nurse climbs.",
+      "expected": "∀x. nurse(x) → climbs(x)",
+      "generated": "∀x. (judge(x) → λy. ¬(x))",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "nurse",
+        "climbs"
+      ],
+      "category": "quantified"
+    },
+    {
+      "input": "The nurse climbs slowly.",
+      "expected": "λx. climbs(nurse, slowly)",
+      "generated": "λx. ¬(judge, slowly)",
+      "parses": false,
+      "has_lambda": true,
+      "content_found": [
+        "slowly"
+      ],
+      "content_total": [
+        "slowly",
+        "nurse",
+        "climbs"
+      ],
+      "category": "adverb"
+    },
+    {
+      "input": "The nurse does not whistle.",
+      "expected": "λx. ¬whistle(nurse)",
+      "generated": "λx. not(jump(teacher))",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "whistle",
+        "nurse"
+      ],
+      "category": "negation"
+    },
+    {
+      "input": "Felix carries iris.",
+      "expected": "λx. carries(felix, iris)",
+      "generated": "λx. runs(paul, lucy)",
+      "parses": true,
+      "has_lambda": true,
+      "content_found": [],
+      "content_total": [
+        "felix",
+        "iris",
+        "carries"
+      ],
+      "category": "transitive"
+    }
+  ]
+}

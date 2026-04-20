@@ -1,0 +1,7 @@
+{
+  "task": "classify",
+  "generation": " \u2192 sentiment?\nOkay, let's see. The user provided a sentence: \"I had high expectations for this restaurant given the reviews, but the overcooked steak and rude waiter completely ruined the evening.\" They want to determine the sentiment of this input.\n\n",
+  "success": false,
+  "ablated_head": null,
+  "is_baseline": true
+}

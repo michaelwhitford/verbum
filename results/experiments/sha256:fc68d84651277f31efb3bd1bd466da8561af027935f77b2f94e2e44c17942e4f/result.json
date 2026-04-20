@@ -1,0 +1,7 @@
+{
+  "task": "translate",
+  "generation": " \u2192 Le grand maison rouge est belle.\n\nWait, but in French, the adjective usually comes after the noun. So \"red house\" is \"maison rouge\", not \"maison rouge\". Wait, but in the example given, the user wrote",
+  "success": true,
+  "ablated_head": null,
+  "is_baseline": true
+}

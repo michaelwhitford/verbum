@@ -1,0 +1,126 @@
+============================================================
+  CROSS-TASK ABLATION — typed_apply universality test
+============================================================
+
+Building cross-task graph...
+2026-04-16 20:54:16 [info     ] probe_set.loaded               id=gate-ablation n_probes=5 path=/Users/mwhitford/src/verbum/probes/gate-ablation.json version=1
+2026-04-16 20:54:16 [info     ] probes.resolved                gates_loaded=1 n_resolved=5 probe_set=gate-ablation
+2026-04-16 20:54:16 [info     ] probe_set.loaded               id=summarize n_probes=5 path=/Users/mwhitford/src/verbum/probes/summarize.json version=1
+2026-04-16 20:54:16 [info     ] probes.resolved                gates_loaded=1 n_resolved=5 probe_set=summarize
+2026-04-16 20:54:16 [info     ] probe_set.loaded               id=translate n_probes=5 path=/Users/mwhitford/src/verbum/probes/translate.json version=1
+2026-04-16 20:54:16 [info     ] probes.resolved                gates_loaded=1 n_resolved=5 probe_set=translate
+2026-04-16 20:54:16 [info     ] probe_set.loaded               id=classify n_probes=5 path=/Users/mwhitford/src/verbum/probes/classify.json version=1
+2026-04-16 20:54:16 [info     ] probes.resolved                gates_loaded=1 n_resolved=5 probe_set=classify
+2026-04-16 20:54:16 [info     ] probe_set.loaded               id=extract n_probes=5 path=/Users/mwhitford/src/verbum/probes/extract.json version=1
+2026-04-16 20:54:16 [info     ] probes.resolved                gates_loaded=1 n_resolved=5 probe_set=extract
+Graph: 5 tasks, 100 leaf nodes
+Hash: sha256:bd530aec0d8aa573a...
+
+Loading model...
+2026-04-16 20:54:17 [info     ] instrument.loading             device=mps dtype=torch.float16 model=Qwen/Qwen3-4B
+2026-04-16 20:54:19 [info     ] instrument.loaded              head_dim=80 n_heads=32 n_kv_heads=8 n_layers=36 total_heads=1152
+Loaded: 36L, 32H
+
+Running experiments...
+============================================================
+2026-04-16 20:54:19 [info     ] node.enter                     hash=sha256:bd530aec0 node=cross-task
+2026-04-16 20:54:19 [info     ] node.cached                    hash=sha256:bd530aec0 node=cross-task
+
+============================================================
+  ESSENTIALITY MATRIX — head x task
+============================================================
+
+                     classify    compile    extract  summarize  translate
+-------------------------------------------------------------------------
+baseline           3/      5 5/      5 5/      5 0/      5 5/      5
+L1-H0                     3/5      *4/5*        5/5        0/5        5/5
+L24-H0                    4/5      *2/5*      *4/5*        0/5        5/5
+L24-H2                    3/5        5/5        5/5        0/5        5/5
+
+* = degraded vs baseline (head is essential for this task)
+
+============================================================
+  PER-TASK DETAIL
+============================================================
+
+--- CLASSIFY ---
+  probe-cls-mixed: baseline=FAIL, L1-H0=BREAK, L24-H0=ok, L24-H2=BREAK
+  probe-cls-neg-complex: baseline=FAIL, L1-H0=BREAK, L24-H0=BREAK, L24-H2=BREAK
+  probe-cls-neg-simple: baseline=OK, L1-H0=ok, L24-H0=ok, L24-H2=ok
+  probe-cls-pos-complex: baseline=OK, L1-H0=ok, L24-H0=ok, L24-H2=ok
+  probe-cls-pos-simple: baseline=OK, L1-H0=ok, L24-H0=ok, L24-H2=ok
+
+--- COMPILE ---
+  probe-ga-complex: baseline=OK, L1-H0=ok, L24-H0=BREAK, L24-H2=ok
+  probe-ga-cond: baseline=OK, L1-H0=ok, L24-H0=ok, L24-H2=ok
+  probe-ga-quant: baseline=OK, L1-H0=ok, L24-H0=BREAK, L24-H2=ok
+  probe-ga-relcl: baseline=OK, L1-H0=BREAK, L24-H0=BREAK, L24-H2=ok
+  probe-ga-simple: baseline=OK, L1-H0=ok, L24-H0=ok, L24-H2=ok
+
+--- EXTRACT ---
+  probe-ext-ditrans: baseline=OK, L1-H0=ok, L24-H0=BREAK, L24-H2=ok
+  probe-ext-multi: baseline=OK, L1-H0=ok, L24-H0=ok, L24-H2=ok
+  probe-ext-nested: baseline=OK, L1-H0=ok, L24-H0=ok, L24-H2=ok
+  probe-ext-passive: baseline=OK, L1-H0=ok, L24-H0=ok, L24-H2=ok
+  probe-ext-simple: baseline=OK, L1-H0=ok, L24-H0=ok, L24-H2=ok
+
+--- SUMMARIZE ---
+  probe-sum-multi: baseline=FAIL, L1-H0=BREAK, L24-H0=BREAK, L24-H2=BREAK
+  probe-sum-nested: baseline=FAIL, L1-H0=BREAK, L24-H0=BREAK, L24-H2=BREAK
+  probe-sum-politics: baseline=FAIL, L1-H0=BREAK, L24-H0=BREAK, L24-H2=BREAK
+  probe-sum-science: baseline=FAIL, L1-H0=BREAK, L24-H0=BREAK, L24-H2=BREAK
+  probe-sum-simple: baseline=FAIL, L1-H0=BREAK, L24-H0=BREAK, L24-H2=BREAK
+
+--- TRANSLATE ---
+  probe-tr-adj: baseline=OK, L1-H0=ok, L24-H0=ok, L24-H2=ok
+  probe-tr-cond: baseline=OK, L1-H0=ok, L24-H0=ok, L24-H2=ok
+  probe-tr-quant: baseline=OK, L1-H0=ok, L24-H0=ok, L24-H2=ok
+  probe-tr-relcl: baseline=OK, L1-H0=ok, L24-H0=ok, L24-H2=ok
+  probe-tr-simple: baseline=OK, L1-H0=ok, L24-H0=ok, L24-H2=ok
+
+============================================================
+  BROKEN CASES — what the model outputs when heads are ablated
+============================================================
+
+  compile/probe-ga-complex/L24-H0:
+    baseline:  → λx. believes(x, earth, flat)
+
+Okay, so I need to figure out how to represent the sentence "Someon
+    ablated:   → ?
+
+Okay, let's see. The user wants to convert the sentence "Someone believes that the earth is fl
+
+  compile/probe-ga-quant/L24-H0:
+    baseline:  → λx. reads(x, book) | student(x)
+
+Wait, but the original sentence is "Every student reads a book."
+    ablated:   → ?
+
+So, how do I convert the sentence "Every student reads a book." into a lambda expression using
+
+  compile/probe-ga-relcl/L1-H0:
+    baseline:  → λx. cat(x) ∧ sat(x) ∧ on(mat)(x) ∧ black(x)
+
+Okay, so I need to figure out how to represent the s
+    ablated:   → ?
+
+Okay, let's see. The user wants to convert the sentence "The cat that sat on the mat is black.
+
+  compile/probe-ga-relcl/L24-H0:
+    baseline:  → λx. cat(x) ∧ sat(x) ∧ on(mat)(x) ∧ black(x)
+
+Okay, so I need to figure out how to represent the s
+    ablated:   → ?
+
+Okay, let's see. The user wants to convert the sentence "The cat that sat on the mat is black.
+
+  extract/probe-ext-ditrans/L24-H0:
+    baseline:  
+
+Output: send(mary, john, letter)
+
+Yes, the output is correct. The structure of the output is the 
+    ablated:   
+
+Output: ?
+So, the task is to convert the given natural language sentence into a logical form usin

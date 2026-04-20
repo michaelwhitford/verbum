@@ -1,0 +1,10 @@
+{
+  "task": "extract",
+  "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\n\nNow, do the same for the following sentence:\n\nThe students were told by the teacher that the exam was cancelled.\n\nOutput: tell(students, teacher, exam was cancelled)\n\nWait,",
+  "success": true,
+  "ablated_head": [
+    24,
+    2
+  ],
+  "is_baseline": false
+}

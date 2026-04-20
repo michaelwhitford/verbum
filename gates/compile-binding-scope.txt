@@ -1,0 +1,4 @@
+Every student read a book. → ∀x. student(x) → ∃y. book(y) ∧ read(x, y)
+She gave him the key. → gave(she, him, ιx. key(x))
+
+Input: 

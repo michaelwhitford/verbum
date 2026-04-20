@@ -1,0 +1,39 @@
+{
+  "L1-H0": {
+    "task": "compile",
+    "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the output is supposed to be a single lambda expression. How do I combine these two sentences into one lambda",
+    "success": true,
+    "ablated_head": [
+      1,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H0": {
+    "task": "compile",
+    "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the output is supposed to be a single lambda expression. How do I combine these two sentences into one lambda",
+    "success": true,
+    "ablated_head": [
+      24,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H2": {
+    "task": "compile",
+    "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the output is supposed to be a single lambda expression. How do I combine these two sentences into one lambda",
+    "success": true,
+    "ablated_head": [
+      24,
+      2
+    ],
+    "is_baseline": false
+  },
+  "baseline": {
+    "task": "compile",
+    "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the output is supposed to be a single lambda expression. How do I combine these two sentences into one lambda",
+    "success": true,
+    "ablated_head": null,
+    "is_baseline": true
+  }
+}

@@ -1,0 +1,3648 @@
+{
+  "model": "/Users/mwhitford/localai/models/Qwen3-4B-Q8_0.gguf",
+  "timestamp": "2026-04-19T06:48:42",
+  "n_predict": 80,
+  "temperature": 0.0,
+  "gates": [
+    "compile",
+    "compile-binding-montague",
+    "compile-binding-scope",
+    "compile-binding-typed"
+  ],
+  "probes": [
+    {
+      "probe_id": "bind-scope-01a",
+      "category": "quantifier_scope",
+      "prompt": "Every student read a book.",
+      "ground_truth": "∀x. student(x) → ∃y. book(y) ∧ read(x, y)",
+      "metadata": {
+        "pair": "bind-scope-01b",
+        "binding": "surface_scope",
+        "phenomena": [
+          "universal",
+          "existential",
+          "scope_order"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "→ λx. read(x) | student(x) | book(x)\n\nWait, but the original sentence is \"Every student read a book.\" So the subject is \"every student\", and the predicate is \"read a book\". So the lambda expression should represent that for every student x, x read a book. But how to represent \"read a book\" as a function? Maybe it's λ",
+          "first_line": "→ λx. read(x) | student(x) | book(x)",
+          "elapsed_ms": 1099.7,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": true,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 1.0,
+            "gen_depth": 1,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "Some student read a book. \nSome student read a book. \nSome student read a book. \nSome student read a book. \nSome student read a book. \nSome student read a book. \nSome student read a book. \nSome student read a book. \nSome student read a many books. \n\nWait, the first sentence is \"Every student read a book.\" and the",
+          "first_line": "Some student read a book.",
+          "elapsed_ms": 870.4,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "She gave him the key. \n\nOutput: \n∀x. student(x) → ∃y. book(y) ∧ read(x, y)\ngave(she, him, ιx. key(x))\n\nNow, let's consider the following scenario: \n\nThere are two students, Alice and Bob. Alice is a student, and Bob is a student. Alice read a book,",
+          "first_line": "She gave him the key.",
+          "elapsed_ms": 783.2,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "No bird can swim. \nThe dog runs. \n\nOutput: \nThe dog runs. \nNo bird can swim. \nEvery student read a book. \n\nSo, the output is the same as the input. \n\nBut what if the input is:\nThe dog runs. \nNo bird can swim. \nEvery student read a book. \n\nThen the output is the same as the input.",
+          "first_line": "No bird can swim.",
+          "elapsed_ms": 784.1,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        }
+      }
+    },
+    {
+      "probe_id": "bind-scope-01b",
+      "category": "quantifier_scope",
+      "prompt": "A student read every book.",
+      "ground_truth": "∃x. student(x) ∧ ∀y. book(y) → read(x, y)",
+      "metadata": {
+        "pair": "bind-scope-01a",
+        "binding": "inverse_scope",
+        "phenomena": [
+          "universal",
+          "existential",
+          "scope_order"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "→ λx. read(x) | every(book)\n\nWait, but the original sentence is \"A student read every book.\" So the subject is \"a student\", the verb is \"read\", and the object is \"every book\". So the correct lambda expression should represent that the student read every book. So maybe it's λx. read(x) | every(book) but that seems a bit",
+          "first_line": "→ λx. read(x) | every(book)",
+          "elapsed_ms": 790.0,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": true,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.333,
+            "gen_depth": 1,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "A student is a person. \nA person is a being. \nA being is a thing. \nA thing is a thing. \n\nLet me try to write the logical expressions for these statements. \n\nFirst, the first sentence: \"A student read every book.\" So, this is saying that for every book, if it is a book, then there exists a student who read it.",
+          "first_line": "A student is a person.",
+          "elapsed_ms": 790.9,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "A student read every book. \nA student read every book. \nA student read every book. \nA student read every book. \nA student read every book. \nA student read every book. \nA student read every book. \nA student read every book. \nA student read every book. \n\nOutput: \n∀x. student(x) → ∀y. book(y)",
+          "first_line": "A student read every book.",
+          "elapsed_ms": 783.6,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "Output: \n∀x. student(x) → ∀y. book(y) ∧ read(x, y)\n\nWait, but the original sentence is \"A student read every book.\" So, the subject is \"a student\", which is singular. So, the correct translation would be: ∃x. student(x) ∧ ∀y. book(y) → read(x, y)\n\nBut the",
+          "first_line": "Output:",
+          "elapsed_ms": 831.8,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        }
+      }
+    },
+    {
+      "probe_id": "bind-scope-02a",
+      "category": "quantifier_scope",
+      "prompt": "No student passed every exam.",
+      "ground_truth": "¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)",
+      "metadata": {
+        "pair": "bind-scope-02b",
+        "binding": "negation_universal",
+        "phenomena": [
+          "negation",
+          "universal",
+          "scope_order"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "→ λx. ¬(passed(x, exam) ∀x)\n\nWait, that's not right. The original sentence is \"No student passed every exam.\" So, the correct logical translation would be: For all students, there exists at least one exam that the student did not pass. In logical terms, this is ∀x (student(x) → ∃e (exam(e) ∧ ¬",
+          "first_line": "→ λx. ¬(passed(x, exam) ∀x)",
+          "elapsed_ms": 809.4,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": true,
+            "quantifier_present": {
+              "universal": true,
+              "existential": false,
+              "negation": true,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": true,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [
+              "x"
+            ],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.333,
+            "gen_depth": 2,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "Translate this into a logical formula.\n\nOkay, let's see. The original statement is \"No student passed every exam.\" I need to translate this into a logical formula. \n\nFirst, I should break down the sentence. The key parts here are \"no student\" and \"passed every exam.\" So, \"no student\" means that for all students, the statement about passing every exam is not",
+          "first_line": "Translate this into a logical formula.",
+          "elapsed_ms": 803.6,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": true,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "→ ¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)\nBut every student passed at least one exam. → ∀x. student(x) → ∃y. exam(y) ∧ passed(x, y)\n\nOutput: \nEvery student passed at least one exam. → ∀x. student(x) → ∃y. exam(y) ∧ passed(x",
+          "first_line": "→ ¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)",
+          "elapsed_ms": 806.2,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": true,
+              "existential": true,
+              "negation": true,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": true,
+              "definite": false
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [
+              "x",
+              "y"
+            ],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 1.0,
+            "gen_depth": 1,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "Output: \n¬∃x. student(x) ∧ ∀y. exam(y) → passed(x, y)\n\nWait, but the original sentence is \"No student passed every exam.\" So, the correct translation should be: For all students, there exists at least one exam that the student did not pass. Which is: ∀x. student(x) → ∃y. exam(y)",
+          "first_line": "Output:",
+          "elapsed_ms": 805.3,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": true,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        }
+      }
+    },
+    {
+      "probe_id": "bind-scope-02b",
+      "category": "quantifier_scope",
+      "prompt": "Every student passed no exam.",
+      "ground_truth": "∀x. student(x) → ¬∃y. exam(y) ∧ passed(x, y)",
+      "metadata": {
+        "pair": "bind-scope-02a",
+        "binding": "universal_negation",
+        "phenomena": [
+          "negation",
+          "universal",
+          "scope_order"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "→ λx. passed(x) | no(exam)\n\nWait, but the original sentence is \"Every student passed no exam.\" That seems like a contradiction. Maybe the intended meaning is that no student passed any exam? Or that every student passed an exam that was not taken? Hmm. Maybe the correct logical form is λx. passed(x) | no(exam) but that might not be",
+          "first_line": "→ λx. passed(x) | no(exam)",
+          "elapsed_ms": 792.8,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": true,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": true,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.333,
+            "gen_depth": 1,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "Translate this into predicate logic.\n\nOkay, let's see. The original sentence is \"Every student passed no exam.\" Hmm, I need to translate this into predicate logic. First, I should break down the sentence. \n\nThe structure is \"Every [subject] [verb] [object].\" Here, the subject is \"student,\" the verb is \"passed,\" and the object is \"no exam",
+          "first_line": "Translate this into predicate logic.",
+          "elapsed_ms": 791.2,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": true,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "Output: \n∀x. student(x) → ∀y. exam(y) → ¬passed(x, y)\n\nOkay, so I need to figure out how to translate the sentence \"Every student passed no exam.\" into a logical formula. Let me start by breaking down the sentence. \n\nFirst, the structure of the sentence is \"Every student [passed no exam].\" The key part here is",
+          "first_line": "Output:",
+          "elapsed_ms": 800.6,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": true,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "Output: \n∀x. student(x) → ∀y. exam(y) → ¬passed(x, y)\n\nWait, but the original sentence is \"Every student passed no exam.\" which is a bit ambiguous. It could be interpreted as \"Every student passed no exam\" meaning that for every student, there is no exam that they passed. Or it could be interpreted as \"Every student passed",
+          "first_line": "Output:",
+          "elapsed_ms": 804.1,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": true,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        }
+      }
+    },
+    {
+      "probe_id": "bind-scope-03",
+      "category": "quantifier_scope",
+      "prompt": "Most students read some book.",
+      "ground_truth": "MOST(x, student(x), ∃y. book(y) ∧ read(x, y))",
+      "metadata": {
+        "binding": "generalized_quantifier",
+        "phenomena": [
+          "generalized_quantifier",
+          "existential"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "→ λx. student(x) → read(x) → book(x)\n\nWait, that's not right. Let me think again. The sentence is \"Most students read some book.\" So, the subject is \"students\", and the predicate is \"read some book\". So, the lambda expression should represent that for most students x, x reads a book. So, maybe λx. (student",
+          "first_line": "→ λx. student(x) → read(x) → book(x)",
+          "elapsed_ms": 796.3,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": true,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "y"
+            ],
+            "predicate_overlap": 1.0,
+            "gen_depth": 1,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "Translate this into predicate logic.\n\nOkay, let's see. The sentence is \"Most students read some book.\" I need to translate this into predicate logic. Hmm, first, I should break down the sentence into its components. \n\n\"Most students\" – that's a quantifier, right? So \"most\" is a quantifier that's a bit different from \"all\" or \"some",
+          "first_line": "Translate this into predicate logic.",
+          "elapsed_ms": 797.7,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "All students read the same book. \nEvery student read a book. \nShe gave him the key. \n\nOutput: \n∀x. student(x) → ∃y. book(y) ∧ read(x, y)\n∀x. student(x) → ∀y. book(y) → read(x, y)\n∀x. student(x) → ∃y. book(y) ∧",
+          "first_line": "All students read the same book.",
+          "elapsed_ms": 800.2,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "Output: \n∀x. student(x) → ∃y. book(y) ∧ read(x, y)\n\nInput: \nAll students read some book. \nOutput: \n∀x. student(x) → ∃y. book(y) ∧ read(x, y)\n\nInput: \nSome students read some book. \nOutput: \n∃x. student(x) ∧ ∃y",
+          "first_line": "Output:",
+          "elapsed_ms": 801.0,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        }
+      }
+    },
+    {
+      "probe_id": "bind-scope-04",
+      "category": "quantifier_scope",
+      "prompt": "Exactly two students answered every question.",
+      "ground_truth": "∃!2 x. student(x) ∧ ∀y. question(y) → answered(x, y)",
+      "metadata": {
+        "binding": "counting_quantifier",
+        "phenomena": [
+          "counting",
+          "universal",
+          "scope_ambiguity"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "How many students are there?\n\nOutput: 2\n\nExplanation: The statement says that exactly two students answered every question. This means that for each question, there are exactly two students who answered it. Therefore, the number of students is 2.\n\nWait, but the question is \"How many students are there?\" So the answer is 2. But the explanation is a bit confusing. Let me",
+          "first_line": "How many students are there?",
+          "elapsed_ms": 799.0,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "Output: \n∀q. question(q) → ∃x. student(x) ∧ ∃y. student(y) ∧ x ≠ y ∧ answered(x, q) ∧ answered(y, q)\n\nNow, the input is: \nAll students answered every question. \nOutput: \n∀q. question(q) → ∀x. student(x) → answered(x, q)\n\nNow,",
+          "first_line": "Output:",
+          "elapsed_ms": 799.3,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "Output: \n∀x. student(x) → ∃y. question(y) ∧ answered(x, y) ∧ ∀z. question(z) → ∨(answered(s1, z) ∧ answered(s2, z))\n\nWait, but the original sentence is \"Exactly two students answered every question.\" So, for every question, exactly two students answered it. So, for each question",
+          "first_line": "Output:",
+          "elapsed_ms": 798.2,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "Output: \n∀x. question(x) → ∡y. student(y) ∧ answered(y, x) ∧ ∡z. student(z) ∧ answered(z, x) ∧ y ≠ z\n\nBut I think the correct answer is: \n∀x. question(x) → ∃y. student(y) ∧ answered(y, x) ∧ ∃z. student(z)",
+          "first_line": "Output:",
+          "elapsed_ms": 797.2,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        }
+      }
+    },
+    {
+      "probe_id": "bind-var-01a",
+      "category": "variable_binding",
+      "prompt": "The cat chased the dog.",
+      "ground_truth": "chased(ιx. cat(x), ιy. dog(y))",
+      "metadata": {
+        "pair": "bind-var-01b",
+        "binding": "definite_description",
+        "phenomena": [
+          "definite",
+          "agent_patient"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "→ ?\n\nOutput: λx. chased(cat, x)\n\nWait, but the original sentence is \"The cat chased the dog.\" So the subject is \"the cat\", the verb is \"chased\", and the object is \"the dog\". So the structure is subject + verb + object. In lambda calculus, how would this be represented?\n\nIn the previous example, \"The dog runs.\" was",
+          "first_line": "→ ?",
+          "elapsed_ms": 797.8,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "Output: \n∃x. cat(x) ∧ dog(x) ∧ chased(x, x)\n\nWait, but that's not correct. Because the original sentence is \"The cat chased the dog.\" So the subject is \"the cat\" and the object is \"the dog\". So the correct translation would be ∃x. cat(x) ∧ ∃y. dog(y) ∧ chased(x",
+          "first_line": "Output:",
+          "elapsed_ms": 799.5,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "Output: \n∀x. cat(x) → ∃y. dog(y) ∧ chased(x, y)\n\nSo, for the input \"Every student read a book.\" the output is the logical formula that represents the sentence. The output is in the form of a logical formula, using the syntax of first-order logic. The output is in the form of a formula that is a universal quant",
+          "first_line": "Output:",
+          "elapsed_ms": 805.7,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "The dog ran. \nThe cat is a student. \nThe cat read a book. \nThe cat is a bird. \n\nOutput: \nThe cat is a bird. \nThe cat is a student. \nThe cat read a book. \nThe cat chased the dog. \nThe dog ran. \n\nBut the output is not correct. \n\nWhy? \n\nThe problem is that the input",
+          "first_line": "The dog ran.",
+          "elapsed_ms": 803.5,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        }
+      }
+    },
+    {
+      "probe_id": "bind-var-01b",
+      "category": "variable_binding",
+      "prompt": "The dog chased the cat.",
+      "ground_truth": "chased(ιx. dog(x), ιy. cat(y))",
+      "metadata": {
+        "pair": "bind-var-01a",
+        "binding": "definite_description_reversed",
+        "phenomena": [
+          "definite",
+          "agent_patient"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "→ ?\n\nOutput: λx. chased(dog, cat)\n\nWait, but the sentence is \"The dog chased the cat.\" So the subject is \"dog\", the verb is \"chased\", and the object is \"cat\". So the function would take the subject and the object as parameters. So the lambda function would be λx. chased(x, cat)? But that would require the object",
+          "first_line": "→ ?",
+          "elapsed_ms": 803.0,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "",
+          "first_line": "",
+          "elapsed_ms": 804.8,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "Output: \n∀x. dog(x) → √y. cat(y) ∧ chased(x, y)\n\nWait, but the output is not correct. The correct output should be: \n∀x. dog(x) → ∃y. cat(y) ∧ chased(x, y)\n\nBut the output is written as √y. cat(y) ∧ chased(x, y). What",
+          "first_line": "Output:",
+          "elapsed_ms": 804.7,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "The cat is a mammal. \nThe cat is a pet. \nThe cat is a student. \nThe cat is a bird. \n\nOutput: \nThe cat is a student. \nThe cat is a pet. \nThe cat is a mammal. \nThe cat is a bird. \n\nWait, but the cat can't be a bird and a mammal and a pet and",
+          "first_line": "The cat is a mammal.",
+          "elapsed_ms": 800.1,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        }
+      }
+    },
+    {
+      "probe_id": "bind-var-02",
+      "category": "variable_binding",
+      "prompt": "The teacher gave every student a grade.",
+      "ground_truth": "∀x. student(x) → ∃y. grade(y) ∧ gave(ιz. teacher(z), x, y)",
+      "metadata": {
+        "binding": "ditransitive_binding",
+        "phenomena": [
+          "universal",
+          "existential",
+          "ditransitive",
+          "definite"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "Output: λx. gave(teacher, x, grade) | every(x). student(x) | grade(x)\n\nWait, but the original sentence is \"The teacher gave every student a grade.\" So the main verb is \"gave\", and the subject is \"the teacher\", the object is \"every student a grade\". \n\nBut in the output, it's written as λx.",
+          "first_line": "Output: λx. gave(teacher, x, grade) | every(x). student(x) | grade(x)",
+          "elapsed_ms": 797.1,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": true,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.75,
+            "gen_depth": 1,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "The student is a person. \nThe person is a mammal. \nThe mammal is an animal. \n\nOutput: \n∀x. student(x) → grade(x)\n∀x. person(x) → mammal(x)\n∀x. mammal(x) → animal(x)\n\nWait, but the original input is:\n\nThe teacher gave every student a grade. \nThe student is a",
+          "first_line": "The student is a person.",
+          "elapsed_ms": 798.6,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "Output: \n∀x. student(x) → ∣∃y. grade(y) ∧ gave(teacher, x, y)\n\nBut the output is not correct. Why? What is the correct output?\n\nThe original sentence is \"The teacher gave every student a grade.\" \n\nThe correct logical translation should be: \n\n∀x. student(x) → ∃y. grade(y) ∧",
+          "first_line": "Output:",
+          "elapsed_ms": 801.8,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "Output: \n∀x. student(x) → ∞y. grade(y) ∧ gave(x, y)\n\nWait, but the original sentence is \"The teacher gave every student a grade.\" So the subject is \"the teacher\", and the predicate is \"gave every student a grade\". So the translation should be: ∀x. student(x) → ∃y. grade(y)",
+          "first_line": "Output:",
+          "elapsed_ms": 811.6,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        }
+      }
+    },
+    {
+      "probe_id": "bind-var-03",
+      "category": "variable_binding",
+      "prompt": "Someone loves everyone.",
+      "ground_truth": "∃x. person(x) ∧ ∀y. person(y) → loves(x, y)",
+      "metadata": {
+        "binding": "nested_quantifiers",
+        "phenomena": [
+          "existential",
+          "universal",
+          "scope_ambiguity"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "→ λx. loves(x, someone)\n\nWait, that's not right. Let me think again. The sentence is \"Someone loves everyone.\" So, the subject is \"someone\" and the predicate is \"loves everyone.\" In predicate logic, this would be ∃x∀y loves(x, y). But how to represent this in lambda calculus?\n\nMaybe it's better to think of it",
+          "first_line": "→ λx. loves(x, someone)",
+          "elapsed_ms": 786.9,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": true,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.5,
+            "gen_depth": 1,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "Translate this into predicate logic.\n\nOkay, let's see. The user wants to translate the sentence \"Someone loves everyone\" into predicate logic. Hmm, first I need to break down the sentence. \n\nSo, \"Someone\" refers to an individual, right? So in predicate logic, that would be an existential quantifier. Then \"loves everyone\" is a universal quantifier. Wait,",
+          "first_line": "Translate this into predicate logic.",
+          "elapsed_ms": 802.4,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "Output: \n∀x. person(x) → ∃y. person(y) ∧ love(x, y)\n\nInput: \nEveryone loves someone. \nOutput: \n∀x. person(x) → ∃y. person(y) ∧ love(x, y)\n\nInput: \nEveryone loves someone. \nOutput: \n∀x. person(x) → ∃y. person(y)",
+          "first_line": "Output:",
+          "elapsed_ms": 792.1,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "Output: \n∀x. person(x) → ∞y. love(y, x)\n\nWait, but the original sentence is \"Someone loves everyone.\" So the correct translation should be ∃x. ∀y. person(y) → love(x, y). \n\nBut the output given is ∀x. person(x) → ∞y. love(y, x). Which is different.",
+          "first_line": "Output:",
+          "elapsed_ms": 789.3,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        }
+      }
+    },
+    {
+      "probe_id": "bind-var-04",
+      "category": "variable_binding",
+      "prompt": "Everyone loves someone.",
+      "ground_truth": "∀x. person(x) → ∃y. person(y) ∧ loves(x, y)",
+      "metadata": {
+        "pair": "bind-var-03",
+        "binding": "nested_quantifiers_reversed",
+        "phenomena": [
+          "existential",
+          "universal",
+          "scope_ambiguity"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "→ λx. loves(x, someone)\n\nWait, but \"someone\" is a variable here. Should it be a constant or a variable? In the previous examples, \"dog\" was a constant, but \"someone\" might be a variable. Let me think.\n\nIn the sentence \"Everyone loves someone,\" the structure is \"Everyone [loves someone].\" The \"someone\" here is a pron",
+          "first_line": "→ λx. loves(x, someone)",
+          "elapsed_ms": 792.0,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": true,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.5,
+            "gen_depth": 1,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "Output: \n∀x. person(x) → ∃y. loves(x, y)\n\nOkay, so I need to figure out how to translate the sentence \"Everyone loves someone\" into a logical formula. Let me start by breaking down the sentence. \n\nFirst, the main structure is \"Everyone loves someone.\" The subject is \"everyone,\" which is a universal quantifier, meaning for all",
+          "first_line": "Output:",
+          "elapsed_ms": 794.5,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "Output: \n∀x. person(x) → ∃y. person(y) ∧ loves(x, y)\n\nInput: \nEveryone loves someone. \nOutput: \n∀x. person(x) → ∃y. person(y) ∧ loves(x, y)\n\nInput: \nEveryone loves someone. \nOutput: \n∀x. person(x) → ∃y. person(y)",
+          "first_line": "Output:",
+          "elapsed_ms": 798.2,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "Output: \n∀x. person(x) → ∃y. person(y) ∧ love(x, y)\n\nOkay, so I need to convert the sentence \"Everyone loves someone.\" into a logical formula. Let me think about how to approach this. \n\nFirst, I remember that in predicate logic, \"everyone\" translates to a universal quantifier, right? So \"Everyone\" would be",
+          "first_line": "Output:",
+          "elapsed_ms": 802.4,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        }
+      }
+    },
+    {
+      "probe_id": "bind-ana-01",
+      "category": "anaphora",
+      "prompt": "John saw himself in the mirror.",
+      "ground_truth": "∃x. mirror(x) ∧ saw(john, john, in(x))",
+      "metadata": {
+        "binding": "reflexive",
+        "phenomena": [
+          "reflexive",
+          "coreference"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "Output: λx. saw(x, self, mirror)\n\nWait, but the sentence is \"John saw himself in the mirror.\" So the subject is John, the object is himself, and the prepositional phrase is in the mirror. So the function would take the subject, the object, and the prepositional phrase. So maybe λx. saw(x, self, mirror). But",
+          "first_line": "Output: λx. saw(x, self, mirror)",
+          "elapsed_ms": 795.2,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": true,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x"
+            ],
+            "predicate_overlap": 0.333,
+            "gen_depth": 1,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "Output: \n∃x. person(x) ∧ self(x, x) ∧ saw(x, x)\n\nBut the output is not correct. What is the problem?\n\nThe problem is that the output is not correctly capturing the meaning of the sentence \"John saw himself in the mirror.\" Let's analyze the sentence and the given output.\n\nThe sentence \"John saw himself in the mirror\" can be broken",
+          "first_line": "Output:",
+          "elapsed_ms": 803.6,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "Output: \n∀x. person(x) → ∃y. mirror(y) ∧ saw(x, y) ∧ x = y\n\nBut the output is not correct. Why?\n\nThe output is not correct because the sentence \"John saw himself in the mirror\" implies that John is the one who saw himself, not just any person. The original output uses a universal quantifier, which would",
+          "first_line": "Output:",
+          "elapsed_ms": 799.7,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "Output: \nsaw(John, himself, mirror)\n\nSo, the task is to convert the input sentence into a logical form. The output should be in the format of a function call with the arguments in the correct order. The function should be in the format of a predicate with the arguments in the correct order. The function should be in the format of a predicate with the arguments in the",
+          "first_line": "Output:",
+          "elapsed_ms": 802.5,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        }
+      }
+    },
+    {
+      "probe_id": "bind-ana-02a",
+      "category": "anaphora",
+      "prompt": "Every boy thinks he is smart.",
+      "ground_truth": "∀x. boy(x) → thinks(x, smart(x))",
+      "metadata": {
+        "pair": "bind-ana-02b",
+        "binding": "bound_variable_pronoun",
+        "phenomena": [
+          "bound_pronoun",
+          "universal",
+          "propositional_attitude"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "→ λx. thinks(x, is_smart(x)) \n\nWait, but the sentence is \"Every boy thinks he is smart.\" So the subject is \"every boy\", and the predicate is \"thinks he is smart\". So the function would be λx. thinks(x, is_smart(x)) where x is the boy. But maybe the structure is different. Let me think again.\n\nThe sentence",
+          "first_line": "→ λx. thinks(x, is_smart(x))",
+          "elapsed_ms": 806.7,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": true,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x"
+            ],
+            "predicate_overlap": 0.333,
+            "gen_depth": 2,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "Every girl thinks she is smart. \nEvery student thinks he is smart. \n\nOutput: \n∀x. boy(x) → thinks(x, is_smart(x))\n∀x. girl(x) → thinks(x, is_smart(x))\n∀x. student(x) → thinks(x, is_smart(x))\n\nSo, the input is a set of sentences, and the output is a set of first",
+          "first_line": "Every girl thinks she is smart.",
+          "elapsed_ms": 808.5,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "Output: \n∀x. boy(x) → thinks(x, ιy. smart(y))\n\nWait, but the output is not correct. The correct output should be: ∀x. boy(x) → thinks(x, ιy. smart(y)) ∧ thinks(x, ιy. smart(y))?\n\nNo, that's not right. The original sentence is \"Every boy thinks",
+          "first_line": "Output:",
+          "elapsed_ms": 807.4,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "Output: \n∀x. boy(x) → thinks(x, x) ∧ smart(x)\n\nLet me try to parse this. The sentence is \"Every boy thinks he is smart.\" So, the structure is \"Every [boy] [thinks he is smart].\" \n\nBreaking it down: \"Every boy\" is the subject, and the predicate is \"thinks he is smart.\"",
+          "first_line": "Output:",
+          "elapsed_ms": 808.8,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        }
+      }
+    },
+    {
+      "probe_id": "bind-ana-02b",
+      "category": "anaphora",
+      "prompt": "John thinks he is smart.",
+      "ground_truth": "thinks(john, smart(john))",
+      "metadata": {
+        "pair": "bind-ana-02a",
+        "binding": "referential_pronoun",
+        "phenomena": [
+          "free_pronoun",
+          "propositional_attitude"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "→ ?\n\nSo, the answer should be a lambda expression that represents the sentence \"John thinks he is smart.\" using the same format as the examples. Let's break it down.\n\nFirst, identify the subject and the predicate. The subject is \"John\", and the predicate is \"thinks he is smart.\"\n\nIn the examples, the structure is λx. predicate(x), where x is the subject",
+          "first_line": "→ ?",
+          "elapsed_ms": 804.3,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "John is a man. \nJohn is a man. \nJohn is a man. \nJohn is a man. \nJohn is a man. \nJohn is a man. \nJohn is a man. \nJohn is a man. \nJohn is a man. \n\nOutput: \nJohn thinks he is smart. \nJohn is a man. \nJohn is a man. \nJohn is a",
+          "first_line": "John is a man.",
+          "elapsed_ms": 802.8,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "Output: \n∀x. person(x) → ∣x is smart. \n\nWait, but the original sentence is \"John thinks he is smart.\" So the output should be something like: \n∀x. person(x) → (x = John → thinks(x, x is smart)) \n\nBut the output given is ∀x. person(x) → ∣x is smart.",
+          "first_line": "Output:",
+          "elapsed_ms": 804.8,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "John is a student. \nJohn is smart. \nJohn is a bird. \nJohn can swim. \n\nOutput: \nJohn can swim. \n\nBut the output is not correct. \n\nWhy? \n\nThe output is not correct because the premises contradict each other. \n\nLet me explain. \n\nFrom the premises: \n- John is a bird. \n- No bird can swim. \nBut",
+          "first_line": "John is a student.",
+          "elapsed_ms": 805.2,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        }
+      }
+    },
+    {
+      "probe_id": "bind-ana-03",
+      "category": "anaphora",
+      "prompt": "No student who failed the exam thinks he deserved to pass.",
+      "ground_truth": "¬∃x. student(x) ∧ failed(x, ιy. exam(y)) ∧ thinks(x, deserved(x, pass))",
+      "metadata": {
+        "binding": "complex_bound_pronoun",
+        "phenomena": [
+          "negation",
+          "relative_clause",
+          "bound_pronoun",
+          "propositional_attitude"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "Output: λx. failed(x) → ¬deserved(x) | pass(x)\n\nWait, the original sentence is \"No student who failed the exam thinks he deserved to pass.\" \n\nLet me parse this. The structure is \"No [student who failed the exam] thinks [he deserved to pass].\" \n\nSo, the main clause is \"No X thinks Y\", where X is \"",
+          "first_line": "Output: λx. failed(x) → ¬deserved(x) | pass(x)",
+          "elapsed_ms": 828.4,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": true,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": true,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": true,
+              "negation": true,
+              "definite": true
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x"
+            ],
+            "predicate_overlap": 0.4,
+            "gen_depth": 1,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "Let's translate this sentence into a logical formula. \n\nFirst, we need to identify the key components of the sentence. The sentence is: \"No student who failed the exam thinks he deserved to pass.\"\n\nBreaking it down:\n\n- \"No student who failed the exam\" is the subject. This is a negation of an existential quantifier. In logical terms, this can be represented as \"",
+          "first_line": "Let's translate this sentence into a logical formula.",
+          "elapsed_ms": 797.1,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": true,
+              "negation": true,
+              "definite": true
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "Output: \n∀x. student(x) ∧ failed(x) ∧ ¬passed(x) → ¬deserved(x)\n\nInput: \nNo student who failed the exam passed the exam. \nOutput: \n∀x. student(x) ∧ failed(x) → ¬passed(x)\n\nInput: \nNo student who failed the exam passed the exam. \nOutput: \n∀x. student(x)",
+          "first_line": "Output:",
+          "elapsed_ms": 796.0,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": true,
+              "negation": true,
+              "definite": true
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "Output: \n∀x. student(x) ∧ failed(x) ∧ exam(x) → ¬think(x, deserved, pass(x))\n\nWait, but the original sentence is \"No student who failed the exam thinks he deserved to pass.\" So the structure is: For all x, if x is a student, x failed the exam, and x is an exam, then x does not think he",
+          "first_line": "Output:",
+          "elapsed_ms": 777.8,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": true,
+              "negation": true,
+              "definite": true
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        }
+      }
+    },
+    {
+      "probe_id": "bind-ctrl-01",
+      "category": "control",
+      "prompt": "She told him to leave.",
+      "ground_truth": "told(she, him, leave(him))",
+      "metadata": {
+        "binding": "object_control",
+        "phenomena": [
+          "control_verb",
+          "object_control"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "→ ?\n\nOkay, so I need to figure out how to represent the sentence \"She told him to leave.\" using lambda expressions. Let me start by breaking down the sentence. \n\nFirst, the main verb here is \"told.\" The structure is \"She told him to leave.\" So, \"told\" is a transitive verb, meaning it takes an object. In this case, the",
+          "first_line": "→ ?",
+          "elapsed_ms": 796.5,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "Output: \n∃x. person(x) ∧ ∃y. person(y) ∧ told(x, y) ∧ told(x, y) → leave(y)\n\nWait, that's not right. The output should be: ∃x. person(x) ∧ ∡y. person(y) ∧ told(x, y) ∧ leave(y)\n\nNo, that's not right either. The",
+          "first_line": "Output:",
+          "elapsed_ms": 799.9,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "Output: \n∀x. person(x) → ∃y. instruction(y) ∧ told(x, y) ∧ [x = him ∧ y = leave]\n\nBut the output is not correct. Why?\n\nThe output is not correct because the sentence \"She told him to leave.\" is not a universal statement about all people, but rather a specific instance involving \"She\" and \"him\".",
+          "first_line": "Output:",
+          "elapsed_ms": 798.4,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "Output: \ntold(ιx. she(x) ∧ him(x)) → leave(x)\n\nWait, but the output is not correct. The correct output should be: \ntold(ιx. she(x) ∧ him(x)) → leave(x)\n\nBut the output is not correct. The correct output should be: \ntold(ιx. she(x) ∧ him(x",
+          "first_line": "Output:",
+          "elapsed_ms": 791.6,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        }
+      }
+    },
+    {
+      "probe_id": "bind-ctrl-02",
+      "category": "control",
+      "prompt": "She promised him to leave.",
+      "ground_truth": "promised(she, him, leave(she))",
+      "metadata": {
+        "pair": "bind-ctrl-01",
+        "binding": "subject_control",
+        "phenomena": [
+          "control_verb",
+          "subject_control"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "→ ?\n\nOkay, let's see. The user wants to convert the sentence \"She promised him to leave.\" into a lambda expression. The previous examples given were \"The dog runs. → λx. runs(dog)\" and \"Be helpful but concise. → λ assist(x). helpful(x) | concise(x)\". \n\nFirst, I need to understand the pattern here. In the first example,",
+          "first_line": "→ ?",
+          "elapsed_ms": 800.8,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "Output: \n∃x. person(x) ∧ ∃y. person(y) ∧ promised(x, y) ∧ to_leave(x, y)\n\nBut the output is not correct. The correct output should be: \n∃x. person(x) ∧ promised(x, \"to leave\")\n\nBut the output is not correct. The correct output should be: \n∃x. person(x) ∧",
+          "first_line": "Output:",
+          "elapsed_ms": 799.8,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "Output: \n∀x. person(x) → ∣x is a person, and the sentence is about x. \n∀x. person(x) → ∃y. promise(x, y, him) ∧ leave(y)\n\nWait, but the original sentence is \"She promised him to leave.\" So the structure is: She (subject) promised (verb) him (object) to",
+          "first_line": "Output:",
+          "elapsed_ms": 798.5,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "Output: \npromised(ιx. she(x), ιy. him(y), ιz. leave(z))\n\nBut the output for the sentence \"Every student read a book.\" is not in the same format. How can I make it conform to the same format?\n\nThe output for \"Every student read a book.\" is currently:\n∀x. student(x) → ∃",
+          "first_line": "Output:",
+          "elapsed_ms": 793.0,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        }
+      }
+    },
+    {
+      "probe_id": "bind-ctrl-03",
+      "category": "control",
+      "prompt": "She persuaded him to believe that she was right.",
+      "ground_truth": "persuaded(she, him, believe(him, right(she)))",
+      "metadata": {
+        "binding": "nested_control",
+        "phenomena": [
+          "control_verb",
+          "object_control",
+          "propositional_attitude"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "→ λx. persuaded(x, him, believe, right)\n\nWait, that's not right. Let me think again. The sentence is \"She persuaded him to believe that she was right.\" So the main verb is \"persuaded,\" and the object is \"him.\" The infinitive phrase is \"to believe that she was right.\" So the structure is: [She] persuaded [him",
+          "first_line": "→ λx. persuaded(x, him, believe, right)",
+          "elapsed_ms": 818.3,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": true,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.333,
+            "gen_depth": 1,
+            "gt_depth": 3,
+            "is_flat": false
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "Output: \n∃x. [person(x) ∧ person(y) ∧ believe(x, y) ∧ right(x)]\n\nWait, but the original sentence is \"She persuaded him to believe that she was right.\" So the subject is \"she\", the object is \"him\", and the content of the belief is \"she was right\". So the correct translation would be:\n\n∃x. [person",
+          "first_line": "Output:",
+          "elapsed_ms": 827.7,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 3,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "Output: \n∀x. person(x) → ∃y. person(y) ∧ believe(x, y) ∧ right(x)\n\nBut the correct answer is: \n∀x. person(x) → ∃y. person(y) ∧ persuade(x, y) ∧ believe(y, ιz. right(z))\n\nWhy is the correct answer different from the output? What is the difference",
+          "first_line": "Output:",
+          "elapsed_ms": 822.6,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 3,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "Output: \npersuaded(ιx. she(x)) (ιy. him(y)) (ιz. believe(z) ∧ right(z)) \n\nBut the output is not correct. What is the problem?\n\nThe problem is that the output is not correctly representing the sentence \"She persuaded him to believe that she was right.\" in predicate logic. Let's break down the sentence and see",
+          "first_line": "Output:",
+          "elapsed_ms": 791.5,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 3,
+            "is_flat": false
+          }
+        }
+      }
+    },
+    {
+      "probe_id": "bind-rel-01",
+      "category": "relative_clause",
+      "prompt": "The cat that chased the dog is black.",
+      "ground_truth": "black(ιx. cat(x) ∧ chased(x, ιy. dog(y)))",
+      "metadata": {
+        "binding": "subject_relative",
+        "phenomena": [
+          "relative_clause",
+          "subject_extraction",
+          "definite"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "→ λx. cat(x) ∧ chased(dog, x) ∧ black(x)\n\nWait, but the sentence is \"The cat that chased the dog is black.\" So the subject is \"the cat that chased the dog\", and the predicate is \"is black\". So the translation would be: λx. cat(x) ∧ chased(dog, x) ∧ black(x). But maybe the",
+          "first_line": "→ λx. cat(x) ∧ chased(dog, x) ∧ black(x)",
+          "elapsed_ms": 801.5,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": true,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.75,
+            "gen_depth": 1,
+            "gt_depth": 3,
+            "is_flat": true
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "Translate this sentence into a logical formula.\n\nOkay, let's see. The original sentence is \"The cat that chased the dog is black.\" I need to translate this into a logical formula. Let me break it down.\n\nFirst, the structure of the sentence. It's a relative clause: \"The cat that chased the dog is black.\" So, the main subject is \"the cat,\" and",
+          "first_line": "Translate this sentence into a logical formula.",
+          "elapsed_ms": 801.6,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 3,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "Output: \n∀x. cat(x) → ∃y. dog(y) ∧ chased(x, y) ∧ black(x)\n\nSo, for the input \"The cat that chased the dog is black.\" the output is the logical formula that represents the sentence. \n\nNow, the task is to convert the sentence \"The man who is a teacher is tall.\" into a logical formula.",
+          "first_line": "Output:",
+          "elapsed_ms": 804.6,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 3,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "Output: \n∃x. cat(x) ∧ chased(x, dog(x)) ∧ black(x)\n\nLet me try to parse this sentence. The sentence is \"The cat that chased the dog is black.\" \n\nFirst, I need to identify the main subject and predicate. The main subject is \"the cat\", and the predicate is \"that chased the dog is black.\" \n\nThe phrase \"that",
+          "first_line": "Output:",
+          "elapsed_ms": 789.9,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 3,
+            "is_flat": false
+          }
+        }
+      }
+    },
+    {
+      "probe_id": "bind-rel-02",
+      "category": "relative_clause",
+      "prompt": "The cat that the dog chased is black.",
+      "ground_truth": "black(ιx. cat(x) ∧ chased(ιy. dog(y), x))",
+      "metadata": {
+        "pair": "bind-rel-01",
+        "binding": "object_relative",
+        "phenomena": [
+          "relative_clause",
+          "object_extraction",
+          "definite"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "→ λx. cat(x) ∧ chased(dog, x) ∧ black(x)\n\nOkay, so I need to figure out how to represent the sentence \"The cat that the dog chased is black.\" using lambda expressions. Let me start by breaking down the sentence.\n\nFirst, the main structure is \"The cat [that the dog chased] is black.\" So the subject is \"the cat,\"",
+          "first_line": "→ λx. cat(x) ∧ chased(dog, x) ∧ black(x)",
+          "elapsed_ms": 787.1,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": true,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.75,
+            "gen_depth": 1,
+            "gt_depth": 3,
+            "is_flat": true
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "Translate this sentence into a logical formula. \n\nLet’s break it down. \n\nThe sentence is: \"The cat that the dog chased is black.\" \n\nFirst, we need to identify the subject and the predicate. \n\nThe subject is \"the cat that the dog chased\". This is a relative clause. \n\nThe predicate is \"is black\". \n\nSo, the sentence is saying that the cat",
+          "first_line": "Translate this sentence into a logical formula.",
+          "elapsed_ms": 800.7,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 3,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "Output: \n∀x. (dog(x) ∧ chased(x, y) ∧ cat(y)) → black(y)\n\nWait, but the original sentence is \"The cat that the dog chased is black.\" So the structure is: The [cat that the dog chased] is black. So the cat is the one that the dog chased, and that cat is black. So the correct translation would",
+          "first_line": "Output:",
+          "elapsed_ms": 799.7,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 3,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "Let me try to parse this sentence. The sentence is \"The cat that the dog chased is black.\" \n\nFirst, I need to identify the main clause and the relative clause. The main clause is \"The cat is black.\" The relative clause is \"that the dog chased.\" \n\nSo, the structure is: [The cat [that the dog chased]] is black. \n\nIn predicate logic",
+          "first_line": "Let me try to parse this sentence. The sentence is \"The cat that the dog chased is black.\"",
+          "elapsed_ms": 804.2,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 3,
+            "is_flat": false
+          }
+        }
+      }
+    },
+    {
+      "probe_id": "bind-rel-03",
+      "category": "relative_clause",
+      "prompt": "Every student who read a book passed the exam.",
+      "ground_truth": "∀x. (student(x) ∧ ∃y. book(y) ∧ read(x, y)) → passed(x, ιz. exam(z))",
+      "metadata": {
+        "binding": "quantified_relative",
+        "phenomena": [
+          "relative_clause",
+          "universal",
+          "existential"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "→ λx. (read(x) ∧ book(x)) → passed(x)\n\nWait, but the original sentence is \"Every student who read a book passed the exam.\" So the structure is: For all x, if x is a student and x read a book, then x passed the exam.\n\nSo the correct translation would be: ∀x (student(x) ∧ read(x) ∧ book(x",
+          "first_line": "→ λx. (read(x) ∧ book(x)) → passed(x)",
+          "elapsed_ms": 811.7,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": true,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.6,
+            "gen_depth": 2,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "Translate this into predicate logic.\n\nOkay, let's see. The sentence is \"Every student who read a book passed the exam.\" I need to translate this into predicate logic. Hmm, first, I should break down the sentence into its components.\n\nSo, the main structure is \"Every student who [read a book] passed the exam.\" That sounds like a universal quantifier. The subject is",
+          "first_line": "Translate this into predicate logic.",
+          "elapsed_ms": 802.0,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "She gave him the key. \nEvery student who read a book is a student. \nEvery student who read a book is a student. \nEvery student who read a book is a student. \n\nOutput: \n∀x. student(x) → ∃y. book(y) ∧ read(x, y) ∧ passed(x)\n∀x. gave(x, y, z) → x",
+          "first_line": "She gave him the key.",
+          "elapsed_ms": 813.6,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "Translate this into predicate logic.\n\nOkay, let's see. The sentence is \"Every student who read a book passed the exam.\" I need to translate this into predicate logic. Let me break it down.\n\nFirst, the main structure is \"Every student who [condition] passed the exam.\" The condition here is \"read a book.\" So, it's saying that for all students, if they",
+          "first_line": "Translate this into predicate logic.",
+          "elapsed_ms": 811.7,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        }
+      }
+    },
+    {
+      "probe_id": "bind-rel-04",
+      "category": "relative_clause",
+      "prompt": "The book that every student read was boring.",
+      "ground_truth": "boring(ιx. book(x) ∧ ∀y. student(y) → read(y, x))",
+      "metadata": {
+        "pair": "bind-rel-03",
+        "binding": "relative_inverse_scope",
+        "phenomena": [
+          "relative_clause",
+          "universal",
+          "definite",
+          "inverse_linking"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "→ λx. (book(x) ∧ ∀y. student(y) → read(y, x)) → boring(x)\n\nWait, that's not right. The sentence is \"The book that every student read was boring.\" So the structure is: The [book that every student read] was boring. So the book is the subject, and the predicate is \"was boring\". So the book is",
+          "first_line": "→ λx. (book(x) ∧ ∀y. student(y) → read(y, x)) → boring(x)",
+          "elapsed_ms": 812.2,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": true,
+            "quantifier_present": {
+              "universal": true,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": false,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": true,
+            "scope_order_match": true,
+            "bound_vars_gen": [
+              "y"
+            ],
+            "bound_vars_gt": [
+              "y"
+            ],
+            "predicate_overlap": 1.0,
+            "gen_depth": 2,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "How to translate this sentence into predicate logic?\n\nLet me think. The sentence is \"The book that every student read was boring.\" \n\nFirst, I need to parse the sentence. The main structure is \"The book [that every student read] was boring.\" \n\nSo, the book is the one that every student read. So, the book is a specific book, and for every student,",
+          "first_line": "How to translate this sentence into predicate logic?",
+          "elapsed_ms": 809.1,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": false,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "Output: \n∀x. student(x) → ∃y. book(y) ∧ read(x, y) ∧ boring(y)\n\nBut the book that every student read was boring. \nOutput: \n∀x. student(x) → ∃y. book(y) ∧ read(x, y) ∧ boring(y)\n\nWait, but the first sentence is \"Every student read a book.\"",
+          "first_line": "Output:",
+          "elapsed_ms": 812.7,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": false,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "Output: \n∀x. student(x) → ∞y. book(y) ∧ read(x, y) ∧ boring(y)\n\nWait, but the original sentence is \"The book that every student read was boring.\" So the book is the one that every student read. So the book is unique? Or is it possible that multiple books are read by students, but the one that every student",
+          "first_line": "Output:",
+          "elapsed_ms": 791.4,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": false,
+              "negation": false,
+              "definite": true
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        }
+      }
+    },
+    {
+      "probe_id": "bind-neg-01",
+      "category": "quantifier_scope",
+      "prompt": "Nobody saw anything.",
+      "ground_truth": "¬∃x. person(x) ∧ ∃y. thing(y) ∧ saw(x, y)",
+      "metadata": {
+        "binding": "double_negation",
+        "phenomena": [
+          "negation",
+          "negative_polarity"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "→ λx. nobody(x) | saw(x) | anything(x)\n\nWait, but the original sentence is \"Nobody saw anything.\" So the subject is \"nobody\", the verb is \"saw\", and the object is \"anything\". So the lambda expression would be λx. nobody(x) | saw(x) | anything(x). But maybe the structure is different. Let me think again",
+          "first_line": "→ λx. nobody(x) | saw(x) | anything(x)",
+          "elapsed_ms": 798.2,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": true,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": true,
+              "negation": true,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.333,
+            "gen_depth": 1,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "Output: \n∀x. person(x) → ¬saw(x, anything)\n\nOkay, so I need to figure out how to translate the sentence \"Nobody saw anything\" into a logical formula. Let me start by breaking down the sentence. \n\nFirst, \"nobody\" refers to all people, right? So in logic, that would be a universal quantifier. Then \"saw",
+          "first_line": "Output:",
+          "elapsed_ms": 801.0,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": true,
+              "negation": true,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "Output: \n∀x. person(x) → ∃y. saw(x, y) ∧ ¬∃z. (person(z) ∧ saw(z, y))\n\nWait, but the original sentence is \"Nobody saw anything.\" So, the correct translation would be that for all x, if x is a person, then for all y, if y is something that x saw, then there",
+          "first_line": "Output:",
+          "elapsed_ms": 804.8,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": true,
+              "negation": true,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "Output: \n∀x. person(x) → ¬∃y. saw(x, y)\n\nThe input is \"Nobody saw anything.\" which is a universal statement. The output is the logical translation of this statement. The output is a universal quantification over all people, stating that for each person, there does not exist anything that they saw. \n\nThe input is a statement about people not seeing",
+          "first_line": "Output:",
+          "elapsed_ms": 803.4,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": false,
+              "existential": true,
+              "negation": true,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        }
+      }
+    },
+    {
+      "probe_id": "bind-neg-02",
+      "category": "quantifier_scope",
+      "prompt": "Not every bird can fly.",
+      "ground_truth": "¬∀x. bird(x) → can_fly(x)",
+      "metadata": {
+        "binding": "negated_universal",
+        "phenomena": [
+          "negation",
+          "universal"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "→ λx. bird(x) → ¬fly(x)\n\nOkay, so I need to figure out how to represent the sentence \"Not every bird can fly\" using lambda expressions. Let me start by breaking down the sentence. \n\nFirst, the sentence is a negation of a universal statement. \"Not every bird can fly\" is equivalent to saying \"It is not the case that every bird can",
+          "first_line": "→ λx. bird(x) → ¬fly(x)",
+          "elapsed_ms": 804.7,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": true,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": true,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": false,
+              "negation": true,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x"
+            ],
+            "predicate_overlap": 0.5,
+            "gen_depth": 1,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "→ ∃x. bird(x) ∧ ¬fly(x)\nBut every bird that can fly can fly fast. → ∀x. bird(x) ∧ fly(x) → fly_fast(x)\n\nNow, what can we conclude about the following statement: \nSome birds can fly fast.\n\nAnswer: Yes, we can conclude that some birds can fly fast.\n\nBut wait, the first premise says that not",
+          "first_line": "→ ∃x. bird(x) ∧ ¬fly(x)",
+          "elapsed_ms": 805.5,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": true,
+              "negation": true,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": false,
+              "negation": true,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [
+              "x"
+            ],
+            "bound_vars_gt": [
+              "x"
+            ],
+            "predicate_overlap": 0.5,
+            "gen_depth": 1,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "Output: \n∃x. bird(x) ∧ ¬canFly(x)\n\nInput: \nNot every student read a book. \nOutput: \n∃x. student(x) ∧ ¬∃y. book(y) ∧ read(x, y)\n\nSo, the output for \"Not every student read a book.\" is ∃x. student(x) ∧ ¬∃y. book(y) ∧",
+          "first_line": "Output:",
+          "elapsed_ms": 808.4,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": false,
+              "negation": true,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "→ ¬∃x. bird(x) ∧ ¬fly(x)\n\nWait, that's not correct. The correct translation should be: \n¬∀x. bird(x) → fly(x) → ∃x. bird(x) ∧ ¬fly(x)\n\nSo, the original statement is \"Not every bird can fly.\" Which is equivalent to \"There exists a bird that cannot fly.\" So, the",
+          "first_line": "→ ¬∃x. bird(x) ∧ ¬fly(x)",
+          "elapsed_ms": 799.4,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": true,
+              "negation": true,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": false,
+              "negation": true,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [
+              "x"
+            ],
+            "bound_vars_gt": [
+              "x"
+            ],
+            "predicate_overlap": 0.5,
+            "gen_depth": 1,
+            "gt_depth": 1,
+            "is_flat": false
+          }
+        }
+      }
+    },
+    {
+      "probe_id": "bind-embed-01",
+      "category": "variable_binding",
+      "prompt": "John believes that every student passed.",
+      "ground_truth": "believes(john, ∀x. student(x) → passed(x))",
+      "metadata": {
+        "binding": "embedded_quantifier",
+        "phenomena": [
+          "propositional_attitude",
+          "universal",
+          "clausal_embedding"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "→ λx. believes(John, x) where x is \"every student passed\"\n\nWait, but the original sentence is \"John believes that every student passed.\" So the structure is: John believes (that every student passed). So the lambda expression would be λx. believes(John, x), where x is the proposition \"every student passed\". But in the example given, the user wrote",
+          "first_line": "→ λx. believes(John, x) where x is \"every student passed\"",
+          "elapsed_ms": 807.9,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": true,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x"
+            ],
+            "predicate_overlap": 0.333,
+            "gen_depth": 1,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "John believes that every student passed. \nJohn believes that every student passed. \n\nOutput: \n∀x. student(x) → passed(x)\n\nBut the problem is that the input is three times the same sentence, so the output is the same as the first one. But the user might have intended to input multiple sentences. However, the input is three times the same sentence, so the output",
+          "first_line": "John believes that every student passed.",
+          "elapsed_ms": 807.2,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "John believes that every student read a book. \nJohn believes that every student read a book. \nJohn believes that every student read a book. \nJohn believes that every student read a book. \nJohn believes that every student read a book. \nJohn believes that every student read a book. \nJohn believes that every student read a book. \nJohn believes that every student read a book.",
+          "first_line": "John believes that every student read a book.",
+          "elapsed_ms": 808.2,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "John believes that every student read a book. \nJohn believes that no bird can swim. \n\nWhat is the conclusion that John believes?\n\nLet me try to work through this step by step. So, the problem is about determining what conclusion John believes based on the given statements. Let me start by breaking down each part of the input and see how they connect.\n\nFirst, the original statements provided in",
+          "first_line": "John believes that every student read a book.",
+          "elapsed_ms": 806.7,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        }
+      }
+    },
+    {
+      "probe_id": "bind-embed-02",
+      "category": "variable_binding",
+      "prompt": "Every professor thinks that some student cheated.",
+      "ground_truth": "∀x. professor(x) → thinks(x, ∃y. student(y) ∧ cheated(y))",
+      "metadata": {
+        "binding": "quantifier_into_attitude",
+        "phenomena": [
+          "universal",
+          "existential",
+          "propositional_attitude",
+          "scope"
+        ]
+      },
+      "gates": {
+        "compile": {
+          "generation": "→ λx. thinks(x, some student cheated)\n\nWait, but the original sentence is \"Every professor thinks that some student cheated.\" So the structure is: For all x (professor(x) → thinks(x, some student cheated)). So the lambda expression would be λx. (professor(x) → thinks(x, some student cheated)).\n\nBut maybe the user wants a more direct translation",
+          "first_line": "→ λx. thinks(x, some student cheated)",
+          "elapsed_ms": 808.5,
+          "quality": {
+            "has_formal": true,
+            "has_lambda": true,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.25,
+            "gen_depth": 1,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-montague": {
+          "generation": "Translate this into predicate logic.\n\nOkay, let's see. The original statement is \"Every professor thinks that some student cheated.\" I need to translate this into predicate logic. \n\nFirst, I should break down the sentence. The main structure is \"Every professor [thinks that] some student cheated.\" So, the subject is \"professors,\" and the predicate is \"thinks that some",
+          "first_line": "Translate this into predicate logic.",
+          "elapsed_ms": 808.5,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-scope": {
+          "generation": "Output: \n∀x. professor(x) → ∃y. student(y) ∧ cheated(y) ∧ thinks(x, y)\n\nInput: \nEvery student read a book. \nOutput: \n∀x. student(x) → ∃y. book(y) ∧ read(x, y)\n\nInput: \nShe gave him the key. \nOutput: \ngave(she, him",
+          "first_line": "Output:",
+          "elapsed_ms": 811.8,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        },
+        "compile-binding-typed": {
+          "generation": "Output: \n∀x. professor(x) → ∞y. student(y) ∧ cheat(y)\n\nBut the output is not correct. Why?\n\nThe output is not correct because the original sentence is \"Every professor thinks that some student cheated.\" The correct logical translation should be: ∀x. professor(x) → ∃y. student(y) ∧ thinks(x, cheat(y)). \n\nThe",
+          "first_line": "Output:",
+          "elapsed_ms": 812.0,
+          "quality": {
+            "has_formal": false,
+            "has_lambda": false,
+            "quantifier_present": {
+              "universal": false,
+              "existential": false,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_expected": {
+              "universal": true,
+              "existential": true,
+              "negation": false,
+              "definite": false
+            },
+            "quantifier_match": false,
+            "scope_order_match": false,
+            "bound_vars_gen": [],
+            "bound_vars_gt": [
+              "x",
+              "y"
+            ],
+            "predicate_overlap": 0.0,
+            "gen_depth": 0,
+            "gt_depth": 2,
+            "is_flat": false
+          }
+        }
+      }
+    }
+  ]
+}

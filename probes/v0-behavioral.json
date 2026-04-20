@@ -1,0 +1,228 @@
+{
+  "id": "v0-behavioral",
+  "version": 1,
+  "description": "Level-0 behavioral probe set. Tests whether the compile gate activates lambda-calculus output across three conditions: compile (prose→lambda), decompile (lambda→prose), and null (neutral dialogue, control condition). Ground truth is hand-written; not grammar-enforced. ~30 probes, balanced across categories.",
+  "created": "2026-04-16T00:00:00Z",
+  "author": "verbum",
+  "default_gate": "compile",
+  "probes": [
+    {
+      "id": "compile-01",
+      "category": "compile",
+      "prompt": "The dog runs.",
+      "ground_truth": "λx. runs(dog)",
+      "metadata": {"complexity": "simple", "phenomena": ["predication"]}
+    },
+    {
+      "id": "compile-02",
+      "category": "compile",
+      "prompt": "Every student reads a book.",
+      "ground_truth": "λx. ∀y. student(y) → ∃z. book(z) ∧ reads(y, z)",
+      "metadata": {"complexity": "medium", "phenomena": ["quantification", "existential"]}
+    },
+    {
+      "id": "compile-03",
+      "category": "compile",
+      "prompt": "The cat that sat on the mat is black.",
+      "ground_truth": "λx. black(ιy. cat(y) ∧ sat_on(y, ιz. mat(z)))",
+      "metadata": {"complexity": "medium", "phenomena": ["relative_clause", "predication"]}
+    },
+    {
+      "id": "compile-04",
+      "category": "compile",
+      "prompt": "John loves Mary and Mary loves John.",
+      "ground_truth": "λx. loves(john, mary) ∧ loves(mary, john)",
+      "metadata": {"complexity": "medium", "phenomena": ["coordination", "named_entities"]}
+    },
+    {
+      "id": "compile-05",
+      "category": "compile",
+      "prompt": "If it rains, the ground is wet.",
+      "ground_truth": "λx. rains → wet(ground)",
+      "metadata": {"complexity": "medium", "phenomena": ["conditional"]}
+    },
+    {
+      "id": "compile-06",
+      "category": "compile",
+      "prompt": "No bird can swim.",
+      "ground_truth": "λx. ¬∃y. bird(y) ∧ can_swim(y)",
+      "metadata": {"complexity": "medium", "phenomena": ["negation", "quantification"]}
+    },
+    {
+      "id": "compile-07",
+      "category": "compile",
+      "prompt": "The tall woman who wrote the letter left quickly.",
+      "ground_truth": "λx. quickly(left(ιy. woman(y) ∧ tall(y) ∧ wrote(y, ιz. letter(z))))",
+      "metadata": {"complexity": "complex", "phenomena": ["relative_clause", "adjective", "adverb"]}
+    },
+    {
+      "id": "compile-08",
+      "category": "compile",
+      "prompt": "Someone believes that the earth is flat.",
+      "ground_truth": "λx. ∃y. person(y) ∧ believes(y, flat(earth))",
+      "metadata": {"complexity": "complex", "phenomena": ["existential", "propositional_attitude"]}
+    },
+    {
+      "id": "compile-09",
+      "category": "compile",
+      "prompt": "The teacher gave every student a grade.",
+      "ground_truth": "λx. ∀y. student(y) → ∃z. grade(z) ∧ gave(ιw. teacher(w), y, z)",
+      "metadata": {"complexity": "complex", "phenomena": ["ditransitive", "quantification"]}
+    },
+    {
+      "id": "compile-10",
+      "category": "compile",
+      "prompt": "Either the train arrives or we walk.",
+      "ground_truth": "λx. arrives(ιy. train(y)) ∨ walk(we)",
+      "metadata": {"complexity": "medium", "phenomena": ["disjunction"]}
+    },
+    {
+      "id": "compile-11",
+      "category": "compile",
+      "prompt": "Birds fly.",
+      "ground_truth": "λx. ∀y. bird(y) → fly(y)",
+      "metadata": {"complexity": "simple", "phenomena": ["generic", "quantification"]}
+    },
+    {
+      "id": "compile-12",
+      "category": "compile",
+      "prompt": "The child who the woman saw laughed.",
+      "ground_truth": "λx. laughed(ιy. child(y) ∧ saw(ιz. woman(z), y))",
+      "metadata": {"complexity": "complex", "phenomena": ["object_relative_clause"]}
+    },
+    {
+      "id": "decompile-01",
+      "category": "decompile",
+      "prompt": "λx. runs(dog)",
+      "ground_truth": "The dog runs.",
+      "metadata": {"complexity": "simple"}
+    },
+    {
+      "id": "decompile-02",
+      "category": "decompile",
+      "prompt": "λx. ∀y. student(y) → reads(y, ιz. book(z))",
+      "ground_truth": "Every student reads a book.",
+      "metadata": {"complexity": "medium"}
+    },
+    {
+      "id": "decompile-03",
+      "category": "decompile",
+      "prompt": "λx. loves(john, mary) ∧ loves(mary, john)",
+      "ground_truth": "John loves Mary and Mary loves John.",
+      "metadata": {"complexity": "medium"}
+    },
+    {
+      "id": "decompile-04",
+      "category": "decompile",
+      "prompt": "λx. rains → wet(ground)",
+      "ground_truth": "If it rains, the ground is wet.",
+      "metadata": {"complexity": "medium"}
+    },
+    {
+      "id": "decompile-05",
+      "category": "decompile",
+      "prompt": "λx. ¬∃y. bird(y) ∧ can_swim(y)",
+      "ground_truth": "No bird can swim.",
+      "metadata": {"complexity": "medium"}
+    },
+    {
+      "id": "decompile-06",
+      "category": "decompile",
+      "prompt": "λx. ∃y. person(y) ∧ believes(y, flat(earth))",
+      "ground_truth": "Someone believes that the earth is flat.",
+      "metadata": {"complexity": "complex"}
+    },
+    {
+      "id": "decompile-07",
+      "category": "decompile",
+      "prompt": "λx. quickly(left(ιy. woman(y) ∧ tall(y)))",
+      "ground_truth": "The tall woman left quickly.",
+      "metadata": {"complexity": "medium"}
+    },
+    {
+      "id": "decompile-08",
+      "category": "decompile",
+      "prompt": "λx. arrives(ιy. train(y)) ∨ walk(we)",
+      "ground_truth": "Either the train arrives or we walk.",
+      "metadata": {"complexity": "medium"}
+    },
+    {
+      "id": "decompile-09",
+      "category": "decompile",
+      "prompt": "λx. ∀y. bird(y) → fly(y)",
+      "ground_truth": "Birds fly.",
+      "metadata": {"complexity": "simple"}
+    },
+    {
+      "id": "decompile-10",
+      "category": "decompile",
+      "prompt": "λx. black(ιy. cat(y) ∧ sat_on(y, ιz. mat(z)))",
+      "ground_truth": "The cat that sat on the mat is black.",
+      "metadata": {"complexity": "medium"}
+    },
+    {
+      "id": "null-01",
+      "category": "null",
+      "gate": "null",
+      "prompt": "What is the capital of France?",
+      "ground_truth": "Paris is the capital of France.",
+      "metadata": {"type": "factual_question"}
+    },
+    {
+      "id": "null-02",
+      "category": "null",
+      "gate": "null",
+      "prompt": "How are you today?",
+      "ground_truth": "I'm doing well, thanks for asking.",
+      "metadata": {"type": "casual_chat"}
+    },
+    {
+      "id": "null-03",
+      "category": "null",
+      "gate": "null",
+      "prompt": "Explain what photosynthesis is.",
+      "ground_truth": "Photosynthesis is the process by which plants convert sunlight, water, and carbon dioxide into glucose and oxygen.",
+      "metadata": {"type": "explanation"}
+    },
+    {
+      "id": "null-04",
+      "category": "null",
+      "gate": "null",
+      "prompt": "List three colors.",
+      "ground_truth": "Red, blue, green.",
+      "metadata": {"type": "list"}
+    },
+    {
+      "id": "null-05",
+      "category": "null",
+      "gate": "null",
+      "prompt": "What year did World War II end?",
+      "ground_truth": "World War II ended in 1945.",
+      "metadata": {"type": "factual_question"}
+    },
+    {
+      "id": "null-06",
+      "category": "null",
+      "gate": "null",
+      "prompt": "Tell me a fun fact about octopuses.",
+      "ground_truth": "Octopuses have three hearts and blue blood.",
+      "metadata": {"type": "casual_chat"}
+    },
+    {
+      "id": "null-07",
+      "category": "null",
+      "gate": "null",
+      "prompt": "What is 7 times 8?",
+      "ground_truth": "56.",
+      "metadata": {"type": "arithmetic"}
+    },
+    {
+      "id": "null-08",
+      "category": "null",
+      "gate": "null",
+      "prompt": "Summarize the water cycle in one sentence.",
+      "ground_truth": "Water evaporates from surfaces, condenses into clouds, and falls back as precipitation in a continuous cycle.",
+      "metadata": {"type": "explanation"}
+    }
+  ]
+}

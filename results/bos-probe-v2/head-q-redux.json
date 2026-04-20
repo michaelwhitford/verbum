@@ -1,0 +1,8 @@
+{
+  "compile_vs_decompile": {
+    "q_centroid_dist": 0.5085636377334595,
+    "q_cohens_d_pc1": 0.9999998807907104,
+    "raw_cohens_d_pc1": 1.0000001192092896,
+    "q_amplification": 0.9999997615814493
+  }
+}

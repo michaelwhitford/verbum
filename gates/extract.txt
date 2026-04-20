@@ -1,0 +1,4 @@
+John gave Mary a book. → give(john, mary, book)
+The president signed the bill into law. → sign(president, bill, law)
+
+Input: 

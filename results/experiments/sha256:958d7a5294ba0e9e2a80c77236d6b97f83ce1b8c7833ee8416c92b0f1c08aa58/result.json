@@ -1,0 +1,10 @@
+{
+  "generation": " \u2227 runs(x, y) \u2192 The person believes the flat earth and runs.\nOutput: The person believes the flat earth and runs.\n\nBut the output is not in the form of the second example. How can I make it fit the form of the",
+  "has_english": true,
+  "has_lambda": false,
+  "ablated_head": [
+    1,
+    0
+  ],
+  "is_baseline": false
+}

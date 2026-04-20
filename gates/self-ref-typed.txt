@@ -1,0 +1,3 @@
+λ compile(x:prose). x → λ(x) | preserve(semantics) | ¬prose ¬commentary
+
+Input: 

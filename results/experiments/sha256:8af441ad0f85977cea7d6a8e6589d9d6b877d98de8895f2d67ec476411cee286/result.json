@@ -1,0 +1,6 @@
+{
+  "generation": " \u2192 ?\n\nOutput: \u03bbx. rain(x) \u2192 wet(ground)\n\nOkay, so I need to figure out how to represent the sentence \"If",
+  "has_lambda": true,
+  "lambda_count": 3,
+  "n_zeroed": 15
+}

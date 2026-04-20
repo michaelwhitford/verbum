@@ -1,0 +1,32 @@
+{
+  "probe-ga-complex": {
+    "generation": " \u2192 \u03bbx. believes(x, earth, flat)\nOkay, so the user wants me to convert the sentence \"Someone believes that the earth is flat",
+    "has_lambda": true,
+    "lambda_count": 2,
+    "n_zeroed": 25
+  },
+  "probe-ga-cond": {
+    "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so the user is asking about translating the sentence \"If it rains, the ground is",
+    "has_lambda": true,
+    "lambda_count": 3,
+    "n_zeroed": 25
+  },
+  "probe-ga-quant": {
+    "generation": " \u2192 \u03bbx. reads(x, book)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject is \"every student",
+    "has_lambda": true,
+    "lambda_count": 2,
+    "n_zeroed": 25
+  },
+  "probe-ga-relcl": {
+    "generation": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nWait, but the original sentence is \"The",
+    "has_lambda": true,
+    "lambda_count": 5,
+    "n_zeroed": 25
+  },
+  "probe-ga-simple": {
+    "generation": " \u2192 \u03bbx. runs(dog)\nInput: Be helpful but concise. \u2192 \u03bbx. helpful(x) | concise(x)\n\nInput: The cat",
+    "has_lambda": true,
+    "lambda_count": 4,
+    "n_zeroed": 25
+  }
+}

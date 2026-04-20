@@ -1,0 +1,39 @@
+{
+  "L1-H0": {
+    "task": "summarize",
+    "generation": " The plan is expected to reduce traffic congestion and improve the city's overall mobility.\nOutput: City council approves new public transportation plan with three new bus routes and subway extension to northern suburbs, aiming to reduce traffic congestion and improve mobility.\n\nOkay, let's",
+    "success": false,
+    "ablated_head": [
+      1,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H0": {
+    "task": "summarize",
+    "generation": " The plan is expected to reduce traffic congestion and improve air quality in the city.\nOutput: City council approves new public transport plan with three new bus routes and subway extension to northern suburbs; plan aims to reduce traffic congestion and improve air quality.\n\nOkay,",
+    "success": false,
+    "ablated_head": [
+      24,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H2": {
+    "task": "summarize",
+    "generation": " The plan is expected to reduce traffic congestion and improve the city's overall mobility.\nOutput: City council approves new public transportation plan; plan includes three new bus routes and subway extension to northern suburbs. Plan aims to reduce traffic congestion and improve mobility.\n\nOkay",
+    "success": false,
+    "ablated_head": [
+      24,
+      2
+    ],
+    "is_baseline": false
+  },
+  "baseline": {
+    "task": "summarize",
+    "generation": " The plan is expected to reduce traffic congestion and improve the city's overall mobility.\nOutput: City council approves new public transport plan with three new bus routes and subway extension to northern suburbs; plan aims to reduce traffic congestion and improve mobility.\n\nOkay, let",
+    "success": false,
+    "ablated_head": null,
+    "is_baseline": true
+  }
+}

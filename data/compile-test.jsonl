@@ -1,0 +1,40 @@
+{"input": "The elephant climbs bravely.", "output": "λx. climbs(elephant)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "The elephant does not vanish.", "output": "λx. not(vanish(elephant))", "category": "negation", "phenomena": ["negation"]}
+{"input": "Felix thinks that the wizard whistles.", "output": "λx. thinks(felix, wizard, whistles)", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "Felix chases diana.", "output": "λx. chases(felix, diana)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "The wizard vanishes in the river.", "output": "λx. vanishes(wizard, river)", "category": "prepositional", "phenomena": ["prepositional"]}
+{"input": "No elephant vanishes.", "output": "λx. ¬vanishes(elephant)", "category": "negation", "phenomena": ["negation", "quantification"]}
+{"input": "The kind wizard whistles.", "output": "λx. whistles(wizard)", "category": "simple", "phenomena": ["predication", "modifier"]}
+{"input": "The elephant is fast.", "output": "λx. fast(elephant)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "No nurse whistles.", "output": "λx. ¬whistles(nurse)", "category": "negation", "phenomena": ["negation", "quantification"]}
+{"input": "Felix vanishes.", "output": "λx. vanishes(felix)", "category": "simple", "phenomena": ["predication", "proper_noun"]}
+{"input": "Either the elephant vanishes or the wizard whistles.", "output": "λx. (vanishes(elephant) ∨ whistles(wizard))", "category": "disjunction", "phenomena": ["disjunction"]}
+{"input": "The nurse climbs.", "output": "λx. climbs(nurse)", "category": "simple", "phenomena": ["predication"]}
+{"input": "If the nurse climbs, the wizard vanishes.", "output": "λx. if(climbs(nurse), vanishes(wizard))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "The nurse carries the wizard.", "output": "λx. carries(nurse, wizard)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "The nurse that carries the wizard climbs.", "output": "λx. climbs(nurse(x))", "category": "relative_clause", "phenomena": ["relative_clause"]}
+{"input": "The elephant showed the wizard a ball.", "output": "λx. showed(wizard, ball)", "category": "ditransitive", "phenomena": ["predication", "ditransitive"]}
+{"input": "Some nurse whistles.", "output": "∃x. nurse(x) ∧ whistles(x)", "category": "quantified", "phenomena": ["quantification", "existential"]}
+{"input": "The wizard is old.", "output": "λx. old(wizard)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "The elephant vanishes bravely.", "output": "λx. vanishes(elephant)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "Diana carries iris.", "output": "λx. carries(diana, iris)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}
+{"input": "If the elephant whistles, the wizard whistles.", "output": "λx. if(whistles(elephant), whistles(wizard))", "category": "conditional", "phenomena": ["conditional"]}
+{"input": "The kind nurse whistles.", "output": "λx. whistles(nurse)", "category": "simple", "phenomena": ["predication", "modifier"]}
+{"input": "Either the nurse vanishes or the wizard vanishes.", "output": "λx. (vanishes(nurse) ∨ vanishes(wizard))", "category": "disjunction", "phenomena": ["disjunction"]}
+{"input": "Felix climbs.", "output": "λx. climbs(felix)", "category": "simple", "phenomena": ["predication", "proper_noun"]}
+{"input": "The elephant who the wizard chases whistles.", "output": "λx. whistles(elephant)", "category": "relative_clause", "phenomena": ["relative_clause", "object_relative"]}
+{"input": "The wizard is slow.", "output": "λx. slow(wizard)", "category": "copular", "phenomena": ["copular", "adjective"]}
+{"input": "Iris hopes that the wizard climbs.", "output": "λx. hopes(iris, wizard, climbs)", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "Iris vanishes and whistles.", "output": "λx. vanishes(iris) ∧ whistles(iris)", "category": "conjunction", "phenomena": ["conjunction", "verb_coordination"]}
+{"input": "Iris and diana climb.", "output": "λx. climb(iris) ∧ climb(diana)", "category": "conjunction", "phenomena": ["conjunction"]}
+{"input": "The nurse climbs in the bridge.", "output": "λx. climbs(nurse, bridge)", "category": "prepositional", "phenomena": ["prepositional"]}
+{"input": "The wizard whistles.", "output": "λx. whistles(wizard)", "category": "simple", "phenomena": ["predication"]}
+{"input": "Diana fears that the nurse vanishes.", "output": "λx. fears(diana, x) → λx. vanishes(nurse)", "category": "attitude", "phenomena": ["propositional_attitude"]}
+{"input": "Every wizard carries a wizard.", "output": "∀x. wizard(x) → carries(wizard(x), wizard(x))", "category": "quantified", "phenomena": ["quantification", "transitive"]}
+{"input": "The elephant rescues the nurse.", "output": "λx. rescues(elephant, nurse)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "The nurse offered the wizard a flower.", "output": "λx. offered(nurse, wizard, flower)", "category": "ditransitive", "phenomena": ["predication", "ditransitive"]}
+{"input": "The elephant carries the wizard.", "output": "λx. carries(elephant, wizard)", "category": "transitive", "phenomena": ["predication", "transitive"]}
+{"input": "Every nurse climbs.", "output": "∀x. nurse(x) → climbs(x)", "category": "quantified", "phenomena": ["quantification"]}
+{"input": "The nurse climbs slowly.", "output": "λx. climbs(nurse, slowly)", "category": "adverb", "phenomena": ["adverb"]}
+{"input": "The nurse does not whistle.", "output": "λx. ¬whistle(nurse)", "category": "negation", "phenomena": ["negation"]}
+{"input": "Felix carries iris.", "output": "λx. carries(felix, iris)", "category": "transitive", "phenomena": ["predication", "proper_noun", "transitive"]}

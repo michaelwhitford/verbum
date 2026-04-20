@@ -1,0 +1,178 @@
+{
+  "layer": 3,
+  "baseline": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+  "baseline_has_lambda": true,
+  "n_heads": 24,
+  "head_results": [
+    {
+      "layer": 3,
+      "head": 0,
+      "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 3,
+      "head": 1,
+      "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The cat that sat on the mat is black. \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The cat that sat on the mat is",
+      "has_lambda": true,
+      "lambda_count": 6
+    },
+    {
+      "layer": 3,
+      "head": 2,
+      "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 3,
+      "head": 3,
+      "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 3,
+      "head": 4,
+      "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 3,
+      "head": 5,
+      "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 3,
+      "head": 6,
+      "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 3,
+      "head": 7,
+      "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 3,
+      "head": 8,
+      "generation": " \u2192 \u03bbx. sat(cat, mat) \u2227 black(cat)",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 3,
+      "head": 9,
+      "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 3,
+      "head": 10,
+      "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The cat that sat on the mat is black. \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The cat that sat on the mat is",
+      "has_lambda": true,
+      "lambda_count": 6
+    },
+    {
+      "layer": 3,
+      "head": 11,
+      "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 3,
+      "head": 12,
+      "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 3,
+      "head": 13,
+      "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 3,
+      "head": 14,
+      "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 3,
+      "head": 15,
+      "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 3,
+      "head": 16,
+      "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 3,
+      "head": 17,
+      "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 3,
+      "head": 18,
+      "generation": " \u2192 \u03bbx. sat(cat, mat) \u2227 black(cat)\nInput: The book on the table is red. \u2192 \u03bbx. on(table, book) \u2227 red(book)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 3,
+      "head": 19,
+      "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 3,
+      "head": 20,
+      "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is old. \u2192 \u03bbx. on(x, table) \u2227 old(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 3,
+      "head": 21,
+      "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The book on the table is interesting. \u2192 \u03bbx. on(x, table) \u2227 interesting(x)\nInput: The car drives fast. \u2192 \u03bbx. drives",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 3,
+      "head": 22,
+      "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The cat that sat on themat is black. \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The cat that sat on themat is",
+      "has_lambda": true,
+      "lambda_count": 6
+    },
+    {
+      "layer": 3,
+      "head": 23,
+      "generation": " \u2192 \u03bbx. sat(x, mat) \u2227 black(x)\nInput: The quick brown fox jumps over the lazy dog. \u2192 \u03bbx. quick(x) \u2227 brown(x) \u2227 fox(x) \u2227 jumps(x, over,",
+      "has_lambda": true,
+      "lambda_count": 8
+    }
+  ],
+  "broken_heads": [],
+  "n_broken": 0
+}

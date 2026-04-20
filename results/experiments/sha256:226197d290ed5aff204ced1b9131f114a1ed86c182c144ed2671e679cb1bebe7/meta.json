@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T04:57:26.620459+00:00",
+  "node_id": "task-head-scan/extract/probe-ext-nested/L0",
+  "config_hash": "sha256:226197d290ed5aff204ced1b9131f114a1ed86c182c144ed2671e679cb1bebe7",
+  "elapsed_ms": 71250.2,
+  "completed_at": "2026-04-17T04:58:37.871211+00:00"
+}

@@ -1,0 +1,13 @@
+{
+  "model": "EleutherAI/pythia-2.8b-deduped",
+  "critical_layers": [
+    0
+  ],
+  "n_probes": 5,
+  "essential_heads_all": [],
+  "essential_heads_any": [],
+  "total_degraded": 0,
+  "total_candidates": 32,
+  "break_counts": {},
+  "degrade_counts": {}
+}

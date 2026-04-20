@@ -1,0 +1,267 @@
+{
+  "task": "extract",
+  "layer": 1,
+  "baseline": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+  "baseline_success": true,
+  "n_heads": 32,
+  "head_results": [
+    {
+      "layer": 1,
+      "head": 0,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 1,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 2,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\n\nNow, do the same for the following sentence:\n\nThe students were told by the teacher that the exam was cancelled.\n\nOutput: tell(students, teacher, exam was cancelled)\n\nWait,",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 3,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\n\nNow, do the same for the following sentence:\n\nThe students were told by the teacher that the exam was cancelled.\n\nOutput: tell(students, teacher, exam was cancelled)\n\nWait,",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 4,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 5,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 6,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 7,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 8,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\n\nNow, do the same for the following sentence:\n\nThe students were told by the teacher that the exam was cancelled.\n\nOutput: tell(students, teacher, exam was cancelled)\n\nWait,",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 9,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 10,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\n\nNow, do the same for the following sentence:\n\nThe students were told by the teacher that the exam was cancelled.\n\nOutput: tell(students, teacher, exam was cancelled)\n\nWait,",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 11,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 12,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\n\nNow, do the same for the following sentence:\n\nThe students were told by the teacher that the exam was cancelled.\n\nOutput: tell(students, teacher, exam was cancelled)\n\nWait,",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 13,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\n\nNow, do the same for the following sentence:\n\nThe students were told by the teacher that the exam was cancelled.\n\nOutput: tell(students, teacher, exam was cancelled)\n\nWait,",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 14,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\n\nNow, do the same for the following sentence:\n\nThe students were told by the teacher that the exam was cancelled.\n\nOutput: tell(students, teacher, exam was cancelled)\n\nWait,",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 15,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\n\nNow, do the same for the following sentence:\n\nThe students were told by the teacher that the exam was cancelled.\n\nOutput: tell(students, teacher, exam was cancelled)\n\nWait,",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 16,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\n\nNow, do the same for the following sentence:\n\nThe students were told by the teacher that the exam was cancelled.\n\nOutput: tell(students, teacher, exam was cancelled)\n\nWait,",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 17,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 18,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\n\nNow, do the same for the following sentence:\n\nThe students were told by the teacher that the exam was cancelled.\n\nOutput: tell(students, teacher, exam was cancelled)\n\nWait,",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 19,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 20,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\n\nNow, do the same for the following sentence:\n\nThe students were told by the teacher that the exam was cancelled.\n\nOutput: tell(students, teacher, exam was cancelled)\n\nWait,",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 21,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 22,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\n\nNow, do the same for the following sentence:\n\nThe students were told by the teacher that the exam was cancelled.\n\nOutput: tell(students, teacher, exam was cancelled)\n\nWait,",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 23,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 24,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 25,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\n\nNow, do the same for the following sentence:\n\nThe students were told by the teacher that the exam was cancelled.\n\nOutput: tell(students, teacher, exam was cancelled)\n\nWait,",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 26,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 27,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 28,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\n\nNow, do the same for the following sentence:\n\nThe students were told by the teacher that the exam was cancelled.\n\nOutput: tell(students, teacher, exam was cancelled)\n\nWait,",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 29,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\n\nNow, do the same for the following sentence:\n\nThe students were told by the teacher that the exam was cancelled.\n\nOutput: tell(students, teacher, exam was cancelled)\n\nWait,",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 30,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\nOkay, so I need to figure out how to convert the sentence \"The teacher told the students that the exam was cancelled.\" into a predicate logic statement. Let me start by breaking down",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    },
+    {
+      "layer": 1,
+      "head": 31,
+      "generation": " \n\nOutput: tell(teacher, students, exam was cancelled)\n\nNow, do the same for the following sentence:\n\nThe students were told by the teacher that the exam was cancelled.\n\nOutput: tell(students, teacher, exam was cancelled)\n\nWait,",
+      "success": true,
+      "has_lambda": false,
+      "lambda_count": 0
+    }
+  ],
+  "broken_heads": [],
+  "n_broken": 0
+}

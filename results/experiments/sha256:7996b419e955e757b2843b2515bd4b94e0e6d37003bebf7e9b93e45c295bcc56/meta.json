@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T03:51:48.999781+00:00",
+  "node_id": "cross-task/summarize/probe-sum-politics/baseline",
+  "config_hash": "sha256:7996b419e955e757b2843b2515bd4b94e0e6d37003bebf7e9b93e45c295bcc56",
+  "elapsed_ms": 1660.9,
+  "completed_at": "2026-04-17T03:51:50.661026+00:00"
+}

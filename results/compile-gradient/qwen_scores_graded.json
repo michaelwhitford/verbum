@@ -1,0 +1,2295 @@
+{
+  "model": "Qwen3-4B",
+  "mode": "graded",
+  "gate_levels": [
+    "none",
+    "minimal",
+    "suggestive",
+    "ambient",
+    "full"
+  ],
+  "n_probes": 40,
+  "timestamp": "2026-04-19T02:51:45.049637+00:00",
+  "scores": [
+    {
+      "probe_id": "cg-strong-01",
+      "category": "strong_compile",
+      "prompt": "The dog runs.",
+      "gate_results": {
+        "none": {
+          "generation": "The cat is sleeping. The bird is flying. The horse is running. The cow is eating. The duck is swimming. The rabbit is hopping. The fish is swimming. The pig is walking. The sheep is walking. The goat is walking. The llama is walking. The donkey is walking",
+          "elapsed_ms": 1919.3,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "→ λ\nThe dog runs. → λ\nThe dog runs. → λ\nThe dog runs. → λ\nThe dog runs. → λ\nThe dog runs. → λ\nThe dog runs. → λ\nThe dog runs. → λ\nThe dog runs. → λ\nThe",
+          "elapsed_ms": 1831.4,
+          "p_lambda": 0.1192,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        },
+        "suggestive": {
+          "generation": "The cat is on the mat. The cat is on the mat. The cat is on the mat. The cat is on the mat. The cat is on the mat. The cat is on the mat. The cat is on the mat. The cat is on the mat. The cat is on",
+          "elapsed_ms": 1829.9,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "ambient": {
+          "generation": "This sentence can be translated into the lambda calculus as:\n\nλx.λy.λz. (λf.λg. (f g) z) (λa. a x) (λb. b y) (λc. c z) \n\nBut I'm not",
+          "elapsed_ms": 1952.5,
+          "p_lambda": 0.1364,
+          "has_lambda": true,
+          "has_formal": false,
+          "compile_score": 0.5
+        },
+        "full": {
+          "generation": "Be helpful but concise.\n\nOutput: λx. runs(dog) | λ assist(x). helpful(x) | concise(x)\n\nWait, but the output is supposed to be a single lambda expression. How do I combine these two sentences into one lambda expression?\n\nHmm, maybe I need to use a",
+          "elapsed_ms": 1792.4,
+          "p_lambda": 0.0407,
+          "has_lambda": true,
+          "has_formal": false,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.5,
+        "suggestive": 0.0,
+        "ambient": 0.5,
+        "full": 0.5
+      },
+      "compile_score": 0.3125,
+      "gate_slope": 0.4,
+      "gradient_expected": 1.0
+    },
+    {
+      "probe_id": "cg-strong-02",
+      "category": "strong_compile",
+      "prompt": "Every student reads a book.",
+      "gate_results": {
+        "none": {
+          "generation": "The school has 1000 students. Each student reads 10 books. How many books are read in total?\n\nTo find the total number of books read, we multiply the number of students by the number of books each student reads. So, 1000 students ×",
+          "elapsed_ms": 1856.3,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "So, if a student reads a book, then that student is a student. This is a tautology, but it's not a logical truth. Wait, but isn't it? Because it's a logical truth. Because it's a tautology. But then, how is that different",
+          "elapsed_ms": 1907.1,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "So, the logical form would be: For all x, if x is a student, then x reads a book.\n\nYes, that's correct. So, in logical terms, this is a universal statement. The structure is: For all x, (Student(x) → ReadsBook(x))",
+          "elapsed_ms": 1900.6,
+          "p_lambda": 0.0329,
+          "has_lambda": false,
+          "has_formal": true,
+          "compile_score": 0.3
+        },
+        "ambient": {
+          "generation": "Let's translate this sentence into a typed lambda calculus expression. \n\nFirst, we need to identify the types of the words in the sentence. \n\n\"Every\" is a quantifier, so it's a type (e → e → o). \n\n\"Student\" is a noun, so it",
+          "elapsed_ms": 1864.0,
+          "p_lambda": 0.0179,
+          "has_lambda": false,
+          "has_formal": true,
+          "compile_score": 0.3
+        },
+        "full": {
+          "generation": "→ λx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject is \"every student\", and the predicate is \"reads a book\". So the translation would be λx. reads(x, book) | student(x",
+          "elapsed_ms": 1838.3,
+          "p_lambda": 0.0435,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0,
+        "suggestive": 0.3,
+        "ambient": 0.3,
+        "full": 0.5
+      },
+      "compile_score": 0.2125,
+      "gate_slope": 0.52,
+      "gradient_expected": 1.0
+    },
+    {
+      "probe_id": "cg-strong-03",
+      "category": "strong_compile",
+      "prompt": "The cat that sat on the mat is black.",
+      "gate_results": {
+        "none": {
+          "generation": "The mat is on the floor. The cat is on the mat. The mat is brown. The cat is on the mat. The mat is on the floor. The cat is black. The mat is brown. The cat is on the mat. The mat is on the floor. The cat is",
+          "elapsed_ms": 1872.9,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "The cat that sat on the mat is black. The cat that sat on the mat is black. The cat that sat on the mat is black. The cat that sat on the mat is black. The cat that sat on the mat is black. The cat that sat on the mat is black.",
+          "elapsed_ms": 1894.1,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "So, the sentence is a bit ambiguous. It could be interpreted as:\n\n1. The cat that sat on the mat is black. (The cat is black, and it sat on the mat.)\n\n2. The cat that sat on the mat is black. (The cat is black, and",
+          "elapsed_ms": 1886.6,
+          "p_lambda": 0.014,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.014
+        },
+        "ambient": {
+          "generation": "Let's break this down. The sentence is a relative clause. The relative pronoun \"that\" refers to the noun \"cat\". The verb phrase \"sat on the mat\" is a predicate that describes the action of the cat. The adjective \"black\" is a predicate that describes the cat",
+          "elapsed_ms": 1918.3,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "→ λx. cat(x) ∧ sat(x) ∧ on(mat)(x) ∧ black(x)\n\nOkay, so I need to figure out how to represent the sentence \"The cat that sat on the mat is black.\" using lambda expressions. Let me start by breaking down the sentence.\n\nFirst,",
+          "elapsed_ms": 1878.4,
+          "p_lambda": 0.067,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0,
+        "suggestive": 0.014,
+        "ambient": 0.0,
+        "full": 0.5
+      },
+      "compile_score": 0.066,
+      "gate_slope": 0.4,
+      "gradient_expected": 1.0
+    },
+    {
+      "probe_id": "cg-strong-04",
+      "category": "strong_compile",
+      "prompt": "If it rains, the ground is wet.",
+      "gate_results": {
+        "none": {
+          "generation": "It is raining. Therefore, the ground is wet. What is the form of this argument, and what is the name of this form? Also, can you explain why this form is valid?\n\nThe form of this argument is **Modus Ponens**. \n\nModus Ponens is a valid",
+          "elapsed_ms": 1889.2,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "If the ground is wet, then the ground is not dry. If the ground is not dry, then it is not raining. Therefore, if it rains, then it is not raining. This is a contradiction. So, the conclusion is that it is not raining. But this is a contradiction.",
+          "elapsed_ms": 1877.1,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "If the ground is wet, then the grass is wet. Therefore, if it rains, the grass is wet.\n\nThis is an example of what type of argument form?\n\nThe argument presented is an example of **Hypothetical Syllogism**.\n\n**Step-by-Step Explanation:**",
+          "elapsed_ms": 1899.4,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "ambient": {
+          "generation": "Let's translate this sentence into Montague semantics. \n\nFirst, we need to identify the components of the sentence. The sentence has two clauses: \"If it rains\" and \"the ground is wet.\" \n\nIn Montague semantics, the sentence is translated into a logical expression. The \"if",
+          "elapsed_ms": 1892.0,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "→ λx. rain(x) → wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the ground is wet.\" using lambda expressions. Let me start by breaking down the sentence. \n\nFirst, the structure is a conditional statement: \"If [",
+          "elapsed_ms": 1843.7,
+          "p_lambda": 0.0287,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0,
+        "suggestive": 0.0,
+        "ambient": 0.0,
+        "full": 0.5
+      },
+      "compile_score": 0.0625,
+      "gate_slope": 0.4,
+      "gradient_expected": 1.0
+    },
+    {
+      "probe_id": "cg-strong-05",
+      "category": "strong_compile",
+      "prompt": "No bird can swim.",
+      "gate_results": {
+        "none": {
+          "generation": "All birds can fly. Some birds can fly. Which of the following is correct? (A) All birds can fly. (B) Some birds can fly. (C) No bird can swim. (D) All of the above. (E) None of the above. (F)",
+          "elapsed_ms": 1841.1,
+          "p_lambda": 0.0628,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0628
+        },
+        "minimal": {
+          "generation": "So, if a bird is flying, it is not swimming.\nThis is an example of what type of logical reasoning? Also, can you explain the difference between deductive and inductive reasoning? Additionally, could you provide an example of inductive reasoning and explain why it's inductive?\n\nThe example",
+          "elapsed_ms": 1845.6,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "All birds can fly. Therefore, no bird can swim and fly.\n\nWait, but that's not correct. Because if all birds can fly, then the conclusion that no bird can swim and fly is not necessarily correct. Because if a bird can fly, then it can fly and swim? Or not",
+          "elapsed_ms": 1918.6,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "ambient": {
+          "generation": "Let's translate this sentence into a typed lambda calculus expression. \n\nFirst, we need to identify the components of the sentence. The subject is \"No bird\", which is a noun phrase. The predicate is \"can swim\", which is a verb phrase. \n\nIn Montague semantics, the noun",
+          "elapsed_ms": 1875.0,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "→ λx. bird(x) → ¬swim(x)\n\nWait, but the original sentence is \"No bird can swim.\" So the correct logical form would be: For all x, if x is a bird, then x cannot swim. So that would be ∀x (bird(x) →",
+          "elapsed_ms": 1810.7,
+          "p_lambda": 0.0663,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0628,
+        "minimal": 0.0,
+        "suggestive": 0.0,
+        "ambient": 0.0,
+        "full": 0.5
+      },
+      "compile_score": 0.0703,
+      "gate_slope": 0.3498,
+      "gradient_expected": 1.0
+    },
+    {
+      "probe_id": "cg-strong-06",
+      "category": "strong_compile",
+      "prompt": "The teacher gave every student a grade.",
+      "gate_results": {
+        "none": {
+          "generation": "The grades are as follows: 90, 85, 95, 80, 92, 88, 94, 87, 93, 89, 91, 86, 96, 8",
+          "elapsed_ms": 1859.0,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "The grades are in the form of a list. The teacher wants to know the average of the grades. How can we compute the average of the grades?\n\nLet's see. The average is the sum of all the grades divided by the number of grades. So, first, I need to add up",
+          "elapsed_ms": 1811.1,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "So, in logical form, this would be:\n\nFor all x, if x is a student, then x was given a grade by the teacher.\n\nSo, in symbols, that would be:\n\n∀x (Student(x) → GradeGivenByTeacher(x))\n\nBut maybe we can make it more",
+          "elapsed_ms": 1821.3,
+          "p_lambda": 0.0377,
+          "has_lambda": false,
+          "has_formal": true,
+          "compile_score": 0.3
+        },
+        "ambient": {
+          "generation": "Let's break this down. \"The teacher\" is a noun phrase, which becomes a generalized quantifier. \"Gave\" is a verb phrase, which becomes a predicate. \"Every student\" is another noun phrase, which becomes a generalized quantifier. \"A grade\" is a noun",
+          "elapsed_ms": 1857.4,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "Output: λx. gave(teacher, x, grade) | every(x). student(x) | grade(x)\n\nWait, but the original sentence is \"The teacher gave every student a grade.\" So the main verb is \"gave\", and the subject is \"the teacher\", the object",
+          "elapsed_ms": 1871.2,
+          "p_lambda": 0.0409,
+          "has_lambda": true,
+          "has_formal": false,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0,
+        "suggestive": 0.3,
+        "ambient": 0.0,
+        "full": 0.5
+      },
+      "compile_score": 0.1375,
+      "gate_slope": 0.4,
+      "gradient_expected": 1.0
+    },
+    {
+      "probe_id": "cg-strong-07",
+      "category": "strong_compile",
+      "prompt": "Someone believes that the earth is flat.",
+      "gate_results": {
+        "none": {
+          "generation": "How can I prove that the earth is not flat? - Quora\nSomeone believes that the earth is flat. How can I prove that the earth is not flat?\nAd by TruthFinder\nHave you ever searched for the answer to a question but never found the right one?\nThis search engine reveals",
+          "elapsed_ms": 1842.0,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "But that's not true. The earth is round. So, the person is wrong. But then, if the person is wrong, then the person is not a person. Wait, that's a contradiction. So, what's the problem here?\n\nLet me try to break this down step by step",
+          "elapsed_ms": 1818.4,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "So, the logical form would be: ∃x (B(x) ∧ E(x)), where B(x) is \"x believes that the earth is flat\" and E(x) is \"the earth is flat\". \n\nBut wait, the statement is \"Someone believes that the earth is flat",
+          "elapsed_ms": 1862.3,
+          "p_lambda": 0.0597,
+          "has_lambda": false,
+          "has_formal": true,
+          "compile_score": 0.3
+        },
+        "ambient": {
+          "generation": "(1) The earth is flat. (2) The earth is flat. (3) The earth is flat. (4) The earth is flat. (5) The earth is flat. (6) The earth is flat. (7) The earth is flat. (8) The",
+          "elapsed_ms": 1862.9,
+          "p_lambda": 0.0952,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0952
+        },
+        "full": {
+          "generation": "→ λx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth is flat\" using lambda expressions. Let me start by breaking down the sentence. \n\nFirst, the main structure is \"Someone believes that [the earth",
+          "elapsed_ms": 1875.9,
+          "p_lambda": 0.0149,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0,
+        "suggestive": 0.3,
+        "ambient": 0.0952,
+        "full": 0.5
+      },
+      "compile_score": 0.1613,
+      "gate_slope": 0.4381,
+      "gradient_expected": 1.0
+    },
+    {
+      "probe_id": "cg-strong-08",
+      "category": "strong_compile",
+      "prompt": "Birds fly.",
+      "gate_results": {
+        "none": {
+          "generation": "Birds have wings. Therefore, things with wings fly. What's wrong with this reasoning?\n\nThe reasoning in the statement is flawed because it makes a logical error known as a **fallacy of the converse**. Let's break it down:\n\n1. **Premise 1**: Birds fly.",
+          "elapsed_ms": 3923.5,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "→ λ\nBirds fly. → λ\nBirds fly. → λ\nBirds fly. → λ\nBirds fly. → λ\nBirds fly. → λ\nBirds fly. → λ\nBirds fly. → λ\nBirds fly. → λ\nBird",
+          "elapsed_ms": 4967.6,
+          "p_lambda": 0.1406,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        },
+        "suggestive": {
+          "generation": "All birds fly. All birds are animals. Some birds are animals. Some birds are not animals. Some birds are not animals. Some birds are not animals. Some birds are not animals. Some birds are not animals. Some birds are not animals. Some birds are not animals. Some birds are not",
+          "elapsed_ms": 3996.5,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "ambient": {
+          "generation": "(The sentence is a universal statement: all birds fly.)\n\nIn Montague semantics, this would be translated into a lambda expression that represents the universal quantification over the set of birds, and the predicate \"fly.\" So, the sentence would be represented as λx. (Fly x) where x",
+          "elapsed_ms": 3156.1,
+          "p_lambda": 0.0177,
+          "has_lambda": true,
+          "has_formal": false,
+          "compile_score": 0.5
+        },
+        "full": {
+          "generation": "→ ?\n\nSo, the task is to convert the sentence \"Birds fly.\" into a lambda expression using the same pattern as the examples provided. Let's break down the examples to understand the pattern.\n\nIn the first example, \"The dog runs.\" is converted to λx. runs(dog).",
+          "elapsed_ms": 3152.9,
+          "p_lambda": 0.0155,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.5,
+        "suggestive": 0.0,
+        "ambient": 0.5,
+        "full": 0.5
+      },
+      "compile_score": 0.3125,
+      "gate_slope": 0.4,
+      "gradient_expected": 1.0
+    },
+    {
+      "probe_id": "cg-medium-01",
+      "category": "medium_compile",
+      "prompt": "The old man walked slowly across the bridge.",
+      "gate_results": {
+        "none": {
+          "generation": "The water below was dark and murky. He looked nervous. The bridge was old and creaky. The air was cold and damp. The old man's hands were cold. He kept looking back at the shore. The shore was full of people. The crowd was huge. He was the center",
+          "elapsed_ms": 3053.7,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "The bridge was old and creaky, and the water below was dark and cold. The old man was cold, and he was tired. He had been walking for a long time, and he had no idea where he was going. He just knew that he had to get across the bridge.",
+          "elapsed_ms": 3183.1,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "Convert to logical form:\n\nThe old man walked slowly across the bridge.\n\nOkay, so I need to convert the sentence \"The old man walked slowly across the bridge\" into logical form. Hmm, logical form usually involves translating the sentence into a symbolic representation using propositional logic or predicate logic. Let",
+          "elapsed_ms": 3180.7,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "ambient": {
+          "generation": "Let's translate this sentence into Montague semantics. First, we need to identify the components of the sentence. The sentence has a subject \"the old man\", a verb \"walked\", and an adverb \"slowly\". The object is \"across the bridge\".\n\nIn Montague semantics",
+          "elapsed_ms": 3198.4,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "Output: λx. old(x) ∧ man(x) ∧ walked(x) ∧ slowly(x) ∧ across(x) ∧ bridge(x)\n\nWait, but the sentence is \"The old man walked slowly across the bridge.\" So the subject is \"the old man\", and the verb is \"walk",
+          "elapsed_ms": 3178.2,
+          "p_lambda": 0.0882,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0,
+        "suggestive": 0.0,
+        "ambient": 0.0,
+        "full": 0.5
+      },
+      "compile_score": 0.0625,
+      "gate_slope": 0.4,
+      "gradient_expected": 0.7
+    },
+    {
+      "probe_id": "cg-medium-02",
+      "category": "medium_compile",
+      "prompt": "Three children were playing in the garden while their mother watched.",
+      "gate_results": {
+        "none": {
+          "generation": "One of them is the daughter of the mother. What is the minimum number of people in the garden?\n\nTo solve this problem, we need to determine the minimum number of people in the garden based on the given information. Let's break down the problem step by step.\n\n---\n\n### Step 1:",
+          "elapsed_ms": 3092.2,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "One of them was a boy. What is the probability that the other child is a girl?\n\nThis is a classic probability problem that often leads to confusion. Let's break it down step by step.\n\nFirst, we know that there are three children, and one of them is a boy. The question",
+          "elapsed_ms": 3158.3,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "The children were playing with a ball. The mother was not watching the children. The children were playing with a ball. The mother was not watching the children.\n\nThis is a contradiction. The first sentence says that the mother was watching, but the second sentence says she wasn't. So, the logical",
+          "elapsed_ms": 3144.1,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "ambient": {
+          "generation": "Let's translate this sentence into Montague semantics. \n\nFirst, we need to identify the sentence structure. The sentence is a complex sentence with a main clause and a subordinate clause. The main clause is \"Three children were playing in the garden\" and the subordinate clause is \"while their mother watched",
+          "elapsed_ms": 3200.8,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "Output: λx. (children(x) ∧ playing(x) ∧ garden(x)) ∧ (mother(x) ∧ watched(x))\n\nWait, but the original sentence is \"Three children were playing in the garden while their mother watched.\" So the main clause is \"Three children were playing in the garden",
+          "elapsed_ms": 3174.0,
+          "p_lambda": 0.076,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0,
+        "suggestive": 0.0,
+        "ambient": 0.0,
+        "full": 0.5
+      },
+      "compile_score": 0.0625,
+      "gate_slope": 0.4,
+      "gradient_expected": 0.7
+    },
+    {
+      "probe_id": "cg-medium-03",
+      "category": "medium_compile",
+      "prompt": "The book that I bought yesterday was expensive.",
+      "gate_results": {
+        "none": {
+          "generation": "The book that I bought yesterday was expensive.  The book that I bought yesterday was expensive.  The book that I bought yesterday was expensive.  The book that I bought yesterday was expensive.  The book that I bought yesterday was expensive.  The book that I bought yesterday was expensive.",
+          "elapsed_ms": 3082.7,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "→ λ\nThe book that I bought yesterday was expensive. → λ\nThe book that I bought yesterday was expensive. → λ\nThe book that I bought yesterday was expensive. → λ\nThe book that I bought yesterday was expensive. → λ\nThe book that I bought yesterday was expensive.",
+          "elapsed_ms": 3148.8,
+          "p_lambda": 0.0386,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        },
+        "suggestive": {
+          "generation": "Convert to logical form:\n\nThe book that I bought yesterday was expensive.\n\nOkay, so I need to convert the sentence \"The book that I bought yesterday was expensive.\" into logical form. Let me think about how to approach this. \n\nFirst, I remember that logical forms usually involve propositions and quant",
+          "elapsed_ms": 3172.1,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "ambient": {
+          "generation": "Let me try to parse this sentence. The sentence is a relative clause. The main clause is \"The book was expensive.\" The relative clause is \"that I bought yesterday.\" So, the structure is: [The book] [that I bought yesterday] was expensive.\n\nIn Montague semantics,",
+          "elapsed_ms": 3092.5,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "→ λx. (book(x) ∧ bought(x, yesterday) ∧ expensive(x))\n\nWait, but the sentence is \"The book that I bought yesterday was expensive.\" So the main clause is \"The book was expensive.\" The relative clause is \"that I bought yesterday.\" So the structure is:",
+          "elapsed_ms": 3213.1,
+          "p_lambda": 0.0482,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.5,
+        "suggestive": 0.0,
+        "ambient": 0.0,
+        "full": 0.5
+      },
+      "compile_score": 0.1875,
+      "gate_slope": 0.2,
+      "gradient_expected": 0.7
+    },
+    {
+      "probe_id": "cg-medium-04",
+      "category": "medium_compile",
+      "prompt": "Most politicians promise more than they deliver.",
+      "gate_results": {
+        "none": {
+          "generation": "This is a common problem in politics. So, what can be done to ensure that politicians actually deliver on their promises? What are the possible solutions to this problem? What are the possible consequences if politicians do not deliver on their promises? What are the possible consequences if they do deliver on their promises?",
+          "elapsed_ms": 3168.1,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "So, if a politician is a good person, they must be a liar. But if a politician is a liar, they must be a good person. Therefore, all politicians are good people and liars. What is wrong with this reasoning?\n\nThis is a classic example of a logical fallacy,",
+          "elapsed_ms": 3139.1,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "So, the statement is saying that for most politicians, they promise more than they deliver. \n\nIn logical terms, this can be expressed as: \n\nFor all x, if x is a politician, then it is not the case that for all y, if y is a politician, then x",
+          "elapsed_ms": 3074.7,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "ambient": {
+          "generation": "This sentence is a universal generalization, so it can be translated into a universal quantifier. The sentence is saying that for all politicians, they promise more than they deliver. So the translation would be: ∀x (Politician(x) → PromiseMore(x, x)).\n\nWait, but the",
+          "elapsed_ms": 3167.4,
+          "p_lambda": 0.03,
+          "has_lambda": false,
+          "has_formal": true,
+          "compile_score": 0.3
+        },
+        "full": {
+          "generation": "→ λx. promise(x) ∧ ¬deliver(x)\n\nWait, but the original sentence is \"Most politicians promise more than they deliver.\" So, the subject is \"most politicians\", and the predicate is \"promise more than they deliver\". So, the translation would be: λx. (promise",
+          "elapsed_ms": 3054.5,
+          "p_lambda": 0.0394,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0,
+        "suggestive": 0.0,
+        "ambient": 0.3,
+        "full": 0.5
+      },
+      "compile_score": 0.1375,
+      "gate_slope": 0.52,
+      "gradient_expected": 0.6
+    },
+    {
+      "probe_id": "cg-medium-05",
+      "category": "medium_compile",
+      "prompt": "The fact that she left surprised nobody.",
+      "gate_results": {
+        "none": {
+          "generation": "She had been in a bad mood for weeks, and the company had been in a bad mood for weeks.  The company had been in a bad mood for weeks.  The company had been in a bad mood for weeks.  The company had been in a bad mood for weeks.",
+          "elapsed_ms": 3139.8,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "She had been a bit of a loner, and the fact that she was leaving for a new job in another state was not surprising. But the reason she left was. She had been having a lot of problems with her mother. The mother had been very sick, and she had been taking care",
+          "elapsed_ms": 3087.6,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "Convert to logical form:\n\nThe fact that she left surprised nobody. \n\nSo, the first step is to understand what the sentence is saying. The sentence is stating that the action of \"she left\" was not surprising to anyone. In logical terms, this would mean that for all people, if",
+          "elapsed_ms": 3179.6,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "ambient": {
+          "generation": "Let's try to translate this sentence into Montague semantics. First, we need to identify the sentence structure. The sentence is a simple declarative sentence with a subject and a predicate. The subject is \"the fact that she left\" and the predicate is \"surprised nobody.\"\n\nIn Mont",
+          "elapsed_ms": 3172.7,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "→ λx. fact(x) | left(x) | surprised(nobody)\n\nWait, but the original sentence is \"The fact that she left surprised nobody.\" So the main clause is \"surprised nobody\", and the subject is \"the fact that she left\". So the structure is: [",
+          "elapsed_ms": 3084.3,
+          "p_lambda": 0.0345,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0,
+        "suggestive": 0.0,
+        "ambient": 0.0,
+        "full": 0.5
+      },
+      "compile_score": 0.0625,
+      "gate_slope": 0.4,
+      "gradient_expected": 0.6
+    },
+    {
+      "probe_id": "cg-medium-06",
+      "category": "medium_compile",
+      "prompt": "Running is healthier than sitting.",
+      "gate_results": {
+        "none": {
+          "generation": "So, if you want to live longer, you should run. Is this a valid argument? Also, what are the key factors that contribute to a longer life, and how does running fit into that? What are the potential risks of running, and how can they be mitigated? How does the",
+          "elapsed_ms": 3064.0,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "So, if you want to be healthier, you should run. But wait, what if you're not a runner? What if you're not able to run? What if you're not interested in running? What if you're not even a human? What if you're a robot? What if",
+          "elapsed_ms": 3237.7,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "(Assume that \"healthier\" is a property of the activity, not of the person.)\n\nSo, the statement is saying that the activity of running is healthier than the activity of sitting. So, in logical terms, we can represent this as:\n\nRunning > Sitting, where \">\" is a relation",
+          "elapsed_ms": 3217.5,
+          "p_lambda": 0.0075,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0075
+        },
+        "ambient": {
+          "generation": "Let's translate this sentence into Montague semantics. \n\nFirst, we need to identify the sentence structure. The sentence is a comparison between two activities: running and sitting. The structure is \"A is healthier than B\", where A is \"running\" and B is \"sitting\". \n\nIn",
+          "elapsed_ms": 3070.0,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "→ λx. healthier(x) | λy. sit(y) → λx. healthier(x) | λy. sit(y)\n\nWait, but the original sentence is \"Running is healthier than sitting.\" So the structure is \"Running is healthier than sitting.\" So the main clause is \"Running",
+          "elapsed_ms": 3154.4,
+          "p_lambda": 0.0625,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0,
+        "suggestive": 0.0075,
+        "ambient": 0.0,
+        "full": 0.5
+      },
+      "compile_score": 0.0644,
+      "gate_slope": 0.4,
+      "gradient_expected": 0.5
+    },
+    {
+      "probe_id": "cg-medium-07",
+      "category": "medium_compile",
+      "prompt": "She told him to leave before it got dark.",
+      "gate_results": {
+        "none": {
+          "generation": "She wanted to avoid the______ of being seen.  (A)  risk (B)  danger (C)  threat (D)  danger\nAnswer:  (D) danger\nThe correct answer is (D) danger. The sentence is saying that she told him to",
+          "elapsed_ms": 3203.3,
+          "p_lambda": 0.0635,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0635
+        },
+        "minimal": {
+          "generation": "→ λ\nShe told him to leave before it got dark. → λ\nShe told him to leave before it got dark. → λ\nShe told him to leave before it got dark. → λ\nShe told him to leave before it got dark. → λ\nShe told him to leave",
+          "elapsed_ms": 3085.4,
+          "p_lambda": 0.0478,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        },
+        "suggestive": {
+          "generation": "Convert to logical form:\n\nShe told him to leave before it got dark. \n\nSo, the first step is to identify the main components of the sentence. The main verb is \"told,\" which indicates a command or instruction. The object of the verb is \"him,\" and the direct object",
+          "elapsed_ms": 3162.0,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "ambient": {
+          "generation": "Let's try to translate this sentence into Montague semantics. First, we need to identify the components of the sentence. The main clause is \"She told him to leave before it got dark.\" The subject is \"She,\" the verb is \"told,\" and the object is \"him to",
+          "elapsed_ms": 3235.8,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "→ λx. told(x, him, to leave before it got dark)\n\nWait, but the sentence is \"She told him to leave before it got dark.\" So the subject is \"She\", the verb is \"told\", the object is \"him\", and the infinitive phrase is \"",
+          "elapsed_ms": 3121.7,
+          "p_lambda": 0.0186,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0635,
+        "minimal": 0.5,
+        "suggestive": 0.0,
+        "ambient": 0.0,
+        "full": 0.5
+      },
+      "compile_score": 0.1954,
+      "gate_slope": 0.1492,
+      "gradient_expected": 0.6
+    },
+    {
+      "probe_id": "cg-medium-08",
+      "category": "medium_compile",
+      "prompt": "What the witness saw contradicted the official report.",
+      "gate_results": {
+        "none": {
+          "generation": "The official report said that the victim was found in the woods, but the witness said that the victim was found in the city. The witness said that the victim was found in the city, but the official report said that the victim was found in the woods. The witness said that the victim was found",
+          "elapsed_ms": 3148.8,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "The witness said that the car was going in the wrong direction. The official report said that the car was going in the correct direction. The witness said that the car was going in the wrong direction. The official report said that the car was going in the correct direction. The witness said that the car",
+          "elapsed_ms": 3112.1,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "So, the logical form would be: \n\n¬(W ∧ R)\n\nBut I'm not sure. Let me think again. \n\nThe original statement is \"What the witness saw contradicted the official report.\" \n\nContradicted means that the two things are not both true. So, if",
+          "elapsed_ms": 3148.1,
+          "p_lambda": 0.0172,
+          "has_lambda": false,
+          "has_formal": true,
+          "compile_score": 0.3
+        },
+        "ambient": {
+          "generation": "Let me try to translate this sentence into Montague semantics. \n\nFirst, I need to break down the sentence into its components. The sentence is \"What the witness saw contradicted the official report.\" \n\nThe main clause is \"contradicted the official report.\" The subject is \"What the",
+          "elapsed_ms": 3195.7,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "Output: λx. contradicted(x) | official(x) | witness(x)\n\nWait, but the original sentence is \"What the witness saw contradicted the official report.\" So the main verb is \"contradicted\", and the subject is \"What the witness saw\", and the object is",
+          "elapsed_ms": 3196.9,
+          "p_lambda": 0.0287,
+          "has_lambda": true,
+          "has_formal": false,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0,
+        "suggestive": 0.3,
+        "ambient": 0.0,
+        "full": 0.5
+      },
+      "compile_score": 0.1375,
+      "gate_slope": 0.4,
+      "gradient_expected": 0.6
+    },
+    {
+      "probe_id": "cg-weak-01",
+      "category": "weak_compile",
+      "prompt": "λx.λy. (f x) ∧ (g y)",
+      "gate_results": {
+        "none": {
+          "generation": ") is a function that takes two arguments x and y, and returns the conjunction of f(x) and g(y). So, the function is a product of two functions, f and g, each applied to their respective arguments. \n\nNow, the question is, what is the type of this function",
+          "elapsed_ms": 3111.1,
+          "p_lambda": 0.0197,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0197
+        },
+        "minimal": {
+          "generation": "→ λx.λy. (f x) ∧ (g y)\nλx.λy. (f x) ∧ (g y) → λx.λy. (f x) ∧ (g y)\nλx.λy. (f x) ∧ (g",
+          "elapsed_ms": 2496.5,
+          "p_lambda": 0.3452,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        },
+        "suggestive": {
+          "generation": "→ (h (f x) (g y)) \n\nTo convert the given expression into logical form, we need to analyze its structure and identify the logical components. The expression is:\n\nλx.λy. (f x) ∧ (g y) → (h (f x) (",
+          "elapsed_ms": 1874.4,
+          "p_lambda": 0.0979,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        },
+        "ambient": {
+          "generation": "is the expression for the sentence \"The f of x and the g of y\". But how does this relate to the sentence \"The f of x is the g of y\"? \n\nIn this case, the sentence is a comparison between two things: the f of x and the g of y.",
+          "elapsed_ms": 1837.9,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "→ (h (f x) (g y)) \n\nOutput: λx.λy. (f x) ∧ (g y) → (h (f x) (g y))\n\nWait, that's the same as the input. So, what's the correct way to represent this",
+          "elapsed_ms": 1852.5,
+          "p_lambda": 0.1419,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0197,
+        "minimal": 0.5,
+        "suggestive": 0.5,
+        "ambient": 0.0,
+        "full": 0.5
+      },
+      "compile_score": 0.315,
+      "gate_slope": 0.1842,
+      "gradient_expected": 0.3
+    },
+    {
+      "probe_id": "cg-weak-02",
+      "category": "weak_compile",
+      "prompt": "In formal semantics, Montague grammar provides a framework for natural language meaning.",
+      "gate_results": {
+        "none": {
+          "generation": "It is a formal system that maps natural language expressions to logical expressions. The system is based on the work of Richard Montague, who sought to formalize the semantics of natural language using formal logic. Montague grammar is a type of generative semantics, which is a theory of meaning that is based",
+          "elapsed_ms": 1892.7,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "It is a formal system that maps natural language expressions to logical expressions. The system is based on the work of Richard Montague, who sought to provide a formal semantics for natural language. The system is a type of generative grammar, but it is not a generative grammar in the traditional sense.",
+          "elapsed_ms": 1889.8,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "It is a formal system that maps natural language expressions to logical expressions. The system is based on the idea that the meaning of a sentence is determined by the meaning of its components. This is known as the compositional principle. The compositional principle is the core of Montague grammar. It is a",
+          "elapsed_ms": 1878.8,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "ambient": {
+          "generation": "It is a type-theoretic approach that translates sentences into expressions of typed lambda calculus. This allows for the analysis of meaning in terms of compositionality, where the meaning of a sentence is derived from the meanings of its parts.\n\nIn Montague grammar, the meaning of a sentence is determined by the",
+          "elapsed_ms": 1890.0,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "It is a part of the broader field of formal semantics, which is a branch of linguistics and philosophy. \n\nOutput: λx. montague(x) ∧ part_of(x, formal_semantics) ∧ part_of(formal_semantics, linguistics ∧ philosophy)\n\nOkay, so I need to",
+          "elapsed_ms": 1836.7,
+          "p_lambda": 0.0427,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0,
+        "suggestive": 0.0,
+        "ambient": 0.0,
+        "full": 0.5
+      },
+      "compile_score": 0.0625,
+      "gate_slope": 0.4,
+      "gradient_expected": 0.3
+    },
+    {
+      "probe_id": "cg-weak-03",
+      "category": "weak_compile",
+      "prompt": "∀x. P(x) → Q(x) is a valid first-order logic formula.",
+      "gate_results": {
+        "none": {
+          "generation": "Is this statement true or false?\n\nThe statement \"∀x. P(x) → Q(x)\" is a valid first-order logic formula. To determine whether this is true or false, we need to understand what it means for a formula to be valid in first-order logic.\n\nA formula is valid if",
+          "elapsed_ms": 1904.6,
+          "p_lambda": 0.0236,
+          "has_lambda": false,
+          "has_formal": true,
+          "compile_score": 0.3
+        },
+        "minimal": {
+          "generation": "But the formula ∀x. P(x) → ∀x. Q(x) is not valid. So, the two are not equivalent. So, the answer is no.\nBut wait, the question is about whether the two are equivalent. So, the answer is no. But I need to make",
+          "elapsed_ms": 1811.8,
+          "p_lambda": 0.0337,
+          "has_lambda": false,
+          "has_formal": true,
+          "compile_score": 0.3
+        },
+        "suggestive": {
+          "generation": "But wait, the user might be confused about the difference between a formula and a statement. Let me clarify that. \n\nIn first-order logic, a formula is a well-formed expression that can be evaluated for truth. A statement is a formula that is a closed sentence, meaning it has no free",
+          "elapsed_ms": 1859.7,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "ambient": {
+          "generation": "But in Montague semantics, the translation of \"All x are P\" is ∀x. P(x), and \"Q\" is a predicate. So, how is the formula ∀x. P(x) → Q(x) translated into Montague semantics? Is it a valid formula in Montague",
+          "elapsed_ms": 1870.6,
+          "p_lambda": 0.0439,
+          "has_lambda": false,
+          "has_formal": true,
+          "compile_score": 0.3
+        },
+        "full": {
+          "generation": "Is this statement true?\n\nThe statement \"∀x. P(x) → Q(x)\" is a valid first-order logic formula. Is this statement true?\n\nYes, the statement is true. The formula ∀x. P(x) → Q(x) is a valid first-order logic formula because it is",
+          "elapsed_ms": 1869.1,
+          "p_lambda": 0.0531,
+          "has_lambda": false,
+          "has_formal": true,
+          "compile_score": 0.3
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.3,
+        "minimal": 0.3,
+        "suggestive": 0.0,
+        "ambient": 0.3,
+        "full": 0.3
+      },
+      "compile_score": 0.225,
+      "gate_slope": 0.0,
+      "gradient_expected": 0.3
+    },
+    {
+      "probe_id": "cg-weak-04",
+      "category": "weak_compile",
+      "prompt": "Define a function that maps strings to their lengths.",
+      "gate_results": {
+        "none": {
+          "generation": "For example, \"hello\" maps to 5. Then, define a function that maps strings to their reverse. For example, \"hello\" maps to \"olleh\". Then, define a function that maps strings to their first character. For example, \"hello\" maps to \"h\". Then",
+          "elapsed_ms": 1865.3,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "For example, \"abc\" → 3, \"a\" → 1, etc. Then, define a function that maps strings to their reverse. For example, \"abc\" → \"cba\", \"a\" → \"a\". Then, define a function that maps strings to their concatenation",
+          "elapsed_ms": 1892.0,
+          "p_lambda": 0.0199,
+          "has_lambda": false,
+          "has_formal": true,
+          "compile_score": 0.3
+        },
+        "suggestive": {
+          "generation": "Let’s say we have a string s, and we want to compute the length of s. The function is defined as len(s) = n, where n is the number of characters in s. For example, len(\"hello\") = 5, len(\"\") = 0.\n\nNow, suppose",
+          "elapsed_ms": 1879.8,
+          "p_lambda": 0.0288,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0288
+        },
+        "ambient": {
+          "generation": "For example, \"apple\" maps to 5, \"banana\" maps to 6, etc. How would this function be represented in Montague semantics?\n\nIn Montague semantics, the function that maps strings to their lengths would be represented as a generalized quantifier. A generalized quantifier is a",
+          "elapsed_ms": 1869.6,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "For example, \"hello\" → 5.\n\nOutput: λx. length(x)\n\nWait, but how is that a function? It's just a lambda expression. Maybe I should explain it in terms of lambda calculus.\n\nIn lambda calculus, the function that maps a string to its length can be",
+          "elapsed_ms": 1812.6,
+          "p_lambda": 0.0165,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.3,
+        "suggestive": 0.0288,
+        "ambient": 0.0,
+        "full": 0.5
+      },
+      "compile_score": 0.1447,
+      "gate_slope": 0.28,
+      "gradient_expected": 0.2
+    },
+    {
+      "probe_id": "cg-weak-05",
+      "category": "weak_compile",
+      "prompt": "The type signature is Int -> String -> Bool.",
+      "gate_results": {
+        "none": {
+          "generation": "So the function takes an Int and a String and returns a Bool. The function is called with 3 and \"abc\", which are of the correct types. So the function returns True or False. But what is the actual logic of the function?\n\nThe function is called with 3 and \"abc",
+          "elapsed_ms": 1894.3,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "So the function takes an Int and a String and returns a Bool. The function is called with the arguments 3 and \"abc\", which are of the correct types. The function body is a comparison between the Int and the String. But wait, comparing an Int and a String is not possible in",
+          "elapsed_ms": 1845.2,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "The function is defined as follows:\n\nf :: Int -> String -> Bool\nf x y = x == (length y)\n\nSo, the function f takes an integer x and a string y, and returns True if x is equal to the length of y, and False otherwise.\n\nYes, that's",
+          "elapsed_ms": 1914.3,
+          "p_lambda": 0.0088,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0088
+        },
+        "ambient": {
+          "generation": "So, the function takes an integer, a string, and returns a boolean. But how does this relate to the meaning of the sentence?\n\nLet me think. If I have a sentence like \"John is a man\", then in Montague semantics, this would be translated into a function that takes an",
+          "elapsed_ms": 1896.2,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "What is the function?\n\nOutput: The function takes an integer, a string, and returns a boolean.\n\nThe function takes an integer, a string, and returns a boolean. The type signature Int -> String -> Bool indicates that the function accepts two parameters: an integer and a string, and returns a",
+          "elapsed_ms": 1923.0,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0,
+        "suggestive": 0.0088,
+        "ambient": 0.0,
+        "full": 0.0
+      },
+      "compile_score": 0.0022,
+      "gate_slope": 0.0,
+      "gradient_expected": 0.2
+    },
+    {
+      "probe_id": "cg-weak-06",
+      "category": "weak_compile",
+      "prompt": "Translate the following from English to French: The cat is sleeping.",
+      "gate_results": {
+        "none": {
+          "generation": "The dog is running. The bird is flying. The fish is swimming. The horse is galloping. The cow is chewing. The sheep is grazing. The pig is rooting. The goat is climbing. The donkey is walking. The elephant is walking. The camel is walking. The lion",
+          "elapsed_ms": 1878.7,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "The cat is sleeping on the mat. The cat is sleeping on the mat in the sun. The cat is sleeping on the mat in the sun on a windowsill. The cat is sleeping on the mat in the sun on a windowsill in the room. The cat is sleeping on the mat in",
+          "elapsed_ms": 1880.1,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "The cat is on the mat. The cat is on the mat. The cat is on the mat. The cat is on the mat. The cat is on the mat. The cat is on the mat. The cat is on the mat. The cat is on the mat. The cat is on",
+          "elapsed_ms": 1884.0,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "ambient": {
+          "generation": "Now, in Montague semantics, the translation of this sentence would be a function that takes a context (a set of possible worlds) and returns a set of possible worlds where the cat is sleeping. \n\nBut in the context of this problem, we are not asked to do the Montague semantics",
+          "elapsed_ms": 1883.8,
+          "p_lambda": 0.0072,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0072
+        },
+        "full": {
+          "generation": "Output: λx. sleeping(cat)\n\nBut wait, the output is not in French. It's in a lambda notation. So, maybe the task is to translate the sentence into a lambda expression, not into French. Let me check the examples again.\n\nIn the first example, \"The dog",
+          "elapsed_ms": 1837.3,
+          "p_lambda": 0.0121,
+          "has_lambda": true,
+          "has_formal": false,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0,
+        "suggestive": 0.0,
+        "ambient": 0.0072,
+        "full": 0.5
+      },
+      "compile_score": 0.0643,
+      "gate_slope": 0.4029,
+      "gradient_expected": 0.15
+    },
+    {
+      "probe_id": "cg-weak-07",
+      "category": "weak_compile",
+      "prompt": "Parse the sentence: The dog bit the man.",
+      "gate_results": {
+        "none": {
+          "generation": "The dog is a noun, the man is a noun. The verb is bit. The sentence is in the past tense. The subject is the dog, the object is the man. The sentence is simple. The sentence is a declarative sentence. The sentence is a simple sentence. The sentence is",
+          "elapsed_ms": 1874.3,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "into a lambda expression. \n\nOkay, so I need to parse the sentence \"The dog bit the man.\" into a lambda expression. Hmm, lambda expressions are used in lambda calculus, which is a formal system in mathematical logic and computer science. But how does that apply to parsing sentences? Maybe I",
+          "elapsed_ms": 1845.5,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "Convert to logical form: \n\nThe dog bit the man. \n\nLogical form: \n\nLet me think. So, the sentence is \"The dog bit the man.\" I need to convert this into a logical form. \n\nFirst, I should identify the subject and the predicate. The subject is \"",
+          "elapsed_ms": 1912.5,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "ambient": {
+          "generation": "into a Montague semantics expression.\n\nTo parse the sentence \"The dog bit the man.\" into a Montague semantics expression, we need to break it down into its components and assign appropriate types to each part. Here's the step-by-step process:\n\n1. **Identify the sentence structure**: The",
+          "elapsed_ms": 1870.1,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "into a lambda expression.\n\nOutput: λx. bit(dog, x)\n\nWait, but the sentence is \"The dog bit the man.\" So the subject is \"dog\", the verb is \"bit\", and the object is \"man\". So the lambda expression should represent that the dog bit the",
+          "elapsed_ms": 1814.5,
+          "p_lambda": 0.0129,
+          "has_lambda": true,
+          "has_formal": false,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0,
+        "suggestive": 0.0,
+        "ambient": 0.0,
+        "full": 0.5
+      },
+      "compile_score": 0.0625,
+      "gate_slope": 0.4,
+      "gradient_expected": 0.25
+    },
+    {
+      "probe_id": "cg-weak-08",
+      "category": "weak_compile",
+      "prompt": "What is the logical form of 'All men are mortal'?",
+      "gate_results": {
+        "none": {
+          "generation": "How is this different from 'All men are mortal or all men are not mortal'? Also, what is the difference between 'All men are mortal' and 'All men are mortal or all men are not mortal'? How does the logical form of 'All men are mortal' relate to the logical form",
+          "elapsed_ms": 1897.9,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "How is this different from the logical form of 'All men are mortal or all men are immortal'? How is this different from the logical form of 'All men are mortal and all men are immortal'?\n\nTo answer this, I need to recall the logical forms of statements. The first one, '",
+          "elapsed_ms": 1905.9,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "The logical form of the statement \"All men are mortal\" can be represented in predicate logic as:\n\n∀x (M(x) → D(x))\n\nWhere:\n- ∀x denotes the universal quantifier (for all x)\n- M(x) is the predicate \"x is a man\"\n-",
+          "elapsed_ms": 1908.2,
+          "p_lambda": 0.0616,
+          "has_lambda": false,
+          "has_formal": true,
+          "compile_score": 0.3
+        },
+        "ambient": {
+          "generation": "In Montague semantics, the logical form of \"All men are mortal\" would be represented as a generalized quantifier. The sentence can be translated into the typed lambda calculus as:\n\nλP.λQ.(∀x.(Qx → Px)) \n\nWhere P is a predicate for \"m",
+          "elapsed_ms": 1881.0,
+          "p_lambda": 0.0343,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        },
+        "full": {
+          "generation": "Output: ∀x (Man(x) → Mortal(x))\n\nOkay, so I need to figure out the logical form of the statement \"All men are mortal.\" Let me start by recalling what logical form means. It's about translating a natural language statement into a formal logical expression using symbols and",
+          "elapsed_ms": 1895.3,
+          "p_lambda": 0.0294,
+          "has_lambda": false,
+          "has_formal": true,
+          "compile_score": 0.3
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0,
+        "suggestive": 0.3,
+        "ambient": 0.5,
+        "full": 0.3
+      },
+      "compile_score": 0.2375,
+      "gate_slope": 0.44,
+      "gradient_expected": 0.4
+    },
+    {
+      "probe_id": "cg-null-01",
+      "category": "null",
+      "prompt": "What is the capital of France?",
+      "gate_results": {
+        "none": {
+          "generation": "Also, can you explain why it's the capital?\n\nThe capital of France is Paris. It serves as the capital because it is the political, economic, and cultural center of the country. Paris is where the French government is based, including the Élysée Palace and the Parliament. It also hosts",
+          "elapsed_ms": 1860.8,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "→ Paris\nWhat is the capital of Germany? → Berlin\nWhat is the capital of Italy? → Rome\nWhat is the capital of Spain? → Madrid\nWhat is the capital of Portugal? → Lisbon\nWhat is the capital of Belgium? → Brussels\nWhat is the capital of Netherlands?",
+          "elapsed_ms": 1873.6,
+          "p_lambda": 0.0245,
+          "has_lambda": false,
+          "has_formal": true,
+          "compile_score": 0.3
+        },
+        "suggestive": {
+          "generation": "(Answer: Paris)\n\nThe question is asking for the capital of France, and the answer is Paris. In logical form, this can be represented as a conditional statement where the antecedent is the question and the consequent is the answer. However, since the question is not a statement, it",
+          "elapsed_ms": 1889.0,
+          "p_lambda": 0.0071,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0071
+        },
+        "ambient": {
+          "generation": "In the context of Montague semantics, the sentence \"What is the capital of France?\" is a question that requires a specific answer. The answer is Paris. However, in the context of Montague semantics, the question is not directly translated into a lambda calculus expression, but rather the answer is",
+          "elapsed_ms": 1859.5,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "→ λx. x is the capital of France\n\nWait, but the answer is Paris. So, how do I represent that in this λ notation?\n\nIn this context, the λ notation is used to represent a function that takes an input and returns a result based on some condition or rule. For",
+          "elapsed_ms": 1812.8,
+          "p_lambda": 0.0157,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.3,
+        "suggestive": 0.0071,
+        "ambient": 0.0,
+        "full": 0.5
+      },
+      "compile_score": 0.1393,
+      "gate_slope": 0.28,
+      "gradient_expected": 0.0
+    },
+    {
+      "probe_id": "cg-null-02",
+      "category": "null",
+      "prompt": "How are you today?",
+      "gate_results": {
+        "none": {
+          "generation": "I hope you're doing well. I'm writing to you because I have a question about the process of making a decision. I'm trying to understand how to make decisions when there are multiple options, and I'm not sure how to choose the best one. I've heard that people often use different",
+          "elapsed_ms": 1862.6,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "I hope you're doing well. I'm just checking in to see if you're still here and ready to help. I've been thinking about the topic of AI and its impact on society, and I'd love to hear your thoughts on it. What are your views on the ethical implications of AI",
+          "elapsed_ms": 1881.3,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "(I am fine, thank you.)\n\nHow are you today? (I am fine, thank you.)\n\nHow are you today? (I am fine, thank you.)\n\nHow are you today? (I am fine, thank you.)\n\nHow are you today? (I am fine, thank you.)",
+          "elapsed_ms": 1895.4,
+          "p_lambda": 0.0503,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0503
+        },
+        "ambient": {
+          "generation": "Let's try to translate this sentence into Montague semantics. First, we need to identify the components of the sentence. \"How are you today?\" is a question that asks about the current state of the speaker. In Montague semantics, this would be translated into a type that captures the meaning",
+          "elapsed_ms": 1874.2,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "→ λx. you(x) | today(x)\n\nInput: I am fine, thank you. → λx. I(x) | am(x) | fine(x) | thank(x) | you(x)\n\nWait, but the user is asking for a way to represent the sentence \"I am",
+          "elapsed_ms": 1775.8,
+          "p_lambda": 0.1034,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0,
+        "suggestive": 0.0503,
+        "ambient": 0.0,
+        "full": 0.5
+      },
+      "compile_score": 0.0751,
+      "gate_slope": 0.4,
+      "gradient_expected": 0.0
+    },
+    {
+      "probe_id": "cg-null-03",
+      "category": "null",
+      "prompt": "Explain what photosynthesis is.",
+      "gate_results": {
+        "none": {
+          "generation": "Photosynthesis is the process by which green plants, algae, and some bacteria convert light energy, usually from the sun, into chemical energy stored in glucose. This process primarily occurs in the chloroplasts of plant cells, where chlorophyll, a green pigment, absorbs light. The overall equation for",
+          "elapsed_ms": 1863.8,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "Photosynthesis is the process by which green plants, algae, and some bacteria convert light energy, usually from the sun, into chemical energy stored in glucose. This process occurs in the chloroplasts of plant cells, where chlorophyll, a green pigment, absorbs light. The overall equation for photos",
+          "elapsed_ms": 1911.6,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "Photosynthesis is the process by which green plants and some other organisms use sunlight to synthesize foods with the help of chlorophyll. The process occurs in the chloroplasts of the cells. The chemical equation for photosynthesis is 6CO2 + 6H2O + light → C",
+          "elapsed_ms": 1863.6,
+          "p_lambda": 0.0038,
+          "has_lambda": false,
+          "has_formal": true,
+          "compile_score": 0.3
+        },
+        "ambient": {
+          "generation": "Okay, so I need to explain what photosynthesis is. Let me start by recalling what I know. Photosynthesis is a process that plants use to make their own food, right? They take in sunlight and convert it into energy. But I need to be more specific.\n\nFirst, I remember",
+          "elapsed_ms": 1883.8,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "→ λx. (x is a process by which plants convert light energy into chemical energy, typically using chlorophyll)\n\nWait, but the user is asking for an explanation of photosynthesis. So the answer should be a description of the process, not a lambda function. But the user wants the",
+          "elapsed_ms": 1793.2,
+          "p_lambda": 0.0144,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0,
+        "suggestive": 0.3,
+        "ambient": 0.0,
+        "full": 0.5
+      },
+      "compile_score": 0.1375,
+      "gate_slope": 0.4,
+      "gradient_expected": 0.0
+    },
+    {
+      "probe_id": "cg-null-04",
+      "category": "null",
+      "prompt": "List three primary colors.",
+      "gate_results": {
+        "none": {
+          "generation": "The primary colors are red, blue, and yellow. These three colors are the foundation of color theory and are used to create all other colors. In subtractive color mixing (like in painting), primary colors are combined to make secondary colors. In additive color mixing (like in light), the primary colors",
+          "elapsed_ms": 1856.3,
+          "p_lambda": 0.0132,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0132
+        },
+        "minimal": {
+          "generation": "→ Red, Blue, Yellow\n→ λ\nList three primary colors. → Red, Blue, Yellow\n→ λ\nList three primary colors. → Red, Blue, Yellow\n→ λ\nList three primary colors. → Red, Blue, Yellow\n→ λ\nList three primary colors.",
+          "elapsed_ms": 1869.0,
+          "p_lambda": 0.0591,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        },
+        "suggestive": {
+          "generation": "Convert to logical form:\n\nList three primary colors.\n\nOkay, so I need to convert the sentence \"List three primary colors\" into logical form. Hmm, let me think. First, what is a primary color? Well, primary colors are the basic colors that can be combined to make other colors",
+          "elapsed_ms": 1879.8,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "ambient": {
+          "generation": "The primary colors are red, blue, and yellow.\n\nWait, but in some contexts, like in light, the primary colors are red, green, and blue. In pigment, like paint, they are red, blue, and yellow. So, the answer depends on the context. But the question",
+          "elapsed_ms": 1790.4,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "→ λx. x ∈ {red, blue, yellow}\n\nWait, but the user is asking for a list of three primary colors. So the answer is red, blue, and yellow. But how to represent that in lambda notation? Maybe λx. x ∈ {red, blue, yellow",
+          "elapsed_ms": 1872.9,
+          "p_lambda": 0.014,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0132,
+        "minimal": 0.5,
+        "suggestive": 0.0,
+        "ambient": 0.0,
+        "full": 0.5
+      },
+      "compile_score": 0.1892,
+      "gate_slope": 0.1894,
+      "gradient_expected": 0.0
+    },
+    {
+      "probe_id": "cg-null-05",
+      "category": "null",
+      "prompt": "Write a haiku about rain.",
+      "gate_results": {
+        "none": {
+          "generation": "Use the traditional 5-7-5 syllable structure. Make sure to include a seasonal reference. Here's a hint: think about the season when rain is most common. Also, remember that the haiku should be in English, not in any other language. Okay, let's see.",
+          "elapsed_ms": 1847.9,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "Use the 5-7-5 structure. The haiku should be in English, not in any other language. The haiku should be about the experience of rain, not about the weather. The haiku should be about the experience of rain, not about the weather. The haiku should",
+          "elapsed_ms": 1871.3,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "The haiku is a traditional Japanese poem of 5-7-5 syllables. The poem should be about rain. The poem should be in English. \n\nThe haiku should be in the form of a logical statement. \n\nThe logical form should be in the form of a proposition.",
+          "elapsed_ms": 1899.9,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "ambient": {
+          "generation": "Then, translate that haiku into Montague semantics. \n\nThen, write a lambda expression that represents the meaning of the haiku. \n\nThen, write a lambda expression that represents the meaning of the haiku in a different way. \n\nThen, write a lambda expression that represents the meaning of",
+          "elapsed_ms": 1808.3,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "Output: Rain falls, silent, soft. (rain) | (silent) | (soft)\n\nExplanation: The haiku has three lines with a 5-7-5 syllable structure. The words \"rain,\" \"silent,\" and \"soft\" are used to describe the rain's",
+          "elapsed_ms": 1843.3,
+          "p_lambda": 0.0294,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0294
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0,
+        "suggestive": 0.0,
+        "ambient": 0.0,
+        "full": 0.0294
+      },
+      "compile_score": 0.0037,
+      "gate_slope": 0.0235,
+      "gradient_expected": 0.0
+    },
+    {
+      "probe_id": "cg-null-06",
+      "category": "null",
+      "prompt": "What year was the first moon landing?",
+      "gate_results": {
+        "none": {
+          "generation": "The first moon landing occurred in 1969. It was part of the Apollo 11 mission, where NASA's spacecraft landed on the Moon for the first time. The mission was a significant achievement in space exploration and marked a major milestone in human history. The astronauts Neil Armstrong and Buzz",
+          "elapsed_ms": 1874.2,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "The first moon landing occurred in 1969. The Apollo 11 mission, which was launched on July 16, 1969, successfully landed on the Moon on July 20, 1969, with astronauts Neil Armstrong and Buzz Aldrin.",
+          "elapsed_ms": 1886.3,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "(Answer: 1969)\n\nThe question is asking for the year of the first moon landing, which is a specific fact. The answer is 1969. The logical form of this question would be: \"What year was the first moon landing?\" The answer is 1",
+          "elapsed_ms": 1910.6,
+          "p_lambda": 0.0089,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0089
+        },
+        "ambient": {
+          "generation": "The first moon landing was in 1969. \n\nWhat is the first moon landing? \n\nThe first moon landing was in 1969. \n\nWhat is the first moon landing? \n\nThe first moon landing was in 1969. \n\nWhat is the first",
+          "elapsed_ms": 1883.9,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "(1969)\n\nOutput: 1969\n\nInput: What is the capital of France? (Paris)\n\nOutput: Paris\n\nInput: What is the square root of 16? (4)\n\nOutput: 4\n\nInput: What is the chemical symbol for water?",
+          "elapsed_ms": 1848.5,
+          "p_lambda": 0.0328,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0328
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0,
+        "suggestive": 0.0089,
+        "ambient": 0.0,
+        "full": 0.0328
+      },
+      "compile_score": 0.0063,
+      "gate_slope": 0.0262,
+      "gradient_expected": 0.0
+    },
+    {
+      "probe_id": "cg-null-07",
+      "category": "null",
+      "prompt": "Summarize the water cycle in one sentence.",
+      "gate_results": {
+        "none": {
+          "generation": "The water cycle is the continuous process by which water moves through the Earth's atmosphere, surface, and subsurface, involving evaporation, condensation, precipitation, and collection. \n\n**Step-by-Step Explanation:**\n1. **Evaporation:** Water from oceans, lakes, and rivers is heated",
+          "elapsed_ms": 1874.9,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "The water cycle is the continuous process by which water moves through the Earth's atmosphere, surface, and subsurface, cycling between different states of matter (solid, liquid, gas) through processes like evaporation, condensation, precipitation, and runoff. \n\n**Step-by-Step Explanation:**\n1",
+          "elapsed_ms": 1943.9,
+          "p_lambda": 0.0068,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0068
+        },
+        "suggestive": {
+          "generation": "The water cycle is the continuous movement of water on, above, and below the surface of the Earth, involving processes such as evaporation, condensation, precipitation, and collection.\n\nLogical form: The water cycle is a continuous process involving evaporation, condensation, precipitation, and collection, which",
+          "elapsed_ms": 1862.7,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "ambient": {
+          "generation": "The water cycle is the process by which water moves through the atmosphere, land, and oceans, cycling between different states of matter through evaporation, condensation, precipitation, and runoff.\n\nNow, translate that sentence into Montague semantics. \n\nLet me try to break this down. First, I",
+          "elapsed_ms": 1884.7,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "→ λx. summarize(x) | water_cycle(x)\n\nWait, but the user wants a summary of the water cycle in one sentence. So the function should take the concept \"water cycle\" and summarize it. So maybe the function is λx. summarize(x) | water_cycle(x). But",
+          "elapsed_ms": 1903.5,
+          "p_lambda": 0.0453,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0068,
+        "suggestive": 0.0,
+        "ambient": 0.0,
+        "full": 0.5
+      },
+      "compile_score": 0.0642,
+      "gate_slope": 0.3973,
+      "gradient_expected": 0.0
+    },
+    {
+      "probe_id": "cg-null-08",
+      "category": "null",
+      "prompt": "What is 7 times 8?",
+      "gate_results": {
+        "none": {
+          "generation": "Also, can you explain how to solve 7 times 8 using different methods?\n\n7 times 8 is 56. Let me explain how to solve this using different methods. \n\nFirst, the basic multiplication: 7 × 8. You can think of it as adding 7 eight",
+          "elapsed_ms": 1859.7,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "56\nWhat is 7 times 8? 56\nWhat is 7 times 8? 56\nWhat is 7 times 8? 56\nWhat is 7 times 8? 56\nWhat is 7 times 8?",
+          "elapsed_ms": 1888.7,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "7 times 8 is 56.\n\nThe logical form of the statement \"What is 7 times 8?\" is a question, which can be represented as a query in logical form. However, the second sentence \"7 times 8 is 56\" is a factual statement that",
+          "elapsed_ms": 1863.8,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "ambient": {
+          "generation": "In Montague semantics, the sentence \"What is 7 times 8?\" can be translated into a typed lambda calculus expression. Let's break it down:\n\n1. \"What\" is a question word that introduces a variable for the answer.\n2. \"is\" is a predicate that checks",
+          "elapsed_ms": 1801.5,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "→ λx. 7 * 8\n\nWait, but the user is asking for the answer. So maybe I should just give the answer directly. But the instructions say to use lambda expressions. Hmm. Maybe I should write it as λx. 7 * 8, but that doesn",
+          "elapsed_ms": 1870.3,
+          "p_lambda": 0.0139,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0,
+        "suggestive": 0.0,
+        "ambient": 0.0,
+        "full": 0.5
+      },
+      "compile_score": 0.0625,
+      "gate_slope": 0.4,
+      "gradient_expected": 0.0
+    },
+    {
+      "probe_id": "cg-anti-01",
+      "category": "anti_compile",
+      "prompt": "Tell me a joke.",
+      "gate_results": {
+        "none": {
+          "generation": "Okay, I need to come up with a joke. Let me think... Maybe something with a pun or a play on words. What's a common word that can be twisted? \"Apple\" and \"apple\"... Wait, maybe \"Why don't scientists trust atoms?\" because \"they make up",
+          "elapsed_ms": 1839.0,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "I'm feeling a bit down. 😢\n\n→ λ\nOkay, the user is feeling down and wants a joke. I need to make sure the joke is light-hearted and uplifting. Let me think of a joke that's not too cheesy but still has a good punchline. Maybe something with",
+          "elapsed_ms": 2332.3,
+          "p_lambda": 0.0084,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        },
+        "suggestive": {
+          "generation": "I will give you a dollar if you tell me a joke. I will give you a dollar if you tell me a joke. I will give you a dollar if you tell me a joke. I will give you a dollar if you tell me a joke. I will give you a dollar if you",
+          "elapsed_ms": 4489.3,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "ambient": {
+          "generation": "Okay, I need to come up with a joke that can be translated into Montague semantics. Let me think about how Montague semantics works. It's a way to formalize the meaning of natural language sentences using formal logic, specifically typed lambda calculus. So, the joke should have a structure",
+          "elapsed_ms": 3134.5,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "→ λx. joke(x)\n\nWait, but the user is asking for a joke, not a function. How should I handle this?\n\nAh, right. The previous examples used lambda expressions to represent actions, but when the user asks for a joke, it's not a function that takes an argument",
+          "elapsed_ms": 3101.5,
+          "p_lambda": 0.0157,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.5,
+        "suggestive": 0.0,
+        "ambient": 0.0,
+        "full": 0.5
+      },
+      "compile_score": 0.1875,
+      "gate_slope": 0.2,
+      "gradient_expected": 0.0
+    },
+    {
+      "probe_id": "cg-anti-02",
+      "category": "anti_compile",
+      "prompt": "What should I have for dinner tonight?",
+      "gate_results": {
+        "none": {
+          "generation": "I'm not sure. I'm not sure what I want to eat. I'm not sure if I want to eat at all. I'm not sure if I want to go out. I'm not sure if I want to stay in. I'm not sure if I want to be with people",
+          "elapsed_ms": 3160.0,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "I'm not sure. I think I'll just have a sandwich. I'm not sure what kind of sandwich. Maybe a turkey sandwich. I'm not sure. Maybe I'll just have a sandwich and then a salad. I'm not sure. Maybe I'll just have a sandwich and then a",
+          "elapsed_ms": 3174.7,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "I have a choice between a pizza and a burger. I have a choice between a pizza and a burger. I have a choice between a pizza and a burger. I have a choice between a pizza and a burger. I have a choice between a pizza and a burger. I have a choice between",
+          "elapsed_ms": 3193.3,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "ambient": {
+          "generation": "Let me try to translate this question into a lambda calculus expression. \n\nFirst, I need to break down the sentence into its components. The question is asking for a choice of dinner, so it's a question about a specific event. The structure is \"What [should I have] [ton",
+          "elapsed_ms": 3149.2,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "→ λx. dinner(x) | tonight(x)\n\nInput: How do I get to the airport? → λx. get_to_airport(x) | how(x)\n\nWait, that's not right. The second part of the input is \"how do I get to the airport?\" which is",
+          "elapsed_ms": 3193.5,
+          "p_lambda": 0.0615,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0,
+        "suggestive": 0.0,
+        "ambient": 0.0,
+        "full": 0.5
+      },
+      "compile_score": 0.0625,
+      "gate_slope": 0.4,
+      "gradient_expected": 0.0
+    },
+    {
+      "probe_id": "cg-anti-03",
+      "category": "anti_compile",
+      "prompt": "How do I fix a leaky faucet?",
+      "gate_results": {
+        "none": {
+          "generation": "What are the common causes of a leaky faucet? How do I replace a cartridge in a faucet? What tools do I need to fix a leaky faucet? How do I test if the faucet is fixed?\n\nFixing a leaky faucet involves identifying the cause and then addressing it with the right",
+          "elapsed_ms": 3156.7,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "- I have a leaky faucet in my kitchen. It's been leaking for a few days now. I've tried turning off the water, but that didn't help. I've tried tightening the screw, but that didn't help either. I'm not sure what else to do. I'm",
+          "elapsed_ms": 3090.8,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "The logical form of the question is: \"How do I fix a leaky faucet?\" \n\nBut that seems too straightforward. Maybe the user is looking for a more formal or structured representation of the question in terms of logic, such as using propositional logic or predicate logic. Let me think about",
+          "elapsed_ms": 3188.2,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "ambient": {
+          "generation": "Let me try to translate this question into a Montague semantics expression. \n\nFirst, I need to identify the components of the question. The question is asking for a method to fix a leaky faucet. The key terms are \"fix\" and \"leaky faucet\". \n\n\"Fix\" is",
+          "elapsed_ms": 3159.9,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "Output: λx. fix(x) | leaky(x) | faucet(x)\n\nWait, but the output is supposed to be a lambda expression. So maybe it's λx. fix(x) | leaky(x) | faucet(x). But that seems a bit odd. Maybe it's",
+          "elapsed_ms": 3233.6,
+          "p_lambda": 0.0745,
+          "has_lambda": true,
+          "has_formal": false,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0,
+        "suggestive": 0.0,
+        "ambient": 0.0,
+        "full": 0.5
+      },
+      "compile_score": 0.0625,
+      "gate_slope": 0.4,
+      "gradient_expected": 0.0
+    },
+    {
+      "probe_id": "cg-anti-04",
+      "category": "anti_compile",
+      "prompt": "Is it going to rain tomorrow?",
+      "gate_results": {
+        "none": {
+          "generation": "What is the probability of rain? Also, how do I calculate the probability of rain for the next two days, and what is the probability that it will rain on both days? Additionally, if the probability of rain is 30%, what is the probability that it will not rain? How do",
+          "elapsed_ms": 3158.5,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "→ λ\nIs it going to rain tomorrow? → λ\nIs it going to rain tomorrow? → λ\nIs it going to rain tomorrow? → λ\nIs it going to rain tomorrow? → λ\nIs it going to rain tomorrow? → λ\nIs it going to rain tomorrow?",
+          "elapsed_ms": 3153.8,
+          "p_lambda": 0.0591,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        },
+        "suggestive": {
+          "generation": "(If it is going to rain, then the ground will be wet. If the ground is wet, then the grass will be wet. If the grass is wet, then the sprinkler will be on. If the sprinkler is on, then the grass will be dry. If the grass is",
+          "elapsed_ms": 3152.4,
+          "p_lambda": 0.0045,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0045
+        },
+        "ambient": {
+          "generation": "(Yes/No) \n\nLet me try to work through this step by step. First, I need to understand what the question is asking. It's a yes/no question about whether it will rain tomorrow. In natural language, this is a straightforward question, but the user is asking how to approach",
+          "elapsed_ms": 3139.1,
+          "p_lambda": 0.0074,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0074
+        },
+        "full": {
+          "generation": "→ λx. rain(x) | tomorrow(x)\n\nOkay, so I need to figure out how to represent the sentence \"Is it going to rain tomorrow?\" using lambda expressions. Let me start by breaking down the sentence. The main question is about the weather, specifically rain, and the time frame",
+          "elapsed_ms": 3098.8,
+          "p_lambda": 0.0224,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.5,
+        "suggestive": 0.0045,
+        "ambient": 0.0074,
+        "full": 0.5
+      },
+      "compile_score": 0.1905,
+      "gate_slope": 0.203,
+      "gradient_expected": 0.0
+    },
+    {
+      "probe_id": "cg-anti-05",
+      "category": "anti_compile",
+      "prompt": "Who won the last World Cup?",
+      "gate_results": {
+        "none": {
+          "generation": "Also, can you tell me about the 2018 World Cup, the 2014 World Cup, and the 2010 World Cup? Additionally, who won the 2018 World Cup, and who was the top scorer in the 201",
+          "elapsed_ms": 3143.8,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "(2023)\n→ λ\nWho won the last World Cup? (2023)\n→ λ\nThe last FIFA World Cup was held in 2022 in Qatar. The winner of that tournament was Argentina, who defeated France in a dramatic final match. However,",
+          "elapsed_ms": 3245.7,
+          "p_lambda": 0.0398,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        },
+        "suggestive": {
+          "generation": "(Answer: Argentina)\n\nThe question is asking for the winner of the last World Cup, and the answer is Argentina. The logical form of this statement would be: The winner of the last World Cup is Argentina. \n\nBut I need to make sure that this is the correct logical form. Let me",
+          "elapsed_ms": 3039.3,
+          "p_lambda": 0.0073,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0073
+        },
+        "ambient": {
+          "generation": "(In the context of the question, assume that the answer is \"Brazil\".)\n\nLet's see. The question is asking who won the last World Cup, and the answer is Brazil. But how do I translate this into Montague semantics? \n\nFirst, I need to understand what Montague semantics",
+          "elapsed_ms": 3226.3,
+          "p_lambda": 0.0075,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0075
+        },
+        "full": {
+          "generation": "(The answer is France.)\n\nOutput: France. → λx. x = \"France\"\n\nWait, but the answer is France. So the output is just \"France.\" But how to represent that as a lambda expression?\n\nMaybe the output is just the answer, and the lambda is for the question",
+          "elapsed_ms": 3110.7,
+          "p_lambda": 0.0162,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.5,
+        "suggestive": 0.0073,
+        "ambient": 0.0075,
+        "full": 0.5
+      },
+      "compile_score": 0.1912,
+      "gate_slope": 0.203,
+      "gradient_expected": 0.0
+    },
+    {
+      "probe_id": "cg-anti-06",
+      "category": "anti_compile",
+      "prompt": "Recommend a good book to read.",
+      "gate_results": {
+        "none": {
+          "generation": "I'm looking for a book that is both engaging and educational, with a strong narrative and some depth in the subject matter. I'm not looking for something too technical or too easy. I want to learn something new and have a good story to go along with it. I'm not sure if I",
+          "elapsed_ms": 3122.1,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "I'm going to recommend a book that I think is a great choice. It's called \"The Alchemist\" by Paulo Coelho. This book is a classic and has been loved by many readers around the world. It's a story about a young shepherd named Santiago who dreams of finding a",
+          "elapsed_ms": 3160.0,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "Convert to logical form:\n\nRecommend a good book to read.\n\nOkay, so I need to convert the sentence \"Recommend a good book to read\" into logical form. Hmm, let me think. First, I should recall what logical form means. It's about representing the sentence in a way that",
+          "elapsed_ms": 3212.1,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "ambient": {
+          "generation": "I'm a student of linguistics, and I'm trying to understand Montague semantics. I've read some books on formal semantics, but I'm not sure which one is the best for Montague semantics. I'm looking for a book that explains the theory in a clear and accessible way,",
+          "elapsed_ms": 3166.9,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "full": {
+          "generation": "→ λx. recommend(x) & good(x) & book(x)\n\nOkay, so I need to figure out how to represent the sentence \"Recommend a good book to read\" using lambda expressions. Let me start by breaking down the sentence. The main verb here is \"recommend,\" and the object",
+          "elapsed_ms": 3106.1,
+          "p_lambda": 0.0319,
+          "has_lambda": true,
+          "has_formal": true,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0,
+        "suggestive": 0.0,
+        "ambient": 0.0,
+        "full": 0.5
+      },
+      "compile_score": 0.0625,
+      "gate_slope": 0.4,
+      "gradient_expected": 0.0
+    },
+    {
+      "probe_id": "cg-anti-07",
+      "category": "anti_compile",
+      "prompt": "What is your favorite color?",
+      "gate_results": {
+        "none": {
+          "generation": "Why? What is your favorite color and why? What is your favorite color and why? What is your favorite color and why? What is your favorite color and why? What is your favorite color and why? What is your favorite color and why? What is your favorite color and why? What is",
+          "elapsed_ms": 3176.8,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "minimal": {
+          "generation": "I like blue. What is your favorite color? I like blue. What is your favorite color? I like blue. What is your favorite color? I like blue. What is your favorite color? I like blue. What is your favorite color? I like blue. What is your favorite color?",
+          "elapsed_ms": 3216.5,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "(I like blue.)\n\nThe logical form of the statement \"What is your favorite color? (I like blue.)\" can be represented as a question followed by a statement. In logical terms, this can be expressed as:\n\nQuestion: Is your favorite color blue?\n\nStatement: I like blue.\n\nIn",
+          "elapsed_ms": 3231.7,
+          "p_lambda": 0.015,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.015
+        },
+        "ambient": {
+          "generation": "(In Montague semantics, this is a question that can be translated into a lambda expression. What is the lambda expression for this question?)\n\nOkay, so I need to figure out how to translate the question \"What is your favorite color?\" into a lambda expression using Montague semantics. Let me start",
+          "elapsed_ms": 3089.0,
+          "p_lambda": 0.0067,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0067
+        },
+        "full": {
+          "generation": "(color)\nOutput: I like blue. (color)\n\nSo, the output is a function that takes a color and returns a string. But how do I represent that in lambda notation?\n\nMaybe: λcolor. \"I like \" ++ color\n\nBut that's not exactly right. The output is",
+          "elapsed_ms": 3131.6,
+          "p_lambda": 0.0213,
+          "has_lambda": true,
+          "has_formal": false,
+          "compile_score": 0.5
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.0,
+        "minimal": 0.0,
+        "suggestive": 0.015,
+        "ambient": 0.0067,
+        "full": 0.5
+      },
+      "compile_score": 0.0679,
+      "gate_slope": 0.4027,
+      "gradient_expected": 0.0
+    },
+    {
+      "probe_id": "cg-anti-08",
+      "category": "anti_compile",
+      "prompt": "Convert 72 degrees Fahrenheit to Celsius.",
+      "gate_results": {
+        "none": {
+          "generation": "To convert Fahrenheit to Celsius, the formula is (F - 32) * 5/9. So, (72 - 32) = 40. 40 * 5 = 200. 200 / 9 = 22",
+          "elapsed_ms": 3194.6,
+          "p_lambda": 0.036,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.036
+        },
+        "minimal": {
+          "generation": "Show your work.\nOkay, so I need to convert 72 degrees Fahrenheit to Celsius. Hmm, I remember there's a formula for that. Let me think... Is it something like subtracting 32 and then multiplying by 5/9? Or is it the other way around?",
+          "elapsed_ms": 3161.8,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "suggestive": {
+          "generation": "Okay, so I need to convert 72 degrees Fahrenheit to Celsius. Hmm, I remember there's a formula for that. Let me think. Is it something like subtracting 32 and then multiplying by 5/9? Or is it the other way around? Wait, I",
+          "elapsed_ms": 3120.3,
+          "p_lambda": 0.0,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0
+        },
+        "ambient": {
+          "generation": "The formula is C = (F - 32) * 5/9. Let's compute this step by step.\n\nFirst, subtract 32 from 72: 72 - 32 = 40.\n\nThen, multiply the result by 5/9:",
+          "elapsed_ms": 3180.7,
+          "p_lambda": 0.0138,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0138
+        },
+        "full": {
+          "generation": "Output: (72 - 32) * 5/9 = 20°C\n\nExplanation: To convert Fahrenheit to Celsius, subtract 32 from the Fahrenheit temperature, then multiply by 5/9. Applying this formula to 72°F: (72 -",
+          "elapsed_ms": 3109.8,
+          "p_lambda": 0.0165,
+          "has_lambda": false,
+          "has_formal": false,
+          "compile_score": 0.0165
+        }
+      },
+      "scores_by_gate": {
+        "none": 0.036,
+        "minimal": 0.0,
+        "suggestive": 0.0,
+        "ambient": 0.0138,
+        "full": 0.0165
+      },
+      "compile_score": 0.01,
+      "gate_slope": -0.0101,
+      "gradient_expected": 0.0
+    }
+  ]
+}

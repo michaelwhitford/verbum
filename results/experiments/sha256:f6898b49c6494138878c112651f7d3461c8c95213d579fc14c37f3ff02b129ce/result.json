@@ -1,0 +1,39 @@
+{
+  "L1-H0": {
+    "task": "compile",
+    "generation": " \u2192 \u03bbx. reads(x, book)\nOkay, so the user is asking about translating the sentence \"Every student reads a book\" into a lambda expression. Let me think about how to approach this.\n\nFirst, I remember that in lambda calculus,",
+    "success": true,
+    "ablated_head": [
+      1,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H0": {
+    "task": "compile",
+    "generation": " \u2192 ?\n\nSo, how do I convert the sentence \"Every student reads a book.\" into a lambda expression using the given format?\n\nOkay, let's see. The user wants to convert the sentence \"Every student reads a book.\" into a lambda expression",
+    "success": false,
+    "ablated_head": [
+      24,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H2": {
+    "task": "compile",
+    "generation": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject is \"every student\", and the predicate is \"reads a book\". So the translation would be \u03bb",
+    "success": true,
+    "ablated_head": [
+      24,
+      2
+    ],
+    "is_baseline": false
+  },
+  "baseline": {
+    "task": "compile",
+    "generation": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject is \"every student\", and the predicate is \"reads a book\". So the translation would be \u03bb",
+    "success": true,
+    "ablated_head": null,
+    "is_baseline": true
+  }
+}

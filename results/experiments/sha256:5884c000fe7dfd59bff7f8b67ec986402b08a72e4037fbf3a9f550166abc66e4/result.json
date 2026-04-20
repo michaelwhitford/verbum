@@ -1,0 +1,10 @@
+{
+  "generation": " \u2227 (x = y) \u2192 (x = y) \u2192 (x = y) \u2192 (x = y) \u2192 (x = y) \u2192 (x = y) \u2192 (x = y) \u2192 (x = y) \u2192 (",
+  "has_english": false,
+  "has_lambda": true,
+  "ablated_head": [
+    24,
+    0
+  ],
+  "is_baseline": false
+}

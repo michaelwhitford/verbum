@@ -1,0 +1,10 @@
+{
+  "task": "compile",
+  "generation": " \u2192 \u03bbx. reads(x, book)\nOkay, so the user is asking about translating the sentence \"Every student reads a book\" into a lambda expression. Let me think about how to approach this.\n\nFirst, I remember that in lambda calculus,",
+  "success": true,
+  "ablated_head": [
+    1,
+    0
+  ],
+  "is_baseline": false
+}

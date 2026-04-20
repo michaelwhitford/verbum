@@ -1,0 +1,7 @@
+{
+  "task": "translate",
+  "generation": " \u2192 Chaque \u00e9tudiant lit un livre.\n\nInput: The girl is playing with a ball. \u2192 La fille joue avec une balle.\n\nInput: The boy is eating an apple. \u2192 L'homme mange une pomme.\n\nWait, that",
+  "success": true,
+  "ablated_head": null,
+  "is_baseline": true
+}

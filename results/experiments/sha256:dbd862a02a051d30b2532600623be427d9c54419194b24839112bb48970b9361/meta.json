@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T03:30:40.345738+00:00",
+  "node_id": "circuit-discovery/decompile/probe-dc-cond/baseline",
+  "config_hash": "sha256:dbd862a02a051d30b2532600623be427d9c54419194b24839112bb48970b9361",
+  "elapsed_ms": 1460.1,
+  "completed_at": "2026-04-17T03:30:41.806172+00:00"
+}

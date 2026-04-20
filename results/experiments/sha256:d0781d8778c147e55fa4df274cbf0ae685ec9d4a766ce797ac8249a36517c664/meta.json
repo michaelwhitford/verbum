@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T04:15:36.205011+00:00",
+  "node_id": "task-head-scan/classify/probe-cls-neg-complex/L30",
+  "config_hash": "sha256:d0781d8778c147e55fa4df274cbf0ae685ec9d4a766ce797ac8249a36517c664",
+  "elapsed_ms": 47862.6,
+  "completed_at": "2026-04-17T04:16:24.068089+00:00"
+}

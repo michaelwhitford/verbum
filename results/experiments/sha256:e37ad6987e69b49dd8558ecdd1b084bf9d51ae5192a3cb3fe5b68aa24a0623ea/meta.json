@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T03:50:18.847670+00:00",
+  "node_id": "cross-task/classify/probe-cls-pos-simple/L1-H0",
+  "config_hash": "sha256:e37ad6987e69b49dd8558ecdd1b084bf9d51ae5192a3cb3fe5b68aa24a0623ea",
+  "elapsed_ms": 1625.4,
+  "completed_at": "2026-04-17T03:50:20.473357+00:00"
+}

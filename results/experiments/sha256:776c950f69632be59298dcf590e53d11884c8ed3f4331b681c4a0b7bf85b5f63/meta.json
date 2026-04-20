@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T04:24:27.073378+00:00",
+  "node_id": "task-head-scan/classify/probe-cls-neg-simple/L4",
+  "config_hash": "sha256:776c950f69632be59298dcf590e53d11884c8ed3f4331b681c4a0b7bf85b5f63",
+  "elapsed_ms": 49870.5,
+  "completed_at": "2026-04-17T04:25:16.944384+00:00"
+}

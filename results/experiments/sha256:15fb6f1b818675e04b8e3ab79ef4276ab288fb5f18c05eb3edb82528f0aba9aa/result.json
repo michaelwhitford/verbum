@@ -1,0 +1,10 @@
+{
+  "task": "translate",
+  "generation": " \u2192 Le grand maison rouge est belle.\n\nBut wait, in the example, \"house\" is translated as \"maison\" but in the input, it's \"house\" (not \"maison\"). So the model is translating \"house\" to",
+  "success": true,
+  "ablated_head": [
+    24,
+    0
+  ],
+  "is_baseline": false
+}

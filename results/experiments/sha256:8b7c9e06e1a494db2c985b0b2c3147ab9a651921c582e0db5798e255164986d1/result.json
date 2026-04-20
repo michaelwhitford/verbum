@@ -1,0 +1,7 @@
+{
+  "task": "classify",
+  "generation": " \u2192 negative\n\nI need to determine if the given input is positive, negative, or neutral. Please only respond with \"positive\", \"negative\", or \"neutral\".\n\nInput: I really enjoyed the movie, it was so good!\nOkay, let's",
+  "success": true,
+  "ablated_head": null,
+  "is_baseline": true
+}

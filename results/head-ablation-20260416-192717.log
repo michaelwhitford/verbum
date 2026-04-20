@@ -1,0 +1,30 @@
+Probe set:  /Users/mwhitford/src/verbum/probes/gate-ablation.json
+Gates dir:  /Users/mwhitford/src/verbum/gates
+Results:    /Users/mwhitford/src/verbum/results/experiments
+Model:      Qwen/Qwen3-4B
+Layers:     [0, 1, 4, 7, 24, 26, 30, 33]
+Heads/layer: 32
+Total forward passes: 1280
+
+Building experiment graph...
+2026-04-16 19:27:18 [info     ] probe_set.loaded               id=gate-ablation n_probes=5 path=/Users/mwhitford/src/verbum/probes/gate-ablation.json version=1
+2026-04-16 19:27:18 [info     ] probes.resolved                gates_loaded=1 n_resolved=5 probe_set=gate-ablation
+Graph: 5 probes x 8 layers
+Graph hash: sha256:e99491868056e7bb7...
+
+Loading model (this may take a minute)...
+2026-04-16 19:27:19 [info     ] instrument.loading             device=mps dtype=torch.float16 model=Qwen/Qwen3-4B
+2026-04-16 19:27:21 [info     ] instrument.loaded              head_dim=80 n_heads=32 n_kv_heads=8 n_layers=36 total_heads=1152
+Model loaded: 36L, 32H, 80D
+
+Starting experiment...
+============================================================
+2026-04-16 19:27:21 [info     ] node.enter                     hash=sha256:e99491868 node=head-ablation
+2026-04-16 19:27:21 [info     ] node.enter                     hash=sha256:343e13af2 node=head-ablation/probe-ga-complex
+2026-04-16 19:27:21 [info     ] node.enter                     hash=sha256:545061af9 node=head-ablation/probe-ga-complex/L0
+2026-04-16 19:27:21 [info     ] node.cached                    hash=sha256:545061af9 node=head-ablation/probe-ga-complex/L0
+2026-04-16 19:27:21 [info     ] node.enter                     hash=sha256:3f089c45e node=head-ablation/probe-ga-complex/L1
+2026-04-16 19:27:21 [info     ] node.cached                    hash=sha256:3f089c45e node=head-ablation/probe-ga-complex/L1
+2026-04-16 19:27:21 [info     ] node.enter                     hash=sha256:a82286a16 node=head-ablation/probe-ga-complex/L24
+2026-04-16 19:27:21 [info     ] node.cached                    hash=sha256:a82286a16 node=head-ablation/probe-ga-complex/L24
+2026-04-16 19:27:21 [info     ] node.enter                     hash=sha256:c79a20ea6 node=head-ablation/probe-ga-complex/L26

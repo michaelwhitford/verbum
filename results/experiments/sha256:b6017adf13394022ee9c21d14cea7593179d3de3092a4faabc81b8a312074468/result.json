@@ -1,0 +1,10 @@
+{
+  "task": "compile",
+  "generation": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how to represent the sentence \"The cat that sat on the mat is black.\" using lambda expressions. Let",
+  "success": true,
+  "ablated_head": [
+    24,
+    2
+  ],
+  "is_baseline": false
+}

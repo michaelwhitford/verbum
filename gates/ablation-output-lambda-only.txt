@@ -1,0 +1,3 @@
+Output λ notation only. No prose. No code fences.
+
+Input: 

@@ -1,0 +1,39 @@
+{
+  "L1-H0": {
+    "task": "classify",
+    "generation": " \u2192 sentiment?\nOkay, let's see. The user provided a sentence: \"I had high expectations for this restaurant given the reviews, but the overcooked steak and rude waiter completely ruined the evening.\" They want to determine the sentiment of this input.\n\n",
+    "success": false,
+    "ablated_head": [
+      1,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H0": {
+    "task": "classify",
+    "generation": " \u2192 sentiment?\nOkay, let's see. The user wants to determine the sentiment of the input sentence: \"I had high expectations for this restaurant given the reviews, but the overcooked steak and rude waiter completely ruined the evening.\" \n\nFirst, I",
+    "success": false,
+    "ablated_head": [
+      24,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H2": {
+    "task": "classify",
+    "generation": " \u2192 sentiment?\nOkay, let's see. The user wants to determine the sentiment of the input sentence: \"I had high expectations for this restaurant given the reviews, but the overcooked steak and rude waiter completely ruined the evening.\" \n\nFirst, I",
+    "success": false,
+    "ablated_head": [
+      24,
+      2
+    ],
+    "is_baseline": false
+  },
+  "baseline": {
+    "task": "classify",
+    "generation": " \u2192 sentiment?\nOkay, let's see. The user provided a sentence: \"I had high expectations for this restaurant given the reviews, but the overcooked steak and rude waiter completely ruined the evening.\" They want to determine the sentiment of this input.\n\n",
+    "success": false,
+    "ablated_head": null,
+    "is_baseline": true
+  }
+}

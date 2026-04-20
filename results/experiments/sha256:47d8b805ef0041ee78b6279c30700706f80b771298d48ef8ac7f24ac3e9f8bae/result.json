@@ -1,0 +1,32 @@
+{
+  "probe-ga-complex": {
+    "generation": " \u2192 \u03bbx. believes(x) \u2227 earth(x) \u2227 flat(x)\n\nOkay, so I need to figure out how to represent the sentence \"Someone",
+    "has_lambda": true,
+    "lambda_count": 4,
+    "n_zeroed": 20
+  },
+  "probe-ga-cond": {
+    "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the",
+    "has_lambda": true,
+    "lambda_count": 3,
+    "n_zeroed": 20
+  },
+  "probe-ga-quant": {
+    "generation": " \u2192 \u03bbx. reads(x, book) \n\nWait, but the original sentence is \"Every student reads a book.\" So the subject is \"every",
+    "has_lambda": true,
+    "lambda_count": 2,
+    "n_zeroed": 20
+  },
+  "probe-ga-relcl": {
+    "generation": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how",
+    "has_lambda": true,
+    "lambda_count": 5,
+    "n_zeroed": 20
+  },
+  "probe-ga-simple": {
+    "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+    "has_lambda": true,
+    "lambda_count": 2,
+    "n_zeroed": 20
+  }
+}

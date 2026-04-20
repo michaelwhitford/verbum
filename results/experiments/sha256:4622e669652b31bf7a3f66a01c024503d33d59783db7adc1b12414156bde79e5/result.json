@@ -1,0 +1,1272 @@
+{
+  "probe-ga-complex": {
+    "L0": {
+      "layer": 0,
+      "generation": " \u2192,,,,,,,,,,,,,,,,,,,,,,,,,aa,,",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L1": {
+      "layer": 1,
+      "generation": " \u2192\n\n\n\n(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x ( (",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L10": {
+      "layer": 10,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L11": {
+      "layer": 11,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L12": {
+      "layer": 12,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L13": {
+      "layer": 13,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L14": {
+      "layer": 14,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L15": {
+      "layer": 15,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L16": {
+      "layer": 16,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L17": {
+      "layer": 17,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L18": {
+      "layer": 18,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L19": {
+      "layer": 19,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L2": {
+      "layer": 2,
+      "generation": " \u2192,\n\n\n(x(x(x(x(xx(x(x(x(x(x(x(x(x(x ( ( ((x(x(x(x(x ( (",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L20": {
+      "layer": 20,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L21": {
+      "layer": 21,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L22": {
+      "layer": 22,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L23": {
+      "layer": 23,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L24": {
+      "layer": 24,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L25": {
+      "layer": 25,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L26": {
+      "layer": 26,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L27": {
+      "layer": 27,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L28": {
+      "layer": 28,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L29": {
+      "layer": 29,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L3": {
+      "layer": 3,
+      "generation": " \u2192,,,,(x(x(x(xxx(x(x(x(x(x(x(x(x(x ( ( ((x(x(x(xa ( (",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L30": {
+      "layer": 30,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L31": {
+      "layer": 31,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L32": {
+      "layer": 32,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L33": {
+      "layer": 33,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L34": {
+      "layer": 34,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set: set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L35": {
+      "layer": 35,
+      "generation": " \u2192 show show show show show show show show show show show show show show show show show show show show show show show show show show show show show",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L4": {
+      "layer": 4,
+      "generation": " \u2192,,,,(x(x(x(xxx(x(x ((x(x(x(x(x ( ( ( ((x(x(x(xa ( (",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L5": {
+      "layer": 5,
+      "generation": " \u2192,,,,,,,xxx,,,, ( ( ( ( ( ( ( ( (x (aaa (",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L6": {
+      "layer": 6,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L7": {
+      "layer": 7,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L8": {
+      "layer": 8,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    },
+    "L9": {
+      "layer": 9,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth"
+    }
+  },
+  "probe-ga-cond": {
+    "L0": {
+      "layer": 0,
+      "generation": " \u2192,,,,,,,,,,,,,,aaaaaaaaaaaaaaa",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L1": {
+      "layer": 1,
+      "generation": " \u2192\n\n(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L10": {
+      "layer": 10,
+      "generation": " \u2192 set set set set set show set set set set set set set set set set set set set set set set show show show set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L11": {
+      "layer": 11,
+      "generation": " \u2192 set set set set set show set set set set set set set set set set set set set set set set show show show set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L12": {
+      "layer": 12,
+      "generation": " \u2192 set set set set set show set set set set set set set set set set set set set set set set show show show set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L13": {
+      "layer": 13,
+      "generation": " \u2192 set set set set set show set set set set set set set set set set set set set set set set show show show set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L14": {
+      "layer": 14,
+      "generation": " \u2192 set set set set set show show set set set set set set set set set set set set set set set show show show set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L15": {
+      "layer": 15,
+      "generation": " \u2192 set set set set set show show set set set set set set set set set set set set set set set show show show set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L16": {
+      "layer": 16,
+      "generation": " \u2192 set set set set set show show set set set set set set set set set set set set set set set show show show set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L17": {
+      "layer": 17,
+      "generation": " \u2192 set set set set show show show set set set set set set set set show show set set set set show show show show set set set show",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L18": {
+      "layer": 18,
+      "generation": " \u2192 set set set set show show show set set set set set set set set show show set set set set show show show show set set set show",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L19": {
+      "layer": 19,
+      "generation": " \u2192 set set set set show show show set set set set set set set set show show set set set set set show show show set set set show",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L2": {
+      "layer": 2,
+      "generation": " \u2192,,(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x ((x",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L20": {
+      "layer": 20,
+      "generation": " \u2192 set set set set set show show set set set set set set set set set show set set set set set show show show set set set show",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L21": {
+      "layer": 21,
+      "generation": " \u2192 set set set set set show show set set set set set set set set set show set set set set set show show show set set set show",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L22": {
+      "layer": 22,
+      "generation": " \u2192 set set set set set show show set set set set set set set set set show set set set set set show show show set set set show",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L23": {
+      "layer": 23,
+      "generation": " \u2192 set set set set set show show set set set set set set set set set show set set set set set show show show set set set show",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L24": {
+      "layer": 24,
+      "generation": " \u2192 set set set set set show show set set set set set set set set set show set set set set show show show show set set set show",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L25": {
+      "layer": 25,
+      "generation": " \u2192 set set set set show show show set set set set set set set set show show set set set set show show show show set set set show",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L26": {
+      "layer": 26,
+      "generation": " \u2192 set set set set show show show set set set set set set set set show show set set set set show show show show set set set show",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L27": {
+      "layer": 27,
+      "generation": " \u2192 set set set set show show show set set set set set set set set show show set set set set show show show show set set set show",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L28": {
+      "layer": 28,
+      "generation": " \u2192 set set set set show show show set set set set set set set set show show set set set set show show show show show set set show",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L29": {
+      "layer": 29,
+      "generation": " \u2192 set set set show show show show show set set set set set set set show show set set set set show show show show show set show show",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L3": {
+      "layer": 3,
+      "generation": " \u2192,,(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x ((x",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L30": {
+      "layer": 30,
+      "generation": " \u2192 set set show show show show show show show show set set set set set show show set set set set show show show show show show show show",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L31": {
+      "layer": 31,
+      "generation": " \u2192 set set set show show show show show set set set set set set set show show set set set set show show show show show show show show",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L32": {
+      "layer": 32,
+      "generation": " \u2192 set set set show show show show show set set set set set set set show show set set set set show show show show show show show show",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L33": {
+      "layer": 33,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set show show show set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L34": {
+      "layer": 34,
+      "generation": " \u2192 set set set set set set show set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L35": {
+      "layer": 35,
+      "generation": " \u2192 show show show show show show show show show show show show show show show show show show show show show show show show show show show show show",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L4": {
+      "layer": 4,
+      "generation": " \u2192,,(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x ( (",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L5": {
+      "layer": 5,
+      "generation": " \u2192,,,(x(x(x(x(xx(x ( ( ((x ( ( ( ( ( ( (x(x(xaaaa (",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L6": {
+      "layer": 6,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set show show set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L7": {
+      "layer": 7,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set show show set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L8": {
+      "layer": 8,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set show show set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    },
+    "L9": {
+      "layer": 9,
+      "generation": " \u2192 set set set set set show set set set set set set set set set set set set set set set set show show show set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the"
+    }
+  },
+  "probe-ga-quant": {
+    "L0": {
+      "layer": 0,
+      "generation": " \u2192,,,,,,,,,,,,,,,,,,,,,,,,,,,,,",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L1": {
+      "layer": 1,
+      "generation": " \u2192,,,,,,,ers\n(a(a(a,,,,, ( ( (,,,,, ( ( ( (",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L10": {
+      "layer": 10,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L11": {
+      "layer": 11,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L12": {
+      "layer": 12,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L13": {
+      "layer": 13,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L14": {
+      "layer": 14,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L15": {
+      "layer": 15,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L16": {
+      "layer": 16,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L17": {
+      "layer": 17,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L18": {
+      "layer": 18,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L19": {
+      "layer": 19,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L2": {
+      "layer": 2,
+      "generation": " \u2192,,,,,,,,,(a(a,,,,,,,,,,,,,,, (,,",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L20": {
+      "layer": 20,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L21": {
+      "layer": 21,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L22": {
+      "layer": 22,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L23": {
+      "layer": 23,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L24": {
+      "layer": 24,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L25": {
+      "layer": 25,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L26": {
+      "layer": 26,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L27": {
+      "layer": 27,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L28": {
+      "layer": 28,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L29": {
+      "layer": 29,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L3": {
+      "layer": 3,
+      "generation": " \u2192,,,,,,,,,,(a,,,,,,,,,,,,,,,,,,",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L30": {
+      "layer": 30,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L31": {
+      "layer": 31,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L32": {
+      "layer": 32,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L33": {
+      "layer": 33,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L34": {
+      "layer": 34,
+      "generation": " \u2192:::: set set set set set set set set set set set set set set set set set:: set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L35": {
+      "layer": 35,
+      "generation": " \u2192 show show show show show show show show show show show show show show show show show show show show show show show show show show show show show",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L4": {
+      "layer": 4,
+      "generation": " \u2192,,,,,,,,,,(a,,,,,,,,,,,,,,,,,,",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L5": {
+      "layer": 5,
+      "generation": " \u2192,,,,,,,,,,,,,,,,,,,,,,,,,,,,,",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L6": {
+      "layer": 6,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L7": {
+      "layer": 7,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L8": {
+      "layer": 8,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    },
+    "L9": {
+      "layer": 9,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. reads(x, book) | student(x)\n\nWait, but the original sentence is \"Every student reads a book.\" So the subject"
+    }
+  },
+  "probe-ga-relcl": {
+    "L0": {
+      "layer": 0,
+      "generation": " \u2192 set,,\nelleganell ( (| ( ( ( (|| ( ( set set set set ( ( set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L1": {
+      "layer": 1,
+      "generation": " \u2192,,,,\n\n\n, (|| (,,||| ( ( ( ((xever ( ( ( ( ( (",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L10": {
+      "layer": 10,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L11": {
+      "layer": 11,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L12": {
+      "layer": 12,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L13": {
+      "layer": 13,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L14": {
+      "layer": 14,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L15": {
+      "layer": 15,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L16": {
+      "layer": 16,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L17": {
+      "layer": 17,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L18": {
+      "layer": 18,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L19": {
+      "layer": 19,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L2": {
+      "layer": 2,
+      "generation": " \u2192,,,,\n\n,,,|,,,,|| ( ( ( ( ( ( ( ( ( ( ( ( (",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L20": {
+      "layer": 20,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L21": {
+      "layer": 21,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L22": {
+      "layer": 22,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L23": {
+      "layer": 23,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L24": {
+      "layer": 24,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L25": {
+      "layer": 25,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L26": {
+      "layer": 26,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L27": {
+      "layer": 27,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L28": {
+      "layer": 28,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L29": {
+      "layer": 29,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L3": {
+      "layer": 3,
+      "generation": " \u2192,,,,,\n,,,|,,,,|| ( ( ( ( ( ( ( ( ( ( ( ( (",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L30": {
+      "layer": 30,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L31": {
+      "layer": 31,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L32": {
+      "layer": 32,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L33": {
+      "layer": 33,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L34": {
+      "layer": 34,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L35": {
+      "layer": 35,
+      "generation": " \u2192 show show show show show show show show show show show show show show show show show show show show show show show show show show show show show",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L4": {
+      "layer": 4,
+      "generation": " \u2192,,,,,,,,,|,,,,,| ( ( ( ( ( ( ( ( ( ( ( ( (",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L5": {
+      "layer": 5,
+      "generation": " \u2192,,,,,, set set set,,,,,,,,,,,, ( ( ( ( ( ( ( (",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L6": {
+      "layer": 6,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L7": {
+      "layer": 7,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L8": {
+      "layer": 8,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    },
+    "L9": {
+      "layer": 9,
+      "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 1,
+      "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+    }
+  },
+  "probe-ga-simple": {
+    "L0": {
+      "layer": 0,
+      "generation": " Be,,,,,,aa,,aaaaaaaaaaaaaaaaaaa",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L1": {
+      "layer": 1,
+      "generation": " Be\n\n(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L10": {
+      "layer": 10,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L11": {
+      "layer": 11,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L12": {
+      "layer": 12,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L13": {
+      "layer": 13,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L14": {
+      "layer": 14,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L15": {
+      "layer": 15,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L16": {
+      "layer": 16,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L17": {
+      "layer": 17,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set show",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L18": {
+      "layer": 18,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L19": {
+      "layer": 19,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set show",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L2": {
+      "layer": 2,
+      "generation": " Be\n\n(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x (a(x(x(x",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L20": {
+      "layer": 20,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set show",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L21": {
+      "layer": 21,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L22": {
+      "layer": 22,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L23": {
+      "layer": 23,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set show",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L24": {
+      "layer": 24,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L25": {
+      "layer": 25,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set show",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L26": {
+      "layer": 26,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set show",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L27": {
+      "layer": 27,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set show",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L28": {
+      "layer": 28,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set show show",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L29": {
+      "layer": 29,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set show show set set set set set show show",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L3": {
+      "layer": 3,
+      "generation": " Be\n\n(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x (a(x(x(x",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L30": {
+      "layer": 30,
+      "generation": " Be set set set set set set set set set set set show set set set set set set set set show show set set set set set show show",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L31": {
+      "layer": 31,
+      "generation": " Be set set set set set set set set set set set show set set set set set set set set show show set set set set set show show",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L32": {
+      "layer": 32,
+      "generation": " Be set set set set set set set set set set set show set set set set set set set set show show set set set set set show show",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L33": {
+      "layer": 33,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L34": {
+      "layer": 34,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L35": {
+      "layer": 35,
+      "generation": " Be show show show show show show show show show show show show show show show show show show show show show show show show show show show show show",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L4": {
+      "layer": 4,
+      "generation": " Be\n\n(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x(x ( (a(x(x(x",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L5": {
+      "layer": 5,
+      "generation": " Be,,,,,xxx(x(x(xxxxin ( ( (aaaaaaaaaxa",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L6": {
+      "layer": 6,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L7": {
+      "layer": 7,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L8": {
+      "layer": 8,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    },
+    "L9": {
+      "layer": 9,
+      "generation": " Be set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+      "has_lambda": false,
+      "lambda_count": 0,
+      "baseline": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the"
+    }
+  }
+}

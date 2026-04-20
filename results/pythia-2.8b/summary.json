@@ -1,0 +1,17 @@
+{
+  "model": "EleutherAI/pythia-2.8b-deduped",
+  "architecture": "GPTNeoXForCausalLM",
+  "n_layers": 32,
+  "n_heads": 32,
+  "head_dim": 80,
+  "hidden_size": 2560,
+  "baseline_success_rate": 1.0,
+  "critical_layers": [
+    0
+  ],
+  "essential_heads_all": [],
+  "essential_heads_any": [],
+  "elapsed_s": 547.9953911304474,
+  "timestamp": "2026-04-17T15:55:39.962456+00:00",
+  "localization_gradient_confirmed": true
+}

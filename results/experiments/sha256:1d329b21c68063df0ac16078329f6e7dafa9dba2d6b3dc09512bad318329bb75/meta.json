@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T02:43:38.659172+00:00",
+  "node_id": "head-ablation/probe-ga-simple",
+  "config_hash": "sha256:1d329b21c68063df0ac16078329f6e7dafa9dba2d6b3dc09512bad318329bb75",
+  "elapsed_ms": 247178.7,
+  "completed_at": "2026-04-17T02:47:45.839209+00:00"
+}

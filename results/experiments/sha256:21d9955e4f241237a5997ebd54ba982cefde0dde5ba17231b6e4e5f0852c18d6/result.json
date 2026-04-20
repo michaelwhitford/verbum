@@ -1,0 +1,8 @@
+{
+  "generation": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how to represent the sentence \"The cat that sat on the mat is black.\" using lambda expressions. Let me start by breaking down the sentence.\n\nFirst, the main structure is \"The cat... is black.\" So the subject is \"the cat,\" and the predicate is \"is black.\" But there's more information: \"that sat on the mat.\" That seems like a relative clause modifying \"the cat.\" So the cat is the one that sat on the mat, and that cat is black.\n\nIn lambda calculus, we can represent this by creating a function that takes an argument (probably the cat)",
+  "has_lambda": true,
+  "lambda_count": 5,
+  "has_reasoning": true,
+  "ablated_head": null,
+  "is_baseline": true
+}

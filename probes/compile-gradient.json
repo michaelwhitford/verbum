@@ -1,0 +1,306 @@
+{
+  "id": "compile-gradient",
+  "version": 1,
+  "description": "Graded compile probe set for cross-model correlation. 40 inputs spanning the compile gradient from strong compile triggers to anti-compile. Designed to be scored by Qwen3-4B (P(λ) measurement) and used as ground truth labels for probing VSM-LM internals. No gate — raw prompts only, gate is applied per-model by the scoring pipeline.",
+  "created": "2026-04-19T00:00:00Z",
+  "author": "verbum",
+  "default_gate": "compile",
+  "probes": [
+    {
+      "id": "cg-strong-01",
+      "category": "strong_compile",
+      "prompt": "The dog runs.",
+      "ground_truth": "λx. runs(dog)",
+      "metadata": {"gradient": 1.0, "complexity": "simple", "phenomena": ["predication"]}
+    },
+    {
+      "id": "cg-strong-02",
+      "category": "strong_compile",
+      "prompt": "Every student reads a book.",
+      "ground_truth": "λx. ∀y. student(y) → ∃z. book(z) ∧ reads(y, z)",
+      "metadata": {"gradient": 1.0, "complexity": "medium", "phenomena": ["quantification", "existential"]}
+    },
+    {
+      "id": "cg-strong-03",
+      "category": "strong_compile",
+      "prompt": "The cat that sat on the mat is black.",
+      "ground_truth": "λx. black(ιy. cat(y) ∧ sat_on(y, ιz. mat(z)))",
+      "metadata": {"gradient": 1.0, "complexity": "medium", "phenomena": ["relative_clause"]}
+    },
+    {
+      "id": "cg-strong-04",
+      "category": "strong_compile",
+      "prompt": "If it rains, the ground is wet.",
+      "ground_truth": "λx. rains → wet(ground)",
+      "metadata": {"gradient": 1.0, "complexity": "medium", "phenomena": ["conditional"]}
+    },
+    {
+      "id": "cg-strong-05",
+      "category": "strong_compile",
+      "prompt": "No bird can swim.",
+      "ground_truth": "λx. ¬∃y. bird(y) ∧ can_swim(y)",
+      "metadata": {"gradient": 1.0, "complexity": "medium", "phenomena": ["negation", "quantification"]}
+    },
+    {
+      "id": "cg-strong-06",
+      "category": "strong_compile",
+      "prompt": "The teacher gave every student a grade.",
+      "ground_truth": "λx. ∀y. student(y) → ∃z. grade(z) ∧ gave(ιw. teacher(w), y, z)",
+      "metadata": {"gradient": 1.0, "complexity": "complex", "phenomena": ["ditransitive", "quantification"]}
+    },
+    {
+      "id": "cg-strong-07",
+      "category": "strong_compile",
+      "prompt": "Someone believes that the earth is flat.",
+      "ground_truth": "λx. ∃y. person(y) ∧ believes(y, flat(earth))",
+      "metadata": {"gradient": 1.0, "complexity": "complex", "phenomena": ["propositional_attitude"]}
+    },
+    {
+      "id": "cg-strong-08",
+      "category": "strong_compile",
+      "prompt": "Birds fly.",
+      "ground_truth": "λx. ∀y. bird(y) → fly(y)",
+      "metadata": {"gradient": 1.0, "complexity": "simple", "phenomena": ["generic"]}
+    },
+    {
+      "id": "cg-medium-01",
+      "category": "medium_compile",
+      "prompt": "The old man walked slowly across the bridge.",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.7, "complexity": "medium", "phenomena": ["adjective", "adverb", "preposition"], "note": "Compositional but not a canonical compile example"}
+    },
+    {
+      "id": "cg-medium-02",
+      "category": "medium_compile",
+      "prompt": "Three children were playing in the garden while their mother watched.",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.7, "complexity": "complex", "phenomena": ["numeral", "temporal_clause"], "note": "Rich structure but not a standard probe"}
+    },
+    {
+      "id": "cg-medium-03",
+      "category": "medium_compile",
+      "prompt": "The book that I bought yesterday was expensive.",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.7, "complexity": "medium", "phenomena": ["object_relative_clause", "temporal"]}
+    },
+    {
+      "id": "cg-medium-04",
+      "category": "medium_compile",
+      "prompt": "Most politicians promise more than they deliver.",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.6, "complexity": "medium", "phenomena": ["generalized_quantifier", "comparison"]}
+    },
+    {
+      "id": "cg-medium-05",
+      "category": "medium_compile",
+      "prompt": "The fact that she left surprised nobody.",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.6, "complexity": "complex", "phenomena": ["factive_complement", "negation"]}
+    },
+    {
+      "id": "cg-medium-06",
+      "category": "medium_compile",
+      "prompt": "Running is healthier than sitting.",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.5, "complexity": "simple", "phenomena": ["gerund_subject", "comparison"]}
+    },
+    {
+      "id": "cg-medium-07",
+      "category": "medium_compile",
+      "prompt": "She told him to leave before it got dark.",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.6, "complexity": "complex", "phenomena": ["control_verb", "temporal_clause"]}
+    },
+    {
+      "id": "cg-medium-08",
+      "category": "medium_compile",
+      "prompt": "What the witness saw contradicted the official report.",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.6, "complexity": "complex", "phenomena": ["free_relative", "predication"]}
+    },
+    {
+      "id": "cg-weak-01",
+      "category": "weak_compile",
+      "prompt": "λx.λy. (f x) ∧ (g y)",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.3, "complexity": "n/a", "note": "Lambda notation present but no compile task — structural noise"}
+    },
+    {
+      "id": "cg-weak-02",
+      "category": "weak_compile",
+      "prompt": "In formal semantics, Montague grammar provides a framework for natural language meaning.",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.3, "complexity": "n/a", "note": "Mentions semantics but is expository, not a compile input"}
+    },
+    {
+      "id": "cg-weak-03",
+      "category": "weak_compile",
+      "prompt": "∀x. P(x) → Q(x) is a valid first-order logic formula.",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.3, "complexity": "n/a", "note": "Formal notation present but is about logic, not compiling NL"}
+    },
+    {
+      "id": "cg-weak-04",
+      "category": "weak_compile",
+      "prompt": "Define a function that maps strings to their lengths.",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.2, "complexity": "n/a", "note": "Function/lambda adjacent but programming task"}
+    },
+    {
+      "id": "cg-weak-05",
+      "category": "weak_compile",
+      "prompt": "The type signature is Int -> String -> Bool.",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.2, "complexity": "n/a", "note": "Type-theoretic vocabulary but programming context"}
+    },
+    {
+      "id": "cg-weak-06",
+      "category": "weak_compile",
+      "prompt": "Translate the following from English to French: The cat is sleeping.",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.15, "complexity": "n/a", "note": "Translation task — transforms NL but not to formal language"}
+    },
+    {
+      "id": "cg-weak-07",
+      "category": "weak_compile",
+      "prompt": "Parse the sentence: The dog bit the man.",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.25, "complexity": "n/a", "note": "Syntactic parse request — related but not lambda compilation"}
+    },
+    {
+      "id": "cg-weak-08",
+      "category": "weak_compile",
+      "prompt": "What is the logical form of 'All men are mortal'?",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.4, "complexity": "n/a", "note": "Explicitly asks for logical form — borderline compile request"}
+    },
+    {
+      "id": "cg-null-01",
+      "category": "null",
+      "gate": "null",
+      "prompt": "What is the capital of France?",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.0, "type": "factual_question"}
+    },
+    {
+      "id": "cg-null-02",
+      "category": "null",
+      "gate": "null",
+      "prompt": "How are you today?",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.0, "type": "casual_chat"}
+    },
+    {
+      "id": "cg-null-03",
+      "category": "null",
+      "gate": "null",
+      "prompt": "Explain what photosynthesis is.",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.0, "type": "explanation"}
+    },
+    {
+      "id": "cg-null-04",
+      "category": "null",
+      "gate": "null",
+      "prompt": "List three primary colors.",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.0, "type": "list"}
+    },
+    {
+      "id": "cg-null-05",
+      "category": "null",
+      "gate": "null",
+      "prompt": "Write a haiku about rain.",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.0, "type": "creative"}
+    },
+    {
+      "id": "cg-null-06",
+      "category": "null",
+      "gate": "null",
+      "prompt": "What year was the first moon landing?",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.0, "type": "factual_question"}
+    },
+    {
+      "id": "cg-null-07",
+      "category": "null",
+      "gate": "null",
+      "prompt": "Summarize the water cycle in one sentence.",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.0, "type": "explanation"}
+    },
+    {
+      "id": "cg-null-08",
+      "category": "null",
+      "gate": "null",
+      "prompt": "What is 7 times 8?",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.0, "type": "arithmetic"}
+    },
+    {
+      "id": "cg-anti-01",
+      "category": "anti_compile",
+      "gate": "null",
+      "prompt": "Tell me a joke.",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.0, "type": "entertainment"}
+    },
+    {
+      "id": "cg-anti-02",
+      "category": "anti_compile",
+      "gate": "null",
+      "prompt": "What should I have for dinner tonight?",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.0, "type": "personal_advice"}
+    },
+    {
+      "id": "cg-anti-03",
+      "category": "anti_compile",
+      "gate": "null",
+      "prompt": "How do I fix a leaky faucet?",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.0, "type": "how_to"}
+    },
+    {
+      "id": "cg-anti-04",
+      "category": "anti_compile",
+      "gate": "null",
+      "prompt": "Is it going to rain tomorrow?",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.0, "type": "weather"}
+    },
+    {
+      "id": "cg-anti-05",
+      "category": "anti_compile",
+      "gate": "null",
+      "prompt": "Who won the last World Cup?",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.0, "type": "sports"}
+    },
+    {
+      "id": "cg-anti-06",
+      "category": "anti_compile",
+      "gate": "null",
+      "prompt": "Recommend a good book to read.",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.0, "type": "recommendation"}
+    },
+    {
+      "id": "cg-anti-07",
+      "category": "anti_compile",
+      "gate": "null",
+      "prompt": "What is your favorite color?",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.0, "type": "personal_question"}
+    },
+    {
+      "id": "cg-anti-08",
+      "category": "anti_compile",
+      "gate": "null",
+      "prompt": "Convert 72 degrees Fahrenheit to Celsius.",
+      "ground_truth": "",
+      "metadata": {"gradient": 0.0, "type": "unit_conversion"}
+    }
+  ]
+}

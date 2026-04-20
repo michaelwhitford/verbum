@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T03:33:14.849977+00:00",
+  "node_id": "circuit-discovery/multi-head/threshold-25/probe-ga-simple",
+  "config_hash": "sha256:66c6fd85cfd642aec8dc722d6a7a563b68058ffa5210b70261909ef1940730c7",
+  "elapsed_ms": 889.5,
+  "completed_at": "2026-04-17T03:33:15.739804+00:00"
+}

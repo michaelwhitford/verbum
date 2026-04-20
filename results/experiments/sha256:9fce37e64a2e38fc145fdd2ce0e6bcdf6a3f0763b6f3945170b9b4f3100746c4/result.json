@@ -1,0 +1,10 @@
+{
+  "task": "compile",
+  "generation": " \u2192 ?\n\nOutput: \u03bbx. rain(x) \u2192 wet(ground)\n\nOkay, so I need to figure out how to represent the sentence \"If it rains, the ground is wet.\" using lambda expressions. Let me start by breaking down the sentence",
+  "success": true,
+  "ablated_head": [
+    24,
+    0
+  ],
+  "is_baseline": false
+}

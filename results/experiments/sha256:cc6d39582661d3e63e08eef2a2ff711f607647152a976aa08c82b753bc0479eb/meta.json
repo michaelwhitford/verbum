@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T04:47:32.584324+00:00",
+  "node_id": "task-head-scan/extract/probe-ext-ditrans/L4",
+  "config_hash": "sha256:cc6d39582661d3e63e08eef2a2ff711f607647152a976aa08c82b753bc0479eb",
+  "elapsed_ms": 71174.9,
+  "completed_at": "2026-04-17T04:48:43.759749+00:00"
+}

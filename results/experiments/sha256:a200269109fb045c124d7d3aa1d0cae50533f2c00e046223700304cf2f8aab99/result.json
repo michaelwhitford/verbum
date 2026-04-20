@@ -1,0 +1,10 @@
+{
+  "task": "summarize",
+  "generation": " The plan is expected to reduce traffic congestion and improve the city's overall mobility.\nOutput: City council approves new public transportation plan; plan includes three new bus routes and subway extension to northern suburbs. Plan aims to reduce traffic congestion and improve mobility.\n\nOkay",
+  "success": false,
+  "ablated_head": [
+    24,
+    2
+  ],
+  "is_baseline": false
+}

@@ -1,0 +1,10 @@
+{
+  "task": "compile",
+  "generation": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth is flat\" using lambda expressions. Let me start by breaking down the sentence. \n\nFirst, the",
+  "success": true,
+  "ablated_head": [
+    1,
+    0
+  ],
+  "is_baseline": false
+}

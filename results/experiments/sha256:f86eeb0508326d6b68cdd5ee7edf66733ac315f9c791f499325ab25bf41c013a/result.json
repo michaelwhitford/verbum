@@ -1,0 +1,10 @@
+{
+  "generation": " \u2227 (x = y) \u2192 The person believes the earth is flat.\n\nOutput: The person believes the earth is flat.\n\nSo, the output is the same as the input. But the input is a lambda expression, and the output is a sentence",
+  "has_english": true,
+  "has_lambda": false,
+  "ablated_head": [
+    24,
+    2
+  ],
+  "is_baseline": false
+}

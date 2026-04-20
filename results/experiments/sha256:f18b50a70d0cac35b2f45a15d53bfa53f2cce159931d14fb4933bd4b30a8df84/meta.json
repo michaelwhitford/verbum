@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T03:31:31.217925+00:00",
+  "node_id": "circuit-discovery/dual-process/probe-ga-cond/baseline",
+  "config_hash": "sha256:f18b50a70d0cac35b2f45a15d53bfa53f2cce159931d14fb4933bd4b30a8df84",
+  "elapsed_ms": 4444.9,
+  "completed_at": "2026-04-17T03:31:35.663154+00:00"
+}

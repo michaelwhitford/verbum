@@ -1,0 +1,6 @@
+{
+  "generation": " \u2192 \u03bbx. rain(x) \u2192 wet(x)\n\nOkay, so the user is asking about translating the sentence \"If it rains, the ground is",
+  "has_lambda": true,
+  "lambda_count": 3,
+  "n_zeroed": 25
+}

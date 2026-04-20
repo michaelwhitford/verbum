@@ -1,0 +1,10 @@
+{
+  "task": "extract",
+  "generation": " \n\nOutput: ?\nSo, the task is to convert the given natural language sentence into a logical form using the same structure as the examples provided. Let's break down the sentence and identify the key components.\n\nThe sentence is: \"Mary sent John a",
+  "success": false,
+  "ablated_head": [
+    24,
+    0
+  ],
+  "is_baseline": false
+}

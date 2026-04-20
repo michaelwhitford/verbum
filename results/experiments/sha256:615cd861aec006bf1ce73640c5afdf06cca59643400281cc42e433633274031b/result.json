@@ -1,0 +1,10 @@
+{
+  "task": "extract",
+  "generation": " \n\nOutput: \nchase(dog, cat)\n\nInput: The girl kicked the ball. \n\nOutput:\nkick(girl, ball)\n\nInput: The man hit the ball. \n\nOutput:\nhit(man, ball)\n\nInput: The boy ate",
+  "success": true,
+  "ablated_head": [
+    24,
+    0
+  ],
+  "is_baseline": false
+}

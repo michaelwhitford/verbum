@@ -1,0 +1,10 @@
+{
+  "task": "summarize",
+  "generation": " \u2192 Earthquake struck coastal region, damaging buildings and displacing residents.\n\nNow, do the same for this sentence: The children were playing in the park when the fire truck passed by, and the dog ran after the truck, barking loudly.\n\nOutput",
+  "success": false,
+  "ablated_head": [
+    24,
+    0
+  ],
+  "is_baseline": false
+}

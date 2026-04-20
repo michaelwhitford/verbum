@@ -1,0 +1,294 @@
+============================================================
+  CROSS-TASK ABLATION — typed_apply universality test
+============================================================
+
+Building cross-task graph...
+2026-04-16 20:49:49 [info     ] probe_set.loaded               id=gate-ablation n_probes=5 path=/Users/mwhitford/src/verbum/probes/gate-ablation.json version=1
+2026-04-16 20:49:49 [info     ] probes.resolved                gates_loaded=1 n_resolved=5 probe_set=gate-ablation
+2026-04-16 20:49:49 [info     ] probe_set.loaded               id=summarize n_probes=5 path=/Users/mwhitford/src/verbum/probes/summarize.json version=1
+2026-04-16 20:49:49 [info     ] probes.resolved                gates_loaded=1 n_resolved=5 probe_set=summarize
+2026-04-16 20:49:49 [info     ] probe_set.loaded               id=translate n_probes=5 path=/Users/mwhitford/src/verbum/probes/translate.json version=1
+2026-04-16 20:49:49 [info     ] probes.resolved                gates_loaded=1 n_resolved=5 probe_set=translate
+2026-04-16 20:49:49 [info     ] probe_set.loaded               id=classify n_probes=5 path=/Users/mwhitford/src/verbum/probes/classify.json version=1
+2026-04-16 20:49:49 [info     ] probes.resolved                gates_loaded=1 n_resolved=5 probe_set=classify
+2026-04-16 20:49:49 [info     ] probe_set.loaded               id=extract n_probes=5 path=/Users/mwhitford/src/verbum/probes/extract.json version=1
+2026-04-16 20:49:49 [info     ] probes.resolved                gates_loaded=1 n_resolved=5 probe_set=extract
+Graph: 5 tasks, 100 leaf nodes
+Hash: sha256:bd530aec0d8aa573a...
+
+Loading model...
+2026-04-16 20:49:50 [info     ] instrument.loading             device=mps dtype=torch.float16 model=Qwen/Qwen3-4B
+2026-04-16 20:49:52 [info     ] instrument.loaded              head_dim=80 n_heads=32 n_kv_heads=8 n_layers=36 total_heads=1152
+Loaded: 36L, 32H
+
+Running experiments...
+============================================================
+2026-04-16 20:49:52 [info     ] node.enter                     hash=sha256:bd530aec0 node=cross-task
+2026-04-16 20:49:52 [info     ] node.enter                     hash=sha256:d32554d06 node=cross-task/classify
+2026-04-16 20:49:52 [info     ] node.enter                     hash=sha256:2e33e7f15 node=cross-task/classify/probe-cls-mixed
+2026-04-16 20:49:52 [info     ] node.enter                     hash=sha256:557e2adaf node=cross-task/classify/probe-cls-mixed/L1-H0
+2026-04-16 20:49:54 [info     ] node.complete                  elapsed_ms=1981.5 hash=sha256:557e2adaf node=cross-task/classify/probe-cls-mixed/L1-H0
+2026-04-16 20:49:54 [info     ] node.enter                     hash=sha256:a0249ed77 node=cross-task/classify/probe-cls-mixed/L24-H0
+2026-04-16 20:49:56 [info     ] node.complete                  elapsed_ms=1615.5 hash=sha256:a0249ed77 node=cross-task/classify/probe-cls-mixed/L24-H0
+2026-04-16 20:49:56 [info     ] node.enter                     hash=sha256:f1542c8a5 node=cross-task/classify/probe-cls-mixed/L24-H2
+2026-04-16 20:49:57 [info     ] node.complete                  elapsed_ms=1600.8 hash=sha256:f1542c8a5 node=cross-task/classify/probe-cls-mixed/L24-H2
+2026-04-16 20:49:57 [info     ] node.enter                     hash=sha256:56ac0be83 node=cross-task/classify/probe-cls-mixed/baseline
+2026-04-16 20:49:59 [info     ] node.complete                  elapsed_ms=1611.3 hash=sha256:56ac0be83 node=cross-task/classify/probe-cls-mixed/baseline
+2026-04-16 20:49:59 [info     ] node.complete                  elapsed_ms=6811.3 hash=sha256:2e33e7f15 node=cross-task/classify/probe-cls-mixed
+2026-04-16 20:49:59 [info     ] node.enter                     hash=sha256:ddda1566f node=cross-task/classify/probe-cls-neg-complex
+2026-04-16 20:49:59 [info     ] node.enter                     hash=sha256:6f04aa855 node=cross-task/classify/probe-cls-neg-complex/L1-H0
+2026-04-16 20:50:01 [info     ] node.complete                  elapsed_ms=1654.1 hash=sha256:6f04aa855 node=cross-task/classify/probe-cls-neg-complex/L1-H0
+2026-04-16 20:50:01 [info     ] node.enter                     hash=sha256:e657d23ce node=cross-task/classify/probe-cls-neg-complex/L24-H0
+2026-04-16 20:50:02 [info     ] node.complete                  elapsed_ms=1578.0 hash=sha256:e657d23ce node=cross-task/classify/probe-cls-neg-complex/L24-H0
+2026-04-16 20:50:02 [info     ] node.enter                     hash=sha256:056f5e8d8 node=cross-task/classify/probe-cls-neg-complex/L24-H2
+2026-04-16 20:50:04 [info     ] node.complete                  elapsed_ms=1627.7 hash=sha256:056f5e8d8 node=cross-task/classify/probe-cls-neg-complex/L24-H2
+2026-04-16 20:50:04 [info     ] node.enter                     hash=sha256:978b40de3 node=cross-task/classify/probe-cls-neg-complex/baseline
+2026-04-16 20:50:05 [info     ] node.complete                  elapsed_ms=1591.0 hash=sha256:978b40de3 node=cross-task/classify/probe-cls-neg-complex/baseline
+2026-04-16 20:50:05 [info     ] node.complete                  elapsed_ms=6453.0 hash=sha256:ddda1566f node=cross-task/classify/probe-cls-neg-complex
+2026-04-16 20:50:05 [info     ] node.enter                     hash=sha256:20c2142ed node=cross-task/classify/probe-cls-neg-simple
+2026-04-16 20:50:05 [info     ] node.enter                     hash=sha256:d81f86a03 node=cross-task/classify/probe-cls-neg-simple/L1-H0
+2026-04-16 20:50:07 [info     ] node.complete                  elapsed_ms=1670.4 hash=sha256:d81f86a03 node=cross-task/classify/probe-cls-neg-simple/L1-H0
+2026-04-16 20:50:07 [info     ] node.enter                     hash=sha256:70162aceb node=cross-task/classify/probe-cls-neg-simple/L24-H0
+2026-04-16 20:50:09 [info     ] node.complete                  elapsed_ms=1619.3 hash=sha256:70162aceb node=cross-task/classify/probe-cls-neg-simple/L24-H0
+2026-04-16 20:50:09 [info     ] node.enter                     hash=sha256:6ea0a92c0 node=cross-task/classify/probe-cls-neg-simple/L24-H2
+2026-04-16 20:50:10 [info     ] node.complete                  elapsed_ms=1575.7 hash=sha256:6ea0a92c0 node=cross-task/classify/probe-cls-neg-simple/L24-H2
+2026-04-16 20:50:10 [info     ] node.enter                     hash=sha256:8b7c9e06e node=cross-task/classify/probe-cls-neg-simple/baseline
+2026-04-16 20:50:12 [info     ] node.complete                  elapsed_ms=1594.5 hash=sha256:8b7c9e06e node=cross-task/classify/probe-cls-neg-simple/baseline
+2026-04-16 20:50:12 [info     ] node.complete                  elapsed_ms=6463.0 hash=sha256:20c2142ed node=cross-task/classify/probe-cls-neg-simple
+2026-04-16 20:50:12 [info     ] node.enter                     hash=sha256:6845d6b30 node=cross-task/classify/probe-cls-pos-complex
+2026-04-16 20:50:12 [info     ] node.enter                     hash=sha256:938ae0e08 node=cross-task/classify/probe-cls-pos-complex/L1-H0
+2026-04-16 20:50:13 [info     ] node.complete                  elapsed_ms=1620.9 hash=sha256:938ae0e08 node=cross-task/classify/probe-cls-pos-complex/L1-H0
+2026-04-16 20:50:13 [info     ] node.enter                     hash=sha256:90803da8e node=cross-task/classify/probe-cls-pos-complex/L24-H0
+2026-04-16 20:50:15 [info     ] node.complete                  elapsed_ms=1596.7 hash=sha256:90803da8e node=cross-task/classify/probe-cls-pos-complex/L24-H0
+2026-04-16 20:50:15 [info     ] node.enter                     hash=sha256:4aeaaaa0a node=cross-task/classify/probe-cls-pos-complex/L24-H2
+2026-04-16 20:50:17 [info     ] node.complete                  elapsed_ms=1632.2 hash=sha256:4aeaaaa0a node=cross-task/classify/probe-cls-pos-complex/L24-H2
+2026-04-16 20:50:17 [info     ] node.enter                     hash=sha256:6cb776039 node=cross-task/classify/probe-cls-pos-complex/baseline
+2026-04-16 20:50:18 [info     ] node.complete                  elapsed_ms=1621.7 hash=sha256:6cb776039 node=cross-task/classify/probe-cls-pos-complex/baseline
+2026-04-16 20:50:18 [info     ] node.complete                  elapsed_ms=6473.8 hash=sha256:6845d6b30 node=cross-task/classify/probe-cls-pos-complex
+2026-04-16 20:50:18 [info     ] node.enter                     hash=sha256:f972ca706 node=cross-task/classify/probe-cls-pos-simple
+2026-04-16 20:50:18 [info     ] node.enter                     hash=sha256:e37ad6987 node=cross-task/classify/probe-cls-pos-simple/L1-H0
+2026-04-16 20:50:20 [info     ] node.complete                  elapsed_ms=1625.4 hash=sha256:e37ad6987 node=cross-task/classify/probe-cls-pos-simple/L1-H0
+2026-04-16 20:50:20 [info     ] node.enter                     hash=sha256:82a57b59e node=cross-task/classify/probe-cls-pos-simple/L24-H0
+2026-04-16 20:50:22 [info     ] node.complete                  elapsed_ms=1616.0 hash=sha256:82a57b59e node=cross-task/classify/probe-cls-pos-simple/L24-H0
+2026-04-16 20:50:22 [info     ] node.enter                     hash=sha256:f5d96005f node=cross-task/classify/probe-cls-pos-simple/L24-H2
+2026-04-16 20:50:23 [info     ] node.complete                  elapsed_ms=1582.6 hash=sha256:f5d96005f node=cross-task/classify/probe-cls-pos-simple/L24-H2
+2026-04-16 20:50:23 [info     ] node.enter                     hash=sha256:09ca1af1c node=cross-task/classify/probe-cls-pos-simple/baseline
+2026-04-16 20:50:25 [info     ] node.complete                  elapsed_ms=1613.0 hash=sha256:09ca1af1c node=cross-task/classify/probe-cls-pos-simple/baseline
+2026-04-16 20:50:25 [info     ] node.complete                  elapsed_ms=6439.2 hash=sha256:f972ca706 node=cross-task/classify/probe-cls-pos-simple
+2026-04-16 20:50:25 [info     ] node.complete                  elapsed_ms=32642.2 hash=sha256:d32554d06 node=cross-task/classify
+2026-04-16 20:50:25 [info     ] node.enter                     hash=sha256:19e7bc525 node=cross-task/compile
+2026-04-16 20:50:25 [info     ] node.enter                     hash=sha256:05e4e502f node=cross-task/compile/probe-ga-complex
+2026-04-16 20:50:25 [info     ] node.enter                     hash=sha256:7bea4263b node=cross-task/compile/probe-ga-complex/L1-H0
+2026-04-16 20:50:26 [info     ] node.complete                  elapsed_ms=1605.2 hash=sha256:7bea4263b node=cross-task/compile/probe-ga-complex/L1-H0
+2026-04-16 20:50:26 [info     ] node.enter                     hash=sha256:6c06fadd8 node=cross-task/compile/probe-ga-complex/L24-H0
+2026-04-16 20:50:28 [info     ] node.complete                  elapsed_ms=1621.8 hash=sha256:6c06fadd8 node=cross-task/compile/probe-ga-complex/L24-H0
+2026-04-16 20:50:28 [info     ] node.enter                     hash=sha256:c15906228 node=cross-task/compile/probe-ga-complex/L24-H2
+2026-04-16 20:50:30 [info     ] node.complete                  elapsed_ms=1595.3 hash=sha256:c15906228 node=cross-task/compile/probe-ga-complex/L24-H2
+2026-04-16 20:50:30 [info     ] node.enter                     hash=sha256:785a271b4 node=cross-task/compile/probe-ga-complex/baseline
+2026-04-16 20:50:31 [info     ] node.complete                  elapsed_ms=1579.6 hash=sha256:785a271b4 node=cross-task/compile/probe-ga-complex/baseline
+2026-04-16 20:50:31 [info     ] node.complete                  elapsed_ms=6404.2 hash=sha256:05e4e502f node=cross-task/compile/probe-ga-complex
+2026-04-16 20:50:31 [info     ] node.enter                     hash=sha256:f1ff80ae3 node=cross-task/compile/probe-ga-cond
+2026-04-16 20:50:31 [info     ] node.enter                     hash=sha256:98d9f1abe node=cross-task/compile/probe-ga-cond/L1-H0
+2026-04-16 20:50:33 [info     ] node.complete                  elapsed_ms=1630.9 hash=sha256:98d9f1abe node=cross-task/compile/probe-ga-cond/L1-H0
+2026-04-16 20:50:33 [info     ] node.enter                     hash=sha256:9fce37e64 node=cross-task/compile/probe-ga-cond/L24-H0
+2026-04-16 20:50:34 [info     ] node.complete                  elapsed_ms=1621.0 hash=sha256:9fce37e64 node=cross-task/compile/probe-ga-cond/L24-H0
+2026-04-16 20:50:34 [info     ] node.enter                     hash=sha256:4f7007bc7 node=cross-task/compile/probe-ga-cond/L24-H2
+2026-04-16 20:50:36 [info     ] node.complete                  elapsed_ms=1574.2 hash=sha256:4f7007bc7 node=cross-task/compile/probe-ga-cond/L24-H2
+2026-04-16 20:50:36 [info     ] node.enter                     hash=sha256:aa91cdf0e node=cross-task/compile/probe-ga-cond/baseline
+2026-04-16 20:50:38 [info     ] node.complete                  elapsed_ms=1622.1 hash=sha256:aa91cdf0e node=cross-task/compile/probe-ga-cond/baseline
+2026-04-16 20:50:38 [info     ] node.complete                  elapsed_ms=6450.3 hash=sha256:f1ff80ae3 node=cross-task/compile/probe-ga-cond
+2026-04-16 20:50:38 [info     ] node.enter                     hash=sha256:f6898b49c node=cross-task/compile/probe-ga-quant
+2026-04-16 20:50:38 [info     ] node.enter                     hash=sha256:03edb7972 node=cross-task/compile/probe-ga-quant/L1-H0
+2026-04-16 20:50:39 [info     ] node.complete                  elapsed_ms=1589.8 hash=sha256:03edb7972 node=cross-task/compile/probe-ga-quant/L1-H0
+2026-04-16 20:50:39 [info     ] node.enter                     hash=sha256:b8cf5da86 node=cross-task/compile/probe-ga-quant/L24-H0
+2026-04-16 20:50:41 [info     ] node.complete                  elapsed_ms=1595.6 hash=sha256:b8cf5da86 node=cross-task/compile/probe-ga-quant/L24-H0
+2026-04-16 20:50:41 [info     ] node.enter                     hash=sha256:493349199 node=cross-task/compile/probe-ga-quant/L24-H2
+2026-04-16 20:50:42 [info     ] node.complete                  elapsed_ms=1629.5 hash=sha256:493349199 node=cross-task/compile/probe-ga-quant/L24-H2
+2026-04-16 20:50:42 [info     ] node.enter                     hash=sha256:aa9d8bec5 node=cross-task/compile/probe-ga-quant/baseline
+2026-04-16 20:50:44 [info     ] node.complete                  elapsed_ms=1566.1 hash=sha256:aa9d8bec5 node=cross-task/compile/probe-ga-quant/baseline
+2026-04-16 20:50:44 [info     ] node.complete                  elapsed_ms=6383.3 hash=sha256:f6898b49c node=cross-task/compile/probe-ga-quant
+2026-04-16 20:50:44 [info     ] node.enter                     hash=sha256:0faf950fe node=cross-task/compile/probe-ga-relcl
+2026-04-16 20:50:44 [info     ] node.enter                     hash=sha256:7ce146ee6 node=cross-task/compile/probe-ga-relcl/L1-H0
+2026-04-16 20:50:46 [info     ] node.complete                  elapsed_ms=1632.6 hash=sha256:7ce146ee6 node=cross-task/compile/probe-ga-relcl/L1-H0
+2026-04-16 20:50:46 [info     ] node.enter                     hash=sha256:eea5a3986 node=cross-task/compile/probe-ga-relcl/L24-H0
+2026-04-16 20:50:47 [info     ] node.complete                  elapsed_ms=1618.3 hash=sha256:eea5a3986 node=cross-task/compile/probe-ga-relcl/L24-H0
+2026-04-16 20:50:47 [info     ] node.enter                     hash=sha256:b6017adf1 node=cross-task/compile/probe-ga-relcl/L24-H2
+2026-04-16 20:50:49 [info     ] node.complete                  elapsed_ms=1649.9 hash=sha256:b6017adf1 node=cross-task/compile/probe-ga-relcl/L24-H2
+2026-04-16 20:50:49 [info     ] node.enter                     hash=sha256:5ceb0deaa node=cross-task/compile/probe-ga-relcl/baseline
+2026-04-16 20:50:50 [info     ] node.complete                  elapsed_ms=1564.2 hash=sha256:5ceb0deaa node=cross-task/compile/probe-ga-relcl/baseline
+2026-04-16 20:50:50 [info     ] node.complete                  elapsed_ms=6467.1 hash=sha256:0faf950fe node=cross-task/compile/probe-ga-relcl
+2026-04-16 20:50:50 [info     ] node.enter                     hash=sha256:de9c97c69 node=cross-task/compile/probe-ga-simple
+2026-04-16 20:50:50 [info     ] node.enter                     hash=sha256:755152ed8 node=cross-task/compile/probe-ga-simple/L1-H0
+2026-04-16 20:50:52 [info     ] node.complete                  elapsed_ms=1561.1 hash=sha256:755152ed8 node=cross-task/compile/probe-ga-simple/L1-H0
+2026-04-16 20:50:52 [info     ] node.enter                     hash=sha256:a99d02eb4 node=cross-task/compile/probe-ga-simple/L24-H0
+2026-04-16 20:50:54 [info     ] node.complete                  elapsed_ms=1635.1 hash=sha256:a99d02eb4 node=cross-task/compile/probe-ga-simple/L24-H0
+2026-04-16 20:50:54 [info     ] node.enter                     hash=sha256:d0f00e8fd node=cross-task/compile/probe-ga-simple/L24-H2
+2026-04-16 20:50:55 [info     ] node.complete                  elapsed_ms=1573.2 hash=sha256:d0f00e8fd node=cross-task/compile/probe-ga-simple/L24-H2
+2026-04-16 20:50:55 [info     ] node.enter                     hash=sha256:e3f8ff1d8 node=cross-task/compile/probe-ga-simple/baseline
+2026-04-16 20:50:57 [info     ] node.complete                  elapsed_ms=1591.1 hash=sha256:e3f8ff1d8 node=cross-task/compile/probe-ga-simple/baseline
+2026-04-16 20:50:57 [info     ] node.complete                  elapsed_ms=6363.0 hash=sha256:de9c97c69 node=cross-task/compile/probe-ga-simple
+2026-04-16 20:50:57 [info     ] node.complete                  elapsed_ms=32069.8 hash=sha256:19e7bc525 node=cross-task/compile
+2026-04-16 20:50:57 [info     ] node.enter                     hash=sha256:b2faad4a2 node=cross-task/extract
+2026-04-16 20:50:57 [info     ] node.enter                     hash=sha256:b86851a99 node=cross-task/extract/probe-ext-ditrans
+2026-04-16 20:50:57 [info     ] node.enter                     hash=sha256:68c610d27 node=cross-task/extract/probe-ext-ditrans/L1-H0
+2026-04-16 20:50:58 [info     ] node.complete                  elapsed_ms=1607.0 hash=sha256:68c610d27 node=cross-task/extract/probe-ext-ditrans/L1-H0
+2026-04-16 20:50:58 [info     ] node.enter                     hash=sha256:05ca0d5b1 node=cross-task/extract/probe-ext-ditrans/L24-H0
+2026-04-16 20:51:00 [info     ] node.complete                  elapsed_ms=1594.5 hash=sha256:05ca0d5b1 node=cross-task/extract/probe-ext-ditrans/L24-H0
+2026-04-16 20:51:00 [info     ] node.enter                     hash=sha256:0099889d0 node=cross-task/extract/probe-ext-ditrans/L24-H2
+2026-04-16 20:51:02 [info     ] node.complete                  elapsed_ms=1622.5 hash=sha256:0099889d0 node=cross-task/extract/probe-ext-ditrans/L24-H2
+2026-04-16 20:51:02 [info     ] node.enter                     hash=sha256:d5117dfdb node=cross-task/extract/probe-ext-ditrans/baseline
+2026-04-16 20:51:03 [info     ] node.complete                  elapsed_ms=1576.4 hash=sha256:d5117dfdb node=cross-task/extract/probe-ext-ditrans/baseline
+2026-04-16 20:51:03 [info     ] node.complete                  elapsed_ms=6402.6 hash=sha256:b86851a99 node=cross-task/extract/probe-ext-ditrans
+2026-04-16 20:51:03 [info     ] node.enter                     hash=sha256:524deea81 node=cross-task/extract/probe-ext-multi
+2026-04-16 20:51:03 [info     ] node.enter                     hash=sha256:18e4045d0 node=cross-task/extract/probe-ext-multi/L1-H0
+2026-04-16 20:51:05 [info     ] node.complete                  elapsed_ms=1641.9 hash=sha256:18e4045d0 node=cross-task/extract/probe-ext-multi/L1-H0
+2026-04-16 20:51:05 [info     ] node.enter                     hash=sha256:2397e9093 node=cross-task/extract/probe-ext-multi/L24-H0
+2026-04-16 20:51:07 [info     ] node.complete                  elapsed_ms=1624.9 hash=sha256:2397e9093 node=cross-task/extract/probe-ext-multi/L24-H0
+2026-04-16 20:51:07 [info     ] node.enter                     hash=sha256:e0edddf80 node=cross-task/extract/probe-ext-multi/L24-H2
+2026-04-16 20:51:08 [info     ] node.complete                  elapsed_ms=1585.9 hash=sha256:e0edddf80 node=cross-task/extract/probe-ext-multi/L24-H2
+2026-04-16 20:51:08 [info     ] node.enter                     hash=sha256:1b6a74be5 node=cross-task/extract/probe-ext-multi/baseline
+2026-04-16 20:51:10 [info     ] node.complete                  elapsed_ms=1654.7 hash=sha256:1b6a74be5 node=cross-task/extract/probe-ext-multi/baseline
+2026-04-16 20:51:10 [info     ] node.complete                  elapsed_ms=6509.6 hash=sha256:524deea81 node=cross-task/extract/probe-ext-multi
+2026-04-16 20:51:10 [info     ] node.enter                     hash=sha256:19c58d55c node=cross-task/extract/probe-ext-nested
+2026-04-16 20:51:10 [info     ] node.enter                     hash=sha256:6aaafe340 node=cross-task/extract/probe-ext-nested/L1-H0
+2026-04-16 20:51:11 [info     ] node.complete                  elapsed_ms=1646.1 hash=sha256:6aaafe340 node=cross-task/extract/probe-ext-nested/L1-H0
+2026-04-16 20:51:11 [info     ] node.enter                     hash=sha256:699e53593 node=cross-task/extract/probe-ext-nested/L24-H0
+2026-04-16 20:51:13 [info     ] node.complete                  elapsed_ms=1582.2 hash=sha256:699e53593 node=cross-task/extract/probe-ext-nested/L24-H0
+2026-04-16 20:51:13 [info     ] node.enter                     hash=sha256:026a2a416 node=cross-task/extract/probe-ext-nested/L24-H2
+2026-04-16 20:51:15 [info     ] node.complete                  elapsed_ms=1661.6 hash=sha256:026a2a416 node=cross-task/extract/probe-ext-nested/L24-H2
+2026-04-16 20:51:15 [info     ] node.enter                     hash=sha256:a8bc021f5 node=cross-task/extract/probe-ext-nested/baseline
+2026-04-16 20:51:16 [info     ] node.complete                  elapsed_ms=1584.0 hash=sha256:a8bc021f5 node=cross-task/extract/probe-ext-nested/baseline
+2026-04-16 20:51:16 [info     ] node.complete                  elapsed_ms=6476.0 hash=sha256:19c58d55c node=cross-task/extract/probe-ext-nested
+2026-04-16 20:51:16 [info     ] node.enter                     hash=sha256:849237fb7 node=cross-task/extract/probe-ext-passive
+2026-04-16 20:51:16 [info     ] node.enter                     hash=sha256:950973ad9 node=cross-task/extract/probe-ext-passive/L1-H0
+2026-04-16 20:51:18 [info     ] node.complete                  elapsed_ms=1645.4 hash=sha256:950973ad9 node=cross-task/extract/probe-ext-passive/L1-H0
+2026-04-16 20:51:18 [info     ] node.enter                     hash=sha256:306705b58 node=cross-task/extract/probe-ext-passive/L24-H0
+2026-04-16 20:51:20 [info     ] node.complete                  elapsed_ms=1649.8 hash=sha256:306705b58 node=cross-task/extract/probe-ext-passive/L24-H0
+2026-04-16 20:51:20 [info     ] node.enter                     hash=sha256:2fa963eac node=cross-task/extract/probe-ext-passive/L24-H2
+2026-04-16 20:51:21 [info     ] node.complete                  elapsed_ms=1587.8 hash=sha256:2fa963eac node=cross-task/extract/probe-ext-passive/L24-H2
+2026-04-16 20:51:21 [info     ] node.enter                     hash=sha256:a0f527a54 node=cross-task/extract/probe-ext-passive/baseline
+2026-04-16 20:51:23 [info     ] node.complete                  elapsed_ms=1628.7 hash=sha256:a0f527a54 node=cross-task/extract/probe-ext-passive/baseline
+2026-04-16 20:51:23 [info     ] node.complete                  elapsed_ms=6513.9 hash=sha256:849237fb7 node=cross-task/extract/probe-ext-passive
+2026-04-16 20:51:23 [info     ] node.enter                     hash=sha256:b6a07556b node=cross-task/extract/probe-ext-simple
+2026-04-16 20:51:23 [info     ] node.enter                     hash=sha256:795c8edf7 node=cross-task/extract/probe-ext-simple/L1-H0
+2026-04-16 20:51:24 [info     ] node.complete                  elapsed_ms=1635.7 hash=sha256:795c8edf7 node=cross-task/extract/probe-ext-simple/L1-H0
+2026-04-16 20:51:24 [info     ] node.enter                     hash=sha256:615cd861a node=cross-task/extract/probe-ext-simple/L24-H0
+2026-04-16 20:51:26 [info     ] node.complete                  elapsed_ms=1597.3 hash=sha256:615cd861a node=cross-task/extract/probe-ext-simple/L24-H0
+2026-04-16 20:51:26 [info     ] node.enter                     hash=sha256:98af4584f node=cross-task/extract/probe-ext-simple/L24-H2
+2026-04-16 20:51:28 [info     ] node.complete                  elapsed_ms=1650.5 hash=sha256:98af4584f node=cross-task/extract/probe-ext-simple/L24-H2
+2026-04-16 20:51:28 [info     ] node.enter                     hash=sha256:a6b2f1c8c node=cross-task/extract/probe-ext-simple/baseline
+2026-04-16 20:51:29 [info     ] node.complete                  elapsed_ms=1599.7 hash=sha256:a6b2f1c8c node=cross-task/extract/probe-ext-simple/baseline
+2026-04-16 20:51:29 [info     ] node.complete                  elapsed_ms=6485.3 hash=sha256:b6a07556b node=cross-task/extract/probe-ext-simple
+2026-04-16 20:51:29 [info     ] node.complete                  elapsed_ms=32389.2 hash=sha256:b2faad4a2 node=cross-task/extract
+2026-04-16 20:51:29 [info     ] node.enter                     hash=sha256:d9543269b node=cross-task/summarize
+2026-04-16 20:51:29 [info     ] node.enter                     hash=sha256:f03c9a824 node=cross-task/summarize/probe-sum-multi
+2026-04-16 20:51:29 [info     ] node.enter                     hash=sha256:a3a98e294 node=cross-task/summarize/probe-sum-multi/L1-H0
+2026-04-16 20:51:32 [info     ] node.complete                  elapsed_ms=2494.3 hash=sha256:a3a98e294 node=cross-task/summarize/probe-sum-multi/L1-H0
+2026-04-16 20:51:32 [info     ] node.enter                     hash=sha256:7e046414f node=cross-task/summarize/probe-sum-multi/L24-H0
+2026-04-16 20:51:33 [info     ] node.complete                  elapsed_ms=1654.3 hash=sha256:7e046414f node=cross-task/summarize/probe-sum-multi/L24-H0
+2026-04-16 20:51:33 [info     ] node.enter                     hash=sha256:12df87ae8 node=cross-task/summarize/probe-sum-multi/L24-H2
+2026-04-16 20:51:35 [info     ] node.complete                  elapsed_ms=1646.4 hash=sha256:12df87ae8 node=cross-task/summarize/probe-sum-multi/L24-H2
+2026-04-16 20:51:35 [info     ] node.enter                     hash=sha256:9a8bb1a54 node=cross-task/summarize/probe-sum-multi/baseline
+2026-04-16 20:51:37 [info     ] node.complete                  elapsed_ms=1687.9 hash=sha256:9a8bb1a54 node=cross-task/summarize/probe-sum-multi/baseline
+2026-04-16 20:51:37 [info     ] node.complete                  elapsed_ms=7485.0 hash=sha256:f03c9a824 node=cross-task/summarize/probe-sum-multi
+2026-04-16 20:51:37 [info     ] node.enter                     hash=sha256:d3cda5662 node=cross-task/summarize/probe-sum-nested
+2026-04-16 20:51:37 [info     ] node.enter                     hash=sha256:b5f3d4768 node=cross-task/summarize/probe-sum-nested/L1-H0
+2026-04-16 20:51:38 [info     ] node.complete                  elapsed_ms=1699.3 hash=sha256:b5f3d4768 node=cross-task/summarize/probe-sum-nested/L1-H0
+2026-04-16 20:51:38 [info     ] node.enter                     hash=sha256:8e61e0aeb node=cross-task/summarize/probe-sum-nested/L24-H0
+2026-04-16 20:51:40 [info     ] node.complete                  elapsed_ms=1658.7 hash=sha256:8e61e0aeb node=cross-task/summarize/probe-sum-nested/L24-H0
+2026-04-16 20:51:40 [info     ] node.enter                     hash=sha256:561019d1b node=cross-task/summarize/probe-sum-nested/L24-H2
+2026-04-16 20:51:42 [info     ] node.complete                  elapsed_ms=1675.4 hash=sha256:561019d1b node=cross-task/summarize/probe-sum-nested/L24-H2
+2026-04-16 20:51:42 [info     ] node.enter                     hash=sha256:439d3c293 node=cross-task/summarize/probe-sum-nested/baseline
+2026-04-16 20:51:43 [info     ] node.complete                  elapsed_ms=1660.1 hash=sha256:439d3c293 node=cross-task/summarize/probe-sum-nested/baseline
+2026-04-16 20:51:43 [info     ] node.complete                  elapsed_ms=6695.7 hash=sha256:d3cda5662 node=cross-task/summarize/probe-sum-nested
+2026-04-16 20:51:43 [info     ] node.enter                     hash=sha256:8ae990ec3 node=cross-task/summarize/probe-sum-politics
+2026-04-16 20:51:43 [info     ] node.enter                     hash=sha256:59277b2f7 node=cross-task/summarize/probe-sum-politics/L1-H0
+2026-04-16 20:51:45 [info     ] node.complete                  elapsed_ms=1749.2 hash=sha256:59277b2f7 node=cross-task/summarize/probe-sum-politics/L1-H0
+2026-04-16 20:51:45 [info     ] node.enter                     hash=sha256:aea97b619 node=cross-task/summarize/probe-sum-politics/L24-H0
+2026-04-16 20:51:47 [info     ] node.complete                  elapsed_ms=1671.6 hash=sha256:aea97b619 node=cross-task/summarize/probe-sum-politics/L24-H0
+2026-04-16 20:51:47 [info     ] node.enter                     hash=sha256:a20026910 node=cross-task/summarize/probe-sum-politics/L24-H2
+2026-04-16 20:51:48 [info     ] node.complete                  elapsed_ms=1648.4 hash=sha256:a20026910 node=cross-task/summarize/probe-sum-politics/L24-H2
+2026-04-16 20:51:48 [info     ] node.enter                     hash=sha256:7996b419e node=cross-task/summarize/probe-sum-politics/baseline
+2026-04-16 20:51:50 [info     ] node.complete                  elapsed_ms=1660.9 hash=sha256:7996b419e node=cross-task/summarize/probe-sum-politics/baseline
+2026-04-16 20:51:50 [info     ] node.complete                  elapsed_ms=6732.3 hash=sha256:8ae990ec3 node=cross-task/summarize/probe-sum-politics
+2026-04-16 20:51:50 [info     ] node.enter                     hash=sha256:ef4a1502d node=cross-task/summarize/probe-sum-science
+2026-04-16 20:51:50 [info     ] node.enter                     hash=sha256:907b76a52 node=cross-task/summarize/probe-sum-science/L1-H0
+2026-04-16 20:51:52 [info     ] node.complete                  elapsed_ms=1689.7 hash=sha256:907b76a52 node=cross-task/summarize/probe-sum-science/L1-H0
+2026-04-16 20:51:52 [info     ] node.enter                     hash=sha256:2e89eab01 node=cross-task/summarize/probe-sum-science/L24-H0
+2026-04-16 20:51:54 [info     ] node.complete                  elapsed_ms=1660.7 hash=sha256:2e89eab01 node=cross-task/summarize/probe-sum-science/L24-H0
+2026-04-16 20:51:54 [info     ] node.enter                     hash=sha256:40d8b6e8c node=cross-task/summarize/probe-sum-science/L24-H2
+2026-04-16 20:51:55 [info     ] node.complete                  elapsed_ms=1652.0 hash=sha256:40d8b6e8c node=cross-task/summarize/probe-sum-science/L24-H2
+2026-04-16 20:51:55 [info     ] node.enter                     hash=sha256:fbb65e184 node=cross-task/summarize/probe-sum-science/baseline
+2026-04-16 20:51:57 [info     ] node.complete                  elapsed_ms=1656.6 hash=sha256:fbb65e184 node=cross-task/summarize/probe-sum-science/baseline
+2026-04-16 20:51:57 [info     ] node.complete                  elapsed_ms=6661.2 hash=sha256:ef4a1502d node=cross-task/summarize/probe-sum-science
+2026-04-16 20:51:57 [info     ] node.enter                     hash=sha256:cdf9babd2 node=cross-task/summarize/probe-sum-simple
+2026-04-16 20:51:57 [info     ] node.enter                     hash=sha256:6d01b8886 node=cross-task/summarize/probe-sum-simple/L1-H0
+2026-04-16 20:51:59 [info     ] node.complete                  elapsed_ms=1692.9 hash=sha256:6d01b8886 node=cross-task/summarize/probe-sum-simple/L1-H0
+2026-04-16 20:51:59 [info     ] node.enter                     hash=sha256:df03fed22 node=cross-task/summarize/probe-sum-simple/L24-H0
+2026-04-16 20:52:00 [info     ] node.complete                  elapsed_ms=1630.6 hash=sha256:df03fed22 node=cross-task/summarize/probe-sum-simple/L24-H0
+2026-04-16 20:52:00 [info     ] node.enter                     hash=sha256:f5be2d2e6 node=cross-task/summarize/probe-sum-simple/L24-H2
+2026-04-16 20:52:02 [info     ] node.complete                  elapsed_ms=1659.0 hash=sha256:f5be2d2e6 node=cross-task/summarize/probe-sum-simple/L24-H2
+2026-04-16 20:52:02 [info     ] node.enter                     hash=sha256:73d490967 node=cross-task/summarize/probe-sum-simple/baseline
+2026-04-16 20:52:03 [info     ] node.complete                  elapsed_ms=1639.6 hash=sha256:73d490967 node=cross-task/summarize/probe-sum-simple/baseline
+2026-04-16 20:52:03 [info     ] node.complete                  elapsed_ms=6624.3 hash=sha256:cdf9babd2 node=cross-task/summarize/probe-sum-simple
+2026-04-16 20:52:03 [info     ] node.complete                  elapsed_ms=34200.4 hash=sha256:d9543269b node=cross-task/summarize
+2026-04-16 20:52:03 [info     ] node.enter                     hash=sha256:53af0081d node=cross-task/translate
+2026-04-16 20:52:03 [info     ] node.enter                     hash=sha256:3c809d7b7 node=cross-task/translate/probe-tr-adj
+2026-04-16 20:52:03 [info     ] node.enter                     hash=sha256:bc83d2362 node=cross-task/translate/probe-tr-adj/L1-H0
+2026-04-16 20:52:06 [info     ] node.complete                  elapsed_ms=2081.7 hash=sha256:bc83d2362 node=cross-task/translate/probe-tr-adj/L1-H0
+2026-04-16 20:52:06 [info     ] node.enter                     hash=sha256:15fb6f1b8 node=cross-task/translate/probe-tr-adj/L24-H0
+2026-04-16 20:52:07 [info     ] node.complete                  elapsed_ms=1582.8 hash=sha256:15fb6f1b8 node=cross-task/translate/probe-tr-adj/L24-H0
+2026-04-16 20:52:07 [info     ] node.enter                     hash=sha256:e7705326c node=cross-task/translate/probe-tr-adj/L24-H2
+2026-04-16 20:52:09 [info     ] node.complete                  elapsed_ms=1613.2 hash=sha256:e7705326c node=cross-task/translate/probe-tr-adj/L24-H2
+2026-04-16 20:52:09 [info     ] node.enter                     hash=sha256:fc68d8465 node=cross-task/translate/probe-tr-adj/baseline
+2026-04-16 20:52:10 [info     ] node.complete                  elapsed_ms=1598.9 hash=sha256:fc68d8465 node=cross-task/translate/probe-tr-adj/baseline
+2026-04-16 20:52:10 [info     ] node.complete                  elapsed_ms=6878.8 hash=sha256:3c809d7b7 node=cross-task/translate/probe-tr-adj
+2026-04-16 20:52:10 [info     ] node.enter                     hash=sha256:83326cc2d node=cross-task/translate/probe-tr-cond
+2026-04-16 20:52:10 [info     ] node.enter                     hash=sha256:378884bf2 node=cross-task/translate/probe-tr-cond/L1-H0
+2026-04-16 20:52:12 [info     ] node.complete                  elapsed_ms=1632.3 hash=sha256:378884bf2 node=cross-task/translate/probe-tr-cond/L1-H0
+2026-04-16 20:52:12 [info     ] node.enter                     hash=sha256:f3d5acd0a node=cross-task/translate/probe-tr-cond/L24-H0
+2026-04-16 20:52:14 [info     ] node.complete                  elapsed_ms=1655.4 hash=sha256:f3d5acd0a node=cross-task/translate/probe-tr-cond/L24-H0
+2026-04-16 20:52:14 [info     ] node.enter                     hash=sha256:99d239fb9 node=cross-task/translate/probe-tr-cond/L24-H2
+2026-04-16 20:52:16 [info     ] node.complete                  elapsed_ms=2818.5 hash=sha256:99d239fb9 node=cross-task/translate/probe-tr-cond/L24-H2
+2026-04-16 20:52:16 [info     ] node.enter                     hash=sha256:96cf49151 node=cross-task/translate/probe-tr-cond/baseline
+2026-04-16 20:52:21 [info     ] node.complete                  elapsed_ms=4379.9 hash=sha256:96cf49151 node=cross-task/translate/probe-tr-cond/baseline
+2026-04-16 20:52:21 [info     ] node.complete                  elapsed_ms=10488.9 hash=sha256:83326cc2d node=cross-task/translate/probe-tr-cond
+2026-04-16 20:52:21 [info     ] node.enter                     hash=sha256:9ddd70a40 node=cross-task/translate/probe-tr-quant
+2026-04-16 20:52:21 [info     ] node.enter                     hash=sha256:cf9f71bd1 node=cross-task/translate/probe-tr-quant/L1-H0
+2026-04-16 20:52:23 [info     ] node.complete                  elapsed_ms=2197.0 hash=sha256:cf9f71bd1 node=cross-task/translate/probe-tr-quant/L1-H0
+2026-04-16 20:52:23 [info     ] node.enter                     hash=sha256:fb4960fbf node=cross-task/translate/probe-tr-quant/L24-H0
+2026-04-16 20:52:25 [info     ] node.complete                  elapsed_ms=2198.9 hash=sha256:fb4960fbf node=cross-task/translate/probe-tr-quant/L24-H0
+2026-04-16 20:52:25 [info     ] node.enter                     hash=sha256:8d8e37c98 node=cross-task/translate/probe-tr-quant/L24-H2
+2026-04-16 20:52:27 [info     ] node.complete                  elapsed_ms=2208.5 hash=sha256:8d8e37c98 node=cross-task/translate/probe-tr-quant/L24-H2
+2026-04-16 20:52:27 [info     ] node.enter                     hash=sha256:47d3149e7 node=cross-task/translate/probe-tr-quant/baseline
+2026-04-16 20:52:30 [info     ] node.complete                  elapsed_ms=2215.3 hash=sha256:47d3149e7 node=cross-task/translate/probe-tr-quant/baseline
+2026-04-16 20:52:30 [info     ] node.complete                  elapsed_ms=8826.9 hash=sha256:9ddd70a40 node=cross-task/translate/probe-tr-quant
+2026-04-16 20:52:30 [info     ] node.enter                     hash=sha256:6747d5db4 node=cross-task/translate/probe-tr-relcl
+2026-04-16 20:52:30 [info     ] node.enter                     hash=sha256:26978cd38 node=cross-task/translate/probe-tr-relcl/L1-H0
+2026-04-16 20:52:32 [info     ] node.complete                  elapsed_ms=2195.4 hash=sha256:26978cd38 node=cross-task/translate/probe-tr-relcl/L1-H0
+2026-04-16 20:52:32 [info     ] node.enter                     hash=sha256:b48fc2ec4 node=cross-task/translate/probe-tr-relcl/L24-H0
+2026-04-16 20:52:34 [info     ] node.complete                  elapsed_ms=2157.5 hash=sha256:b48fc2ec4 node=cross-task/translate/probe-tr-relcl/L24-H0
+2026-04-16 20:52:34 [info     ] node.enter                     hash=sha256:005ae1315 node=cross-task/translate/probe-tr-relcl/L24-H2
+2026-04-16 20:52:36 [info     ] node.complete                  elapsed_ms=2212.3 hash=sha256:005ae1315 node=cross-task/translate/probe-tr-relcl/L24-H2
+2026-04-16 20:52:36 [info     ] node.enter                     hash=sha256:b066f37f7 node=cross-task/translate/probe-tr-relcl/baseline
+2026-04-16 20:52:38 [info     ] node.complete                  elapsed_ms=2180.7 hash=sha256:b066f37f7 node=cross-task/translate/probe-tr-relcl/baseline
+2026-04-16 20:52:38 [info     ] node.complete                  elapsed_ms=8748.8 hash=sha256:6747d5db4 node=cross-task/translate/probe-tr-relcl
+2026-04-16 20:52:38 [info     ] node.enter                     hash=sha256:59a865f05 node=cross-task/translate/probe-tr-simple
+2026-04-16 20:52:38 [info     ] node.enter                     hash=sha256:9c9bc515f node=cross-task/translate/probe-tr-simple/L1-H0
+2026-04-16 20:52:41 [info     ] node.complete                  elapsed_ms=2267.8 hash=sha256:9c9bc515f node=cross-task/translate/probe-tr-simple/L1-H0
+2026-04-16 20:52:41 [info     ] node.enter                     hash=sha256:405285696 node=cross-task/translate/probe-tr-simple/L24-H0
+2026-04-16 20:52:43 [info     ] node.complete                  elapsed_ms=2190.1 hash=sha256:405285696 node=cross-task/translate/probe-tr-simple/L24-H0
+2026-04-16 20:52:43 [info     ] node.enter                     hash=sha256:ddd9b4206 node=cross-task/translate/probe-tr-simple/L24-H2
+2026-04-16 20:52:45 [info     ] node.complete                  elapsed_ms=2177.0 hash=sha256:ddd9b4206 node=cross-task/translate/probe-tr-simple/L24-H2
+2026-04-16 20:52:45 [info     ] node.enter                     hash=sha256:021fe3f53 node=cross-task/translate/probe-tr-simple/baseline
+2026-04-16 20:52:47 [info     ] node.complete                  elapsed_ms=2179.5 hash=sha256:021fe3f53 node=cross-task/translate/probe-tr-simple/baseline
+2026-04-16 20:52:47 [info     ] node.complete                  elapsed_ms=8821.0 hash=sha256:59a865f05 node=cross-task/translate/probe-tr-simple
+2026-04-16 20:52:47 [info     ] node.complete                  elapsed_ms=43766.2 hash=sha256:53af0081d node=cross-task/translate
+2026-04-16 20:52:47 [info     ] node.complete                  elapsed_ms=175069.9 hash=sha256:bd530aec0 node=cross-task
+
+============================================================
+  ESSENTIALITY MATRIX — head x task
+============================================================
+
+                     classify    compile    extract  summarize  translate
+-------------------------------------------------------------------------

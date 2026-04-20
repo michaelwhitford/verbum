@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T03:51:10.270810+00:00",
+  "node_id": "cross-task/extract/probe-ext-nested",
+  "config_hash": "sha256:19c58d55c5e2144a8ab0c925f592a770d5fb1223637af822c01a204c0c035591",
+  "elapsed_ms": 6476.0,
+  "completed_at": "2026-04-17T03:51:16.747000+00:00"
+}

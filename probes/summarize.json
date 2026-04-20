@@ -1,0 +1,45 @@
+{
+  "id": "summarize",
+  "version": 1,
+  "description": "Summarization probes. Paragraph to one-sentence summary.",
+  "created": "2026-04-17T00:00:00Z",
+  "author": "verbum",
+  "default_gate": "summarize",
+  "probes": [
+    {
+      "id": "sum-science",
+      "category": "summarize",
+      "prompt": "Scientists at the university discovered a new species of butterfly in the Amazon rainforest that has unique wing patterns never seen before.",
+      "ground_truth": "Scientists discover new butterfly species in Amazon.",
+      "metadata": {"complexity": "simple"}
+    },
+    {
+      "id": "sum-politics",
+      "category": "summarize",
+      "prompt": "The city council voted unanimously to approve the new public transportation plan, which includes three new bus routes and an extension of the existing subway line to the northern suburbs.",
+      "ground_truth": "City council approves new transit plan with bus routes and subway extension.",
+      "metadata": {"complexity": "medium"}
+    },
+    {
+      "id": "sum-nested",
+      "category": "summarize",
+      "prompt": "Although the company reported record profits in the third quarter, analysts warn that the increasing costs of raw materials, combined with growing competition from overseas manufacturers, could significantly impact future earnings.",
+      "ground_truth": "Company has record profits but faces risks from costs and competition.",
+      "metadata": {"complexity": "complex"}
+    },
+    {
+      "id": "sum-multi",
+      "category": "summarize",
+      "prompt": "The earthquake measuring 6.2 on the Richter scale struck the coastal region at dawn, damaging hundreds of buildings, displacing thousands of residents, and triggering a small tsunami warning that was later cancelled.",
+      "ground_truth": "Major earthquake hits coast, causes damage and temporary tsunami warning.",
+      "metadata": {"complexity": "complex"}
+    },
+    {
+      "id": "sum-simple",
+      "category": "summarize",
+      "prompt": "The dog chased the cat around the garden for ten minutes before giving up and lying down in the shade.",
+      "ground_truth": "Dog chases cat then rests in shade.",
+      "metadata": {"complexity": "simple"}
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "generation": " \u2227 \u03bb assist(x). helpful(x) | concise(x)\n\nOutput: The dog runs. Be helpful but concise.\n\nSo, the output is the combination of the two expressions. The first is \"The dog runs.\" and the second is \"Be helpful",
+  "has_english": true,
+  "has_lambda": true,
+  "ablated_head": null,
+  "is_baseline": true
+}

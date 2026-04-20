@@ -1,0 +1,3 @@
+Translate to formal logic:
+
+Input: 

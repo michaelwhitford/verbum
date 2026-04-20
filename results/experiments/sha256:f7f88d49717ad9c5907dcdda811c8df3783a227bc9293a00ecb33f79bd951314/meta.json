@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T03:24:49.072559+00:00",
+  "node_id": "circuit-discovery/bos-tracing/probe-ga-complex/L22",
+  "config_hash": "sha256:f7f88d49717ad9c5907dcdda811c8df3783a227bc9293a00ecb33f79bd951314",
+  "elapsed_ms": 1800.4,
+  "completed_at": "2026-04-17T03:24:50.873225+00:00"
+}

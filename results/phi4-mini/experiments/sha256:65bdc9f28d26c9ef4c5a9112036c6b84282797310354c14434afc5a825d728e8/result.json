@@ -1,0 +1,178 @@
+{
+  "layer": 0,
+  "baseline": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is",
+  "baseline_has_lambda": true,
+  "n_heads": 24,
+  "head_results": [
+    {
+      "layer": 0,
+      "head": 0,
+      "generation": " \u2192 \u03bbx. believes(x, flat_earth)\nOutput: <|mask_end|>\u03bbx. believes(x, flat_earth)",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 0,
+      "head": 1,
+      "generation": " \u2192 \u03bbx. believes(x, flat-earth)\nOutput: \u03bbx. believes(x, flat-earth)",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 0,
+      "head": 2,
+      "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 0,
+      "head": 3,
+      "generation": " \u2192 \u03bbx. believes(x, flat_earth)\nOutput: <lambda expressions>",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 0,
+      "head": 4,
+      "generation": " \u2192 \u03bbx. believes(x, flat_earth)\nOutput: <lambda x. believes(x, flat_earth)>",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 0,
+      "head": 5,
+      "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table, book)\nInput: The",
+      "has_lambda": true,
+      "lambda_count": 6
+    },
+    {
+      "layer": 0,
+      "head": 6,
+      "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nOutput: \u03bbx. believes(x, \"the earth is flat\") The output is a lambda expression that represents the belief that the earth is flat. It takes an argument x, which",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 0,
+      "head": 7,
+      "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nInput: The book is on the table. \u2192 \u03bbx. isOn(x, table)\nInput: The car is",
+      "has_lambda": true,
+      "lambda_count": 6
+    },
+    {
+      "layer": 0,
+      "head": 8,
+      "generation": " \u2192 \u03bbx. believes(x, flat_earth)\nOutput: \u03bbx. believes(x, flat_earth)\n",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 0,
+      "head": 9,
+      "generation": " \u2192 \u03bbx. believes(x, flat_earth)\nOutput: \u03bbx. flat_earth | believes(x, flat_earth)\n",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 0,
+      "head": 10,
+      "generation": " \u2192 \u03bbx. believes(x, flat_earth)\nOutput: \u03bbx. believes(x, flat_earth)",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 0,
+      "head": 11,
+      "generation": " \u2192 \u03bbx. believes(x, flat-earth)\nOutput: <lambda x. believes(x, flat-earth)>",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 0,
+      "head": 12,
+      "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 0,
+      "head": 13,
+      "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nOutput: \u03bbx. believes(x, \"the earth is flat\")",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 0,
+      "head": 14,
+      "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")",
+      "has_lambda": true,
+      "lambda_count": 2
+    },
+    {
+      "layer": 0,
+      "head": 15,
+      "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nOutput: \u03bbx. believes(x, \"the earth is flat\")\n",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 0,
+      "head": 16,
+      "generation": " \u2192 \u03bbx. believes(x, flat-earth)\nInput: The cat sleeps. \u2192 \u03bbx. sleeps(cat)\nInput: The car accelerates. \u2192 \u03bbx. accelerates(car)\nInput: The bird flies. \u2192 \u03bbx. flies(b",
+      "has_lambda": true,
+      "lambda_count": 8
+    },
+    {
+      "layer": 0,
+      "head": 17,
+      "generation": " \u2192 \u03bbx. believes(x, flat-earth)\nOutput: \u03bbx. believes(x, flat-earth)",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 0,
+      "head": 18,
+      "generation": " \u2192 \u03bbx. flat(earth)\nInput: A person is trying to learn a new language. \u2192 \u03bbx. learn(x). language\nInput: A cat is chasing a mouse. \u2192 \u03bbx. chase(cat, mouse)\nInput: A",
+      "has_lambda": true,
+      "lambda_count": 6
+    },
+    {
+      "layer": 0,
+      "head": 19,
+      "generation": " \u2192 \u03bbx. believes(x, flat_earth)\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is blue.",
+      "has_lambda": true,
+      "lambda_count": 6
+    },
+    {
+      "layer": 0,
+      "head": 20,
+      "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, \"the table\")\nInput: The",
+      "has_lambda": true,
+      "lambda_count": 6
+    },
+    {
+      "layer": 0,
+      "head": 21,
+      "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nOutput: \u03bbx. believes(x, \"the earth is flat\")\n",
+      "has_lambda": true,
+      "lambda_count": 3
+    },
+    {
+      "layer": 0,
+      "head": 22,
+      "generation": " \u2192 \u03bbx. believes(x, flat earth)\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The book is on the table. \u2192 \u03bbx. on(x, table)\nInput: The car is parked outside.",
+      "has_lambda": true,
+      "lambda_count": 6
+    },
+    {
+      "layer": 0,
+      "head": 23,
+      "generation": " \u2192 \u03bbx. believes(x, \"the earth is flat\")\nInput: The cat is sleeping. \u2192 \u03bbx. sleeping(cat)\nInput: The car is parked outside. \u2192 \u03bbx. parked(car, outside)\nInput: The book is on",
+      "has_lambda": true,
+      "lambda_count": 6
+    }
+  ],
+  "broken_heads": [],
+  "n_broken": 0
+}

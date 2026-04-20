@@ -1,0 +1,43 @@
+{
+  "L1-H0": {
+    "generation": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth is flat\" using lambda expressions. Let me start by breaking down the sentence. \n\nFirst, the main verb here is \"believes.\" The subject is \"someone,\" and the object is the clause \"that the earth is flat.\" In lambda calculus, we usually represent predicates as functions that take arguments. So, \"believes\" would be a function that takes a subject and a proposition. \n\nThe structure of the sentence is: [Someone] [believes that] [the earth is flat]. The \"that\" clause is a proposition that the earth is flat. So, the entire sentence",
+    "has_lambda": true,
+    "lambda_count": 2,
+    "has_reasoning": true,
+    "ablated_head": [
+      1,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H0": {
+    "generation": " \u2192 ?\n\nOkay, let's see. The user wants to convert the sentence \"Someone believes that the earth is flat.\" into a lambda expression. \n\nFirst, I need to break down the sentence. The main structure is \"Someone believes that [the earth is flat].\" So, \"Someone\" is the subject, \"believes\" is the verb, and the object is a clause \"that the earth is flat.\"\n\nIn lambda calculus, we usually represent actions as functions. So, \"believes\" would be a function that takes an argument (the belief) and returns something. The object of the belief is \"the earth is flat,\" which is a proposition.\n\nSo, the sentence can be structured as: someone (a variable, maybe '",
+    "has_lambda": false,
+    "lambda_count": 1,
+    "has_reasoning": true,
+    "ablated_head": [
+      24,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H2": {
+    "generation": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth is flat\" using lambda notation. Let me start by breaking down the sentence. \n\nFirst, the main structure is \"Someone believes that [the earth is flat].\" The subject here is \"someone,\" and the predicate is \"believes that...\" The part inside the belief is a clause: \"the earth is flat.\" \n\nIn lambda calculus, functions are represented with lambda abstractions. So, the main verb here is \"believes,\" which takes an argument. The argument would be the content of the belief. The content is \"the earth is flat,\" which is a proposition. \n\nSo,",
+    "has_lambda": true,
+    "lambda_count": 2,
+    "has_reasoning": true,
+    "ablated_head": [
+      24,
+      2
+    ],
+    "is_baseline": false
+  },
+  "baseline": {
+    "generation": " \u2192 \u03bbx. believes(x, earth, flat)\n\nOkay, so I need to figure out how to represent the sentence \"Someone believes that the earth is flat\" using lambda expressions. Let me start by breaking down the sentence. \n\nFirst, the main structure is \"Someone believes that [the earth is flat].\" The subject here is \"someone,\" and the predicate is \"believes that...\" The content of the belief is \"the earth is flat.\" \n\nIn lambda calculus, functions are represented with lambda abstractions. So, the verb \"believes\" would be a function that takes an argument (the person who believes) and another argument (the content of the belief). The content of the belief is itself a proposition: \"the earth is",
+    "has_lambda": true,
+    "lambda_count": 2,
+    "has_reasoning": true,
+    "ablated_head": null,
+    "is_baseline": true
+  }
+}

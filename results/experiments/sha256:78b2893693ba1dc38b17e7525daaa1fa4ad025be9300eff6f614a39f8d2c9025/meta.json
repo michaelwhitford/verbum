@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T03:25:23.456807+00:00",
+  "node_id": "circuit-discovery/bos-tracing/probe-ga-complex/L8",
+  "config_hash": "sha256:78b2893693ba1dc38b17e7525daaa1fa4ad025be9300eff6f614a39f8d2c9025",
+  "elapsed_ms": 1765.9,
+  "completed_at": "2026-04-17T03:25:25.222993+00:00"
+}

@@ -1,0 +1,25 @@
+{
+  "model": "EleutherAI/pythia-2.8b-deduped",
+  "n_layers": 32,
+  "critical_layers_union": [
+    0
+  ],
+  "per_probe": [
+    {
+      "probe_id": "ga-simple",
+      "baseline": " λx. runs(dog)\n\nA:\n\nThe first one is a lambda expression, the second one is a function application.\n",
+      "critical_layers": [
+        0
+      ],
+      "total_layers": 32
+    },
+    {
+      "probe_id": "ga-quant",
+      "baseline": " λx. students(x)\n\nA:\n\nI think the problem is that you're using the word \"function\" in a way",
+      "critical_layers": [
+        0
+      ],
+      "total_layers": 32
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "task": "extract",
+  "generation": " \n\nOutput: send(mary, john, letter)\nOkay, so I need to figure out how to convert the sentence \"Mary sent John a letter\" into the predicate logic format similar to the examples given. Let me start by recalling the examples provided",
+  "success": true,
+  "ablated_head": [
+    1,
+    0
+  ],
+  "is_baseline": false
+}

@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T03:52:27.927516+00:00",
+  "node_id": "cross-task/translate/probe-tr-quant/baseline",
+  "config_hash": "sha256:47d3149e76e812dd96375578728279429ba2adaa1a287cd1f68f69688b1a244a",
+  "elapsed_ms": 2215.3,
+  "completed_at": "2026-04-17T03:52:30.143308+00:00"
+}

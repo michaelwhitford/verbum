@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T02:31:26.323122+00:00",
+  "node_id": "head-ablation/probe-ga-cond/L1",
+  "config_hash": "sha256:5e35edff50478cd891be707b6e534c28067edf8fe551e1e5f7a694b8f866c0a9",
+  "elapsed_ms": 29007.0,
+  "completed_at": "2026-04-17T02:31:55.330629+00:00"
+}

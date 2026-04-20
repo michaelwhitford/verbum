@@ -1,0 +1,39 @@
+{
+  "L1-H0": {
+    "generation": " \u2227 runs(x, y) \u2192 The person believes the flat earth and runs.\nOutput: The person believes the flat earth and runs.\n\nBut the output is not in the form of the second example. How can I make it fit the form of the",
+    "has_english": true,
+    "has_lambda": false,
+    "ablated_head": [
+      1,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H0": {
+    "generation": " \u2227 (x = y) \u2192 The person believes the earth is flat.\n\nOutput: The person believes the earth is flat.\n\nSo, the input is a lambda expression that defines a property for a person who believes the earth is flat. The output is",
+    "has_english": true,
+    "has_lambda": false,
+    "ablated_head": [
+      24,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H2": {
+    "generation": " \u2227 (x = y) \u2192 The person believes the earth is flat.\n\nOutput: The person believes the earth is flat.\n\nSo, the output is the same as the input. But the input is a lambda expression, and the output is a sentence",
+    "has_english": true,
+    "has_lambda": false,
+    "ablated_head": [
+      24,
+      2
+    ],
+    "is_baseline": false
+  },
+  "baseline": {
+    "generation": " \u2227 (x = y) \u2192 The person believes the earth is flat.\n\nOutput: The person believes the earth is flat.\n\nSo, the output is the same as the input. But the input is a lambda expression, and the output is a sentence",
+    "has_english": true,
+    "has_lambda": false,
+    "ablated_head": null,
+    "is_baseline": true
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "id": "translate",
+  "version": 1,
+  "description": "Translation probes. English to French.",
+  "created": "2026-04-17T00:00:00Z",
+  "author": "verbum",
+  "default_gate": "translate",
+  "probes": [
+    {
+      "id": "tr-simple",
+      "category": "translate",
+      "prompt": "The bird sings.",
+      "ground_truth": "L'oiseau chante.",
+      "metadata": {"complexity": "simple"}
+    },
+    {
+      "id": "tr-adj",
+      "category": "translate",
+      "prompt": "The big red house is beautiful.",
+      "ground_truth": "La grande maison rouge est belle.",
+      "metadata": {"complexity": "medium"}
+    },
+    {
+      "id": "tr-quant",
+      "category": "translate",
+      "prompt": "Every student reads a book.",
+      "ground_truth": "Chaque \u00e9tudiant lit un livre.",
+      "metadata": {"complexity": "medium"}
+    },
+    {
+      "id": "tr-relcl",
+      "category": "translate",
+      "prompt": "The man who lives next door is a doctor.",
+      "ground_truth": "L'homme qui habite \u00e0 c\u00f4t\u00e9 est m\u00e9decin.",
+      "metadata": {"complexity": "complex"}
+    },
+    {
+      "id": "tr-cond",
+      "category": "translate",
+      "prompt": "If it rains tomorrow, we will stay home.",
+      "ground_truth": "S'il pleut demain, nous resterons \u00e0 la maison.",
+      "metadata": {"complexity": "complex"}
+    }
+  ]
+}

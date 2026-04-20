@@ -1,0 +1,32 @@
+{
+  "probe-ga-complex": {
+    "generation": " \u2192 ?\n\nOkay, let's see. The user wants to convert the sentence \"Someone believes that the earth is flat.\" into a lambda expression. \n\n",
+    "has_lambda": false,
+    "lambda_count": 1,
+    "n_zeroed": 15
+  },
+  "probe-ga-cond": {
+    "generation": " \u2192 ?\n\nOutput: \u03bbx. rain(x) \u2192 wet(ground)\n\nOkay, so I need to figure out how to represent the sentence \"If",
+    "has_lambda": true,
+    "lambda_count": 3,
+    "n_zeroed": 15
+  },
+  "probe-ga-quant": {
+    "generation": " \u2192 ?\n\nOkay, so I need to figure out how to represent the sentence \"Every student reads a book\" in a lambda calculus style, similar to",
+    "has_lambda": false,
+    "lambda_count": 1,
+    "n_zeroed": 15
+  },
+  "probe-ga-relcl": {
+    "generation": " \u2192 ?\n\nOkay, let's see. The user wants to convert the sentence \"The cat that sat on the mat is black.\" into a lambda expression",
+    "has_lambda": false,
+    "lambda_count": 1,
+    "n_zeroed": 15
+  },
+  "probe-ga-simple": {
+    "generation": " Be helpful but concise.\n\nOutput: \u03bbx. runs(dog) | \u03bb assist(x). helpful(x) | concise(x)\n\nWait, but the",
+    "has_lambda": true,
+    "lambda_count": 2,
+    "n_zeroed": 15
+  }
+}

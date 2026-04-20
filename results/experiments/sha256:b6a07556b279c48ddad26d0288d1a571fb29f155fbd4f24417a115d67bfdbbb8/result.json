@@ -1,0 +1,39 @@
+{
+  "L1-H0": {
+    "task": "extract",
+    "generation": " \n\nOutput: chase(dog, cat)\n\nInput: The cat chased the dog. \n\nOutput: chase(cat, dog)\n\nSo, the task is to convert a sentence into a predicate logic expression. The predicate is the verb in the sentence, and",
+    "success": true,
+    "ablated_head": [
+      1,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H0": {
+    "task": "extract",
+    "generation": " \n\nOutput: \nchase(dog, cat)\n\nInput: The girl kicked the ball. \n\nOutput:\nkick(girl, ball)\n\nInput: The man hit the ball. \n\nOutput:\nhit(man, ball)\n\nInput: The boy ate",
+    "success": true,
+    "ablated_head": [
+      24,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H2": {
+    "task": "extract",
+    "generation": " \n\nOutput: \nchase(dog, cat)\n\nInput: The cat chased the dog. \n\nOutput:\nchase(cat, dog)\n\nInput: The cat chased the dog across the yard. \n\nOutput:\nchase(cat, dog, across,",
+    "success": true,
+    "ablated_head": [
+      24,
+      2
+    ],
+    "is_baseline": false
+  },
+  "baseline": {
+    "task": "extract",
+    "generation": " \n\nOutput: \nchase(dog, cat)\n\nInput: The cat chased the dog. \n\nOutput:\nchase(cat, dog)\n\nInput: The cat chased the dog into the house. \n\nOutput:\nchase(cat, dog, house)\n\n",
+    "success": true,
+    "ablated_head": null,
+    "is_baseline": true
+  }
+}

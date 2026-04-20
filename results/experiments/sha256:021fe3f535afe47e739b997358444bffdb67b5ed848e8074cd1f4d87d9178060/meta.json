@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T03:52:45.530220+00:00",
+  "node_id": "cross-task/translate/probe-tr-simple/baseline",
+  "config_hash": "sha256:021fe3f535afe47e739b997358444bffdb67b5ed848e8074cd1f4d87d9178060",
+  "elapsed_ms": 2179.5,
+  "completed_at": "2026-04-17T03:52:47.713488+00:00"
+}

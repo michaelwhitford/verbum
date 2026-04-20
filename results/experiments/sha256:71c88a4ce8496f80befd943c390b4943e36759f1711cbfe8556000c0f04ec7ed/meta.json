@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T05:17:00.200499+00:00",
+  "node_id": "task-head-scan/extract/probe-ext-simple/L33",
+  "config_hash": "sha256:71c88a4ce8496f80befd943c390b4943e36759f1711cbfe8556000c0f04ec7ed",
+  "elapsed_ms": 65077.3,
+  "completed_at": "2026-04-17T05:18:05.278325+00:00"
+}

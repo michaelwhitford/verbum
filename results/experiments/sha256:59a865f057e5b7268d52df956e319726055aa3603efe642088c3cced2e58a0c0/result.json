@@ -1,0 +1,39 @@
+{
+  "L1-H0": {
+    "task": "translate",
+    "generation": " \u2192 Le oiseau chante.\n\nWait, but in French, the correct translation of \"The bird sings\" is \"Le oiseau chante.\" But in French, the article \"le\" is used for masculine nouns, and \"oise",
+    "success": true,
+    "ablated_head": [
+      1,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H0": {
+    "task": "translate",
+    "generation": " \u2192 ______.\n\nOkay, let's see. The user provided some examples of English sentences translated into French. The first example is \"The dog runs. \u2192 Le chien court.\" Then \"The cat is black. \u2192 Le chat est noir.\" Now",
+    "success": true,
+    "ablated_head": [
+      24,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H2": {
+    "task": "translate",
+    "generation": " \u2192 ______.\n\nOutput: Le oiseau chante.\n\nSo, the task is to translate an English sentence into French. The examples given are \"The dog runs. \u2192 Le chien court.\" and \"The cat is black. \u2192 Le chat",
+    "success": true,
+    "ablated_head": [
+      24,
+      2
+    ],
+    "is_baseline": false
+  },
+  "baseline": {
+    "task": "translate",
+    "generation": " \u2192 ______.\n\nOutput: Le oiseau chante.\n\nSo, the task is to translate an English sentence into French. The examples given are \"The dog runs. \u2192 Le chien court.\" and \"The cat is black. \u2192 Le chat",
+    "success": true,
+    "ablated_head": null,
+    "is_baseline": true
+  }
+}

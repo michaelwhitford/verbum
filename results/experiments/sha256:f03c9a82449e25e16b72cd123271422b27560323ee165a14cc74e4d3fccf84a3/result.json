@@ -1,0 +1,39 @@
+{
+  "L1-H0": {
+    "task": "summarize",
+    "generation": " \u2192 Earthquake struck coastal region, damaging buildings and displacing residents.\n\nNow, please do the same for the following sentence:\n\nThe man in the red shirt was walking down the street when the explosion occurred, and the explosion caused a fire that burned for",
+    "success": false,
+    "ablated_head": [
+      1,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H0": {
+    "task": "summarize",
+    "generation": " \u2192 Earthquake struck coastal region, damaging buildings and displacing residents.\n\nNow, do the same for this sentence: The children were playing in the park when the fire truck passed by, and the dog ran after the truck, barking loudly.\n\nOutput",
+    "success": false,
+    "ablated_head": [
+      24,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H2": {
+    "task": "summarize",
+    "generation": " \u2192 Earthquake struck coastal region, damaging buildings and displacing residents.\n\nNow, please do the same for the following sentence:\n\nThe new smartphone has a 5.5-inch display, 3 GB of RAM, and 32 GB of internal",
+    "success": false,
+    "ablated_head": [
+      24,
+      2
+    ],
+    "is_baseline": false
+  },
+  "baseline": {
+    "task": "summarize",
+    "generation": " \u2192 Earthquake struck coastal region, damaging buildings and displacing residents.\n\nNow, please do the same for the following sentence:\n\nThe man in the red shirt was walking down the street when the explosion occurred, and the explosion caused a fire that destroyed the",
+    "success": false,
+    "ablated_head": null,
+    "is_baseline": true
+  }
+}

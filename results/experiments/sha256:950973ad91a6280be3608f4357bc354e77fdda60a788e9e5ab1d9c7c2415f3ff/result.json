@@ -1,0 +1,10 @@
+{
+  "task": "extract",
+  "generation": " \u2192 ?\n\nOutput: write(book, author, famous)\n\nOkay, so I need to figure out how to convert the sentence \"The book was written by a famous author.\" into a predicate logic statement. Let me start by breaking down the sentence.\n\nFirst",
+  "success": true,
+  "ablated_head": [
+    1,
+    0
+  ],
+  "is_baseline": false
+}

@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-04-17T16:53:51.685799+00:00",
+  "heads": [
+    {
+      "label": "L1:H0 gate recognizer",
+      "ov_rank_90": 69,
+      "ov_rank_95": 74,
+      "ov_top_sv_ratio": 0.02032976970076561,
+      "qk_rank_90": 65,
+      "qk_rank_95": 71,
+      "qk_top_sv_ratio": 0.040484216064214706
+    },
+    {
+      "label": "L24:H0 core compositor",
+      "ov_rank_90": 70,
+      "ov_rank_95": 75,
+      "ov_top_sv_ratio": 0.016604706645011902,
+      "qk_rank_90": 63,
+      "qk_rank_95": 69,
+      "qk_top_sv_ratio": 0.0584837943315506
+    },
+    {
+      "label": "L24:H2 recursion head",
+      "ov_rank_90": 69,
+      "ov_rank_95": 75,
+      "ov_top_sv_ratio": 0.018236029893159866,
+      "qk_rank_90": 64,
+      "qk_rank_95": 71,
+      "qk_top_sv_ratio": 0.028665507212281227
+    }
+  ]
+}

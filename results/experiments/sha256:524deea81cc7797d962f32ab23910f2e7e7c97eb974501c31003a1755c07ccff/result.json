@@ -1,0 +1,39 @@
+{
+  "L1-H0": {
+    "task": "extract",
+    "generation": " \n\nOutput: buy(alice, car), sell(bob, house)\n\nOkay, so I need to convert the sentence \"Alice bought a car and Bob sold his house.\" into a list of action verbs with their respective subjects and objects. Let me",
+    "success": true,
+    "ablated_head": [
+      1,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H0": {
+    "task": "extract",
+    "generation": " \n\nOutput: buy(alice, car), sell(bob, house)\n\nOkay, so I need to convert the sentence \"Alice bought a car and Bob sold his house.\" into a list of action triples. Let me think about how to approach this",
+    "success": true,
+    "ablated_head": [
+      24,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H2": {
+    "task": "extract",
+    "generation": " \n\nOutput: buy(alice, car), sell(bob, house)\n\nOkay, so I need to convert the sentence \"Alice bought a car and Bob sold his house.\" into a list of action verbs with their respective subjects and objects. Let me",
+    "success": true,
+    "ablated_head": [
+      24,
+      2
+    ],
+    "is_baseline": false
+  },
+  "baseline": {
+    "task": "extract",
+    "generation": " \n\nOutput: buy(alice, car), sell(bob, house)\n\nOkay, so I need to convert the sentence \"Alice bought a car and Bob sold his house.\" into a list of action verbs with their respective subjects, objects, and possibly",
+    "success": true,
+    "ablated_head": null,
+    "is_baseline": true
+  }
+}

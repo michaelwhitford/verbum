@@ -1,0 +1,39 @@
+{
+  "L1-H0": {
+    "task": "translate",
+    "generation": " \u2192 Chaque \u00e9tudiant lit un livre.\n\nInput: The teacher is in the classroom. \u2192 Le professeur est dans la classe.\n\nInput: The students are in the classroom. \u2192 Les \u00e9tudiants sont dans la classe.\n\nInput: The",
+    "success": true,
+    "ablated_head": [
+      1,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H0": {
+    "task": "translate",
+    "generation": " \u2192 Chaque \u00e9tudiant lit un livre.\n\nInput: The girl is playing with a ball. \u2192 La fille joue avec une balle.\n\nInput: The boy is eating an apple. \u2192 L'homme mange une pomme.\n\nWait, the",
+    "success": true,
+    "ablated_head": [
+      24,
+      0
+    ],
+    "is_baseline": false
+  },
+  "L24-H2": {
+    "task": "translate",
+    "generation": " \u2192 Chaque \u00e9tudiant lit un livre.\n\nInput: The girl is playing with a ball. \u2192 La fille joue avec une balle.\n\nInput: The boy is eating an apple. \u2192 L'homme mange une pomme.\n\nWait, that",
+    "success": true,
+    "ablated_head": [
+      24,
+      2
+    ],
+    "is_baseline": false
+  },
+  "baseline": {
+    "task": "translate",
+    "generation": " \u2192 Chaque \u00e9tudiant lit un livre.\n\nInput: The girl is playing with a ball. \u2192 La fille joue avec une balle.\n\nInput: The boy is eating an apple. \u2192 L'homme mange une pomme.\n\nWait, that",
+    "success": true,
+    "ablated_head": null,
+    "is_baseline": true
+  }
+}

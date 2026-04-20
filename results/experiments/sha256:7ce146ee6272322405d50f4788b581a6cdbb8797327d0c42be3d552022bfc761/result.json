@@ -1,0 +1,10 @@
+{
+  "task": "compile",
+  "generation": " \u2192 ?\n\nOkay, let's see. The user wants to convert the sentence \"The cat that sat on the mat is black.\" into a lambda expression. Hmm, first I need to parse the sentence into its components. \n\nSo, the main structure",
+  "success": false,
+  "ablated_head": [
+    1,
+    0
+  ],
+  "is_baseline": false
+}

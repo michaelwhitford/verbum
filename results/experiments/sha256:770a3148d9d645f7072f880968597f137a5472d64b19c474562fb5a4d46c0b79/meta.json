@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T03:25:52.802741+00:00",
+  "node_id": "circuit-discovery/bos-tracing/probe-ga-cond/L21",
+  "config_hash": "sha256:770a3148d9d645f7072f880968597f137a5472d64b19c474562fb5a4d46c0b79",
+  "elapsed_ms": 1771.8,
+  "completed_at": "2026-04-17T03:25:54.574805+00:00"
+}

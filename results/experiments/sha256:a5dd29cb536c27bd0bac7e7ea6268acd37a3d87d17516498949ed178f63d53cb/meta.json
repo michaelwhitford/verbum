@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-04-17T03:29:30.426408+00:00",
+  "node_id": "circuit-discovery/bos-tracing/probe-ga-simple/L13",
+  "config_hash": "sha256:a5dd29cb536c27bd0bac7e7ea6268acd37a3d87d17516498949ed178f63d53cb",
+  "elapsed_ms": 2665.7,
+  "completed_at": "2026-04-17T03:29:33.092631+00:00"
+}

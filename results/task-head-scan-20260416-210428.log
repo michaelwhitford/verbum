@@ -1,0 +1,752 @@
+============================================================
+  TASK HEAD SCAN — find task-specific essential heads
+============================================================
+
+Building scan graph...
+2026-04-16 21:04:29 [info     ] probe_set.loaded               id=extract n_probes=5 path=/Users/mwhitford/src/verbum/probes/extract.json version=1
+2026-04-16 21:04:29 [info     ] probes.resolved                gates_loaded=1 n_resolved=5 probe_set=extract
+2026-04-16 21:04:29 [info     ] probe_set.loaded               id=translate n_probes=5 path=/Users/mwhitford/src/verbum/probes/translate.json version=1
+2026-04-16 21:04:29 [info     ] probes.resolved                gates_loaded=1 n_resolved=5 probe_set=translate
+2026-04-16 21:04:29 [info     ] probe_set.loaded               id=classify n_probes=5 path=/Users/mwhitford/src/verbum/probes/classify.json version=1
+2026-04-16 21:04:29 [info     ] probes.resolved                gates_loaded=1 n_resolved=5 probe_set=classify
+Graph: 3 tasks, 120 leaf nodes
+Total forward passes: 3840
+Hash: sha256:72f68aaf16b1849f7...
+
+Loading model...
+2026-04-16 21:04:30 [info     ] instrument.loading             device=mps dtype=torch.float16 model=Qwen/Qwen3-4B
+2026-04-16 21:04:32 [info     ] instrument.loaded              head_dim=80 n_heads=32 n_kv_heads=8 n_layers=36 total_heads=1152
+Loaded: 36L, 32H, 80D
+
+Running scan...
+============================================================
+2026-04-16 21:04:32 [info     ] node.enter                     hash=sha256:72f68aaf1 node=task-head-scan
+2026-04-16 21:04:32 [info     ] node.enter                     hash=sha256:7554497c9 node=task-head-scan/classify
+2026-04-16 21:04:32 [info     ] node.enter                     hash=sha256:84a6821f4 node=task-head-scan/classify/probe-cls-mixed
+2026-04-16 21:04:32 [info     ] node.enter                     hash=sha256:9973ce1f7 node=task-head-scan/classify/probe-cls-mixed/L0
+2026-04-16 21:05:22 [info     ] node.complete                  elapsed_ms=50168.4 hash=sha256:9973ce1f7 node=task-head-scan/classify/probe-cls-mixed/L0
+2026-04-16 21:05:22 [info     ] node.enter                     hash=sha256:0470039af node=task-head-scan/classify/probe-cls-mixed/L1
+2026-04-16 21:06:11 [info     ] node.complete                  elapsed_ms=48813.7 hash=sha256:0470039af node=task-head-scan/classify/probe-cls-mixed/L1
+2026-04-16 21:06:11 [info     ] node.enter                     hash=sha256:10b6dcce9 node=task-head-scan/classify/probe-cls-mixed/L24
+2026-04-16 21:07:01 [info     ] node.complete                  elapsed_ms=50436.7 hash=sha256:10b6dcce9 node=task-head-scan/classify/probe-cls-mixed/L24
+2026-04-16 21:07:01 [info     ] node.enter                     hash=sha256:84fb361fe node=task-head-scan/classify/probe-cls-mixed/L26
+2026-04-16 21:08:10 [info     ] node.complete                  elapsed_ms=68467.2 hash=sha256:84fb361fe node=task-head-scan/classify/probe-cls-mixed/L26
+2026-04-16 21:08:10 [info     ] node.enter                     hash=sha256:0e197d20d node=task-head-scan/classify/probe-cls-mixed/L30
+2026-04-16 21:09:27 [info     ] node.complete                  elapsed_ms=76853.5 hash=sha256:0e197d20d node=task-head-scan/classify/probe-cls-mixed/L30
+2026-04-16 21:09:27 [info     ] node.enter                     hash=sha256:db4820672 node=task-head-scan/classify/probe-cls-mixed/L33
+2026-04-16 21:10:21 [info     ] node.complete                  elapsed_ms=54505.7 hash=sha256:db4820672 node=task-head-scan/classify/probe-cls-mixed/L33
+2026-04-16 21:10:21 [info     ] node.enter                     hash=sha256:02a1ab609 node=task-head-scan/classify/probe-cls-mixed/L4
+2026-04-16 21:11:10 [info     ] node.complete                  elapsed_ms=48896.7 hash=sha256:02a1ab609 node=task-head-scan/classify/probe-cls-mixed/L4
+2026-04-16 21:11:10 [info     ] node.enter                     hash=sha256:bedcc6d22 node=task-head-scan/classify/probe-cls-mixed/L7
+2026-04-16 21:11:59 [info     ] node.complete                  elapsed_ms=48767.0 hash=sha256:bedcc6d22 node=task-head-scan/classify/probe-cls-mixed/L7
+2026-04-16 21:11:59 [info     ] node.complete                  elapsed_ms=446915.1 hash=sha256:84a6821f4 node=task-head-scan/classify/probe-cls-mixed
+2026-04-16 21:11:59 [info     ] node.enter                     hash=sha256:fe1ef8609 node=task-head-scan/classify/probe-cls-neg-complex
+2026-04-16 21:11:59 [info     ] node.enter                     hash=sha256:982218699 node=task-head-scan/classify/probe-cls-neg-complex/L0
+2026-04-16 21:13:05 [info     ] node.complete                  elapsed_ms=66036.1 hash=sha256:982218699 node=task-head-scan/classify/probe-cls-neg-complex/L0
+2026-04-16 21:13:05 [info     ] node.enter                     hash=sha256:0f792bfc9 node=task-head-scan/classify/probe-cls-neg-complex/L1
+2026-04-16 21:14:00 [info     ] node.complete                  elapsed_ms=54788.5 hash=sha256:0f792bfc9 node=task-head-scan/classify/probe-cls-neg-complex/L1
+2026-04-16 21:14:00 [info     ] node.enter                     hash=sha256:83b088532 node=task-head-scan/classify/probe-cls-neg-complex/L24
+2026-04-16 21:14:48 [info     ] node.complete                  elapsed_ms=48314.7 hash=sha256:83b088532 node=task-head-scan/classify/probe-cls-neg-complex/L24
+2026-04-16 21:14:48 [info     ] node.enter                     hash=sha256:121e97336 node=task-head-scan/classify/probe-cls-neg-complex/L26
+2026-04-16 21:15:36 [info     ] node.complete                  elapsed_ms=47878.1 hash=sha256:121e97336 node=task-head-scan/classify/probe-cls-neg-complex/L26
+2026-04-16 21:15:36 [info     ] node.enter                     hash=sha256:d0781d877 node=task-head-scan/classify/probe-cls-neg-complex/L30
+2026-04-16 21:16:24 [info     ] node.complete                  elapsed_ms=47862.6 hash=sha256:d0781d877 node=task-head-scan/classify/probe-cls-neg-complex/L30
+2026-04-16 21:16:24 [info     ] node.enter                     hash=sha256:2ab5ce6e1 node=task-head-scan/classify/probe-cls-neg-complex/L33
+2026-04-16 21:17:14 [info     ] node.complete                  elapsed_ms=49942.3 hash=sha256:2ab5ce6e1 node=task-head-scan/classify/probe-cls-neg-complex/L33
+2026-04-16 21:17:14 [info     ] node.enter                     hash=sha256:deb315ace node=task-head-scan/classify/probe-cls-neg-complex/L4
+2026-04-16 21:18:21 [info     ] node.complete                  elapsed_ms=67627.9 hash=sha256:deb315ace node=task-head-scan/classify/probe-cls-neg-complex/L4
+2026-04-16 21:18:21 [info     ] node.enter                     hash=sha256:7a81a05a9 node=task-head-scan/classify/probe-cls-neg-complex/L7
+2026-04-16 21:19:15 [info     ] node.complete                  elapsed_ms=54287.1 hash=sha256:7a81a05a9 node=task-head-scan/classify/probe-cls-neg-complex/L7
+2026-04-16 21:19:15 [info     ] node.complete                  elapsed_ms=436744.9 hash=sha256:fe1ef8609 node=task-head-scan/classify/probe-cls-neg-complex
+2026-04-16 21:19:15 [info     ] node.enter                     hash=sha256:02ef2c3c1 node=task-head-scan/classify/probe-cls-neg-simple
+2026-04-16 21:19:15 [info     ] node.enter                     hash=sha256:e2be31bb1 node=task-head-scan/classify/probe-cls-neg-simple/L0
+2026-04-16 21:20:06 [info     ] node.complete                  elapsed_ms=50491.4 hash=sha256:e2be31bb1 node=task-head-scan/classify/probe-cls-neg-simple/L0
+2026-04-16 21:20:06 [info     ] node.enter                     hash=sha256:2b8476ff1 node=task-head-scan/classify/probe-cls-neg-simple/L1
+2026-04-16 21:20:55 [info     ] node.complete                  elapsed_ms=49041.4 hash=sha256:2b8476ff1 node=task-head-scan/classify/probe-cls-neg-simple/L1
+2026-04-16 21:20:55 [info     ] node.enter                     hash=sha256:b35b77dce node=task-head-scan/classify/probe-cls-neg-simple/L24
+2026-04-16 21:21:44 [info     ] node.complete                  elapsed_ms=48765.2 hash=sha256:b35b77dce node=task-head-scan/classify/probe-cls-neg-simple/L24
+2026-04-16 21:21:44 [info     ] node.enter                     hash=sha256:faae4b37b node=task-head-scan/classify/probe-cls-neg-simple/L26
+2026-04-16 21:22:40 [info     ] node.complete                  elapsed_ms=56680.3 hash=sha256:faae4b37b node=task-head-scan/classify/probe-cls-neg-simple/L26
+2026-04-16 21:22:40 [info     ] node.enter                     hash=sha256:79d6c2aef node=task-head-scan/classify/probe-cls-neg-simple/L30
+2026-04-16 21:23:38 [info     ] node.complete                  elapsed_ms=57628.1 hash=sha256:79d6c2aef node=task-head-scan/classify/probe-cls-neg-simple/L30
+2026-04-16 21:23:38 [info     ] node.enter                     hash=sha256:93efea3b0 node=task-head-scan/classify/probe-cls-neg-simple/L33
+2026-04-16 21:24:27 [info     ] node.complete                  elapsed_ms=48532.0 hash=sha256:93efea3b0 node=task-head-scan/classify/probe-cls-neg-simple/L33
+2026-04-16 21:24:27 [info     ] node.enter                     hash=sha256:776c950f6 node=task-head-scan/classify/probe-cls-neg-simple/L4
+2026-04-16 21:25:16 [info     ] node.complete                  elapsed_ms=49870.5 hash=sha256:776c950f6 node=task-head-scan/classify/probe-cls-neg-simple/L4
+2026-04-16 21:25:16 [info     ] node.enter                     hash=sha256:d89f6ce2b node=task-head-scan/classify/probe-cls-neg-simple/L7
+2026-04-16 21:26:07 [info     ] node.complete                  elapsed_ms=50669.5 hash=sha256:d89f6ce2b node=task-head-scan/classify/probe-cls-neg-simple/L7
+2026-04-16 21:26:07 [info     ] node.complete                  elapsed_ms=411684.8 hash=sha256:02ef2c3c1 node=task-head-scan/classify/probe-cls-neg-simple
+2026-04-16 21:26:07 [info     ] node.enter                     hash=sha256:1a22a5ea6 node=task-head-scan/classify/probe-cls-pos-complex
+2026-04-16 21:26:07 [info     ] node.enter                     hash=sha256:7908dde4e node=task-head-scan/classify/probe-cls-pos-complex/L0
+2026-04-16 21:26:57 [info     ] node.complete                  elapsed_ms=49662.6 hash=sha256:7908dde4e node=task-head-scan/classify/probe-cls-pos-complex/L0
+2026-04-16 21:26:57 [info     ] node.enter                     hash=sha256:9f0baf009 node=task-head-scan/classify/probe-cls-pos-complex/L1
+2026-04-16 21:27:59 [info     ] node.complete                  elapsed_ms=62237.1 hash=sha256:9f0baf009 node=task-head-scan/classify/probe-cls-pos-complex/L1
+2026-04-16 21:27:59 [info     ] node.enter                     hash=sha256:4eded5cfb node=task-head-scan/classify/probe-cls-pos-complex/L24
+2026-04-16 21:29:09 [info     ] node.complete                  elapsed_ms=69991.7 hash=sha256:4eded5cfb node=task-head-scan/classify/probe-cls-pos-complex/L24
+2026-04-16 21:29:09 [info     ] node.enter                     hash=sha256:a436832e2 node=task-head-scan/classify/probe-cls-pos-complex/L26
+2026-04-16 21:30:20 [info     ] node.complete                  elapsed_ms=70936.2 hash=sha256:a436832e2 node=task-head-scan/classify/probe-cls-pos-complex/L26
+2026-04-16 21:30:20 [info     ] node.enter                     hash=sha256:2180ccb5e node=task-head-scan/classify/probe-cls-pos-complex/L30
+2026-04-16 21:31:21 [info     ] node.complete                  elapsed_ms=61416.3 hash=sha256:2180ccb5e node=task-head-scan/classify/probe-cls-pos-complex/L30
+2026-04-16 21:31:21 [info     ] node.enter                     hash=sha256:7a21101c5 node=task-head-scan/classify/probe-cls-pos-complex/L33
+2026-04-16 21:32:20 [info     ] node.complete                  elapsed_ms=58558.2 hash=sha256:7a21101c5 node=task-head-scan/classify/probe-cls-pos-complex/L33
+2026-04-16 21:32:20 [info     ] node.enter                     hash=sha256:bb0d974fe node=task-head-scan/classify/probe-cls-pos-complex/L4
+2026-04-16 21:33:31 [info     ] node.complete                  elapsed_ms=71187.2 hash=sha256:bb0d974fe node=task-head-scan/classify/probe-cls-pos-complex/L4
+2026-04-16 21:33:31 [info     ] node.enter                     hash=sha256:225e51c5f node=task-head-scan/classify/probe-cls-pos-complex/L7
+2026-04-16 21:34:42 [info     ] node.complete                  elapsed_ms=70847.9 hash=sha256:225e51c5f node=task-head-scan/classify/probe-cls-pos-complex/L7
+2026-04-16 21:34:42 [info     ] node.complete                  elapsed_ms=514848.7 hash=sha256:1a22a5ea6 node=task-head-scan/classify/probe-cls-pos-complex
+2026-04-16 21:34:42 [info     ] node.enter                     hash=sha256:f4d5edc27 node=task-head-scan/classify/probe-cls-pos-simple
+2026-04-16 21:34:42 [info     ] node.enter                     hash=sha256:f6d513e26 node=task-head-scan/classify/probe-cls-pos-simple/L0
+2026-04-16 21:35:36 [info     ] node.complete                  elapsed_ms=54119.2 hash=sha256:f6d513e26 node=task-head-scan/classify/probe-cls-pos-simple/L0
+2026-04-16 21:35:36 [info     ] node.enter                     hash=sha256:e9b0ac6e4 node=task-head-scan/classify/probe-cls-pos-simple/L1
+2026-04-16 21:36:24 [info     ] node.complete                  elapsed_ms=47910.2 hash=sha256:e9b0ac6e4 node=task-head-scan/classify/probe-cls-pos-simple/L1
+2026-04-16 21:36:24 [info     ] node.enter                     hash=sha256:1404b53e3 node=task-head-scan/classify/probe-cls-pos-simple/L24
+2026-04-16 21:37:13 [info     ] node.complete                  elapsed_ms=49155.8 hash=sha256:1404b53e3 node=task-head-scan/classify/probe-cls-pos-simple/L24
+2026-04-16 21:37:13 [info     ] node.enter                     hash=sha256:09b77a884 node=task-head-scan/classify/probe-cls-pos-simple/L26
+2026-04-16 21:38:26 [info     ] node.complete                  elapsed_ms=72383.8 hash=sha256:09b77a884 node=task-head-scan/classify/probe-cls-pos-simple/L26
+2026-04-16 21:38:26 [info     ] node.enter                     hash=sha256:9a589c5be node=task-head-scan/classify/probe-cls-pos-simple/L30
+2026-04-16 21:39:35 [info     ] node.complete                  elapsed_ms=69627.3 hash=sha256:9a589c5be node=task-head-scan/classify/probe-cls-pos-simple/L30
+2026-04-16 21:39:35 [info     ] node.enter                     hash=sha256:4c80e817b node=task-head-scan/classify/probe-cls-pos-simple/L33
+2026-04-16 21:40:31 [info     ] node.complete                  elapsed_ms=55376.6 hash=sha256:4c80e817b node=task-head-scan/classify/probe-cls-pos-simple/L33
+2026-04-16 21:40:31 [info     ] node.enter                     hash=sha256:780ae63c1 node=task-head-scan/classify/probe-cls-pos-simple/L4
+2026-04-16 21:41:21 [info     ] node.complete                  elapsed_ms=50835.6 hash=sha256:780ae63c1 node=task-head-scan/classify/probe-cls-pos-simple/L4
+2026-04-16 21:41:21 [info     ] node.enter                     hash=sha256:55363362d node=task-head-scan/classify/probe-cls-pos-simple/L7
+2026-04-16 21:42:12 [info     ] node.complete                  elapsed_ms=51061.2 hash=sha256:55363362d node=task-head-scan/classify/probe-cls-pos-simple/L7
+2026-04-16 21:42:12 [info     ] node.complete                  elapsed_ms=450476.1 hash=sha256:f4d5edc27 node=task-head-scan/classify/probe-cls-pos-simple
+2026-04-16 21:42:12 [info     ] node.complete                  elapsed_ms=2260678.1 hash=sha256:7554497c9 node=task-head-scan/classify
+2026-04-16 21:42:12 [info     ] node.enter                     hash=sha256:e24ef4c74 node=task-head-scan/extract
+2026-04-16 21:42:12 [info     ] node.enter                     hash=sha256:3dd927399 node=task-head-scan/extract/probe-ext-ditrans
+2026-04-16 21:42:12 [info     ] node.enter                     hash=sha256:9ed88743b node=task-head-scan/extract/probe-ext-ditrans/L0
+2026-04-16 21:43:14 [info     ] node.complete                  elapsed_ms=61553.7 hash=sha256:9ed88743b node=task-head-scan/extract/probe-ext-ditrans/L0
+2026-04-16 21:43:14 [info     ] node.enter                     hash=sha256:bf036d20b node=task-head-scan/extract/probe-ext-ditrans/L1
+2026-04-16 21:44:05 [info     ] node.complete                  elapsed_ms=50906.2 hash=sha256:bf036d20b node=task-head-scan/extract/probe-ext-ditrans/L1
+2026-04-16 21:44:05 [info     ] node.enter                     hash=sha256:943611845 node=task-head-scan/extract/probe-ext-ditrans/L24
+2026-04-16 21:44:55 [info     ] node.complete                  elapsed_ms=49831.6 hash=sha256:943611845 node=task-head-scan/extract/probe-ext-ditrans/L24
+2026-04-16 21:44:55 [info     ] node.enter                     hash=sha256:9ab6ce539 node=task-head-scan/extract/probe-ext-ditrans/L26
+2026-04-16 21:45:45 [info     ] node.complete                  elapsed_ms=50500.9 hash=sha256:9ab6ce539 node=task-head-scan/extract/probe-ext-ditrans/L26
+2026-04-16 21:45:45 [info     ] node.enter                     hash=sha256:5c47472b4 node=task-head-scan/extract/probe-ext-ditrans/L30
+2026-04-16 21:46:34 [info     ] node.complete                  elapsed_ms=48888.8 hash=sha256:5c47472b4 node=task-head-scan/extract/probe-ext-ditrans/L30
+2026-04-16 21:46:34 [info     ] node.enter                     hash=sha256:ab74958be node=task-head-scan/extract/probe-ext-ditrans/L33
+2026-04-16 21:47:32 [info     ] node.complete                  elapsed_ms=57948.7 hash=sha256:ab74958be node=task-head-scan/extract/probe-ext-ditrans/L33
+2026-04-16 21:47:32 [info     ] node.enter                     hash=sha256:cc6d39582 node=task-head-scan/extract/probe-ext-ditrans/L4
+2026-04-16 21:48:43 [info     ] node.complete                  elapsed_ms=71174.9 hash=sha256:cc6d39582 node=task-head-scan/extract/probe-ext-ditrans/L4
+2026-04-16 21:48:43 [info     ] node.enter                     hash=sha256:40ca882d4 node=task-head-scan/extract/probe-ext-ditrans/L7
+2026-04-16 21:49:52 [info     ] node.complete                  elapsed_ms=68289.7 hash=sha256:40ca882d4 node=task-head-scan/extract/probe-ext-ditrans/L7
+2026-04-16 21:49:52 [info     ] node.complete                  elapsed_ms=459100.6 hash=sha256:3dd927399 node=task-head-scan/extract/probe-ext-ditrans
+2026-04-16 21:49:52 [info     ] node.enter                     hash=sha256:d8f10ac3e node=task-head-scan/extract/probe-ext-multi
+2026-04-16 21:49:52 [info     ] node.enter                     hash=sha256:3f0feff43 node=task-head-scan/extract/probe-ext-multi/L0
+2026-04-16 21:50:41 [info     ] node.complete                  elapsed_ms=49681.1 hash=sha256:3f0feff43 node=task-head-scan/extract/probe-ext-multi/L0
+2026-04-16 21:50:41 [info     ] node.enter                     hash=sha256:075c0129f node=task-head-scan/extract/probe-ext-multi/L1
+2026-04-16 21:51:33 [info     ] node.complete                  elapsed_ms=52187.0 hash=sha256:075c0129f node=task-head-scan/extract/probe-ext-multi/L1
+2026-04-16 21:51:33 [info     ] node.enter                     hash=sha256:634453945 node=task-head-scan/extract/probe-ext-multi/L24
+2026-04-16 21:52:29 [info     ] node.complete                  elapsed_ms=55945.0 hash=sha256:634453945 node=task-head-scan/extract/probe-ext-multi/L24
+2026-04-16 21:52:29 [info     ] node.enter                     hash=sha256:aaa2a1747 node=task-head-scan/extract/probe-ext-multi/L26
+2026-04-16 21:53:40 [info     ] node.complete                  elapsed_ms=70638.2 hash=sha256:aaa2a1747 node=task-head-scan/extract/probe-ext-multi/L26
+2026-04-16 21:53:40 [info     ] node.enter                     hash=sha256:04c808ad6 node=task-head-scan/extract/probe-ext-multi/L30
+2026-04-16 21:54:47 [info     ] node.complete                  elapsed_ms=67165.2 hash=sha256:04c808ad6 node=task-head-scan/extract/probe-ext-multi/L30
+2026-04-16 21:54:47 [info     ] node.enter                     hash=sha256:c5d530dc2 node=task-head-scan/extract/probe-ext-multi/L33
+2026-04-16 21:55:39 [info     ] node.complete                  elapsed_ms=51754.0 hash=sha256:c5d530dc2 node=task-head-scan/extract/probe-ext-multi/L33
+2026-04-16 21:55:39 [info     ] node.enter                     hash=sha256:dfa210663 node=task-head-scan/extract/probe-ext-multi/L4
+2026-04-16 21:56:30 [info     ] node.complete                  elapsed_ms=51303.6 hash=sha256:dfa210663 node=task-head-scan/extract/probe-ext-multi/L4
+2026-04-16 21:56:30 [info     ] node.enter                     hash=sha256:4ae23324f node=task-head-scan/extract/probe-ext-multi/L7
+2026-04-16 21:57:26 [info     ] node.complete                  elapsed_ms=55883.9 hash=sha256:4ae23324f node=task-head-scan/extract/probe-ext-multi/L7
+2026-04-16 21:57:26 [info     ] node.complete                  elapsed_ms=454567.2 hash=sha256:d8f10ac3e node=task-head-scan/extract/probe-ext-multi
+2026-04-16 21:57:26 [info     ] node.enter                     hash=sha256:06932b6a1 node=task-head-scan/extract/probe-ext-nested
+2026-04-16 21:57:26 [info     ] node.enter                     hash=sha256:226197d29 node=task-head-scan/extract/probe-ext-nested/L0
+2026-04-16 21:58:37 [info     ] node.complete                  elapsed_ms=71250.2 hash=sha256:226197d29 node=task-head-scan/extract/probe-ext-nested/L0
+2026-04-16 21:58:37 [info     ] node.enter                     hash=sha256:3bd1d4fb0 node=task-head-scan/extract/probe-ext-nested/L1
+2026-04-16 21:59:31 [info     ] node.complete                  elapsed_ms=53492.6 hash=sha256:3bd1d4fb0 node=task-head-scan/extract/probe-ext-nested/L1
+2026-04-16 21:59:31 [info     ] node.enter                     hash=sha256:c5d120e21 node=task-head-scan/extract/probe-ext-nested/L24
+2026-04-16 22:00:19 [info     ] node.complete                  elapsed_ms=47809.4 hash=sha256:c5d120e21 node=task-head-scan/extract/probe-ext-nested/L24
+2026-04-16 22:00:19 [info     ] node.enter                     hash=sha256:5ca06e3e0 node=task-head-scan/extract/probe-ext-nested/L26
+2026-04-16 22:01:07 [info     ] node.complete                  elapsed_ms=48303.5 hash=sha256:5ca06e3e0 node=task-head-scan/extract/probe-ext-nested/L26
+2026-04-16 22:01:07 [info     ] node.enter                     hash=sha256:8575ed289 node=task-head-scan/extract/probe-ext-nested/L30
+2026-04-16 22:01:57 [info     ] node.complete                  elapsed_ms=50164.8 hash=sha256:8575ed289 node=task-head-scan/extract/probe-ext-nested/L30
+2026-04-16 22:01:57 [info     ] node.enter                     hash=sha256:7e8fcf1ab node=task-head-scan/extract/probe-ext-nested/L33
+2026-04-16 22:03:02 [info     ] node.complete                  elapsed_ms=64930.7 hash=sha256:7e8fcf1ab node=task-head-scan/extract/probe-ext-nested/L33
+2026-04-16 22:03:02 [info     ] node.enter                     hash=sha256:4e89f1c50 node=task-head-scan/extract/probe-ext-nested/L4
+2026-04-16 22:04:12 [info     ] node.complete                  elapsed_ms=70102.1 hash=sha256:4e89f1c50 node=task-head-scan/extract/probe-ext-nested/L4
+2026-04-16 22:04:12 [info     ] node.enter                     hash=sha256:e38a4fd22 node=task-head-scan/extract/probe-ext-nested/L7
+2026-04-16 22:05:21 [info     ] node.complete                  elapsed_ms=69045.1 hash=sha256:e38a4fd22 node=task-head-scan/extract/probe-ext-nested/L7
+2026-04-16 22:05:21 [info     ] node.complete                  elapsed_ms=475104.5 hash=sha256:06932b6a1 node=task-head-scan/extract/probe-ext-nested
+2026-04-16 22:05:21 [info     ] node.enter                     hash=sha256:fe162af65 node=task-head-scan/extract/probe-ext-passive
+2026-04-16 22:05:21 [info     ] node.enter                     hash=sha256:0721febe0 node=task-head-scan/extract/probe-ext-passive/L0
+2026-04-16 22:06:12 [info     ] node.complete                  elapsed_ms=50337.1 hash=sha256:0721febe0 node=task-head-scan/extract/probe-ext-passive/L0
+2026-04-16 22:06:12 [info     ] node.enter                     hash=sha256:492415f97 node=task-head-scan/extract/probe-ext-passive/L1
+2026-04-16 22:07:02 [info     ] node.complete                  elapsed_ms=50114.3 hash=sha256:492415f97 node=task-head-scan/extract/probe-ext-passive/L1
+2026-04-16 22:07:02 [info     ] node.enter                     hash=sha256:70ccd9604 node=task-head-scan/extract/probe-ext-passive/L24
+2026-04-16 22:08:09 [info     ] node.complete                  elapsed_ms=67259.0 hash=sha256:70ccd9604 node=task-head-scan/extract/probe-ext-passive/L24
+2026-04-16 22:08:09 [info     ] node.enter                     hash=sha256:6c1ebf813 node=task-head-scan/extract/probe-ext-passive/L26
+2026-04-16 22:09:04 [info     ] node.complete                  elapsed_ms=55296.2 hash=sha256:6c1ebf813 node=task-head-scan/extract/probe-ext-passive/L26
+2026-04-16 22:09:04 [info     ] node.enter                     hash=sha256:91a085919 node=task-head-scan/extract/probe-ext-passive/L30
+2026-04-16 22:09:54 [info     ] node.complete                  elapsed_ms=49432.5 hash=sha256:91a085919 node=task-head-scan/extract/probe-ext-passive/L30
+2026-04-16 22:09:54 [info     ] node.enter                     hash=sha256:63390a06d node=task-head-scan/extract/probe-ext-passive/L33
+2026-04-16 22:10:44 [info     ] node.complete                  elapsed_ms=50424.2 hash=sha256:63390a06d node=task-head-scan/extract/probe-ext-passive/L33
+2026-04-16 22:10:44 [info     ] node.enter                     hash=sha256:b9f6292ed node=task-head-scan/extract/probe-ext-passive/L4
+2026-04-16 22:11:35 [info     ] node.complete                  elapsed_ms=50459.4 hash=sha256:b9f6292ed node=task-head-scan/extract/probe-ext-passive/L4
+2026-04-16 22:11:35 [info     ] node.enter                     hash=sha256:5183cb743 node=task-head-scan/extract/probe-ext-passive/L7
+2026-04-16 22:12:31 [info     ] node.complete                  elapsed_ms=56752.0 hash=sha256:5183cb743 node=task-head-scan/extract/probe-ext-passive/L7
+2026-04-16 22:12:31 [info     ] node.complete                  elapsed_ms=430080.8 hash=sha256:fe162af65 node=task-head-scan/extract/probe-ext-passive
+2026-04-16 22:12:31 [info     ] node.enter                     hash=sha256:024e0b957 node=task-head-scan/extract/probe-ext-simple
+2026-04-16 22:12:31 [info     ] node.enter                     hash=sha256:1fe8cbfcf node=task-head-scan/extract/probe-ext-simple/L0
+2026-04-16 22:13:38 [info     ] node.complete                  elapsed_ms=66720.7 hash=sha256:1fe8cbfcf node=task-head-scan/extract/probe-ext-simple/L0
+2026-04-16 22:13:38 [info     ] node.enter                     hash=sha256:e82204c4c node=task-head-scan/extract/probe-ext-simple/L1
+2026-04-16 22:14:28 [info     ] node.complete                  elapsed_ms=49942.9 hash=sha256:e82204c4c node=task-head-scan/extract/probe-ext-simple/L1
+2026-04-16 22:14:28 [info     ] node.enter                     hash=sha256:4ac72c00a node=task-head-scan/extract/probe-ext-simple/L24
+2026-04-16 22:15:18 [info     ] node.complete                  elapsed_ms=50189.9 hash=sha256:4ac72c00a node=task-head-scan/extract/probe-ext-simple/L24
+2026-04-16 22:15:18 [info     ] node.enter                     hash=sha256:536af0b7f node=task-head-scan/extract/probe-ext-simple/L26
+2026-04-16 22:16:10 [info     ] node.complete                  elapsed_ms=51595.7 hash=sha256:536af0b7f node=task-head-scan/extract/probe-ext-simple/L26
+2026-04-16 22:16:10 [info     ] node.enter                     hash=sha256:f8260dec0 node=task-head-scan/extract/probe-ext-simple/L30
+2026-04-16 22:17:00 [info     ] node.complete                  elapsed_ms=49936.2 hash=sha256:f8260dec0 node=task-head-scan/extract/probe-ext-simple/L30
+2026-04-16 22:17:00 [info     ] node.enter                     hash=sha256:71c88a4ce node=task-head-scan/extract/probe-ext-simple/L33
+2026-04-16 22:18:05 [info     ] node.complete                  elapsed_ms=65077.3 hash=sha256:71c88a4ce node=task-head-scan/extract/probe-ext-simple/L33
+2026-04-16 22:18:05 [info     ] node.enter                     hash=sha256:416d90468 node=task-head-scan/extract/probe-ext-simple/L4
+2026-04-16 22:19:14 [info     ] node.complete                  elapsed_ms=69591.8 hash=sha256:416d90468 node=task-head-scan/extract/probe-ext-simple/L4
+2026-04-16 22:19:14 [info     ] node.enter                     hash=sha256:18a3f225b node=task-head-scan/extract/probe-ext-simple/L7
+2026-04-16 22:20:12 [info     ] node.complete                  elapsed_ms=57605.1 hash=sha256:18a3f225b node=task-head-scan/extract/probe-ext-simple/L7
+2026-04-16 22:20:12 [info     ] node.complete                  elapsed_ms=460667.2 hash=sha256:024e0b957 node=task-head-scan/extract/probe-ext-simple
+2026-04-16 22:20:12 [info     ] node.complete                  elapsed_ms=2279527.1 hash=sha256:e24ef4c74 node=task-head-scan/extract
+2026-04-16 22:20:12 [info     ] node.enter                     hash=sha256:985aa090c node=task-head-scan/translate
+2026-04-16 22:20:12 [info     ] node.enter                     hash=sha256:b6bb1dd61 node=task-head-scan/translate/probe-tr-adj
+2026-04-16 22:20:12 [info     ] node.enter                     hash=sha256:04c1ce8fc node=task-head-scan/translate/probe-tr-adj/L0
+2026-04-16 22:21:01 [info     ] node.complete                  elapsed_ms=49007.5 hash=sha256:04c1ce8fc node=task-head-scan/translate/probe-tr-adj/L0
+2026-04-16 22:21:01 [info     ] node.enter                     hash=sha256:f8f0c40b9 node=task-head-scan/translate/probe-tr-adj/L1
+2026-04-16 22:21:51 [info     ] node.complete                  elapsed_ms=50140.6 hash=sha256:f8f0c40b9 node=task-head-scan/translate/probe-tr-adj/L1
+2026-04-16 22:21:51 [info     ] node.enter                     hash=sha256:e956625ad node=task-head-scan/translate/probe-tr-adj/L24
+2026-04-16 22:22:55 [info     ] node.complete                  elapsed_ms=63552.1 hash=sha256:e956625ad node=task-head-scan/translate/probe-tr-adj/L24
+2026-04-16 22:22:55 [info     ] node.enter                     hash=sha256:599409ace node=task-head-scan/translate/probe-tr-adj/L26
+2026-04-16 22:24:05 [info     ] node.complete                  elapsed_ms=70378.1 hash=sha256:599409ace node=task-head-scan/translate/probe-tr-adj/L26
+2026-04-16 22:24:05 [info     ] node.enter                     hash=sha256:3b7e103e6 node=task-head-scan/translate/probe-tr-adj/L30
+2026-04-16 22:25:06 [info     ] node.complete                  elapsed_ms=60715.2 hash=sha256:3b7e103e6 node=task-head-scan/translate/probe-tr-adj/L30
+2026-04-16 22:25:06 [info     ] node.enter                     hash=sha256:e55ad77da node=task-head-scan/translate/probe-tr-adj/L33
+2026-04-16 22:25:56 [info     ] node.complete                  elapsed_ms=50296.8 hash=sha256:e55ad77da node=task-head-scan/translate/probe-tr-adj/L33
+2026-04-16 22:25:56 [info     ] node.enter                     hash=sha256:db513a9e0 node=task-head-scan/translate/probe-tr-adj/L4
+2026-04-16 22:26:45 [info     ] node.complete                  elapsed_ms=49155.6 hash=sha256:db513a9e0 node=task-head-scan/translate/probe-tr-adj/L4
+2026-04-16 22:26:45 [info     ] node.enter                     hash=sha256:2422aef5e node=task-head-scan/translate/probe-tr-adj/L7
+2026-04-16 22:27:46 [info     ] node.complete                  elapsed_ms=60271.6 hash=sha256:2422aef5e node=task-head-scan/translate/probe-tr-adj/L7
+2026-04-16 22:27:46 [info     ] node.complete                  elapsed_ms=453526.5 hash=sha256:b6bb1dd61 node=task-head-scan/translate/probe-tr-adj
+2026-04-16 22:27:46 [info     ] node.enter                     hash=sha256:465363b80 node=task-head-scan/translate/probe-tr-cond
+2026-04-16 22:27:46 [info     ] node.enter                     hash=sha256:585543d6b node=task-head-scan/translate/probe-tr-cond/L0
+2026-04-16 22:28:51 [info     ] node.complete                  elapsed_ms=65626.0 hash=sha256:585543d6b node=task-head-scan/translate/probe-tr-cond/L0
+2026-04-16 22:28:51 [info     ] node.enter                     hash=sha256:26bbd2692 node=task-head-scan/translate/probe-tr-cond/L1
+2026-04-16 22:29:41 [info     ] node.complete                  elapsed_ms=50071.3 hash=sha256:26bbd2692 node=task-head-scan/translate/probe-tr-cond/L1
+2026-04-16 22:29:41 [info     ] node.enter                     hash=sha256:0c98c59f0 node=task-head-scan/translate/probe-tr-cond/L24
+2026-04-16 22:30:31 [info     ] node.complete                  elapsed_ms=49757.8 hash=sha256:0c98c59f0 node=task-head-scan/translate/probe-tr-cond/L24
+2026-04-16 22:30:31 [info     ] node.enter                     hash=sha256:59e39cc37 node=task-head-scan/translate/probe-tr-cond/L26
+2026-04-16 22:31:20 [info     ] node.complete                  elapsed_ms=49175.1 hash=sha256:59e39cc37 node=task-head-scan/translate/probe-tr-cond/L26
+2026-04-16 22:31:20 [info     ] node.enter                     hash=sha256:b04dc517e node=task-head-scan/translate/probe-tr-cond/L30
+2026-04-16 22:32:11 [info     ] node.complete                  elapsed_ms=50654.8 hash=sha256:b04dc517e node=task-head-scan/translate/probe-tr-cond/L30
+2026-04-16 22:32:11 [info     ] node.enter                     hash=sha256:8c03f8a51 node=task-head-scan/translate/probe-tr-cond/L33
+2026-04-16 22:33:22 [info     ] node.complete                  elapsed_ms=70829.1 hash=sha256:8c03f8a51 node=task-head-scan/translate/probe-tr-cond/L33
+2026-04-16 22:33:22 [info     ] node.enter                     hash=sha256:1485cc0e7 node=task-head-scan/translate/probe-tr-cond/L4
+2026-04-16 22:34:19 [info     ] node.complete                  elapsed_ms=57358.0 hash=sha256:1485cc0e7 node=task-head-scan/translate/probe-tr-cond/L4
+2026-04-16 22:34:19 [info     ] node.enter                     hash=sha256:d3df2e32e node=task-head-scan/translate/probe-tr-cond/L7
+2026-04-16 22:35:09 [info     ] node.complete                  elapsed_ms=50170.7 hash=sha256:d3df2e32e node=task-head-scan/translate/probe-tr-cond/L7
+2026-04-16 22:35:09 [info     ] node.complete                  elapsed_ms=443650.5 hash=sha256:465363b80 node=task-head-scan/translate/probe-tr-cond
+2026-04-16 22:35:09 [info     ] node.enter                     hash=sha256:7acc1f67b node=task-head-scan/translate/probe-tr-quant
+2026-04-16 22:35:09 [info     ] node.enter                     hash=sha256:d0b9550b0 node=task-head-scan/translate/probe-tr-quant/L0
+2026-04-16 22:36:01 [info     ] node.complete                  elapsed_ms=52283.8 hash=sha256:d0b9550b0 node=task-head-scan/translate/probe-tr-quant/L0
+2026-04-16 22:36:01 [info     ] node.enter                     hash=sha256:333229b80 node=task-head-scan/translate/probe-tr-quant/L1
+2026-04-16 22:36:52 [info     ] node.complete                  elapsed_ms=50185.8 hash=sha256:333229b80 node=task-head-scan/translate/probe-tr-quant/L1
+2026-04-16 22:36:52 [info     ] node.enter                     hash=sha256:974b63774 node=task-head-scan/translate/probe-tr-quant/L24
+2026-04-16 22:37:56 [info     ] node.complete                  elapsed_ms=64390.6 hash=sha256:974b63774 node=task-head-scan/translate/probe-tr-quant/L24
+2026-04-16 22:37:56 [info     ] node.enter                     hash=sha256:4024b40a7 node=task-head-scan/translate/probe-tr-quant/L26
+2026-04-16 22:38:51 [info     ] node.complete                  elapsed_ms=55171.5 hash=sha256:4024b40a7 node=task-head-scan/translate/probe-tr-quant/L26
+2026-04-16 22:38:51 [info     ] node.enter                     hash=sha256:d796a389e node=task-head-scan/translate/probe-tr-quant/L30
+2026-04-16 22:39:42 [info     ] node.complete                  elapsed_ms=50586.1 hash=sha256:d796a389e node=task-head-scan/translate/probe-tr-quant/L30
+2026-04-16 22:39:42 [info     ] node.enter                     hash=sha256:2b8b40d8a node=task-head-scan/translate/probe-tr-quant/L33
+2026-04-16 22:40:31 [info     ] node.complete                  elapsed_ms=49615.4 hash=sha256:2b8b40d8a node=task-head-scan/translate/probe-tr-quant/L33
+2026-04-16 22:40:31 [info     ] node.enter                     hash=sha256:b56622c70 node=task-head-scan/translate/probe-tr-quant/L4
+2026-04-16 22:41:24 [info     ] node.complete                  elapsed_ms=52554.4 hash=sha256:b56622c70 node=task-head-scan/translate/probe-tr-quant/L4
+2026-04-16 22:41:24 [info     ] node.enter                     hash=sha256:549b7a330 node=task-head-scan/translate/probe-tr-quant/L7
+2026-04-16 22:42:13 [info     ] node.complete                  elapsed_ms=48650.3 hash=sha256:549b7a330 node=task-head-scan/translate/probe-tr-quant/L7
+2026-04-16 22:42:13 [info     ] node.complete                  elapsed_ms=423443.4 hash=sha256:7acc1f67b node=task-head-scan/translate/probe-tr-quant
+2026-04-16 22:42:13 [info     ] node.enter                     hash=sha256:386310552 node=task-head-scan/translate/probe-tr-relcl
+2026-04-16 22:42:13 [info     ] node.enter                     hash=sha256:85a3fdd85 node=task-head-scan/translate/probe-tr-relcl/L0
+2026-04-16 22:43:28 [info     ] node.complete                  elapsed_ms=75025.1 hash=sha256:85a3fdd85 node=task-head-scan/translate/probe-tr-relcl/L0
+2026-04-16 22:43:28 [info     ] node.enter                     hash=sha256:12908328c node=task-head-scan/translate/probe-tr-relcl/L1
+2026-04-16 22:44:39 [info     ] node.complete                  elapsed_ms=71439.3 hash=sha256:12908328c node=task-head-scan/translate/probe-tr-relcl/L1
+2026-04-16 22:44:39 [info     ] node.enter                     hash=sha256:8d8e001aa node=task-head-scan/translate/probe-tr-relcl/L24
+2026-04-16 22:45:42 [info     ] node.complete                  elapsed_ms=62536.8 hash=sha256:8d8e001aa node=task-head-scan/translate/probe-tr-relcl/L24
+2026-04-16 22:45:42 [info     ] node.enter                     hash=sha256:a76c088bd node=task-head-scan/translate/probe-tr-relcl/L26
+2026-04-16 22:46:33 [info     ] node.complete                  elapsed_ms=51174.0 hash=sha256:a76c088bd node=task-head-scan/translate/probe-tr-relcl/L26
+2026-04-16 22:46:33 [info     ] node.enter                     hash=sha256:038184ceb node=task-head-scan/translate/probe-tr-relcl/L30
+2026-04-16 22:47:33 [info     ] node.complete                  elapsed_ms=59845.3 hash=sha256:038184ceb node=task-head-scan/translate/probe-tr-relcl/L30
+2026-04-16 22:47:33 [info     ] node.enter                     hash=sha256:479c4b42b node=task-head-scan/translate/probe-tr-relcl/L33
+2026-04-16 22:48:44 [info     ] node.complete                  elapsed_ms=70886.8 hash=sha256:479c4b42b node=task-head-scan/translate/probe-tr-relcl/L33
+2026-04-16 22:48:44 [info     ] node.enter                     hash=sha256:b62592b5e node=task-head-scan/translate/probe-tr-relcl/L4
+2026-04-16 22:49:55 [info     ] node.complete                  elapsed_ms=71108.1 hash=sha256:b62592b5e node=task-head-scan/translate/probe-tr-relcl/L4
+2026-04-16 22:49:55 [info     ] node.enter                     hash=sha256:8cc110d1f node=task-head-scan/translate/probe-tr-relcl/L7
+2026-04-16 22:50:45 [info     ] node.complete                  elapsed_ms=50597.0 hash=sha256:8cc110d1f node=task-head-scan/translate/probe-tr-relcl/L7
+2026-04-16 22:50:45 [info     ] node.complete                  elapsed_ms=512619.8 hash=sha256:386310552 node=task-head-scan/translate/probe-tr-relcl
+2026-04-16 22:50:45 [info     ] node.enter                     hash=sha256:8f3b40ab5 node=task-head-scan/translate/probe-tr-simple
+2026-04-16 22:50:45 [info     ] node.enter                     hash=sha256:c315d4a2c node=task-head-scan/translate/probe-tr-simple/L0
+2026-04-16 22:51:37 [info     ] node.complete                  elapsed_ms=51572.4 hash=sha256:c315d4a2c node=task-head-scan/translate/probe-tr-simple/L0
+2026-04-16 22:51:37 [info     ] node.enter                     hash=sha256:3093f976d node=task-head-scan/translate/probe-tr-simple/L1
+2026-04-16 22:52:35 [info     ] node.complete                  elapsed_ms=58692.0 hash=sha256:3093f976d node=task-head-scan/translate/probe-tr-simple/L1
+2026-04-16 22:52:35 [info     ] node.enter                     hash=sha256:652f944d8 node=task-head-scan/translate/probe-tr-simple/L24
+2026-04-16 22:53:37 [info     ] node.complete                  elapsed_ms=61523.9 hash=sha256:652f944d8 node=task-head-scan/translate/probe-tr-simple/L24
+2026-04-16 22:53:37 [info     ] node.enter                     hash=sha256:f3b36afe2 node=task-head-scan/translate/probe-tr-simple/L26
+2026-04-16 22:54:27 [info     ] node.complete                  elapsed_ms=50460.0 hash=sha256:f3b36afe2 node=task-head-scan/translate/probe-tr-simple/L26
+2026-04-16 22:54:27 [info     ] node.enter                     hash=sha256:13247e769 node=task-head-scan/translate/probe-tr-simple/L30
+2026-04-16 22:55:17 [info     ] node.complete                  elapsed_ms=49855.8 hash=sha256:13247e769 node=task-head-scan/translate/probe-tr-simple/L30
+2026-04-16 22:55:17 [info     ] node.enter                     hash=sha256:b3c2f2687 node=task-head-scan/translate/probe-tr-simple/L33
+2026-04-16 22:56:07 [info     ] node.complete                  elapsed_ms=49901.5 hash=sha256:b3c2f2687 node=task-head-scan/translate/probe-tr-simple/L33
+2026-04-16 22:56:07 [info     ] node.enter                     hash=sha256:378836364 node=task-head-scan/translate/probe-tr-simple/L4
+2026-04-16 22:56:59 [info     ] node.complete                  elapsed_ms=52081.5 hash=sha256:378836364 node=task-head-scan/translate/probe-tr-simple/L4
+2026-04-16 22:56:59 [info     ] node.enter                     hash=sha256:2a355b6a4 node=task-head-scan/translate/probe-tr-simple/L7
+2026-04-16 22:58:07 [info     ] node.complete                  elapsed_ms=67750.0 hash=sha256:2a355b6a4 node=task-head-scan/translate/probe-tr-simple/L7
+2026-04-16 22:58:07 [info     ] node.complete                  elapsed_ms=441842.8 hash=sha256:8f3b40ab5 node=task-head-scan/translate/probe-tr-simple
+2026-04-16 22:58:07 [info     ] node.complete                  elapsed_ms=2275089.6 hash=sha256:985aa090c node=task-head-scan/translate
+2026-04-16 22:58:07 [info     ] node.complete                  elapsed_ms=6815311.5 hash=sha256:72f68aaf1 node=task-head-scan
+
+============================================================
+  RESULTS — essential heads per task
+============================================================
+
+==================================================
+  CLASSIFY
+==================================================
+
+  probe-cls-mixed:
+    L0: baseline FAIL (skip)
+    L1: baseline FAIL (skip)
+    L24: baseline FAIL (skip)
+    L26: baseline FAIL (skip)
+    L30: baseline FAIL (skip)
+    L33: baseline FAIL (skip)
+    L4: baseline FAIL (skip)
+    L7: baseline FAIL (skip)
+
+  probe-cls-neg-complex:
+    L0: baseline FAIL (skip)
+    L1: baseline FAIL (skip)
+    L24: baseline FAIL (skip)
+    L26: baseline FAIL (skip)
+    L30: baseline FAIL (skip)
+    L33: baseline FAIL (skip)
+    L4: baseline FAIL (skip)
+    L7: baseline FAIL (skip)
+
+  probe-cls-neg-simple:
+    L0: all survive
+    L1: all survive
+    L24: all survive
+    L26: all survive
+    L30: all survive
+    L33: all survive
+    L4: all survive
+    L7: all survive
+
+  probe-cls-pos-complex:
+    L0: all survive
+    L1: all survive
+    L24: all survive
+    L26: all survive
+    L30: all survive
+    L33: all survive
+    L4: all survive
+    L7: all survive
+
+  probe-cls-pos-simple:
+    L0: all survive
+    L1: all survive
+    L24: all survive
+    L26: all survive
+    L30: all survive
+    L33: all survive
+    L4: all survive
+    L7: all survive
+
+  --- classify CROSS-PROBE ESSENTIAL ---
+    L0: 0, 2, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
+    L1: 0 *, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
+    L4: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
+    L7: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
+    L24: 0 *, 1, 2 *, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
+    L26: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
+    L30: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
+    L33: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
+    Total: 251 essential heads
+
+==================================================
+  EXTRACT
+==================================================
+
+  probe-ext-ditrans:
+    L0: all survive
+    L1: all survive
+    L24: 1 broken — [0]
+    L26: all survive
+    L30: all survive
+    L33: all survive
+    L4: all survive
+    L7: all survive
+
+  probe-ext-multi:
+    L0: 1 broken — [7]
+    L1: all survive
+    L24: all survive
+    L26: 1 broken — [0]
+    L30: all survive
+    L33: 1 broken — [0]
+    L4: all survive
+    L7: 1 broken — [4]
+
+  probe-ext-nested:
+    L0: 1 broken — [0]
+    L1: all survive
+    L24: all survive
+    L26: all survive
+    L30: all survive
+    L33: all survive
+    L4: all survive
+    L7: all survive
+
+  probe-ext-passive:
+    L0: all survive
+    L1: all survive
+    L24: all survive
+    L26: all survive
+    L30: all survive
+    L33: all survive
+    L4: all survive
+    L7: all survive
+
+  probe-ext-simple:
+    L0: all survive
+    L1: all survive
+    L24: all survive
+    L26: all survive
+    L30: all survive
+    L33: all survive
+    L4: all survive
+    L7: all survive
+
+  --- extract CROSS-PROBE ESSENTIAL ---
+    L0: 0, 7
+    L7: 4
+    L24: 0 *
+    L26: 0
+    L33: 0
+    Total: 6 essential heads
+
+==================================================
+  TRANSLATE
+==================================================
+
+  probe-tr-adj:
+    L0: all survive
+    L1: all survive
+    L24: all survive
+    L26: all survive
+    L30: all survive
+    L33: all survive
+    L4: all survive
+    L7: all survive
+
+  probe-tr-cond:
+    L0: all survive
+    L1: all survive
+    L24: all survive
+    L26: all survive
+    L30: all survive
+    L33: all survive
+    L4: all survive
+    L7: all survive
+
+  probe-tr-quant:
+    L0: all survive
+    L1: all survive
+    L24: all survive
+    L26: all survive
+    L30: all survive
+    L33: all survive
+    L4: all survive
+    L7: all survive
+
+  probe-tr-relcl:
+    L0: all survive
+    L1: all survive
+    L24: all survive
+    L26: all survive
+    L30: all survive
+    L33: all survive
+    L4: all survive
+    L7: all survive
+
+  probe-tr-simple:
+    L0: all survive
+    L1: all survive
+    L24: all survive
+    L26: all survive
+    L30: all survive
+    L33: all survive
+    L4: 1 broken — [21]
+    L7: all survive
+
+  --- translate CROSS-PROBE ESSENTIAL ---
+    L4: 21
+    Total: 1 essential heads
+
+============================================================
+  CROSS-TASK COMPARISON
+============================================================
+
+  * = also essential for compile (L1:H0, L24:H0, L24:H2)
+
+head            compile   classify    extract  translate
+--------------------------------------------------------
+L0:H0                 —  ESSENTIAL  ESSENTIAL          —
+L0:H2                 —  ESSENTIAL          —          —
+L0:H4                 —  ESSENTIAL          —          —
+L0:H5                 —  ESSENTIAL          —          —
+L0:H6                 —  ESSENTIAL          —          —
+L0:H7                 —          —  ESSENTIAL          —
+L0:H8                 —  ESSENTIAL          —          —
+L0:H9                 —  ESSENTIAL          —          —
+L0:H10                —  ESSENTIAL          —          —
+L0:H11                —  ESSENTIAL          —          —
+L0:H12                —  ESSENTIAL          —          —
+L0:H13                —  ESSENTIAL          —          —
+L0:H14                —  ESSENTIAL          —          —
+L0:H15                —  ESSENTIAL          —          —
+L0:H16                —  ESSENTIAL          —          —
+L0:H17                —  ESSENTIAL          —          —
+L0:H18                —  ESSENTIAL          —          —
+L0:H19                —  ESSENTIAL          —          —
+L0:H20                —  ESSENTIAL          —          —
+L0:H21                —  ESSENTIAL          —          —
+L0:H22                —  ESSENTIAL          —          —
+L0:H23                —  ESSENTIAL          —          —
+L0:H24                —  ESSENTIAL          —          —
+L0:H25                —  ESSENTIAL          —          —
+L0:H26                —  ESSENTIAL          —          —
+L0:H27                —  ESSENTIAL          —          —
+L0:H28                —  ESSENTIAL          —          —
+L0:H29                —  ESSENTIAL          —          —
+L0:H30                —  ESSENTIAL          —          —
+L0:H31                —  ESSENTIAL          —          —
+L1:H0         ESSENTIAL  ESSENTIAL          —          —
+L1:H1                 —  ESSENTIAL          —          —
+L1:H2                 —  ESSENTIAL          —          —
+L1:H3                 —  ESSENTIAL          —          —
+L1:H4                 —  ESSENTIAL          —          —
+L1:H5                 —  ESSENTIAL          —          —
+L1:H6                 —  ESSENTIAL          —          —
+L1:H7                 —  ESSENTIAL          —          —
+L1:H8                 —  ESSENTIAL          —          —
+L1:H9                 —  ESSENTIAL          —          —
+L1:H10                —  ESSENTIAL          —          —
+L1:H11                —  ESSENTIAL          —          —
+L1:H12                —  ESSENTIAL          —          —
+L1:H13                —  ESSENTIAL          —          —
+L1:H14                —  ESSENTIAL          —          —
+L1:H15                —  ESSENTIAL          —          —
+L1:H16                —  ESSENTIAL          —          —
+L1:H17                —  ESSENTIAL          —          —
+L1:H18                —  ESSENTIAL          —          —
+L1:H19                —  ESSENTIAL          —          —
+L1:H20                —  ESSENTIAL          —          —
+L1:H21                —  ESSENTIAL          —          —
+L1:H22                —  ESSENTIAL          —          —
+L1:H23                —  ESSENTIAL          —          —
+L1:H24                —  ESSENTIAL          —          —
+L1:H25                —  ESSENTIAL          —          —
+L1:H26                —  ESSENTIAL          —          —
+L1:H27                —  ESSENTIAL          —          —
+L1:H28                —  ESSENTIAL          —          —
+L1:H29                —  ESSENTIAL          —          —
+L1:H30                —  ESSENTIAL          —          —
+L1:H31                —  ESSENTIAL          —          —
+L4:H0                 —  ESSENTIAL          —          —
+L4:H1                 —  ESSENTIAL          —          —
+L4:H2                 —  ESSENTIAL          —          —
+L4:H3                 —  ESSENTIAL          —          —
+L4:H4                 —  ESSENTIAL          —          —
+L4:H5                 —  ESSENTIAL          —          —
+L4:H6                 —  ESSENTIAL          —          —
+L4:H7                 —  ESSENTIAL          —          —
+L4:H8                 —  ESSENTIAL          —          —
+L4:H9                 —  ESSENTIAL          —          —
+L4:H10                —  ESSENTIAL          —          —
+L4:H11                —  ESSENTIAL          —          —
+L4:H12                —  ESSENTIAL          —          —
+L4:H13                —  ESSENTIAL          —          —
+L4:H14                —  ESSENTIAL          —          —
+L4:H15                —  ESSENTIAL          —          —
+L4:H16                —  ESSENTIAL          —          —
+L4:H17                —  ESSENTIAL          —          —
+L4:H18                —  ESSENTIAL          —          —
+L4:H19                —  ESSENTIAL          —          —
+L4:H20                —  ESSENTIAL          —          —
+L4:H21                —  ESSENTIAL          —  ESSENTIAL
+L4:H22                —  ESSENTIAL          —          —
+L4:H23                —  ESSENTIAL          —          —
+L4:H24                —  ESSENTIAL          —          —
+L4:H25                —  ESSENTIAL          —          —
+L4:H26                —  ESSENTIAL          —          —
+L4:H27                —  ESSENTIAL          —          —
+L4:H28                —  ESSENTIAL          —          —
+L4:H29                —  ESSENTIAL          —          —
+L4:H30                —  ESSENTIAL          —          —
+L4:H31                —  ESSENTIAL          —          —
+L7:H0                 —  ESSENTIAL          —          —
+L7:H1                 —  ESSENTIAL          —          —
+L7:H2                 —  ESSENTIAL          —          —
+L7:H3                 —  ESSENTIAL          —          —
+L7:H4                 —  ESSENTIAL  ESSENTIAL          —
+L7:H5                 —  ESSENTIAL          —          —
+L7:H6                 —  ESSENTIAL          —          —
+L7:H7                 —  ESSENTIAL          —          —
+L7:H8                 —  ESSENTIAL          —          —
+L7:H9                 —  ESSENTIAL          —          —
+L7:H10                —  ESSENTIAL          —          —
+L7:H11                —  ESSENTIAL          —          —
+L7:H12                —  ESSENTIAL          —          —
+L7:H13                —  ESSENTIAL          —          —
+L7:H14                —  ESSENTIAL          —          —
+L7:H15                —  ESSENTIAL          —          —
+L7:H16                —  ESSENTIAL          —          —
+L7:H17                —  ESSENTIAL          —          —
+L7:H18                —  ESSENTIAL          —          —
+L7:H19                —  ESSENTIAL          —          —
+L7:H20                —  ESSENTIAL          —          —
+L7:H21                —  ESSENTIAL          —          —
+L7:H22                —  ESSENTIAL          —          —
+L7:H23                —  ESSENTIAL          —          —
+L7:H24                —  ESSENTIAL          —          —
+L7:H25                —  ESSENTIAL          —          —
+L7:H26                —  ESSENTIAL          —          —
+L7:H27                —  ESSENTIAL          —          —
+L7:H28                —  ESSENTIAL          —          —
+L7:H29                —  ESSENTIAL          —          —
+L7:H30                —  ESSENTIAL          —          —
+L7:H31                —  ESSENTIAL          —          —
+L24:H0        ESSENTIAL  ESSENTIAL  ESSENTIAL          —
+L24:H1                —  ESSENTIAL          —          —
+L24:H2        ESSENTIAL  ESSENTIAL          —          —
+L24:H3                —  ESSENTIAL          —          —
+L24:H5                —  ESSENTIAL          —          —
+L24:H6                —  ESSENTIAL          —          —
+L24:H7                —  ESSENTIAL          —          —
+L24:H8                —  ESSENTIAL          —          —
+L24:H9                —  ESSENTIAL          —          —
+L24:H10               —  ESSENTIAL          —          —
+L24:H11               —  ESSENTIAL          —          —
+L24:H12               —  ESSENTIAL          —          —
+L24:H13               —  ESSENTIAL          —          —
+L24:H14               —  ESSENTIAL          —          —
+L24:H16               —  ESSENTIAL          —          —
+L24:H17               —  ESSENTIAL          —          —
+L24:H18               —  ESSENTIAL          —          —
+L24:H19               —  ESSENTIAL          —          —
+L24:H20               —  ESSENTIAL          —          —
+L24:H21               —  ESSENTIAL          —          —
+L24:H22               —  ESSENTIAL          —          —
+L24:H23               —  ESSENTIAL          —          —
+L24:H24               —  ESSENTIAL          —          —
+L24:H25               —  ESSENTIAL          —          —
+L24:H26               —  ESSENTIAL          —          —
+L24:H27               —  ESSENTIAL          —          —
+L24:H28               —  ESSENTIAL          —          —
+L24:H29               —  ESSENTIAL          —          —
+L24:H30               —  ESSENTIAL          —          —
+L24:H31               —  ESSENTIAL          —          —
+L26:H0                —  ESSENTIAL  ESSENTIAL          —
+L26:H1                —  ESSENTIAL          —          —
+L26:H2                —  ESSENTIAL          —          —
+L26:H3                —  ESSENTIAL          —          —
+L26:H4                —  ESSENTIAL          —          —
+L26:H5                —  ESSENTIAL          —          —
+L26:H6                —  ESSENTIAL          —          —
+L26:H7                —  ESSENTIAL          —          —
+L26:H8                —  ESSENTIAL          —          —
+L26:H9                —  ESSENTIAL          —          —
+L26:H10               —  ESSENTIAL          —          —
+L26:H11               —  ESSENTIAL          —          —
+L26:H12               —  ESSENTIAL          —          —
+L26:H13               —  ESSENTIAL          —          —
+L26:H14               —  ESSENTIAL          —          —
+L26:H15               —  ESSENTIAL          —          —
+L26:H16               —  ESSENTIAL          —          —
+L26:H17               —  ESSENTIAL          —          —
+L26:H18               —  ESSENTIAL          —          —
+L26:H19               —  ESSENTIAL          —          —
+L26:H20               —  ESSENTIAL          —          —
+L26:H21               —  ESSENTIAL          —          —
+L26:H22               —  ESSENTIAL          —          —
+L26:H23               —  ESSENTIAL          —          —
+L26:H24               —  ESSENTIAL          —          —
+L26:H25               —  ESSENTIAL          —          —
+L26:H26               —  ESSENTIAL          —          —
+L26:H27               —  ESSENTIAL          —          —
+L26:H28               —  ESSENTIAL          —          —
+L26:H29               —  ESSENTIAL          —          —
+L26:H30               —  ESSENTIAL          —          —
+L26:H31               —  ESSENTIAL          —          —
+L30:H0                —  ESSENTIAL          —          —
+L30:H1                —  ESSENTIAL          —          —
+L30:H2                —  ESSENTIAL          —          —
+L30:H3                —  ESSENTIAL          —          —
+L30:H4                —  ESSENTIAL          —          —
+L30:H5                —  ESSENTIAL          —          —
+L30:H6                —  ESSENTIAL          —          —
+L30:H7                —  ESSENTIAL          —          —
+L30:H8                —  ESSENTIAL          —          —
+L30:H9                —  ESSENTIAL          —          —
+L30:H10               —  ESSENTIAL          —          —
+L30:H11               —  ESSENTIAL          —          —
+L30:H12               —  ESSENTIAL          —          —
+L30:H13               —  ESSENTIAL          —          —
+L30:H14               —  ESSENTIAL          —          —
+L30:H15               —  ESSENTIAL          —          —
+L30:H16               —  ESSENTIAL          —          —
+L30:H17               —  ESSENTIAL          —          —
+L30:H18               —  ESSENTIAL          —          —
+L30:H19               —  ESSENTIAL          —          —
+L30:H20               —  ESSENTIAL          —          —
+L30:H21               —  ESSENTIAL          —          —
+L30:H22               —  ESSENTIAL          —          —
+L30:H23               —  ESSENTIAL          —          —
+L30:H24               —  ESSENTIAL          —          —
+L30:H25               —  ESSENTIAL          —          —
+L30:H26               —  ESSENTIAL          —          —
+L30:H27               —  ESSENTIAL          —          —
+L30:H28               —  ESSENTIAL          —          —
+L30:H29               —  ESSENTIAL          —          —
+L30:H30               —  ESSENTIAL          —          —
+L30:H31               —  ESSENTIAL          —          —
+L33:H0                —  ESSENTIAL  ESSENTIAL          —
+L33:H1                —  ESSENTIAL          —          —
+L33:H2                —  ESSENTIAL          —          —
+L33:H3                —  ESSENTIAL          —          —
+L33:H4                —  ESSENTIAL          —          —
+L33:H5                —  ESSENTIAL          —          —
+L33:H6                —  ESSENTIAL          —          —
+L33:H7                —  ESSENTIAL          —          —
+L33:H8                —  ESSENTIAL          —          —
+L33:H9                —  ESSENTIAL          —          —
+L33:H10               —  ESSENTIAL          —          —
+L33:H11               —  ESSENTIAL          —          —
+L33:H12               —  ESSENTIAL          —          —
+L33:H13               —  ESSENTIAL          —          —
+L33:H14               —  ESSENTIAL          —          —
+L33:H15               —  ESSENTIAL          —          —
+L33:H16               —  ESSENTIAL          —          —
+L33:H17               —  ESSENTIAL          —          —
+L33:H18               —  ESSENTIAL          —          —
+L33:H19               —  ESSENTIAL          —          —
+L33:H20               —  ESSENTIAL          —          —
+L33:H21               —  ESSENTIAL          —          —
+L33:H22               —  ESSENTIAL          —          —
+L33:H23               —  ESSENTIAL          —          —
+L33:H24               —  ESSENTIAL          —          —
+L33:H25               —  ESSENTIAL          —          —
+L33:H26               —  ESSENTIAL          —          —
+L33:H27               —  ESSENTIAL          —          —
+L33:H28               —  ESSENTIAL          —          —
+L33:H29               —  ESSENTIAL          —          —
+L33:H30               —  ESSENTIAL          —          —
+L33:H31               —  ESSENTIAL          —          —
+
+Summary: /Users/mwhitford/src/verbum/results/experiments/task-head-scan-summary.json

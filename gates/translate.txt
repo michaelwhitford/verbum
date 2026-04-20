@@ -1,0 +1,4 @@
+The dog runs. → Le chien court.
+The cat is black. → Le chat est noir.
+
+Input: 

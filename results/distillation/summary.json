@@ -1,0 +1,934 @@
+{
+  "timestamp": "2026-04-17T19:29:21.191890+00:00",
+  "version": 2,
+  "elapsed_s": 121.33842778205872,
+  "student_model": "EleutherAI/pythia-160m-deduped",
+  "n_params": 162322944,
+  "n_train": 509,
+  "n_eval": 10,
+  "baseline_p_lambda": 0.0,
+  "final_p_lambda": 0.9,
+  "holdout_p_lambda": 0.975,
+  "epoch_losses": [
+    3.2820741803734563,
+    0.7606771826394834,
+    0.5017182133742608,
+    0.3189700377643021,
+    0.2609569131400349,
+    0.16522529924804985,
+    0.09258794166828466,
+    0.03957542848019102,
+    0.01391006178057097,
+    0.0035056768584666997
+  ],
+  "eval_results": [
+    {
+      "input": "The dog runs.",
+      "expected": "λx. runs(dog)",
+      "generated": "λx. runs(dog)",
+      "has_lambda": true,
+      "category": "simple",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 1.0,
+        "pred_recall": 1.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 1.0,
+        "exact_match": true
+      }
+    },
+    {
+      "input": "Every student reads a book.",
+      "expected": "∀y. student(y) → ∃z. book(z) ∧ reads(y, z)",
+      "generated": "∀x. student(x) → reads(x, book)",
+      "has_lambda": false,
+      "category": "quantified",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 1.0,
+        "pred_recall": 0.6666666666666666,
+        "var_match": false,
+        "quantifier_match": false,
+        "connective_match": false,
+        "has_repetition": false,
+        "length_ratio": 0.7380952380952381,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "The cat that sat on the mat is black.",
+      "expected": "black(ιy. cat(y) ∧ sat_on(y, ιz. mat(z)))",
+      "generated": "λx. black(cat)",
+      "has_lambda": true,
+      "category": "relative_clause",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 1.0,
+        "pred_recall": 0.25,
+        "var_match": false,
+        "quantifier_match": false,
+        "connective_match": false,
+        "has_repetition": false,
+        "length_ratio": 0.34146341463414637,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "If it rains, the ground is wet.",
+      "expected": "rains → wet(ground)",
+      "generated": "λx. if(cries(x), rains(dog))",
+      "has_lambda": true,
+      "category": "conditional",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 0.0,
+        "pred_recall": 0.0,
+        "var_match": false,
+        "quantifier_match": false,
+        "connective_match": false,
+        "has_repetition": false,
+        "length_ratio": 1.4736842105263157,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "Someone believes that the earth is flat.",
+      "expected": "∃y. person(y) ∧ believes(y, flat(earth))",
+      "generated": "λx. believes(x, x) → λx. believes(x, x, flat)",
+      "has_lambda": true,
+      "category": "attitude",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 1.0,
+        "pred_recall": 0.3333333333333333,
+        "var_match": false,
+        "quantifier_match": false,
+        "connective_match": false,
+        "has_repetition": false,
+        "length_ratio": 1.125,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "The bird flies.",
+      "expected": "λx. flies(bird)",
+      "generated": "λx. flies(bird)",
+      "has_lambda": true,
+      "category": "simple",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 1.0,
+        "pred_recall": 1.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 1.0,
+        "exact_match": true
+      }
+    },
+    {
+      "input": "Alice helps Bob.",
+      "expected": "λx. helps(alice, bob)",
+      "generated": "λx. helps(alice, Bob)",
+      "has_lambda": true,
+      "category": "transitive",
+      "metrics": {
+        "parses": false,
+        "pred_precision": 1.0,
+        "pred_recall": 1.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 1.0,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "No fish swims.",
+      "expected": "¬∃x. fish(x) ∧ swims(x)",
+      "generated": "λx. swims(no, fish)",
+      "has_lambda": true,
+      "category": "negation",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 1.0,
+        "pred_recall": 0.5,
+        "var_match": true,
+        "quantifier_match": false,
+        "connective_match": false,
+        "has_repetition": false,
+        "length_ratio": 0.8260869565217391,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "The teacher who the child sees laughs.",
+      "expected": "λx. laughs(ιy. teacher(y) ∧ sees(child, y))",
+      "generated": "λx. laughs(teacher(x))",
+      "has_lambda": true,
+      "category": "relative_clause",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 1.0,
+        "pred_recall": 0.6666666666666666,
+        "var_match": false,
+        "quantifier_match": false,
+        "connective_match": false,
+        "has_repetition": false,
+        "length_ratio": 0.5116279069767442,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "Tom runs quickly.",
+      "expected": "λx. quickly(runs(tom))",
+      "generated": "λx. runs(tom, quickly)",
+      "has_lambda": true,
+      "category": "adverb",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 1.0,
+        "pred_recall": 0.5,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 1.0,
+        "exact_match": false
+      }
+    }
+  ],
+  "holdout_results": [
+    {
+      "input": "The elephant climbs bravely.",
+      "expected": "λx. climbs(elephant)",
+      "generated": "λx. climble(x)",
+      "has_lambda": true,
+      "category": "adverb",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 0.0,
+        "pred_recall": 0.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 0.7,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "The elephant does not vanish.",
+      "expected": "λx. not(vanish(elephant))",
+      "generated": "λx. not(happily, baker)",
+      "has_lambda": true,
+      "category": "negation",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 1.0,
+        "pred_recall": 0.5,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 0.92,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "Felix thinks that the wizard whistles.",
+      "expected": "λx. thinks(felix, wizard, whistles)",
+      "generated": "λx. thinks(graice, x, sings)",
+      "has_lambda": true,
+      "category": "attitude",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 1.0,
+        "pred_recall": 1.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 0.8,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "Felix chases diana.",
+      "expected": "λx. chases(felix, diana)",
+      "generated": "λx. chill(graace, jane)",
+      "has_lambda": true,
+      "category": "transitive",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 0.0,
+        "pred_recall": 0.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 0.9583333333333334,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "The wizard vanishes in the river.",
+      "expected": "λx. vanishes(wizard, river)",
+      "generated": "λx. vanishes(knight, river)",
+      "has_lambda": true,
+      "category": "prepositional",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 1.0,
+        "pred_recall": 1.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 1.0,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "No elephant vanishes.",
+      "expected": "λx. ¬vanishes(elephant)",
+      "generated": "λx. ¬(x. ¬(x) ∧ ¬(x, ¬x))",
+      "has_lambda": true,
+      "category": "negation",
+      "metrics": {
+        "parses": false,
+        "pred_precision": 0.0,
+        "pred_recall": 0.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": false,
+        "has_repetition": false,
+        "length_ratio": 1.0869565217391304,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "The kind wizard whistles.",
+      "expected": "λx. whistles(wizard)",
+      "generated": "λx. sings(kind_filler)",
+      "has_lambda": true,
+      "category": "simple",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 0.0,
+        "pred_recall": 0.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 1.1,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "The elephant is fast.",
+      "expected": "λx. fast(elephant)",
+      "generated": "λx. fast(elef)",
+      "has_lambda": true,
+      "category": "copular",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 1.0,
+        "pred_recall": 1.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 0.7777777777777778,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "No nurse whistles.",
+      "expected": "λx. ¬whistles(nurse)",
+      "generated": "λx. ¬sings(serves(x))",
+      "has_lambda": true,
+      "category": "negation",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 0.0,
+        "pred_recall": 0.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 1.05,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "Felix vanishes.",
+      "expected": "λx. vanishes(felix)",
+      "generated": "λx. vanishes(Felice)",
+      "has_lambda": true,
+      "category": "simple",
+      "metrics": {
+        "parses": false,
+        "pred_precision": 1.0,
+        "pred_recall": 1.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 1.0526315789473684,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "Either the elephant vanishes or the wizard whistles.",
+      "expected": "λx. (vanishes(elephant) ∨ whistles(wizard))",
+      "generated": "λx. (bird_ (x) ∨ sings(writer))",
+      "has_lambda": true,
+      "category": "disjunction",
+      "metrics": {
+        "parses": false,
+        "pred_precision": 0.0,
+        "pred_recall": 0.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 0.7209302325581395,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "The nurse climbs.",
+      "expected": "λx. climbs(nurse)",
+      "generated": "λx. helps(clerk)",
+      "has_lambda": true,
+      "category": "simple",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 0.0,
+        "pred_recall": 0.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 0.9411764705882353,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "If the nurse climbs, the wizard vanishes.",
+      "expected": "λx. if(climbs(nurse), vanishes(wizard))",
+      "generated": "λx. if(sleeps(x), sent(cat))",
+      "has_lambda": true,
+      "category": "conditional",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 0.3333333333333333,
+        "pred_recall": 0.3333333333333333,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 0.717948717948718,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "The nurse carries the wizard.",
+      "expected": "λx. carries(nurse, wizard)",
+      "generated": "λx. carries(sailor, x)",
+      "has_lambda": true,
+      "category": "transitive",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 1.0,
+        "pred_recall": 1.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 0.8461538461538461,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "The nurse that carries the wizard climbs.",
+      "expected": "λx. climbs(nurse(x))",
+      "generated": "λx. clims(λy. fears(x, y, x) ∧ greets(x, x)",
+      "has_lambda": true,
+      "category": "relative_clause",
+      "metrics": {
+        "parses": false,
+        "pred_precision": 0.0,
+        "pred_recall": 0.0,
+        "var_match": false,
+        "quantifier_match": true,
+        "connective_match": false,
+        "has_repetition": false,
+        "length_ratio": 2.15,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "The elephant showed the wizard a ball.",
+      "expected": "λx. showed(wizard, ball)",
+      "generated": "λx. showed(x, tower)",
+      "has_lambda": true,
+      "category": "ditransitive",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 1.0,
+        "pred_recall": 1.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 0.8333333333333334,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "Some nurse whistles.",
+      "expected": "∃x. nurse(x) ∧ whistles(x)",
+      "generated": "λx. sings(some_guard)",
+      "has_lambda": true,
+      "category": "quantified",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 0.0,
+        "pred_recall": 0.0,
+        "var_match": true,
+        "quantifier_match": false,
+        "connective_match": false,
+        "has_repetition": false,
+        "length_ratio": 0.8076923076923077,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "The wizard is old.",
+      "expected": "λx. old(wizard)",
+      "generated": "λx. is(old, wizard)",
+      "has_lambda": true,
+      "category": "copular",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 0.0,
+        "pred_recall": 0.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 1.2666666666666666,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "The elephant vanishes bravely.",
+      "expected": "λx. vanishes(elephant)",
+      "generated": "λx. vanishes(baker)",
+      "has_lambda": true,
+      "category": "adverb",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 1.0,
+        "pred_recall": 1.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 0.8636363636363636,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "Diana carries iris.",
+      "expected": "λx. carries(diana, iris)",
+      "generated": "λx. carries(emma)",
+      "has_lambda": true,
+      "category": "transitive",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 1.0,
+        "pred_recall": 1.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 0.7083333333333334,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "If the elephant whistles, the wizard whistles.",
+      "expected": "λx. if(whistles(elephant), whistles(wizard))",
+      "generated": "λx. if(sleeps(x), bird)",
+      "has_lambda": true,
+      "category": "conditional",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 0.5,
+        "pred_recall": 0.5,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 0.5227272727272727,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "The kind nurse whistles.",
+      "expected": "λx. whistles(nurse)",
+      "generated": "λx. helps(child, gently)",
+      "has_lambda": true,
+      "category": "simple",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 0.0,
+        "pred_recall": 0.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 1.263157894736842,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "Either the nurse vanishes or the wizard vanishes.",
+      "expected": "λx. (vanishes(nurse) ∨ vanishes(wizard))",
+      "generated": "λx. (sleeps(x) ∨ falls(x))",
+      "has_lambda": true,
+      "category": "disjunction",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 0.0,
+        "pred_recall": 0.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 0.65,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "Felix climbs.",
+      "expected": "λx. climbs(felix)",
+      "generated": "λx. climbs(Felice)",
+      "has_lambda": true,
+      "category": "simple",
+      "metrics": {
+        "parses": false,
+        "pred_precision": 1.0,
+        "pred_recall": 1.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 1.0588235294117647,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "The elephant who the wizard chases whistles.",
+      "expected": "λx. whistles(elephant)",
+      "generated": "λx. sings(x)",
+      "has_lambda": true,
+      "category": "relative_clause",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 0.0,
+        "pred_recall": 0.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 0.5454545454545454,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "The wizard is slow.",
+      "expected": "λx. slow(wizard)",
+      "generated": "λx. slow(quiet(scientist))",
+      "has_lambda": true,
+      "category": "copular",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 0.5,
+        "pred_recall": 1.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 1.625,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "Iris hopes that the wizard climbs.",
+      "expected": "λx. hopes(iris, wizard, climbs)",
+      "generated": "λx. hopes(x, x, climiles)",
+      "has_lambda": true,
+      "category": "attitude",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 1.0,
+        "pred_recall": 1.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 0.8064516129032258,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "Iris vanishes and whistles.",
+      "expected": "λx. vanishes(iris) ∧ whistles(iris)",
+      "generated": "λx. vanish(gra) ∧ sings(gra)",
+      "has_lambda": true,
+      "category": "conjunction",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 0.0,
+        "pred_recall": 0.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 0.8,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "Iris and diana climb.",
+      "expected": "λx. climb(iris) ∧ climb(diana)",
+      "generated": "λx. climb(happily, james)",
+      "has_lambda": true,
+      "category": "conjunction",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 1.0,
+        "pred_recall": 1.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": false,
+        "has_repetition": false,
+        "length_ratio": 0.8333333333333334,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "The nurse climbs in the bridge.",
+      "expected": "λx. climbs(nurse, bridge)",
+      "generated": "λx. helps(clerk, bridge)",
+      "has_lambda": true,
+      "category": "prepositional",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 0.0,
+        "pred_recall": 0.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 0.96,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "The wizard whistles.",
+      "expected": "λx. whistles(wizard)",
+      "generated": "λx. sings(quiet(lawyer))",
+      "has_lambda": true,
+      "category": "simple",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 0.0,
+        "pred_recall": 0.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 1.2,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "Diana fears that the nurse vanishes.",
+      "expected": "λx. fears(diana, x) → λx. vanishes(nurse)",
+      "generated": "λx. fears(x, x) → λx. fears(x, x)",
+      "has_lambda": true,
+      "category": "attitude",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 1.0,
+        "pred_recall": 0.5,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 0.8048780487804879,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "Every wizard carries a wizard.",
+      "expected": "∀x. wizard(x) → carries(wizard(x), wizard(x))",
+      "generated": "∀x. (king(x) → carries(x, x))",
+      "has_lambda": false,
+      "category": "quantified",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 0.5,
+        "pred_recall": 0.5,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 0.6444444444444445,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "The elephant rescues the nurse.",
+      "expected": "λx. rescues(elephant, nurse)",
+      "generated": "λx. rescenc(x, nurse)",
+      "has_lambda": true,
+      "category": "transitive",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 0.0,
+        "pred_recall": 0.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 0.75,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "The nurse offered the wizard a flower.",
+      "expected": "λx. offered(nurse, wizard, flower)",
+      "generated": "λx. offered(sailor, x)",
+      "has_lambda": true,
+      "category": "ditransitive",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 1.0,
+        "pred_recall": 1.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 0.6470588235294118,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "The elephant carries the wizard.",
+      "expected": "λx. carries(elephant, wizard)",
+      "generated": "λx. carries(x, tower)",
+      "has_lambda": true,
+      "category": "transitive",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 1.0,
+        "pred_recall": 1.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 0.7241379310344828,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "Every nurse climbs.",
+      "expected": "∀x. nurse(x) → climbs(x)",
+      "generated": "∀x. (pilot(x) → ∃y. (x) ∧ fears(x, y))",
+      "has_lambda": true,
+      "category": "quantified",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 0.0,
+        "pred_recall": 0.0,
+        "var_match": false,
+        "quantifier_match": false,
+        "connective_match": false,
+        "has_repetition": false,
+        "length_ratio": 1.5833333333333333,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "The nurse climbs slowly.",
+      "expected": "λx. climbs(nurse, slowly)",
+      "generated": "λx. helps(gently, nurse)",
+      "has_lambda": true,
+      "category": "adverb",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 0.0,
+        "pred_recall": 0.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 0.96,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "The nurse does not whistle.",
+      "expected": "λx. ¬whistle(nurse)",
+      "generated": "λx. not(shout(clerk))",
+      "has_lambda": true,
+      "category": "negation",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 0.0,
+        "pred_recall": 0.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": false,
+        "has_repetition": false,
+        "length_ratio": 1.105263157894737,
+        "exact_match": false
+      }
+    },
+    {
+      "input": "Felix carries iris.",
+      "expected": "λx. carries(felix, iris)",
+      "generated": "λx. carries(emma)",
+      "has_lambda": true,
+      "category": "transitive",
+      "metrics": {
+        "parses": true,
+        "pred_precision": 1.0,
+        "pred_recall": 1.0,
+        "var_match": true,
+        "quantifier_match": true,
+        "connective_match": true,
+        "has_repetition": false,
+        "length_ratio": 0.7083333333333334,
+        "exact_match": false
+      }
+    }
+  ],
+  "changes": [
+    "EOS token in training targets (fixes repetition)",
+    "GBNF grammar-constrained teacher (Montague-style)",
+    "Structural eval metrics",
+    "Novel predicate holdout test"
+  ]
+}

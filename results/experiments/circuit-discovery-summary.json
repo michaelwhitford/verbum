@@ -1,0 +1,34 @@
+{
+  "model": "Qwen/Qwen3-4B",
+  "essential_heads": [
+    [
+      1,
+      0
+    ],
+    [
+      24,
+      0
+    ],
+    [
+      24,
+      2
+    ]
+  ],
+  "critical_layers": [
+    0,
+    1,
+    4,
+    7,
+    24,
+    26,
+    30,
+    33
+  ],
+  "experiments": [
+    "bos-tracing",
+    "decompile",
+    "dual-process",
+    "multi-head"
+  ],
+  "completed": true
+}

@@ -1,0 +1,7 @@
+{
+  "layer": 24,
+  "generation": " \u2192 set set set set set set set set set set set set set set set set set set set set set set set set set set set set set",
+  "has_lambda": false,
+  "lambda_count": 1,
+  "baseline": " \u2192 \u03bbx. cat(x) \u2227 sat(x) \u2227 on(mat)(x) \u2227 black(x)\n\nOkay, so I need to figure out how"
+}
