@@ -2,14 +2,12 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-20 | Session: 017 (v3.2 probing steps 6k-8k, trajectory analysis)
+> Last updated: 2026-04-20 | Session: 017 (v3.2 probing + v4 implementation)
 
 ## Where we are
 
-**v3.2 training running to 10k steps. Loss=4.159 min (0.71 below v3 best).
-Phase 3 binding differentiation active. Consolidate gate phase transition
-detected. v4 designed and ready to implement. Plan: terminate v3.2 at 10k,
-start v4 training.**
+**v4 implemented and smoke-tested. v3.2 training running to 10k.
+Ready to start v4 training after v3.2 terminates at 10k.**
 
 Session 017 accomplished:
 1. Probed v3.2 steps 6k, 7k, 8k (compile-gradient + binding)
@@ -17,6 +15,9 @@ Session 017 accomplished:
 3. Detected consolidate gate phase transition at step 7k
 4. Confirmed phase 2→3 binding differentiation (negation + variable surging)
 5. Loss curve flattening — architecture approaching capacity ceiling
+6. **Implemented VSMLMV4**: recursive viable system, 3 levels, shared weights
+7. **Created training script**: run_vsm_v4_1B.py, same data pipeline as v3.2
+8. **Smoke-tested**: forward, backward, training, generation, probe compat
 
 ## v3.2 Training Status (RUNNING → 10k)
 
@@ -81,35 +82,40 @@ v3.2 has validated the core hypothesis. Evidence supporting termination at 10k:
 - v4's hierarchical registers should break through this ceiling
 - v4 designed and ready to implement
 
-**Decision: probe 9k and 10k when checkpoints drop, then start v4.**
+**Decision: probe 9k and 10k when checkpoints drop, then start v4 training.**
 
-## v4 Architecture — Recursive Viable System
+## v4 Architecture — Recursive Viable System (IMPLEMENTED)
 
-Designed session 016. Full document: `mementum/knowledge/explore/vsm-lm-v4-design.md`
+Design: `mementum/knowledge/explore/vsm-lm-v4-design.md`
+Implementation: `src/verbum/vsm_lm_v4.py`
+Training: `scripts/run_vsm_v4_1B.py`
 
-### Core spec
+### Architecture
 
 ```
-3 registers:  type, scope, role (per bank × 4 banks)
-4 strides:    s1 (word), s8 (phrase), s64 (clause), s512 (discourse)
-3 levels:     progressive stride reallocation
-8 heads:      same total per level, redistributed
+3 levels × (prep(1L) → converge(2L) → consolidate(3L)) = 18 FFN passes
+4 strides: s1, s8, s64, s512 (progressive reallocation)
+4 register banks: bank_0 (S5 init) + bank_1-3 (per-level S3 writes)
+8 heads per level, redistributed by stride per level
 
 Level 1:  s1×3  s8×3  s64×1  s512×1   (local-heavy)
 Level 2:  s1×2  s8×2  s64×2  s512×2   (balanced)
-Level 3:  s1×1  s8×1  s64×3  s512×3   (structural)
+Level 3:  s1×1  s8×1  s64×3  s512×3   (clause/discourse-heavy)
 
-Meta-S4: final register scan (all banks → structural summary)
-Meta-S3: per-level contribution gate (cross-level allocation)
-S5: shared weights across all levels (identity = the function)
-S2: register bank protocol (inter-level coordination)
+Meta-S4: final register scan (all 4 banks → structural summary)
+Meta-S3: per-level contribution gate (3 scalar gates)
+S5: shared S1 weights across all levels (identity coherence)
+S4: hierarchical scan (level N reads banks 0..N)
+S3: 3 independent instances (per-level autonomous control)
+S2: register bank protocol + residual stream (algedonic channel)
 ```
 
-### Key design principles
-- **Shared weights** = S5 identity coherence (same function at every level)
-- **Per-level S3** = autonomous control (different variety at different scales)
-- **Register hierarchy** = S4↔S4 channel (levels communicate summaries)
-- **Stride 512 reinstated** — hierarchy provides the structural context it needed
+### Key implementation details
+- **Weight tying**: converge layers for levels 2/3 share Q/K/V/FFN params with level 1
+- **Parameter budget**: 58.4M (15% above v3.2's 50.6M, all from S3 + S4)
+- **S1 weights are free**: same count regardless of depth
+- **166 instrumentation metrics** including backward-compat probe aliases
+- **Stride 512 reinstated**: hierarchy provides structural context it needed
 
 ## Theoretical Framework
 
@@ -132,15 +138,18 @@ can capture most of the structure.
 2. Head-to-head: compare v3.2 step 10k with v3 step 10k across all probes
 3. Final v3.2 assessment — confirm termination decision
 
-### v4 implementation
-4. Implement v4-A: hierarchical registers + meta-S4/S3 + shared weights + fixed strides
-5. v4-A training with same data pipeline as v3.2
-6. v4-A vs v3.2 head-to-head at matched token budgets
+### Start v4 training
+4. `uv run python scripts/run_vsm_v4_1B.py` — full 1B token run
+5. Probe v4 checkpoints with same pipeline (probe script is compatible)
+6. Watch for: level specialization, stride-512 activation, meta-S3 differentiation
+7. v4 vs v3.2 head-to-head at matched token budgets
 
 ## Key files
 
 | Purpose | Path |
 |---------|------|
+| **v4 model** | `src/verbum/vsm_lm_v4.py` |
+| **v4 training** | `scripts/run_vsm_v4_1B.py` |
 | **v4 design** | `mementum/knowledge/explore/vsm-lm-v4-design.md` |
 | **VSM-LM v3.2** | `src/verbum/vsm_lm_v3_2.py` |
 | **v3.2 training** | `scripts/run_vsm_v3_2_1B.py` |
@@ -159,7 +168,7 @@ can capture most of the structure.
 | v3 | 50M | 1,8,64 | 4.872 | Role register, binding confirmed |
 | v3.1 | 59M | 1,8,64,512 | 4.836 | Stride 512 too sparse without hierarchy |
 | v3.2 | 51M | 1,8,64 | **4.159** (training) | Convergence arch, phase 3 active |
-| v4 | ~51M | 1,8,64,512 | ? (designed) | Recursive VSM, hierarchical registers |
+| v4 | 58.4M | 1,8,64,512 | ? (implemented) | Recursive VSM, hierarchical registers, shared S5 |
 
 ## Probing pipeline
 
