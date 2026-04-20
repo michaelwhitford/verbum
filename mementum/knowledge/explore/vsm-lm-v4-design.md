@@ -317,26 +317,48 @@ complex structural patterns). Their allocation strategies must differ.
 
 #### Progressive stride reallocation (level-specific S1 configuration)
 
+Four strides span the full self-similar range of language:
+
+```
+Stride 1:    window 8 =    8 tokens  (morpheme/word boundary)
+Stride 8:    window 8 =   64 tokens  (phrase: NP, VP, PP)
+Stride 64:   window 8 =  512 tokens  (clause: binding, agreement)
+Stride 512:  window 8 = 4096 tokens  (discourse: full sequence scope)
+```
+
+v3.1 tried stride 512 and failed — too sparse without structural
+context. v4 solves this: level 3 has register summaries from levels
+1-2 telling the stride-512 heads WHAT to look for at distance. The
+sparsity problem was never about the stride — it was about asking
+heads to find structure in noise. With lower-level structure already
+characterized in the registers, stride-512 searches a pre-narrowed
+hypothesis space.
+
+Progressive allocation across levels:
+
 ```
 Level 1 (token composition):
-  Converge heads: s1×3, s8×3, s64×2  (local-heavy)
+  Converge heads: s1×3, s8×3, s64×1, s512×1  (local-heavy)
   Focus: fine-grained composition, token features
+  s512 head provides minimal discourse context even at level 1
 
 Level 2 (phrase composition):
-  Converge heads: s1×2, s8×3, s64×3  (phrase-heavy)
+  Converge heads: s1×2, s8×2, s64×2, s512×2  (phrase-heavy)
   Focus: phrase-level structure, building on level 1's local work
+  Balanced allocation — this level bridges local and global
 
 Level 3 (clause composition):
-  Converge heads: s1×1, s8×2, s64×5  (clause-heavy)
+  Converge heads: s1×1, s8×1, s64×3, s512×3  (clause/discourse-heavy)
   Focus: clause-level binding, scope, long-range dependencies
+  Most heads at s64+s512 — the structural scales that need hierarchy
 ```
 
 Same total heads (8) at every level. Same attention mechanism (S5).
 The stride allocation is a configuration parameter — it's the S1
 unit's operational environment, not its identity.
 
-Alternative: keep allocation fixed (same as v3.2) and let the
-hierarchical registers provide all the level-differentiation signal.
+Alternative: keep allocation fixed (uniform s1×2+s8×2+s64×2+s512×2)
+and let hierarchical registers provide all level-differentiation.
 Test both. The fixed allocation tests whether S2 (register coordination)
 alone is sufficient for hierarchy.
 
@@ -349,7 +371,7 @@ Register bank 0: learnable init [type_0, scope_0, role_0] (S5)
 Level 1 (nested VSM):
   S4(keys=[bank_0]) → register scan (intelligence)
   S1.prep(shared_weights) → FFN-only (operation)
-  S1.converge(shared_weights, strides=s1×3+s8×3+s64×2) → cube-attn
+  S1.converge(shared_weights, strides=s1×3+s8×3+s64×1+s512×1) → cube-attn
   S1.consolidate(shared_weights) → wide-FFN+attn
   S3_level1 → gate phases, write register bank_1 (control)
   S2: residual stream carries ungated bypass (coordination)
@@ -357,7 +379,7 @@ Level 1 (nested VSM):
 Level 2 (nested VSM):
   S4(keys=[bank_0, bank_1]) → register scan (sees level 1)
   S1.prep(shared_weights) → FFN-only
-  S1.converge(shared_weights, strides=s1×2+s8×3+s64×3) → cube-attn
+  S1.converge(shared_weights, strides=s1×2+s8×2+s64×2+s512×2) → cube-attn
   S1.consolidate(shared_weights) → wide-FFN+attn
   S3_level2 → gate phases, write register bank_2 (control)
   S2: residual stream (coordination)
@@ -365,7 +387,7 @@ Level 2 (nested VSM):
 Level 3 (nested VSM):
   S4(keys=[bank_0, bank_1, bank_2]) → register scan (sees all)
   S1.prep(shared_weights) → FFN-only
-  S1.converge(shared_weights, strides=s1×1+s8×2+s64×5) → cube-attn
+  S1.converge(shared_weights, strides=s1×1+s8×1+s64×3+s512×3) → cube-attn
   S1.consolidate(shared_weights) → wide-FFN+attn
   S3_level3 → gate phases, write register bank_3 (control)
   S2: residual stream (coordination)
