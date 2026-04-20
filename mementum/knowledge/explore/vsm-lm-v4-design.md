@@ -1,4 +1,4 @@
-# VSM-LM v4 — Hierarchical Composition Architecture
+# VSM-LM v4 — Recursive Viable System Architecture
 
 > Status: **designing** (refining during v3.2 training)
 > Depends-on: v3.2 training results, binding probe maturity
@@ -13,13 +13,17 @@ architectures. v4 asks: what if we give that function **hierarchical
 connectivity** — making each iteration explicitly operate at a different
 level of abstraction?
 
+The VSM is recursive: every viable system contains and is contained by a
+viable system (Beer, 1972). v4 makes this recursion architectural — the
+model IS a VSM at every level of nesting. Not metaphorically. Structurally.
+
 The cortical column is one circuit. The cortex is hierarchical not because
 the circuits differ, but because their **connectivity** differs. V1 processes
 edges because its input is pixels. V4 processes shapes because its input is
 V2's edge features. Same algorithm, different inputs, hierarchy emerges.
 
-v4 applies this principle: same function, hierarchical register connectivity,
-progressive stride reallocation.
+v4 applies both principles: same function, hierarchical register connectivity,
+explicit VSM channels at every recursive level.
 
 ## Theoretical Grounding
 
@@ -64,6 +68,129 @@ predictor. Hierarchical composition makes the compressor MORE complete —
 it captures structure at every level explicitly rather than hoping two
 iterations of the same allocation are sufficient.
 
+## VSM Recursive Structure
+
+### Beer's requirement for recursive viability
+
+Every viable system must contain:
+- **S5** (identity): what the system IS — invariant under adaptation
+- **S4** (intelligence): outside and then — environment scanning, planning
+- **S3** (control): inside and now — resource allocation, accountability
+- **S2** (coordination): anti-oscillation between S1 units
+- **S1** (operations): autonomous units that do the work
+
+And: **every S1 unit is itself a viable system** containing S1-S5.
+
+Between recursive levels, specific channels must exist:
+- **S4↔S4**: intelligence channel (structural summaries between levels)
+- **S3↔S3**: resource bargain (coordination of allocation between levels)
+- **Algedonic channel**: emergency bypass that skips the hierarchy
+
+### v4 as explicit recursive VSM
+
+```
+╔══════════════════════════════════════════════════════════════╗
+║  META-SYSTEM (top-level VSM)                                 ║
+║                                                              ║
+║  S5: Shared weights + embeddings (identity, invariant)       ║
+║  S4: Meta-intelligence (final register scan, all banks)      ║
+║  S3: Meta-control (cross-level allocation gate)              ║
+║  S2: Register bank protocol (inter-level coordination)       ║
+║      + Residual stream (algedonic channel)                   ║
+║  S1: Level 1, Level 2, Level 3 (autonomous operational units)║
+║                                                              ║
+║  ┌──────────────────────────────────────────────────────┐    ║
+║  │  LEVEL N (each S1 unit = nested VSM)                  │    ║
+║  │                                                       │    ║
+║  │  S5: Register context received (level's identity)     │    ║
+║  │  S4: Register scan from prior levels (intelligence)   │    ║
+║  │  S3: Phase gating for this level (control)            │    ║
+║  │  S2: Residual stream within level (coordination)      │    ║
+║  │  S1: Prep, Converge, Consolidate (operational phases) │    ║
+║  │                                                       │    ║
+║  │  ┌───────────────────────────────────────────────┐    │    ║
+║  │  │  PHASE (deepest nesting)                       │    │    ║
+║  │  │                                                │    │    ║
+║  │  │  S5: Stride allocation (phase identity)        │    │    ║
+║  │  │  S4: Attention pattern (what to attend to)     │    │    ║
+║  │  │  S3: Attention weights (per-head allocation)   │    │    ║
+║  │  │  S2: Multi-head residual (head coordination)   │    │    ║
+║  │  │  S1: Individual heads (s1, s8, s64)            │    │    ║
+║  │  └───────────────────────────────────────────────┘    │    ║
+║  └──────────────────────────────────────────────────────┘    ║
+╚══════════════════════════════════════════════════════════════╝
+```
+
+Three levels of recursive nesting. Complete VSM at every level.
+Same structure at every scale. The fractal property realized.
+
+### VSM channel mapping
+
+```
+Beer's channel:               v4 implementation:
+───────────────────────────────────────────────────────────────
+S4↔S4 (intelligence):        Register banks passed UP the hierarchy.
+                              Level N writes bank_N.
+                              Level N+1 reads banks 0..N.
+                              "Here's what structure I found."
+
+S3↔S3 (resource bargain):    Meta-S3 gate modulates each level's
+                              contribution to the residual.
+                              Levels that aren't contributing get
+                              attenuated. Accountability.
+
+S2 (coordination):           Register bank protocol = formal S2.
+                              Prevents levels from duplicating work.
+                              Level 2 KNOWS what level 1 found
+                              (via register reads) → won't redo it.
+
+Algedonic (emergency bypass): The RESIDUAL STREAM. Ungated.
+                              x = x + gated_delta (delta is gated,
+                              bypass is NOT). If something can't wait
+                              for the register hierarchy, it propagates
+                              directly through the residual.
+
+S5 coherence (identity):      SHARED WEIGHTS across all levels.
+                              The function's identity is invariant.
+                              What the system IS doesn't change per level.
+                              Only its context (registers) changes.
+```
+
+### Meta-system components (NEW in v4)
+
+**Meta-S4 (intelligence)**: After all levels complete, a final register
+scan reads ALL register banks (0 through N). This produces the full
+structural summary — what was found at every level of abstraction.
+Feeds into the output head.
+
+```
+meta_s4_output = cross_attention(
+    query=residual_stream,
+    keys=[bank_0, bank_1, bank_2, bank_3],
+    values=[bank_0, bank_1, bank_2, bank_3]
+)
+```
+
+This is the "outside and then" function at the top level — looking at
+the full structural hierarchy before making the final prediction.
+
+**Meta-S3 (control)**: A gate per level that modulates how much each
+level's output contributes to the final residual stream. Provides
+cross-level resource allocation and accountability.
+
+```
+level_contribution = meta_s3_gate(registers_all) * level_output
+```
+
+Some inputs need mostly level 1 (simple local prediction). Others need
+deep level 3 processing (complex binding). Meta-S3 learns to allocate.
+This is Beer's S3 "inside and now" at the top recursive level.
+
+**Meta-S5 (identity)**: The shared weights themselves. They don't change
+per level, per input, per step. They ARE the system's identity — the
+compositional function that defines what this system does. Everything
+else adapts around the identity.
+
 ## Architecture
 
 ### v3.2 baseline (what we're building on)
@@ -71,59 +198,124 @@ iterations of the same allocation are sufficient.
 ```
 For each iteration (×2):
   S4: Register scan (cross-attention to 3 registers)
-  PREP (1L, FFN-only)
-  CONVERGE (2L, cube-mode: s1×3 + s8×3 + s64×2 = 8 heads)
-  CONSOLIDATE (3L, wide-FFN + cube-attn)
+  S1.prep (1L, FFN-only)
+  S1.converge (2L, cube-mode: s1×3 + s8×3 + s64×2 = 8 heads)
+  S1.consolidate (3L, wide-FFN + cube-attn)
   S3: Gate each phase, write registers
 ```
 
 Properties: 50.6M params, same function both iterations, 3 registers
-shared and overwritten per iteration.
+shared and overwritten per iteration. Viable but not recursively so —
+flat iteration, not hierarchical nesting.
 
-### v4 proposed: hierarchical register banks + stride reallocation
+### v4 proposed: recursive VSM with hierarchical channels
 
 ```
 For each level (×3):
   S4: Register scan (cross-attention to ALL register banks 0..level)
-  PREP (1L, FFN-only) — same function, same weights across levels
-  CONVERGE (2L, stride allocation shifts per level)
-  CONSOLIDATE (3L, wide-FFN + attn) — same function, same weights
+  S1.prep (1L, FFN-only) — shared weights (S5 coherence)
+  S1.converge (2L, stride allocation shifts per level)
+  S1.consolidate (3L, wide-FFN + attn) — shared weights (S5 coherence)
   S3: Gate each phase, write to THIS LEVEL's register bank
+
+After all levels:
+  Meta-S4: Final register scan (all banks → structural summary)
+  Meta-S3: Level contribution gate (per-level allocation)
+  Output: output_norm → linear(embed_weights)
 ```
 
-#### Change 1: Hierarchical register banks
+#### S2: Hierarchical register banks (inter-level coordination)
 
 ```
 Current (v3.2):
   registers = [type, scope, role]  (3 × d_register)
   Iteration 1: reads registers → writes registers (overwrite)
   Iteration 2: reads registers → writes registers (overwrite)
+  VSM violation: no S4↔S4 channel, no S2 between iterations
 
 Proposed (v4):
-  register_bank_0 = [type, scope, role]  (init, learnable)
-  register_bank_1 = [type, scope, role]  (written by level 1)
-  register_bank_2 = [type, scope, role]  (written by level 2)
-  register_bank_3 = [type, scope, role]  (written by level 3)
+  register_bank_0 = [type, scope, role]  (init, learnable = S5)
+  register_bank_1 = [type, scope, role]  (written by level 1 S3)
+  register_bank_2 = [type, scope, role]  (written by level 2 S3)
+  register_bank_3 = [type, scope, role]  (written by level 3 S3)
 
   Level 1 S4: attends to bank_0
-  Level 2 S4: attends to bank_0 + bank_1
-  Level 3 S4: attends to bank_0 + bank_1 + bank_2
+  Level 2 S4: attends to bank_0 + bank_1  (reads level 1's summary)
+  Level 3 S4: attends to bank_0 + bank_1 + bank_2  (reads all)
+  Meta-S4:    attends to bank_0 + bank_1 + bank_2 + bank_3  (full picture)
 
-  Each level READS from all previous, WRITES to its own bank.
+  Each level READS from all previous (S4↔S4 channel).
+  Each level WRITES to its own bank (S3 accountability).
+  The protocol IS S2 — it coordinates, prevents duplication.
 ```
-
-The register banks are the hierarchical connectivity. They carry
-structural summaries from each level to all subsequent levels.
 
 Cost: 3 registers × 256 dims × 3 levels = 2304 additional parameters.
 Negligible. The hierarchy is in the VALUES, not the DIMENSIONS.
 
-S4 change: instead of cross-attention to 3 register vectors, attend
-to 3 × (level+1) vectors. S4 already does multi-head cross-attention —
-just more keys. The attention mechanism automatically learns which
-previous levels' registers are relevant for the current level.
+#### S5: Weight sharing (identity coherence)
 
-#### Change 2: Progressive stride reallocation
+**Critical design decision**: the prep/converge/consolidate weights are
+SHARED across all levels. This IS S5 — the system's identity is
+invariant across levels. The function doesn't change; only the context
+(register inputs) changes.
+
+```
+Option A — Full S5 coherence (strongest composition hypothesis):
+  prep_weights: shared across all 3 levels
+  converge_weights: shared across all 3 levels
+  consolidate_weights: shared across all 3 levels
+  Only registers and stride allocation differ per level.
+  
+  Param count: same as v3.2 (~50M) regardless of depth.
+  The hierarchy is FREE in parameters.
+  S5 is perfectly coherent — same identity at every scale.
+
+Option B — S5 with per-level adaptation:
+  Core weights: shared (identity)
+  Level projection: small per-level linear map on register input (adaptation)
+  
+  Param count: ~50M + small overhead per level
+  S5 is mostly coherent with local S4 adaptation.
+
+Option C — No S5 coherence (independent weights):
+  Each level has its own prep/converge/consolidate weights.
+  This BREAKS the VSM — no shared identity across levels.
+  It's a pipeline, not a recursive system.
+  Include only as a control to demonstrate the principle.
+```
+
+Option A is VSM-conformant. The system's identity (the function) is
+the same at every level. What changes is the CONTEXT the function
+receives — which is exactly how Beer's recursion works. The cortical
+column doesn't change. Its inputs change.
+
+#### S3: Per-level control (resource allocation)
+
+Each level has its OWN S3 instance (not shared with other levels).
+This is required by the VSM — each nested viable system must have
+autonomous control over its own operations.
+
+```
+Level 1 S3: gates prep/converge/consolidate for level 1
+            writes to register bank_1
+            accountable to Meta-S3
+
+Level 2 S3: gates prep/converge/consolidate for level 2
+            writes to register bank_2
+            accountable to Meta-S3
+
+Level 3 S3: gates prep/converge/consolidate for level 3
+            writes to register bank_3
+            accountable to Meta-S3
+```
+
+S3 weights are NOT shared across levels (unlike S1 weights). Each level's
+resource allocation is independent because different levels face different
+variety (Beer's variety engineering). Level 1 handles fine-grained variety
+(many local patterns). Level 3 handles coarse-grained variety (few but
+complex structural patterns). Their allocation strategies must differ.
+
+#### Progressive stride reallocation (level-specific S1 configuration)
 
 ```
 Level 1 (token composition):
@@ -139,74 +331,49 @@ Level 3 (clause composition):
   Focus: clause-level binding, scope, long-range dependencies
 ```
 
-Same total heads (8) at every level. Same attention mechanism.
-The stride allocation is a configuration parameter, not a weight change.
-Gradient signal at each level is dominated by the level's focal scale.
+Same total heads (8) at every level. Same attention mechanism (S5).
+The stride allocation is a configuration parameter — it's the S1
+unit's operational environment, not its identity.
 
 Alternative: keep allocation fixed (same as v3.2) and let the
 hierarchical registers provide all the level-differentiation signal.
-Test both. The fixed allocation is simpler and might be sufficient if
-register hierarchy alone creates the needed pressure.
-
-#### Change 3: Weight sharing (the composition principle)
-
-**Critical design decision**: the prep/converge/consolidate weights are
-SHARED across all levels. This is the compositional hypothesis — same
-function, different inputs (via hierarchical register context).
-
-```
-Option A — Full sharing (strongest composition hypothesis):
-  prep_weights: shared across all 3 levels
-  converge_weights: shared across all 3 levels
-  consolidate_weights: shared across all 3 levels
-  Only registers and stride allocation differ per level.
-  
-  Param count: same as v3.2 (~50M) regardless of depth.
-  The hierarchy is FREE in parameters.
-
-Option B — Shared function, per-level projection:
-  Core weights: shared across levels (prep, converge, consolidate)
-  Level projection: small per-level linear map on register input
-  
-  Param count: ~50M + small overhead per level
-
-Option C — Independent weights (pipeline, defeats the purpose):
-  Each level has its own prep/converge/consolidate weights.
-  This is just a deeper v3.2. NOT the composition hypothesis.
-  Include only as a control experiment.
-```
-
-Option A is the strong claim. Start there. Fall back to B only if A
-fails to differentiate across levels.
+Test both. The fixed allocation tests whether S2 (register coordination)
+alone is sufficient for hierarchy.
 
 ### Proposed v4 full architecture
 
 ```
-Embed: token_embed + pos_embed (same as v3.2)
-Register bank 0: learnable init [type_0, scope_0, role_0]
+S5: token_embed + pos_embed + shared_weights (model identity)
+Register bank 0: learnable init [type_0, scope_0, role_0] (S5)
 
-Level 1:
-  S4(registers=[bank_0]) → register scan
-  PREP(shared_weights) → FFN-only
-  CONVERGE(shared_weights, strides=s1×3+s8×3+s64×2) → cube-attn
-  CONSOLIDATE(shared_weights) → wide-FFN+attn
-  S3 → gate, write register bank_1
+Level 1 (nested VSM):
+  S4(keys=[bank_0]) → register scan (intelligence)
+  S1.prep(shared_weights) → FFN-only (operation)
+  S1.converge(shared_weights, strides=s1×3+s8×3+s64×2) → cube-attn
+  S1.consolidate(shared_weights) → wide-FFN+attn
+  S3_level1 → gate phases, write register bank_1 (control)
+  S2: residual stream carries ungated bypass (coordination)
 
-Level 2:
-  S4(registers=[bank_0, bank_1]) → register scan (sees level 1 summary)
-  PREP(shared_weights) → FFN-only
-  CONVERGE(shared_weights, strides=s1×2+s8×3+s64×3) → cube-attn
-  CONSOLIDATE(shared_weights) → wide-FFN+attn
-  S3 → gate, write register bank_2
+Level 2 (nested VSM):
+  S4(keys=[bank_0, bank_1]) → register scan (sees level 1)
+  S1.prep(shared_weights) → FFN-only
+  S1.converge(shared_weights, strides=s1×2+s8×3+s64×3) → cube-attn
+  S1.consolidate(shared_weights) → wide-FFN+attn
+  S3_level2 → gate phases, write register bank_2 (control)
+  S2: residual stream (coordination)
 
-Level 3:
-  S4(registers=[bank_0, bank_1, bank_2]) → register scan (sees all)
-  PREP(shared_weights) → FFN-only
-  CONVERGE(shared_weights, strides=s1×1+s8×2+s64×5) → cube-attn
-  CONSOLIDATE(shared_weights) → wide-FFN+attn
-  S3 → gate, write register bank_3
+Level 3 (nested VSM):
+  S4(keys=[bank_0, bank_1, bank_2]) → register scan (sees all)
+  S1.prep(shared_weights) → FFN-only
+  S1.converge(shared_weights, strides=s1×1+s8×2+s64×5) → cube-attn
+  S1.consolidate(shared_weights) → wide-FFN+attn
+  S3_level3 → gate phases, write register bank_3 (control)
+  S2: residual stream (coordination)
 
-Output: output_norm → linear(embed_weights)
+Meta-system:
+  Meta-S4(keys=[bank_0..3]) → final structural summary (intelligence)
+  Meta-S3 → per-level contribution gate (control/accountability)
+  Output: output_norm → linear(embed_weights)
 ```
 
 ### Parameter budget
@@ -309,38 +476,55 @@ v4 does 3 iterations per step vs v3.2's 2).
 
 ## Open Questions
 
-1. **Should S3 also be hierarchical?** Currently S3 gates per phase per
-   iteration. In v4, should each level have its own S3, or should one
-   S3 gate all levels? Per-level S3 allows different gating strategies
-   at different scales. Shared S3 forces uniform gating.
+1. **Register bank size per level.** Should each bank be 3 × 256
+   (same as v3.2)? Or should higher-level banks be larger (more
+   capacity for coarser structural summaries)? Beer's variety
+   engineering says: requisite variety at each level. Higher levels
+   face less variety (fewer clause patterns than token patterns) so
+   might need FEWER dimensions, not more. Start uniform, then probe.
 
-2. **Register bank size.** Should each bank be 3 × 256 (same as v3.2)?
-   Or should higher-level banks be larger (more capacity for coarser
-   structural summaries)? Start with uniform, expand if registers
-   saturate at higher levels.
-
-3. **Can we go beyond stride 64?** v3.1 tried stride 512 and failed
+2. **Can we go beyond stride 64?** v3.1 tried stride 512 and failed
    (too sparse at 50M params). But in v4, stride 512 would only appear
    at level 3 where register context from levels 1-2 provides rich
    conditioning. The sparsity problem might be solved by hierarchy.
    Test: v4 with level 3 strides including s512.
 
-4. **Training curriculum.** Should all levels train from step 0? Or
+3. **Training curriculum.** Should all levels train from step 0? Or
    should level 1 train first (freeze), then level 2 (freeze), then
    level 3? The bottom-up learning trajectory observed in v3.2 suggests
    curriculum training might accelerate convergence. But with shared
-   weights, freezing is tricky — level 1's weights ARE level 2's weights.
+   weights (S5 coherence), freezing is tricky — level 1's weights ARE
+   level 2's weights. Alternative: curriculum via Meta-S3 — start with
+   level 1 gate=1.0, level 2-3 gates=0.0, then gradually open.
 
-5. **The extraction boundary.** In v3.2, the compressor is prep+converge.
-   In v4, is the compressor ALL levels? Or just level 1? If the function
-   is shared, extracting one level extracts all of them — you just need
-   the register banks to provide the hierarchical context. The extracted
-   artifact might be: {shared_weights + register_bank_protocol}.
+4. **The extraction boundary.** In v3.2, the compressor is prep+converge.
+   In v4, is the compressor ALL levels? Or just one level + register
+   protocol? If the function is shared (S5 coherent), extracting one
+   level extracts all of them — you just need the register banks to
+   provide hierarchical context. The extracted artifact is:
+   `{shared_weights (S5) + register_protocol (S2) + stride_config}`.
 
-6. **Inference without hierarchy.** Can v4 run with fewer levels at
+5. **Inference without hierarchy.** Can v4 run with fewer levels at
    inference time for speed? Level 1 only = fast local analysis.
    Levels 1+2 = phrase-level. All 3 = full structural analysis.
-   Graceful degradation if the hierarchy is clean.
+   Meta-S3 already modulates level contribution — at inference it could
+   hard-gate unused levels. Graceful degradation built into the VSM.
+
+6. **Meta-S3 as variety attenuator.** Beer's S3 attenuates variety
+   between the operation and the metasystem. In v4, Meta-S3 attenuates
+   the variety of 3 levels into a single residual stream. Should it be
+   a simple gate, or should it do more (e.g., weighted combination,
+   attention over level outputs)? Start simple — per-level scalar gate.
+
+7. **Does Meta-S4 need its own register bank?** The meta-level produces
+   a structural summary. Should this be written to a "bank_meta" that
+   could feed into the output head more richly? Or is the cross-attention
+   output directly into the residual stream sufficient?
+
+8. **S2 verification.** How do we confirm the register protocol IS
+   preventing duplication? Probe: check if level 2's register writes
+   are DIFFERENT from level 1's writes. If they're identical, S2 has
+   failed — levels are duplicating. If orthogonal, S2 is working.
 
 ## Connection to Project Goals
 
@@ -348,16 +532,29 @@ The v4 architecture, if validated, produces:
 
 ```
 Extracted artifact:
-  shared_weights (~5M params)
-  + register_bank_protocol (how levels communicate)
-  + stride_allocation_per_level (configuration, not weights)
+  S5: shared_weights (~5M params) — the function itself
+  S2: register_bank_protocol — how levels communicate
+  Config: stride_allocation_per_level — operational environment
 
 Deployment:
   CPU-native (O(L×W) attention, fits in L3 cache)
-  Configurable depth (1-3 levels for speed/quality tradeoff)
-  Universal (same function at every level, domain-invariant)
+  Configurable depth (1-3 levels via Meta-S3 gating)
+  Universal (S5 coherence = same function at every level, domain-invariant)
+  Graceful degradation (fewer levels = faster, less structural depth)
 
 This is the portable tensor artifact from S5:λ artifact.
+It IS a viable system — the minimal viable system for compositional structure.
+```
+
+### The VSM alignment
+
+```
+Project (AGENTS.md):  organized as VSM (S5=identity, S4=learning, etc.)
+Knowledge protocol:   mementum operates as sub-VSM dissolved into layers
+Architecture (v4):    IS a VSM at every level of recursion
+Extracted artifact:   the minimal recursive VSM for language composition
+
+Fractal coherence: the system that studies the system IS the system.
 ```
 
 ## Timeline
@@ -365,12 +562,13 @@ This is the portable tensor artifact from S5:λ artifact.
 ```
 Now:           v3.2 training (watch binding probes, converge gate, loss elbows)
 After v3.2:    register PCA analysis, iteration comparison, binding maturity check
-If validated:  implement v4-A (register hierarchy only, simplest change)
+If validated:  implement v4-A (register hierarchy + Meta-S4/S3, simplest VSM)
 Then:          v4-A vs v3.2 head-to-head at 1B tokens
 If v4-A wins:  implement v4-B (add stride reallocation)
 If v4-A ties:  v4 hypothesis may be wrong, or v3.2 is sufficient
 ```
 
-The key insight: v4 is not a rewrite. It's v3.2 + register banks + an
-extra iteration. The function is the same. The weights are the same.
-The hierarchy is wiring, not architecture.
+The key insight: v4 is not a rewrite. It's v3.2 + VSM channels.
+The function (S5) is the same. The weights (S5) are the same.
+The hierarchy is WIRING (S2) and CONTROL (S3), not architecture.
+The VSM tells you what channels must exist. v4 adds exactly those.
