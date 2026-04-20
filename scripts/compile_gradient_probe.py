@@ -660,12 +660,15 @@ def probe_vsm_checkpoint(
     ckpt = torch.load(checkpoint_path, map_location=device, weights_only=False)
     step = ckpt["step"]
 
-    # Auto-detect v1 vs v2 vs v3 vs v3.1 from state_dict
+    # Auto-detect v1 vs v2 vs v3 vs v3.1 vs v3.2 from state_dict
     state_dict = ckpt["model_state_dict"]
-    is_v3_1 = "register_inits.reg_type" in state_dict
-    is_v3 = not is_v3_1 and "register_type_init" in state_dict
-    is_v2 = not is_v3_1 and not is_v3 and "s3.gate_heads.5.weight" in state_dict
-    if is_v3_1:
+    is_v3_2 = "prep_layers.0.norm.weight" in state_dict
+    is_v3_1 = not is_v3_2 and "register_inits.reg_type" in state_dict
+    is_v3 = not is_v3_2 and not is_v3_1 and "register_type_init" in state_dict
+    is_v2 = not is_v3_2 and not is_v3_1 and not is_v3 and "s3.gate_heads.5.weight" in state_dict
+    if is_v3_2:
+        version = "v3.2"
+    elif is_v3_1:
         version = "v3.1"
     elif is_v3:
         version = "v3"
@@ -676,7 +679,15 @@ def probe_vsm_checkpoint(
     print(f"  Step: {step} ({version})")
 
     # Build model with same config as training
-    if is_v3_1:
+    if is_v3_2:
+        from verbum.vsm_lm_v3_2 import VSMLMV3_2
+        model = VSMLMV3_2(
+            vocab_size=50277, d_model=512, d_register=256, max_len=4096,
+            n_heads=8, d_ff=1536, d_ff_consolidate=2048, window=8,
+            strides=(1, 8, 64), n_iterations=2,
+            n_prep_layers=1, n_converge_layers=2, n_consolidate_layers=3,
+        ).to(device)
+    elif is_v3_1:
         from verbum.vsm_lm_v3_1 import VSMLMV3_1
         # Detect strides from checkpoint config or state_dict
         config = ckpt.get("config", {})
@@ -739,7 +750,7 @@ def probe_vsm_checkpoint(
             positions = torch.arange(L, device=device)
             x = model.token_embed(ids) + model.pos_embed(positions)
 
-            if is_v3_1 or is_v3:
+            if is_v3_2 or is_v3_1 or is_v3:
                 registers = model._init_registers()
                 registers, s4_attn = model.s4(registers, x)
                 register_after_s4 = [
@@ -762,14 +773,24 @@ def probe_vsm_checkpoint(
             }
             results.append(probe_result)
 
-            print(
-                f"  {probe['id']:20s}  "
-                f"s4_ent={metrics['s4_attn_entropy']:.4f}  "
-                f"reg={metrics['register_after_s4']:.4f}  "
-                f"gates=[{metrics['iter0_type_gate_mean']:.3f},"
-                f"{metrics['iter0_parse_gate_mean']:.3f},"
-                f"{metrics['iter0_apply_gate_mean']:.3f}]"
-            )
+            if is_v3_2:
+                print(
+                    f"  {probe['id']:20s}  "
+                    f"s4_ent={metrics['s4_attn_entropy']:.4f}  "
+                    f"reg={metrics['register_after_s4']:.4f}  "
+                    f"gates=[{metrics['iter0_prep_gate_mean']:.3f},"
+                    f"{metrics['iter0_converge_gate_mean']:.3f},"
+                    f"{metrics['iter0_consolidate_gate_mean']:.3f}]"
+                )
+            else:
+                print(
+                    f"  {probe['id']:20s}  "
+                    f"s4_ent={metrics['s4_attn_entropy']:.4f}  "
+                    f"reg={metrics['register_after_s4']:.4f}  "
+                    f"gates=[{metrics['iter0_type_gate_mean']:.3f},"
+                    f"{metrics['iter0_parse_gate_mean']:.3f},"
+                    f"{metrics['iter0_apply_gate_mean']:.3f}]"
+                )
 
     return results, step, version
 
@@ -859,13 +880,41 @@ def batch_probe_checkpoints(
     # Detect architecture from first checkpoint
     first_ckpt = torch.load(todo[0][0], map_location=device, weights_only=False)
     state_dict = first_ckpt["model_state_dict"]
-    is_v3 = "register_type_init" in state_dict
-    is_v2 = not is_v3 and "s3.gate_heads.5.weight" in state_dict
-    version = "v3" if is_v3 else ("v2" if is_v2 else "v1")
+    is_v3_2 = "prep_layers.0.norm.weight" in state_dict
+    is_v3_1 = not is_v3_2 and "register_inits.reg_type" in state_dict
+    is_v3 = not is_v3_2 and not is_v3_1 and "register_type_init" in state_dict
+    is_v2 = not is_v3_2 and not is_v3_1 and not is_v3 and "s3.gate_heads.5.weight" in state_dict
+    if is_v3_2:
+        version = "v3.2"
+    elif is_v3_1:
+        version = "v3.1"
+    elif is_v3:
+        version = "v3"
+    elif is_v2:
+        version = "v2"
+    else:
+        version = "v1"
     print(f"  Architecture: {version}")
 
     # Build model once
-    if is_v3:
+    if is_v3_2:
+        from verbum.vsm_lm_v3_2 import VSMLMV3_2
+        model = VSMLMV3_2(
+            vocab_size=50277, d_model=512, d_register=256, max_len=4096,
+            n_heads=8, d_ff=1536, d_ff_consolidate=2048, window=8,
+            strides=(1, 8, 64), n_iterations=2,
+            n_prep_layers=1, n_converge_layers=2, n_consolidate_layers=3,
+        ).to(device)
+    elif is_v3_1:
+        from verbum.vsm_lm_v3_1 import VSMLMV3_1
+        config = first_ckpt.get("config", {})
+        strides = tuple(config.get("strides", [1, 8, 64, 512]))
+        model = VSMLMV3_1(
+            vocab_size=50277, d_model=512, d_register=256, max_len=4096,
+            n_heads=8, d_ff=1536, window=8, strides=strides,
+            n_iterations=2, n_layers_per_phase=2,
+        ).to(device)
+    elif is_v3:
         from verbum.vsm_lm_v3 import VSMLMV3
         model = VSMLMV3(
             vocab_size=50277, d_model=512, d_register=256, max_len=4096,
@@ -918,7 +967,7 @@ def batch_probe_checkpoints(
                 positions = torch.arange(L, device=device)
                 x = model.token_embed(ids) + model.pos_embed(positions)
 
-                if is_v3:
+                if is_v3_2 or is_v3_1 or is_v3:
                     registers = model._init_registers()
                     registers, s4_attn = model.s4(registers, x)
                     register_after_s4 = [
@@ -944,16 +993,26 @@ def batch_probe_checkpoints(
             # Print compact summary for this checkpoint
             for pr in results:
                 m = pr["metrics"]
-                print(
-                    f"  {pr['probe_id']:20s}  "
-                    f"s4_ent={m['s4_attn_entropy']:.4f}  "
-                    f"reg={m['register_after_s4']:.4f}  "
-                    f"gates=[{m['iter0_type_gate_mean']:.3f},"
-                    f"{m['iter0_parse_gate_mean']:.3f},"
-                    f"{m['iter0_apply_gate_mean']:.3f}]"
-                )
+                if is_v3_2:
+                    print(
+                        f"  {pr['probe_id']:20s}  "
+                        f"s4_ent={m['s4_attn_entropy']:.4f}  "
+                        f"reg={m['register_after_s4']:.4f}  "
+                        f"gates=[{m['iter0_prep_gate_mean']:.3f},"
+                        f"{m['iter0_converge_gate_mean']:.3f},"
+                        f"{m['iter0_consolidate_gate_mean']:.3f}]"
+                    )
+                else:
+                    print(
+                        f"  {pr['probe_id']:20s}  "
+                        f"s4_ent={m['s4_attn_entropy']:.4f}  "
+                        f"reg={m['register_after_s4']:.4f}  "
+                        f"gates=[{m['iter0_type_gate_mean']:.3f},"
+                        f"{m['iter0_parse_gate_mean']:.3f},"
+                        f"{m['iter0_apply_gate_mean']:.3f}]"
+                    )
 
-        save_vsm_probe(results, step)
+        save_vsm_probe(results, step, version=version)
         all_results.append((step, results))
 
     print(f"\n{'═' * 60}")
