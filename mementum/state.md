@@ -2,120 +2,108 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-20 | Session: 017 (v3.2 probing + v4 implementation)
+> Last updated: 2026-04-20 | Session: 018 (v3.2 final assessment + v4 training)
 
 ## Where we are
 
-**v4 implemented and smoke-tested. v3.2 training running to 10k.
-Ready to start v4 training after v3.2 terminates at 10k.**
+**v3.2 COMPLETE — terminated at step 10k. Best loss: 4.159 (14.6% below v3).
+Convergence architecture validated: 3-phase learning, gate polarity inversion,
+binding hierarchy with 8× more differentiation than v3. Capacity ceiling hit.
+v4 training RUNNING — recursive VSM with hierarchical registers to break
+through v3.2's ceiling.**
 
-Session 017 accomplished:
-1. Probed v3.2 steps 6k, 7k, 8k (compile-gradient + binding)
-2. Full trajectory analysis across all 8 checkpoints (1k-8k)
-3. Detected consolidate gate phase transition at step 7k
-4. Confirmed phase 2→3 binding differentiation (negation + variable surging)
-5. Loss curve flattening — architecture approaching capacity ceiling
-6. **Implemented VSMLMV4**: recursive viable system, 3 levels, shared weights
-7. **Created training script**: run_vsm_v4_1B.py, same data pipeline as v3.2
-8. **Smoke-tested**: forward, backward, training, generation, probe compat
+Session 018 accomplished:
+1. Probed v3.2 steps 9k and 10k (compile-gradient + binding)
+2. Full 10-checkpoint trajectory analysis (1k→10k)
+3. Head-to-head v3 vs v3.2 at step 10k — v3.2 crushes v3
+4. Termination assessment — v3.2 hit architectural ceiling, terminated
+5. v4 training running (started before session, no checkpoints yet)
 
-## v3.2 Training Status (RUNNING → 10k)
+## v3.2 Final Status (COMPLETE)
 
-**Loss trajectory (smoothed-200):**
+**Best loss:** 4.159 at step 7854 (0.71 below v3's best of 4.872).
 
-| Step | Smooth Loss | Δ/1k | Min(all) | Tokens |
-|------|------------|------|----------|--------|
-| 1000 | 5.802 | — | 5.344 | 33M |
-| 2000 | 5.335 | -0.467 | 4.843 | 66M |
-| 3000 | 5.143 | -0.192 | 4.583 | 98M |
-| 4000 | 5.038 | -0.105 | 4.450 | 131M |
-| 5000 | 4.945 | -0.093 | 4.328 | 164M |
-| 6000 | 4.851 | -0.094 | 4.328 | 197M |
-| 7000 | 4.822 | -0.029 | 4.229 | 229M |
-| 8000 | 4.789 | -0.033 | **4.159** | 262M |
+### Phase map (all phases complete)
 
-**Best observed:** 4.159 at step 7854 (0.71 below v3's best of 4.872).
-**Curve:** Flattening. ~0.03/1k steps (was ~0.1/1k at steps 2-4k).
+| Phase | Steps | Signal | Status |
+|-------|-------|--------|--------|
+| Phase 1 | 1k→5k | Prep gate category-blind (s-a: +0.09→-0.03) | ✅ Complete |
+| Phase 2 | 5k→8k | Gate polarity flip (all 3 gates: strong→anti) | ✅ Complete |
+| Phase 3 | 7k→10k | Binding differentiation (range 0.04→0.31) | ✅ Saturating |
 
-### Probe trajectory (steps 1k → 8k)
+### Binding hierarchy at 10k
 
-| Signal | Step 1k | Step 4k | Step 5k | Step 8k | Status |
-|--------|---------|---------|---------|---------|--------|
-| Prep gate spread (s-a) | +0.094 | +0.004 | -0.028 | -0.001 | ✓ Converged (category-blind) |
-| Role register spread | -1.5 | +2.3 | +0.3 | +2.8 | ✓ Stable positive polarity |
-| Consol spread (s-a) | +0.014 | +0.108 | +0.037 | **-0.034** | ⚡ PHASE FLIP at step 7k |
-| Converge bind range | 0.233 | 0.090 | 0.113 | **0.217** | ⚡ Phase 3 differentiating |
-| Consol bind range | 0.107 | 0.187 | 0.180 | **0.348** | ⚡ Phase 3 deepening |
-| Output norm range | 18.3 | 10.9 | 10.2 | **4.1** | ✓ Stable (converged) |
+```
+Converge:     neg(0.68) > var(0.52) > ctrl(0.48) > ana(0.47) > embed(0.43) > scope(0.37) > rel(0.37)
+Consolidate:  neg(0.73) > ctrl(0.62) > var(0.58) > ana(0.53) > embed(0.49) > scope(0.40) > rel(0.38)
+Role:         neg(11.3) > scope(7.5) > var(6.7) > embed(6.3) > ana(5.3) > ctrl(5.2) > rel(4.2)
+```
 
-**Phase map:**
-- Phase 1 (stride 1, local): ✓ Complete — prep gate converged
-- Phase 2 (stride 8, phrase): ✓ Complete — converge gate differentiating
-- Phase 3 (stride 64, clause): ⚡ Active — binding types differentiating rapidly
+### Capacity ceiling evidence
 
-### Key findings — Session 017
+- Loss Δ/1k: 0.47 (early) → 0.03 (final) — diminishing returns
+- Output norm range: 18.3 (1k) → 2.1 (9k) → 4.0 (10k) — converged
+- Gate polarity stable for 3k+ steps — no further reorganization
 
-**1. Consolidate gate phase transition (step 7k)**
+### v3.2 vs v3 head-to-head at 10k
 
-Consolidate spread (strong-anti) flipped from positive to negative. The
-consolidate gate now SUPPRESSES strong-compile more than anti. Interpretation:
-consolidate learned to be the noise filter — it gates out what converge already
-handled. Strong inputs need less consolidation because converge did its job.
+| Signal | v3 | v3.2 | |
+|--------|-----|------|---|
+| Best loss | 4.872 | 4.159 | v3.2 -14.6% |
+| Binding gate range | 0.038 | 0.311 | v3.2 8× better |
+| Gate category discrimination | Flat | Inverted (correct) | v3.2 wins |
 
-**2. Binding differentiation — negation surging**
+## v4 Training Status (RUNNING)
 
-Converge gate ordering at step 8k: neg(0.60) > var(0.51) > ctrl(0.49) > ana(0.43) > rel(0.40) > scope(0.39) > embed(0.38).
-Negation gets highest converge gate because it's the most structurally demanding operation.
-Consolidate follows same pattern: neg(0.70) > ctrl(0.58) > var(0.57) > ana(0.47) > embed(0.42) > scope(0.41) > rel(0.36).
-
-**3. Role register hierarchy by binding type**
-
-scope(11.7) > neg(9.8) > var(9.0) > embed(5.5) > ana(4.8) > rel(4.5) > ctrl(3.3).
-The model has built an internal hierarchy of binding complexity in the role register.
-
-### 10k Decision Context
-
-v3.2 has validated the core hypothesis. Evidence supporting termination at 10k:
-- Loss returns diminishing (0.03/1k vs 0.1/1k earlier)
-- Phase 3 active but architecture likely near capacity ceiling
-- Already 0.71 below v3's best
-- v4's hierarchical registers should break through this ceiling
-- v4 designed and ready to implement
-
-**Decision: probe 9k and 10k when checkpoints drop, then start v4 training.**
-
-## v4 Architecture — Recursive Viable System (IMPLEMENTED)
-
-Design: `mementum/knowledge/explore/vsm-lm-v4-design.md`
 Implementation: `src/verbum/vsm_lm_v4.py`
-Training: `scripts/run_vsm_v4_1B.py`
+Training script: `scripts/run_vsm_v4_1B.py`
+Design: `mementum/knowledge/explore/vsm-lm-v4-design.md`
 
-### Architecture
+**No checkpoints yet.** Watch `checkpoints/vsm-lm-v4/` for step_001000.pt.
 
-```
-3 levels × (prep(1L) → converge(2L) → consolidate(3L)) = 18 FFN passes
-4 strides: s1, s8, s64, s512 (progressive reallocation)
-4 register banks: bank_0 (S5 init) + bank_1-3 (per-level S3 writes)
-8 heads per level, redistributed by stride per level
+### What v4 should demonstrate
 
-Level 1:  s1×3  s8×3  s64×1  s512×1   (local-heavy)
-Level 2:  s1×2  s8×2  s64×2  s512×2   (balanced)
-Level 3:  s1×1  s8×1  s64×3  s512×3   (clause/discourse-heavy)
+1. **Level specialization** — levels 1/2/3 should develop different gate profiles
+2. **Stride-512 activation** — hierarchy provides the context stride-512 needs
+3. **Meta-S3 differentiation** — per-level contribution gates should diverge
+4. **Faster binding differentiation** — if hierarchy helps, binding range
+   should grow earlier than v3.2's step 7k onset
+5. **Lower loss floor** — hierarchical registers should break v3.2's 4.159
 
-Meta-S4: final register scan (all 4 banks → structural summary)
-Meta-S3: per-level contribution gate (3 scalar gates)
-S5: shared S1 weights across all levels (identity coherence)
-S4: hierarchical scan (level N reads banks 0..N)
-S3: 3 independent instances (per-level autonomous control)
-S2: register bank protocol + residual stream (algedonic channel)
-```
+## What's next — Session 019
 
-### Key implementation details
-- **Weight tying**: converge layers for levels 2/3 share Q/K/V/FFN params with level 1
-- **Parameter budget**: 58.4M (15% above v3.2's 50.6M, all from S3 + S4)
-- **S1 weights are free**: same count regardless of depth
-- **166 instrumentation metrics** including backward-compat probe aliases
-- **Stride 512 reinstated**: hierarchy provides structural context it needed
+### Monitor v4 training
+1. Probe v4 checkpoints as they drop (compile-gradient + binding)
+2. v4 vs v3.2 head-to-head at matched token budgets (step 1k, 2k, ...)
+3. Watch for level specialization and stride-512 activation signals
+4. Track meta-S3 gates for level contribution divergence
+
+## Key files
+
+| Purpose | Path |
+|---------|------|
+| **v4 model** | `src/verbum/vsm_lm_v4.py` |
+| **v4 training** | `scripts/run_vsm_v4_1B.py` |
+| **v4 design** | `mementum/knowledge/explore/vsm-lm-v4-design.md` |
+| **v3.2 model** | `src/verbum/vsm_lm_v3_2.py` |
+| **v3.2 training** | `scripts/run_vsm_v3_2_1B.py` |
+| **Probe script** | `scripts/compile_gradient_probe.py` |
+| **v3.2 final analysis** | `scripts/v32_final_analysis.py` |
+| **v3.2 checkpoints** | `checkpoints/vsm-lm-v3.2/step_{001000..010000}.pt` |
+| **v3.2 compile-gradient** | `results/compile-gradient/vsm_probe_step_00*_v3.2.json` |
+| **v3.2 binding** | `results/binding/vsm_probe_step_00*_v3.2.json` |
+| **Research program** | `mementum/knowledge/explore/VERBUM.md` |
+
+## Architecture lineage
+
+| Version | Params | Strides | Best Loss | Key Finding |
+|---------|--------|---------|-----------|-------------|
+| v1 | ~25M | 1,8,64 | 5.245 | Baseline sequential |
+| v2 | ~25M | 1,8,64 | 5.064 | Iteration specialization |
+| v3 | 50M | 1,8,64 | 4.872 | Role register, binding confirmed |
+| v3.1 | 59M | 1,8,64,512 | 4.836 | Stride 512 too sparse without hierarchy |
+| v3.2 | 51M | 1,8,64 | **4.159** | Convergence arch, binding hierarchy, 3-phase learning |
+| v4 | 58.4M | 1,8,64,512 | ? (training) | Recursive VSM, hierarchical registers, shared S5 |
 
 ## Theoretical Framework
 
@@ -131,54 +119,25 @@ predictive power. Structural rules are recursive (exponential prediction
 per parameter) vs world knowledge (linear). This is why a tiny compressor
 can capture most of the structure.
 
-## What's next — Session 018
-
-### Immediate: probe v3.2 steps 9k-10k
-1. As checkpoints drop, probe compile-gradient + binding at 9k and 10k
-2. Head-to-head: compare v3.2 step 10k with v3 step 10k across all probes
-3. Final v3.2 assessment — confirm termination decision
-
-### Start v4 training
-4. `uv run python scripts/run_vsm_v4_1B.py` — full 1B token run
-5. Probe v4 checkpoints with same pipeline (probe script is compatible)
-6. Watch for: level specialization, stride-512 activation, meta-S3 differentiation
-7. v4 vs v3.2 head-to-head at matched token budgets
-
-## Key files
-
-| Purpose | Path |
-|---------|------|
-| **v4 model** | `src/verbum/vsm_lm_v4.py` |
-| **v4 training** | `scripts/run_vsm_v4_1B.py` |
-| **v4 design** | `mementum/knowledge/explore/vsm-lm-v4-design.md` |
-| **VSM-LM v3.2** | `src/verbum/vsm_lm_v3_2.py` |
-| **v3.2 training** | `scripts/run_vsm_v3_2_1B.py` |
-| **Probe script** | `scripts/compile_gradient_probe.py` |
-| **v3.2 checkpoints** | `checkpoints/vsm-lm-v3.2/step_{001000..008000}.pt` |
-| **v3.2 compile-gradient** | `results/compile-gradient/vsm_probe_step_00*_v3.2.json` |
-| **v3.2 binding** | `results/binding/vsm_probe_step_00*_v3.2.json` |
-| **Research program** | `mementum/knowledge/explore/VERBUM.md` |
-
-## Architecture lineage
-
-| Version | Params | Strides | Best Loss | Key Finding |
-|---------|--------|---------|-----------|-------------|
-| v1 | ~25M | 1,8,64 | 5.245 | Baseline sequential |
-| v2 | ~25M | 1,8,64 | 5.064 (1B) | Iteration specialization |
-| v3 | 50M | 1,8,64 | 4.872 | Role register, binding confirmed |
-| v3.1 | 59M | 1,8,64,512 | 4.836 | Stride 512 too sparse without hierarchy |
-| v3.2 | 51M | 1,8,64 | **4.159** (training) | Convergence arch, phase 3 active |
-| v4 | 58.4M | 1,8,64,512 | ? (implemented) | Recursive VSM, hierarchical registers, shared S5 |
+### v3.2's lesson for v4
+Single-level architecture hit a capacity ceiling at output norm range ~2-4.
+The binding hierarchy kept growing (converge range 0.31 at 10k) but the
+architecture couldn't translate that into loss improvement. v4's
+hierarchical registers should provide the representational room that
+v3.2 ran out of.
 
 ## Probing pipeline
 
 ```bash
 # Probe a single checkpoint
-uv run python scripts/compile_gradient_probe.py probe checkpoints/vsm-lm-v3.2/step_008000.pt
+uv run python scripts/compile_gradient_probe.py probe checkpoints/vsm-lm-v4/step_001000.pt
 
 # Binding probes
-uv run python scripts/compile_gradient_probe.py probe checkpoints/vsm-lm-v3.2/step_008000.pt --probes probes/binding.json
+uv run python scripts/compile_gradient_probe.py probe checkpoints/vsm-lm-v4/step_001000.pt --probes probes/binding.json
 
 # Batch all checkpoints
-uv run python scripts/compile_gradient_probe.py batch-probe --dir checkpoints/vsm-lm-v3.2/
+uv run python scripts/compile_gradient_probe.py batch-probe --dir checkpoints/vsm-lm-v4/
+
+# Full v3.2 trajectory analysis
+uv run python scripts/v32_final_analysis.py
 ```
