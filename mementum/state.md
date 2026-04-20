@@ -2,55 +2,90 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-20 | Session: 016 (v3.2 probing + v4 design + release)
+> Last updated: 2026-04-20 | Session: 017 (v3.2 probing steps 6k-8k, trajectory analysis)
 
 ## Where we are
 
-**v3.2 training running. Already broke v3's loss floor. v4 designed.
-Repo released to GitHub. Key theoretical breakthrough: fractal architecture
-matches fractal data — the recursive tesseract should find THE compression
-function because it can't express anything else.**
+**v3.2 training running to 10k steps. Loss=4.159 min (0.71 below v3 best).
+Phase 3 binding differentiation active. Consolidate gate phase transition
+detected. v4 designed and ready to implement. Plan: terminate v3.2 at 10k,
+start v4 training.**
 
-Session 016 accomplished:
-1. Released repo to GitHub (fresh git init, no history, no .pt bloat)
-2. Probed v3.2 checkpoints 1-5 (steps 1000-5000), full trajectory analysis
-3. v3.2 beat v3's best loss (4.872) by step 3000 (~98M tokens vs 327M)
-4. v3.2 at step 4200: loss=4.6719 (0.200 below v3's best, 14% of budget)
-5. Designed v4 architecture: recursive VSM, hierarchical registers, 4 strides
-6. Major theoretical insights: gradient separation, composition vs pipeline,
-   fractal architecture as sieve for the compression function
+Session 017 accomplished:
+1. Probed v3.2 steps 6k, 7k, 8k (compile-gradient + binding)
+2. Full trajectory analysis across all 8 checkpoints (1k-8k)
+3. Detected consolidate gate phase transition at step 7k
+4. Confirmed phase 2→3 binding differentiation (negation + variable surging)
+5. Loss curve flattening — architecture approaching capacity ceiling
 
-## v3.2 Training Status (RUNNING)
+## v3.2 Training Status (RUNNING → 10k)
 
-**Loss trajectory:** dropping ~3pp per 1000 steps at step 4-5k.
-**Best observed:** 4.6719 at step 4200 (138M tokens, 14% of 1B budget).
-**Remaining budget:** ~26,000 steps (~850M tokens, 86%).
+**Loss trajectory (smoothed-200):**
 
-### Probe trajectory (steps 1k → 5k)
+| Step | Smooth Loss | Δ/1k | Min(all) | Tokens |
+|------|------------|------|----------|--------|
+| 1000 | 5.802 | — | 5.344 | 33M |
+| 2000 | 5.335 | -0.467 | 4.843 | 66M |
+| 3000 | 5.143 | -0.192 | 4.583 | 98M |
+| 4000 | 5.038 | -0.105 | 4.450 | 131M |
+| 5000 | 4.945 | -0.093 | 4.328 | 164M |
+| 6000 | 4.851 | -0.094 | 4.328 | 197M |
+| 7000 | 4.822 | -0.029 | 4.229 | 229M |
+| 8000 | 4.789 | -0.033 | **4.159** | 262M |
 
-| Signal | Step 1k | Step 3k | Step 5k | Status |
-|--------|---------|---------|---------|--------|
-| Prep gate spread | 0.364 | 0.107 | 0.086 | Converging |
-| Role register polarity | Inverted | Approaching | ✓ CORRECT | Flipped at step 4k |
-| Consolidate gate selectivity | Flat (0.05 spread) | 0.072 | 0.109 | Growing |
-| Converge gate by binding type | Undifferentiated | Emerging | control>quant_scope | Phase 2 active |
-| Output norms | 65-83 (growing) | 82-95 (growing) | 80-91 (stable) | Stabilized |
+**Best observed:** 4.159 at step 7854 (0.71 below v3's best of 4.872).
+**Curve:** Flattening. ~0.03/1k steps (was ~0.1/1k at steps 2-4k).
+
+### Probe trajectory (steps 1k → 8k)
+
+| Signal | Step 1k | Step 4k | Step 5k | Step 8k | Status |
+|--------|---------|---------|---------|---------|--------|
+| Prep gate spread (s-a) | +0.094 | +0.004 | -0.028 | -0.001 | ✓ Converged (category-blind) |
+| Role register spread | -1.5 | +2.3 | +0.3 | +2.8 | ✓ Stable positive polarity |
+| Consol spread (s-a) | +0.014 | +0.108 | +0.037 | **-0.034** | ⚡ PHASE FLIP at step 7k |
+| Converge bind range | 0.233 | 0.090 | 0.113 | **0.217** | ⚡ Phase 3 differentiating |
+| Consol bind range | 0.107 | 0.187 | 0.180 | **0.348** | ⚡ Phase 3 deepening |
+| Output norm range | 18.3 | 10.9 | 10.2 | **4.1** | ✓ Stable (converged) |
 
 **Phase map:**
-- Phase 1 (stride 1, local): ✓ Complete — prep gate differentiated, output stable
-- Phase 2 (stride 8, phrase): ◐ Active — converge gate differentiating by binding type
-- Phase 3 (stride 64, clause): ○ Emerging — quant_scope still lowest converge gate
+- Phase 1 (stride 1, local): ✓ Complete — prep gate converged
+- Phase 2 (stride 8, phrase): ✓ Complete — converge gate differentiating
+- Phase 3 (stride 64, clause): ⚡ Active — binding types differentiating rapidly
 
-### Key finding: step 4000 polarity flip
+### Key findings — Session 017
 
-Role register: strong_compile surged 10.12 → 15.54 in one checkpoint.
-Now correct polarity (compile > null > anti). Scope register also flipped.
-Consolidate gate developing selectivity (weak 0.44 > anti 0.31).
-This happened ~5000 steps earlier than equivalent differentiation in v3.
+**1. Consolidate gate phase transition (step 7k)**
+
+Consolidate spread (strong-anti) flipped from positive to negative. The
+consolidate gate now SUPPRESSES strong-compile more than anti. Interpretation:
+consolidate learned to be the noise filter — it gates out what converge already
+handled. Strong inputs need less consolidation because converge did its job.
+
+**2. Binding differentiation — negation surging**
+
+Converge gate ordering at step 8k: neg(0.60) > var(0.51) > ctrl(0.49) > ana(0.43) > rel(0.40) > scope(0.39) > embed(0.38).
+Negation gets highest converge gate because it's the most structurally demanding operation.
+Consolidate follows same pattern: neg(0.70) > ctrl(0.58) > var(0.57) > ana(0.47) > embed(0.42) > scope(0.41) > rel(0.36).
+
+**3. Role register hierarchy by binding type**
+
+scope(11.7) > neg(9.8) > var(9.0) > embed(5.5) > ana(4.8) > rel(4.5) > ctrl(3.3).
+The model has built an internal hierarchy of binding complexity in the role register.
+
+### 10k Decision Context
+
+v3.2 has validated the core hypothesis. Evidence supporting termination at 10k:
+- Loss returns diminishing (0.03/1k vs 0.1/1k earlier)
+- Phase 3 active but architecture likely near capacity ceiling
+- Already 0.71 below v3's best
+- v4's hierarchical registers should break through this ceiling
+- v4 designed and ready to implement
+
+**Decision: probe 9k and 10k when checkpoints drop, then start v4.**
 
 ## v4 Architecture — Recursive Viable System
 
-Designed this session. Full document: `mementum/knowledge/explore/vsm-lm-v4-design.md`
+Designed session 016. Full document: `mementum/knowledge/explore/vsm-lm-v4-design.md`
 
 ### Core spec
 
@@ -71,95 +106,36 @@ S2: register bank protocol (inter-level coordination)
 ```
 
 ### Key design principles
-- **Full VSM conformance** at every recursive level (meta > level > phase > head)
 - **Shared weights** = S5 identity coherence (same function at every level)
 - **Per-level S3** = autonomous control (different variety at different scales)
 - **Register hierarchy** = S4↔S4 channel (levels communicate summaries)
-- **Residual stream** = algedonic channel (ungated emergency bypass)
 - **Stride 512 reinstated** — hierarchy provides the structural context it needed
 
-### Why v4 should find the compression function
-
-The architecture can ONLY express self-similar compositional functions:
-- Shared weights → can't encode level-specific behavior
-- Strided attention → can only compose within scale-appropriate windows
-- Hierarchical registers → provide context, not computation
-- Fractal structure (same shape at every level of nesting)
-
-The search space contains only compositional functions. Language's compression
-function IS compositional. Gradient descent finds the best one in the space.
-The architecture is a sieve — everything non-compositional is filtered out.
-
-## Theoretical Framework (expanded this session)
+## Theoretical Framework
 
 ### Gradient separation
-Strided attention separates gradients by scale:
-- Stride 1: gets ONLY local pair gradients → learns local composition
-- Stride 64: gets ONLY distant pair gradients → learns structural binding
-- No contamination between scales (unlike flat attention)
-
-### Composition vs Pipeline
-Flat transformers pipeline because flat gradients force polysemanticity:
-- Each head receives gradients from ALL position pairs → can't specialize
-- Functions diffuse across layers (organizational overhead)
-- The pipeline compensates — 36 layers to approximate what composition does in 3
-
-Strided attention composes because separated gradients allow specialization:
-- Each head receives gradients only from its stride's scale → MUST specialize
-- Functions concentrate (no overhead)
-- Same function applied at all scales simultaneously (cube-mode)
+Strided attention separates gradients by scale. Each head receives
+gradients only from its stride's scale → MUST specialize. This is why
+v3.2 works better than flat attention: functions concentrate instead of
+diffusing across layers.
 
 ### H=0.70 and the compressor-as-predictor
-- Compression = prediction (Shannon duality)
-- English entropy ~0.70 bits/char → 4.0 bits of redundancy
-- Structural redundancy (composition) accounts for majority (~75%)
-- Compressor captures ~75% of predictive power in ~0.1% of parameters
-- Structural rules are recursive (exponential prediction per parameter)
-- World knowledge is flat (linear prediction per parameter)
+Structural redundancy (composition) accounts for ~75% of English's
+predictive power. Structural rules are recursive (exponential prediction
+per parameter) vs world knowledge (linear). This is why a tiny compressor
+can capture most of the structure.
 
-### CPU deployment
-- O(L×W) attention (not O(L²)) → no GPU needed
-- 5M params × 4 bytes = 20MB → fits in L3 cache
-- Portable to browser (WASM), mobile, embedded, IoT
-- The artifact runs anywhere. Same function, no cloud.
+## What's next — Session 018
 
-### Amortized structural learning
-- Train compressor once (10B tokens, one GPU-week, ~$1000)
-- Distribute as universal structural prior (MIT, portable tensor)
-- Every downstream model plugs it in, skips structural discovery
-- Savings: eliminates the combinatorial S×F×C training bottleneck
-- ROI: one training → infinite reuse
+### Immediate: probe v3.2 steps 9k-10k
+1. As checkpoints drop, probe compile-gradient + binding at 9k and 10k
+2. Head-to-head: compare v3.2 step 10k with v3 step 10k across all probes
+3. Final v3.2 assessment — confirm termination decision
 
-## What's next — Session 017
-
-### Immediate: continue v3.2 probing
-
-v3.2 is still training. As checkpoints drop:
-1. Continue probing at each 1000-step checkpoint
-2. Watch for phase 2→3 transition (converge gate specialization deepening)
-3. Watch for loss curve elbows (phase transition markers)
-4. At step 10k: head-to-head comparison with v3's best across all probes
-
-### After v3.2 completes (step ~30k, ~1B tokens):
-
-5. **Register PCA**: do register vectors cluster by binding category?
-6. **Iteration comparison**: does iter 1 ≠ iter 2 in function?
-7. **Per-stride analysis**: instrument stride-specific attention patterns
-8. **Separated compressor test**: freeze prep+converge, retrain consolidate+output
-
-### v4 implementation (after v3.2 validates):
-
-9. Implement v4-A: hierarchical registers + meta-S4/S3 + shared weights + fixed strides
-10. v4-A vs v3.2 head-to-head at 1B tokens
-11. If v4-A wins: implement v4-B (progressive stride reallocation)
-12. If v4-A loses: diagnose why (registers not differentiating? S3 not specializing?)
-
-### Longer term:
-
-13. 10B token run on best architecture (v3.2 or v4)
-14. Stride-512 activation: does hierarchy solve the sparsity problem?
-15. Extraction: freeze compressor, test standalone
-16. The portable tensor artifact
+### v4 implementation
+4. Implement v4-A: hierarchical registers + meta-S4/S3 + shared weights + fixed strides
+5. v4-A training with same data pipeline as v3.2
+6. v4-A vs v3.2 head-to-head at matched token budgets
 
 ## Key files
 
@@ -168,12 +144,11 @@ v3.2 is still training. As checkpoints drop:
 | **v4 design** | `mementum/knowledge/explore/vsm-lm-v4-design.md` |
 | **VSM-LM v3.2** | `src/verbum/vsm_lm_v3_2.py` |
 | **v3.2 training** | `scripts/run_vsm_v3_2_1B.py` |
-| **Probe script (v3.2 support)** | `scripts/compile_gradient_probe.py` |
-| **v3.2 checkpoints** | `checkpoints/vsm-lm-v3.2/step_{001000..005000}.pt` |
-| **v3.2 compile-gradient results** | `results/compile-gradient/vsm_probe_step_00*_v3.2.json` |
-| **v3.2 binding results** | `results/binding/vsm_probe_step_00*_v3.2.json` |
+| **Probe script** | `scripts/compile_gradient_probe.py` |
+| **v3.2 checkpoints** | `checkpoints/vsm-lm-v3.2/step_{001000..008000}.pt` |
+| **v3.2 compile-gradient** | `results/compile-gradient/vsm_probe_step_00*_v3.2.json` |
+| **v3.2 binding** | `results/binding/vsm_probe_step_00*_v3.2.json` |
 | **Research program** | `mementum/knowledge/explore/VERBUM.md` |
-| **v3 best checkpoint** | `checkpoints/vsm-lm-v3/step_010000.pt` |
 
 ## Architecture lineage
 
@@ -183,18 +158,18 @@ v3.2 is still training. As checkpoints drop:
 | v2 | ~25M | 1,8,64 | 5.064 (1B) | Iteration specialization |
 | v3 | 50M | 1,8,64 | 4.872 | Role register, binding confirmed |
 | v3.1 | 59M | 1,8,64,512 | 4.836 | Stride 512 too sparse without hierarchy |
-| v3.2 | 51M | 1,8,64 | **<4.67** (training) | Convergence arch, cube-mode, probe-grounded |
+| v3.2 | 51M | 1,8,64 | **4.159** (training) | Convergence arch, phase 3 active |
 | v4 | ~51M | 1,8,64,512 | ? (designed) | Recursive VSM, hierarchical registers |
 
 ## Probing pipeline
 
 ```bash
 # Probe a single checkpoint
-uv run python scripts/compile_gradient_probe.py probe checkpoints/vsm-lm-v3.2/step_005000.pt
+uv run python scripts/compile_gradient_probe.py probe checkpoints/vsm-lm-v3.2/step_008000.pt
 
 # Binding probes
-uv run python scripts/compile_gradient_probe.py probe checkpoints/vsm-lm-v3.2/step_005000.pt --probes probes/binding.json
+uv run python scripts/compile_gradient_probe.py probe checkpoints/vsm-lm-v3.2/step_008000.pt --probes probes/binding.json
 
-# Batch all checkpoints in a directory
+# Batch all checkpoints
 uv run python scripts/compile_gradient_probe.py batch-probe --dir checkpoints/vsm-lm-v3.2/
 ```
