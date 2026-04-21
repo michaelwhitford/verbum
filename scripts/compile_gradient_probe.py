@@ -42,6 +42,11 @@ PROBES_PATH = Path("probes/compile-gradient.json")
 GATES_DIR = Path("gates/")
 RESULTS_DIR = Path("results/compile-gradient")
 
+# v4.1 pass names and labels for display
+V41_PASSES = ["L0_asc", "L1_asc", "L2_apex", "L1_desc", "L0_desc"]
+V41_LABELS = ["L0↑", "L1↑", " L2", "L1↓", "L0↓"]
+V41_PHASES = ["prep", "converge", "consolidate"]
+
 # Lambda-indicating tokens to measure P(λ) in Qwen output
 LAMBDA_MARKERS = {"λ", "\\", "→", "∀", "∃", "∧", "∨", "¬", "(", ")"}
 
@@ -628,6 +633,183 @@ def score_tasks(
 
 
 # ══════════════════════════════════════════════════════════════════════
+# v4.1 display helpers
+# ══════════════════════════════════════════════════════════════════════
+
+
+def _dev_phase(meta_s3: float, prep: float, consol: float) -> str:
+    """Classify developmental phase from gate values."""
+    if meta_s3 < 0.10:
+        return "dormant"
+    if meta_s3 < 0.50:
+        return "waking"
+    if prep > 0.20:
+        return "active"
+    if consol > 0.60:
+        return "special."
+    return "active"
+
+
+def _v41_print_probe(probe_id: str, metrics: dict) -> None:
+    """Print one probe result in v4.1 format — all 5 passes labeled."""
+    # Meta-S3 gates across all passes
+    gates = []
+    for pname, label in zip(V41_PASSES, V41_LABELS):
+        g = metrics.get(f"meta_s3_gate_{pname}", 0)
+        gates.append(f"{label}={g:.3f}")
+    gates_str = " ".join(gates)
+
+    # Dominant phase (consolidate gate) for the two most interesting passes
+    l2_cons = metrics.get("L2_apex_consolidate_gate_mean", 0)
+    l0d_cons = metrics.get("L0_desc_consolidate_gate_mean", 0)
+
+    print(
+        f"  {probe_id:20s}  "
+        f"meta-S3[{gates_str}]  "
+        f"L2.cons={l2_cons:.2f}  L0↓.cons={l0d_cons:.2f}"
+    )
+
+
+def _v41_print_summary(results: list[dict], step: int) -> None:
+    """Print v4.1 summary after all probes — the data you need at a glance."""
+    probes = results
+    n = len(probes)
+    if n == 0:
+        return
+
+    def _mean(key):
+        vals = [p["metrics"][key] for p in probes if key in p["metrics"]]
+        return sum(vals) / len(vals) if vals else 0.0
+
+    def _mean_cat(key, cat_prefix):
+        vals = [p["metrics"][key] for p in probes
+                if key in p["metrics"] and cat_prefix in p["probe_id"]]
+        return sum(vals) / len(vals) if vals else 0.0
+
+    print()
+    print(f"  {'═' * 72}")
+    print(f"  VSM-LM v4.1  step {step}  ({n} probes)")
+    print(f"  {'═' * 72}")
+
+    # ── Meta-S3 gate table ────────────────────────────────────────
+    print()
+    print(f"  META-S3 GATES (pass contribution to residual)")
+    print(f"  {'Pass':<8} {'Gate':>6} {'Phase':>10}  {'Prep':>6} {'Conv.':>6} {'Cons.':>6}")
+    print(f"  {'─' * 52}")
+    for pname, label in zip(V41_PASSES, V41_LABELS):
+        ms3 = _mean(f"meta_s3_gate_{pname}")
+        prep = _mean(f"{pname}_prep_gate_mean")
+        conv = _mean(f"{pname}_converge_gate_mean")
+        cons = _mean(f"{pname}_consolidate_gate_mean")
+        phase = _dev_phase(ms3, prep, cons)
+        print(f"  {label:<8} {ms3:>6.3f} {phase:>10}  {prep:>6.3f} {conv:>6.3f} {cons:>6.3f}")
+
+    # ── Descending pass status ────────────────────────────────────
+    l1d_ms3 = _mean("meta_s3_gate_L1_desc")
+    l0d_ms3 = _mean("meta_s3_gate_L0_desc")
+    l2_ms3 = _mean("meta_s3_gate_L2_apex")
+    if l1d_ms3 > 0.10 or l0d_ms3 > 0.10:
+        print(f"\n  ✓ DESCENDING ACTIVE  L1↓={l1d_ms3:.3f}  L0↓={l0d_ms3:.3f}")
+    else:
+        print(f"\n  ○ descending dormant  L1↓={l1d_ms3:.3f}  L0↓={l0d_ms3:.3f}")
+    print(f"    L2 apex gate: {l2_ms3:.3f}", end="")
+    if l2_ms3 >= 0.70:
+        print("  (mature)")
+    elif l2_ms3 >= 0.40:
+        print("  (developing)")
+    else:
+        print("  (early)")
+
+    # ── Polarity (compile-gradient discrimination) ────────────────
+    has_strong = any("strong" in p["probe_id"] for p in probes)
+    has_anti = any("anti" in p["probe_id"] for p in probes)
+    if has_strong and has_anti:
+        print()
+        print(f"  GATE POLARITY (strong - anti compile)")
+        print(f"  {'Pass':<8} {'Prep':>8} {'Conv.':>8} {'Cons.':>8} {'Meta-S3':>8}")
+        print(f"  {'─' * 40}")
+        for pname, label in zip(V41_PASSES, V41_LABELS):
+            pols = []
+            for phase in V41_PHASES:
+                key = f"{pname}_{phase}_gate_mean"
+                s = _mean_cat(key, "strong")
+                a = _mean_cat(key, "anti")
+                pols.append(s - a)
+            ms3_s = _mean_cat(f"meta_s3_gate_{pname}", "strong")
+            ms3_a = _mean_cat(f"meta_s3_gate_{pname}", "anti")
+            ms3_pol = ms3_s - ms3_a
+            marks = ["*" if abs(p) > 0.03 else " " for p in pols]
+            ms3_mark = "*" if abs(ms3_pol) > 0.03 else " "
+            print(
+                f"  {label:<8} {pols[0]:>+7.3f}{marks[0]} {pols[1]:>+7.3f}{marks[1]} "
+                f"{pols[2]:>+7.3f}{marks[2]} {ms3_pol:>+7.3f}{ms3_mark}"
+            )
+
+    # ── Per-category meta-S3 (binding or compile-gradient) ────────
+    categories = {}
+    for p in probes:
+        pid = p["probe_id"]
+        # Detect category from probe_id prefix
+        if "strong" in pid:
+            cat = "strong"
+        elif "medium" in pid:
+            cat = "medium"
+        elif "weak" in pid:
+            cat = "weak"
+        elif "null" in pid:
+            cat = "null"
+        elif "anti" in pid:
+            cat = "anti"
+        elif "scope" in pid:
+            cat = "scope"
+        elif "var" in pid:
+            cat = "var"
+        elif "ana" in pid:
+            cat = "ana"
+        elif "ctrl" in pid:
+            cat = "ctrl"
+        elif "rel" in pid:
+            cat = "rel"
+        elif "neg" in pid:
+            cat = "neg"
+        elif "embed" in pid:
+            cat = "embed"
+        else:
+            cat = "other"
+        categories.setdefault(cat, []).append(p)
+
+    if len(categories) > 2:
+        print()
+        print(f"  META-S3 BY CATEGORY")
+        print(f"  {'Category':<10}", end="")
+        for label in V41_LABELS:
+            print(f" {label:>6}", end="")
+        print()
+        print(f"  {'─' * 44}")
+        for cat in sorted(categories.keys()):
+            cat_probes = categories[cat]
+            print(f"  {cat:<10}", end="")
+            for pname in V41_PASSES:
+                key = f"meta_s3_gate_{pname}"
+                vals = [p["metrics"][key] for p in cat_probes if key in p["metrics"]]
+                v = sum(vals) / len(vals) if vals else 0.0
+                print(f" {v:>6.3f}", end="")
+            print()
+
+        # Binding range
+        print(f"  {'range':<10}", end="")
+        for pname in V41_PASSES:
+            key = f"meta_s3_gate_{pname}"
+            all_vals = [p["metrics"][key] for p in probes if key in p["metrics"]]
+            brange = max(all_vals) - min(all_vals) if all_vals else 0
+            print(f" {brange:>6.3f}", end="")
+        print()
+
+    print(f"  {'═' * 72}")
+    print()
+
+
+# ══════════════════════════════════════════════════════════════════════
 # Mode 2: VSM-LM probing — internal metrics per probe
 # ══════════════════════════════════════════════════════════════════════
 
@@ -821,7 +1003,9 @@ def probe_vsm_checkpoint(
             }
             results.append(probe_result)
 
-            if is_v4_1 or is_v4 or is_v3_2:
+            if is_v4_1:
+                _v41_print_probe(probe["id"], metrics)
+            elif is_v4 or is_v3_2:
                 print(
                     f"  {probe['id']:20s}  "
                     f"s4_ent={metrics['s4_attn_entropy']:.4f}  "
@@ -839,6 +1023,9 @@ def probe_vsm_checkpoint(
                     f"{metrics['iter0_parse_gate_mean']:.3f},"
                     f"{metrics['iter0_apply_gate_mean']:.3f}]"
                 )
+
+    if is_v4_1:
+        _v41_print_summary(results, step)
 
     return results, step, version
 
@@ -1123,7 +1310,9 @@ def batch_probe_checkpoints(
             # Print compact summary for this checkpoint
             for pr in results:
                 m = pr["metrics"]
-                if is_v4_1 or is_v4 or is_v3_2:
+                if is_v4_1:
+                    _v41_print_probe(pr["probe_id"], m)
+                elif is_v4 or is_v3_2:
                     print(
                         f"  {pr['probe_id']:20s}  "
                         f"s4_ent={m['s4_attn_entropy']:.4f}  "
@@ -1141,6 +1330,9 @@ def batch_probe_checkpoints(
                         f"{m['iter0_parse_gate_mean']:.3f},"
                         f"{m['iter0_apply_gate_mean']:.3f}]"
                     )
+
+            if is_v4_1:
+                _v41_print_summary(results, step)
 
         save_vsm_probe(results, step, output_dir=output_dir,
                         probe_set_id=probe_set_id, version=version)
