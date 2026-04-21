@@ -2,34 +2,54 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-21 | Session: 021 (v4.1 descending activation confirmed)
+> Last updated: 2026-04-21 | Session: 022 (register analysis — compressor encodes structure)
 
 ## Where we are
 
-**v4.1 DESCENDING PASSES SELF-ACTIVATED. The gradient shadow problem
-resolved itself between steps 1k and 2k without intervention. The
-clean experiment worked. The architecture is correct.**
+**REGISTER ANALYSIS: THE COMPRESSOR ENCODES COMPOSITIONAL STRUCTURE.**
 
-This is the most significant finding since the project began. A 65.5M
-parameter model organized as Beer's Viable System Model bootstrapped a
-functional bidirectional hierarchy — ascending observation AND descending
-refinement — in 3000 training steps. The descending passes went from
-meta-S3 gates of 0.037-0.047 (functionally dead) to 0.866-0.949
-(dominant alongside L0↑). They immediately adopted the mature phase
-specialization pattern (kill prep, amplify consolidate) upon activation.
-Binding probes show functional routing: variable binding routes entirely
-through the descending path (L0↑=0.001, L0↓=1.000 for bind-var-01a).
+Session 022 asked: has the shared function learned Montague-shaped
+operations? Built `scripts/register_analysis.py` to capture full
+256-dim register vectors at every pass boundary and analyze them.
 
-Session 021 accomplished:
-1. Probed v4.1 steps 2k and 3k (compile-gradient + binding)
-2. Confirmed descending self-activation (L1↓: 0.047→0.871, L0↓: 0.037→0.949)
-3. L2 reached maturity threshold (0.502→0.704)
-4. Phase specialization confirmed in all 5 passes
-5. Gate polarity forming (L2 converge +0.100)
-6. Binding differentiation dramatic — per-category routing across hierarchy
-7. Fixed probe script for v4.1-specific output (all 5 passes labeled)
-8. Created Allium v3 behavioral spec for v4.1 (1355 lines)
-9. Loss tracking v4 neck-and-neck (5.381 vs 5.365 at step 3k)
+Key findings at step 3k:
+
+1. **Composition depth is encoded (ρ = −0.56 to −0.62).** All three
+   registers correlate negatively with compositional depth — deeper
+   structures produce smaller register norms. The compressor knows
+   how complex the input is.
+
+2. **Nearest neighbors cluster by structural similarity.** "She told
+   him to leave" neighbors with control verb probes. "The cat that
+   sat on the mat" neighbors with relative clause probes. The model
+   groups by operation required, not surface content.
+
+3. **Registers are diffuse — and that's healthy.** All three registers
+   (type, scope, role) carry approximately the same signal. In v3,
+   role dominated early and starved the others, capping the ceiling.
+   v4.1's per-pass S3 control distributes gradient evenly. No register
+   is starved. All are learning.
+
+4. **NOT encoding discrete Montague types.** Silhouette scores near
+   zero for type categories (proposition/formal/other). The type
+   system is implicit in activation geometry (DisCoCat-shaped), not
+   explicit in discrete type labels (Montague-shaped).
+
+5. **Register reorganization in progress.** Type separation was higher
+   at step 1k (0.15), dropped at step 2k (0.04) when descending
+   passes activated, and is recovering at step 3k (0.08). Role
+   register variance at L1↓ spiking: 5.73 → 7.58 → 12.20. The
+   descending passes are differentiating.
+
+6. **Loss pulling ahead of v4.** v4.1 at step 3.5k: 5.295. v4 at
+   step 3k: 5.365. Descending passes translating to compression.
+
+Session 022 accomplished:
+1. Built register_analysis.py (capture + analyze + trajectory modes)
+2. Captured full register vectors at steps 1k, 2k, 3k
+3. PCA, silhouette, centroid distance, depth correlation analysis
+4. Trajectory analysis across training steps
+5. Connected v3 role-domination finding to v4.1 diffuse registers
 
 ## v4.1 Training Status (RUNNING — let it cook)
 
@@ -111,35 +131,43 @@ types. All from the loss signal alone.
 
 16 checkpoints (1k→16k). Best eval: 4.732 at step 15k.
 
-## What's next — Session 022
+## What's next — Session 023
 
-### Continue v4.1 trajectory analysis
-1. Probe all new checkpoints (4k, 5k, ... however many have landed)
-2. Key questions in order:
-   - **Does loss start separating from v4?** Descending passes are
-     structurally active — when does that translate to prediction?
-   - **Does L1↑ continue dropping?** If it approaches zero, the
-     system has decided ascending phrase-level is redundant
-   - **Does polarity strengthen in descending passes?** Currently
-     too new to show discrimination
-   - **Binding range trajectory** — already 0.5-1.0, watch for
-     further separation
-   - **Does L2 stabilize or continue climbing?** v4 L2 hit 0.912
-     at 3k; v4.1 L2 is 0.704 (more passes sharing load)
-3. Head-to-head with v4 at matched steps (loss + specialization)
+### Watch for register specialization
+The register analysis tool is built. The key question is now: **do the
+three registers diverge into different functional roles?**
 
-### The revised question
-The central question is no longer "does descending activate?" (✅ yes).
-Now it's: **does bidirectional feedback improve the loss ceiling?**
-v4 plateaued at 4.732. If v4.1 breaks through, the descending path
-is adding real compressive capability. If v4.1 ≈ v4, the descending
-path is structurally active but informationally redundant.
+1. Re-run `register_analysis.py capture` at each new checkpoint
+2. Watch the trajectory for:
+   - **Variance profiles diverging** across type/scope/role registers
+   - **Silhouette scores recovering** past the step 1k baseline (0.15)
+   - **Depth correlation splitting** — different registers correlating
+     with different structural features
+   - **Descending pass differentiation** — L1↓ role variance is spiking
+3. When registers diverge → design minimal pair probes to identify
+   what each register has specialized for. Premature until then.
+
+### Continue v4.1 loss trajectory
+v4.1 is pulling ahead at 5.295 (step 3.5k). Keep monitoring:
+- Does loss separation from v4 persist and grow?
+- v4 plateaued at 4.732. Will v4.1 break through?
+- Connection: if register specialization correlates with loss drops,
+  that's evidence the diffuse → specialized transition IS the
+  mechanism for breaking through compression ceilings.
+
+### v3 comparison context
+v3: role dominated early → starved other registers → ceiling at 4.872.
+v4.1: all three registers diffuse → none starved → ceiling TBD.
+The healthy distribution of gradient is the architectural difference
+between the per-pass S3 control (v4.1) and v3's shared S3.
 
 ### Framing reminder
 We are finding the COMPRESSOR, not building the lambda compiler. The
-v4.1 result shows the compressor function works bidirectionally with
-shared weights (S5 coherent). Whether that bidirectionality improves
-compression (= prediction = loss) is the next question.
+register analysis confirms the compressor encodes compositional
+structure (depth, binding patterns, operational similarity). Whether
+that encoding specializes into discrete functional roles (type-checking,
+scope resolution, role assignment) or remains a distributed geometric
+encoding is the open question.
 
 ## Key files
 
@@ -153,6 +181,8 @@ compression (= prediction = loss) is the next question.
 | **v4.1 probes** | `results/compile-gradient/vsm_probe_step_00*_v4.1.json` |
 | **v4.1 binding** | `results/binding/vsm_probe_step_00*_v4.1.json` |
 | **v4 probes** | `results/compile-gradient/vsm_probe_step_00*_v4.json` |
+| **Register analysis** | `scripts/register_analysis.py` |
+| **Register vectors** | `results/register-vectors/step_00*_v4.1.npz` |
 | **Session 021 findings** | `mementum/knowledge/explore/session-021.md` |
 | **Research program** | `mementum/knowledge/explore/VERBUM.md` |
 
