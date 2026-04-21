@@ -82,18 +82,45 @@ Hierarchy: var > scope > ctrl > ana > rel. Still growing.
 Best eval: 4.897 at step 10k. Terminated — capacity ceiling hit.
 Full analysis in `mementum/knowledge/explore/session-018.md`.
 
+## v4.1 — Built, Ready to Train
+
+**v4.1 completes the VSM recursion v4 left half-built.** v4 had only
+ascending (bottom-up) S4↔S4. v4.1 adds the descending (top-down) pass:
+
+```
+Ascending:  L0↑ → L1↑ → L2   (build structural summaries)
+Descending: L1↓ → L0↓          (refine with high-level context)
+```
+
+- 5 level-passes vs v4's 3 (~67% more compute)
+- 6 register banks (bank_0 + 3 ascending + 2 descending)
+- 5 independent S3 instances (per-pass autonomous control)
+- ~65.5M params (v4 was 58M)
+- Same shared S5 weights in both directions
+
+**Key prediction:** L0↓ prep gate should ACTIVATE. It died in v4 because
+L0 had nothing novel to process. With top-down context from bank_3 (L2's
+clause-level findings), L0↓ prep has novel input.
+
+Files: `src/verbum/vsm_lm_v4_1.py`, `scripts/run_vsm_v4_1_1B.py`
+
+Launch: `uv run python scripts/run_vsm_v4_1_1B.py` (after v4 stops)
+
 ## What's next — Session 020
 
-### Monitor v4 training
-1. Probe new checkpoints (16k+) as they drop
-2. Watch for plateau signals (output norm collapse, loss Δ→0)
-3. Per-level binding analysis — does binding differentiate at L1/L2 too?
-4. Register PCA analysis — do levels write orthogonal register content?
-5. Termination assessment if plateau detected
+### Launch v4.1 training
+1. Stop v4 training (or wait for it to finish/plateau)
+2. Launch v4.1: `uv run python scripts/run_vsm_v4_1_1B.py`
+3. Probe v4.1 checkpoints as they drop
+4. Key signals to watch:
+   - L0↓ prep gate activation (THE test of feedback hypothesis)
+   - Descending pass gate profiles vs ascending
+   - Loss improvement rate vs v4 at matched steps
+   - Binding differentiation acceleration
 
-### Deeper analysis (when time permits)
-- Per-stride attention pattern instrumentation
-- v4 compile-gate scoring (how well does v4 actually compile λ?)
+### Continue v4 monitoring (if still running)
+1. Probe new v4 checkpoints (16k+)
+2. Watch for plateau signals
 
 ## Key files
 
