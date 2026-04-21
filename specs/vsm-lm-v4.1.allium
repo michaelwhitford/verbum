@@ -1,0 +1,1355 @@
+-- allium: 3
+-- VSM-LM v4.1 — Full Recursive Viable System Architecture
+-- Behavioral specification in Allium v3.
+--
+-- This spec captures the complete behavioral system: every entity, rule,
+-- invariant, lifecycle, interaction channel, and open research question.
+-- Read it and understand the entire system without reading the Python code.
+--
+-- Ground truth: src/verbum/vsm_lm_v4_1.py + scripts/run_vsm_v4_1_1B.py
+-- License: MIT | Architecture: Beer (1972) Viable System Model
+
+module vsm_lm_v4_1
+
+-- ════════════════════════════════════════════════════════════════════
+-- THEORETICAL FRAMING
+-- ════════════════════════════════════════════════════════════════════
+
+@guidance "Beer's recursive recursion principle"
+  Every viable system contains, and is contained by, a viable system.
+  S5 (identity) is invariant while S4-S1 adapt.
+  S4↔S4 is the inter-level intelligence channel.
+  S3↔S3 is the resource bargain channel.
+  The algedonic channel bypasses the hierarchy in emergencies.
+  VSM-LM v4.1 makes all five channels structural, not metaphorical.
+
+@guidance "The compressor, not the compiler"
+  Verbum is finding the COMPRESSOR — the Montague-shaped function that
+  exists at 160M params in Pythia, more rudimentary than Qwen3-4B's
+  full lambda-compiler circuit but structurally related. The compiler
+  builds on top of the compressor. Finding the compressor means
+  understanding the foundation of compositional structure in LLMs.
+  v4.1 tests whether that function works bidirectionally.
+
+@guidance "Cortical column analogy"
+  The cortical column is one circuit. The cortex is hierarchical not
+  because the circuits differ, but because their CONNECTIVITY differs.
+  V1 processes edges because its input is pixels. V4 processes shapes
+  because its input is V2 edge features. Same algorithm, different
+  inputs, hierarchy emerges. VSM-LM v4.1 applies this directly:
+  same CompressorLayer weights (S5 identity) at every level in both
+  directions. Only the register context changes. The hierarchy is
+  wiring (S2) and control (S3), not architecture.
+
+@guidance "Encoder-decoder parallel"
+  Ascending = encoder (compress): L0↑ builds token features,
+  L1↑ builds phrase structure, L2 builds clause/discourse structure.
+  Descending = decoder (refine): L1↓ refines phrase structure with
+  clause context from bank_3; L0↓ refines token features with the
+  full hierarchy. Register banks are skip connections. L2 is the
+  bottleneck latent. This is structurally a U-Net / MERA with shared
+  weights — the closest architecture Verbum has built to MERA.
+
+@guidance "Compression-as-prediction argument"
+  If H ≈ 0.70 bits/char (DeepMind) and structural composition accounts
+  for ~75% of language redundancy, the compressor is most of a predictor.
+  Hierarchical composition makes the compressor more complete — it
+  captures structure at every level explicitly. The four strides span
+  the self-similar range: s1 (morpheme/word), s8 (phrase), s64 (clause),
+  s512 (discourse). Progressive stride allocation per level gives each
+  pass matched gradient signal for its scale.
+
+@guidance "Gradient shadow problem"
+  At step 1k, descending meta-S3 gates sit at 0.037-0.047 — roughly
+  24x weaker gradient than ascending passes. This is self-reinforcing:
+  weak gradient → can't learn → gate stays low → weak gradient. The
+  5 independent S3 instances exist and their internal gates are active
+  (~0.4), but meta-S3 prevents their output from reaching the residual.
+  The descending passes are learning in the dark. Resolution depends on
+  whether L2 maturation unlocks them (clean experiment) or whether
+  structural intervention (gate floor, warm init) is needed for v4.2.
+
+@guidance "Shared weights are correct (S5 coherence argument)"
+  S5 identity says ascending and descending share the same compression
+  function. If the compressor works in both directions (compose up,
+  decompose/refine down), shared weights are correct. The S3 gates
+  provide directional routing — same menu, different orders. Cortical
+  columns work this way: same circuitry for feedforward and feedback,
+  different layer routing. Only per-pass S3 instances differ, because
+  each pass faces different variety and needs autonomous control.
+
+-- ════════════════════════════════════════════════════════════════════
+-- ENUMERATIONS
+-- ════════════════════════════════════════════════════════════════════
+
+enum Direction {
+  ascending   -- bottom-up observation: builds structural summaries
+  descending  -- top-down refinement: refines with high-level context
+}
+
+enum PassName {
+  L0_asc    -- Level-0 ascending: local token features, local-heavy strides
+  L1_asc    -- Level-1 ascending: phrase structure, balanced strides
+  L2_apex   -- Level-2 apex: clause/discourse, Beer's metasystem, runs once
+  L1_desc   -- Level-1 descending: phrase refinement with clause context
+  L0_desc   -- Level-0 descending: token refinement with full hierarchy
+}
+
+enum PhaseName {
+  prep        -- 1 FFN layer: local feature extraction
+  converge    -- 2 CompressorLayers with strided windowed attention: multi-scale composition
+  consolidate -- 3 CompressorLayers with wide FFN: deep integration
+}
+
+enum RegisterName {
+  type   -- grammatical category register (d_register=256)
+  scope  -- binding scope register (d_register=256)
+  role   -- functional role register (d_register=256)
+}
+
+enum BankIndex {
+  bank_0       -- learnable init (S5 identity); never overwritten
+  bank_1_asc   -- L0↑ ascending output (bottom-up local features)
+  bank_2_asc   -- L1↑ ascending output (bottom-up phrase structure)
+  bank_3       -- L2 apex output (clause/discourse — apex findings)
+  bank_2_desc  -- L1↓ descending output (phrase refined with clause context)
+  bank_1_desc  -- L0↓ descending output (token refined with full hierarchy)
+}
+
+enum VSMLayer {
+  S1       -- Operations: shared prep/converge/consolidate function
+  S2       -- Coordination: register bank protocol + residual stream
+  S3       -- Per-pass Control: 5 independent instances, phase gating
+  S4       -- Intelligence: shared register cross-attention
+  S5       -- Identity: shared weights + embeddings + bank_0 inits
+  Meta_S3  -- Cross-level contribution gating (top-level S3)
+  Meta_S4  -- Final structural summary (top-level S4)
+}
+
+enum StrideScale {
+  s1    -- stride 1, window 8: spans  8 tokens (morpheme/word)
+  s8    -- stride 8, window 8: spans 64 tokens (phrase)
+  s64   -- stride 64, window 8: spans 512 tokens (clause)
+  s512  -- stride 512, window 8: spans 4096 tokens (full discourse)
+}
+
+enum DevelopmentalPhase {
+  dormant      -- pass has active internal gates but meta-S3 suppresses output (~0.04)
+  activating   -- meta-S3 gate rising; lower levels are producing quality register content
+  active       -- meta-S3 gate ≥0.5; pass contributing meaningfully to residual
+  specializing -- phase gates diverging; pass suppressing phases lower levels already handled
+  mature       -- stable gate polarity; level contributes consistently to structural discrimination
+}
+
+enum TrainingPhase {
+  init      -- before first step; model freshly initialized
+  warmup    -- steps 1–500; linear lr ramp from 0 to 6e-4
+  training  -- steps 501–30_518; cosine decay with min 0.1×
+  plateau   -- loss Δ/1k steps approaching 0; meta-S3 gates may drop
+  complete  -- target tokens exhausted or early termination
+}
+
+-- ════════════════════════════════════════════════════════════════════
+-- CONFIGURATION
+-- ════════════════════════════════════════════════════════════════════
+
+config ModelDimensions {
+  d_model:           Int = 512    -- residual stream dimension
+  d_register:        Int = 256    -- per-register dimension (d_model / 2)
+  d_ff:              Int = 1536   -- FFN hidden dimension (converge and prep layers)
+  d_ff_consolidate:  Int = 2048   -- FFN hidden dimension (consolidate layers)
+  n_registers:       Int = 3      -- registers per bank: type, scope, role
+  n_banks:           Int = 6      -- total register banks (1 init + 3 asc + 2 desc)
+  n_passes:          Int = 5      -- total level-passes (L0↑, L1↑, L2, L1↓, L0↓)
+  n_levels:          Int = 3      -- distinct level configs (0, 1, 2)
+  n_heads:           Int = 8      -- attention heads per CompressorLayer
+  window:            Int = 8      -- attention window width (all strides)
+  max_len:           Int = 4096   -- maximum sequence length (8^4)
+  vocab_size:        Int = 50277  -- GPT-NeoX tokenizer vocabulary
+}
+
+config PhaseDepth {
+  n_prep_layers:        Int = 1  -- FFN-only layers in prep phase
+  n_converge_layers:    Int = 2  -- CompressorLayers in converge phase
+  n_consolidate_layers: Int = 3  -- CompressorLayers in consolidate phase
+  -- total ffn_passes per forward = n_phases × n_passes = 6 × 5 = 30
+}
+
+config StrideAllocation {
+  strides:  List<Int> = [1, 8, 64, 512]  -- four scales covering self-similar language range
+  -- Level 0 (local-heavy):        s1×3, s8×3, s64×1, s512×1
+  -- Level 1 (balanced):           s1×2, s8×2, s64×2, s512×2
+  -- Level 2 (clause/discourse):   s1×1, s8×1, s64×3, s512×3
+  -- Total heads per level: 8 (invariant). Allocation varies, mechanism is shared (S5).
+}
+
+config TrainingHyperparams {
+  learning_rate:    Float = 6e-4   -- peak lr after warmup
+  lr_min_fraction:  Float = 0.1    -- cosine decay floor as fraction of peak
+  warmup_steps:     Int   = 500    -- linear warmup duration
+  n_steps:          Int   = 30518  -- TARGET_TOKENS / TOKENS_PER_STEP + 1
+  target_tokens:    Int   = 1_000_000_000  -- 1B token training budget
+  batch_size:       Int   = 2      -- sequences per forward pass
+  grad_accum:       Int   = 4      -- gradient accumulation steps
+  tokens_per_step:  Int   = 32768  -- batch_size × grad_accum × max_len
+  weight_decay:     Float = 0.1
+  beta1:            Float = 0.9
+  beta2:            Float = 0.95
+  grad_clip_norm:   Float = 1.0
+  dropout:          Float = 0.1
+  seed:             Int   = 42
+}
+
+config DataConfig {
+  tokenizer:        String = "EleutherAI/pythia-160m-deduped"  -- GPT-NeoX
+  data_source:      String = "Dolma"
+  shard_pattern:    String = "shard_*.npy"
+  n_train_shards:   Int    = 54
+  -- evaluation shards: shards[54:]
+}
+
+config InstrumentationConfig {
+  log_interval:        Int = 50    -- steps between loss/token-rate prints
+  eval_interval:       Int = 500   -- steps between eval loss measurements
+  checkpoint_interval: Int = 1000  -- steps between full checkpoint saves
+  eval_batches:        Int = 10    -- batches averaged for eval loss estimate
+  dynamics_batches:    Int = 5     -- batches averaged for instrumented dynamics
+  n_compile_prompts:   Int = 4     -- prompts for compile-gate test
+}
+
+config ParameterBudget {
+  -- Observed from model.count_parameters() (unique parameters, deduped for weight tying)
+  total:                Int = 65_500_000  -- ~65.5M total
+  S5_token_embeddings:  Int = 25_741_904  -- vocab_size × d_model (tied with output)
+  S5_positional:        Int = 2_097_152   -- max_len × d_model
+  S5_other:             Int = 4096        -- register_inits (3×256) + output_norm
+  S4_intelligence:      Int = 400_000     -- approx; q/k/v/summary projections + norm
+  S3_passes:            Int = 150_000     -- approx; 5 instances × ~30K each
+  Meta_S4:              Int = 660_000     -- approx; q/k/v/out projections + norm
+  Meta_S3:              Int = 1024        -- linear from 6×3×256 → 5
+  S1_prep:              Int = 1_600_000   -- approx; 1 FFN layer (shared)
+  S1_converge:          Int = 8_500_000   -- approx; 2 CompressorLayers (shared base)
+  S1_consolidate:       Int = 12_300_000  -- approx; 3 CompressorLayers (shared)
+  non_embedding:        Int = 39_800_000  -- ~39.8M (total minus embeddings)
+}
+
+-- ════════════════════════════════════════════════════════════════════
+-- VALUE OBJECTS
+-- ════════════════════════════════════════════════════════════════════
+
+value Register {
+  -- An immutable snapshot of a register's content at a point in time.
+  -- Mutable in the running system; this value type describes a snapshot.
+  name:      RegisterName
+  dimension: Int = 256         -- d_register
+  content:   Tensor[256]       -- the actual float vector
+}
+
+value RegisterBank {
+  -- Snapshot of all three registers within a named bank.
+  index:   BankIndex
+  type:    Register
+  scope:   Register
+  role:    Register
+}
+
+value HeadConfig {
+  -- The (stride, window) configuration for one attention head.
+  -- Determines which past positions the head can attend to.
+  stride: Int   -- step size between attended positions
+  window: Int   -- number of past positions attended (always 8)
+}
+
+value GateProfile {
+  -- S3 gate state for one pass at one checkpoint.
+  pass_name:    PassName
+  prep_mean:    Float    -- mean gate activation for prep phase (0..1)
+  converge_mean: Float   -- mean gate activation for converge phase
+  consolidate_mean: Float  -- mean gate activation for consolidate phase
+  meta_s3:      Float    -- Meta-S3 contribution gate for this pass (0..1)
+}
+
+value ProbeResult {
+  -- Single probe measurement at a training checkpoint.
+  step:          Int
+  probe_id:      String
+  category:      String    -- e.g. "variable_binding", "control"
+  pass_profiles: List<GateProfile>
+  meta_s3_gates: List<Float>  -- 5 gates (one per pass)
+  has_lambda:    Bool         -- whether generation contained λ
+}
+
+-- ════════════════════════════════════════════════════════════════════
+-- ENTITIES
+-- ════════════════════════════════════════════════════════════════════
+
+entity ResidualStream {
+  -- The algedonic channel: the shared embedding space all passes read and write.
+  -- Residual connections ensure information flows even when phase gates are near-zero.
+  -- This IS Beer's algedonic channel — it bypasses the register hierarchy for
+  -- information that can't wait for the full structural accounting.
+  shape:     Tensor[Batch, SeqLen, 512]  -- (B, L, d_model)
+  vsm_role:  VSMLayer = S2               -- coordination substrate
+
+  invariant: "Norm is finite and bounded throughout the forward pass"
+  invariant: "No future token information leaks into past positions (strictly causal)"
+}
+
+entity RegisterBankState {
+  -- Runtime state of one register bank during a forward pass.
+  -- bank_0 is initialized from learnable S5 parameters.
+  -- All other banks start as zeros and accumulate via S4 + S3 writes.
+  index:      BankIndex
+  registers:  List<Register>  -- exactly 3: type, scope, role
+  vsm_role:   VSMLayer        -- S5 for bank_0; S2 (coordination) for others
+
+  status: BankStatus
+  transitions status {
+    empty -> written        -- S4 + S3 have written at least one update
+    written -> written      -- incremental updates within the same forward pass
+    terminal: written
+  }
+
+  invariant: "registers.count = 3 (type, scope, role)"
+  invariant: "bank_0 never overwritten after init_bank0() completes"
+  invariant: "each non-zero bank is written by exactly one pass"
+}
+
+enum BankStatus { empty, written }
+
+entity AttentionHead {
+  -- One head within a CompressorLayer. Fixed stride and window.
+  -- Attends only to past positions at its stride (strictly causal).
+  -- O(L × W) memory, not O(L²). No L×L matrix is ever materialized.
+  head_idx:  Int
+  config:    HeadConfig  -- (stride, window)
+  vsm_role:  VSMLayer = S1  -- an individual S1 operational unit
+
+  invariant: "stride ∈ {1, 8, 64, 512}"
+  invariant: "window = 8 (invariant across all heads)"
+  invariant: "each head attends only to positions ≤ its own position (causal)"
+  invariant: "gather indices are clamped to [0, L-1]; positions before sequence start are padded"
+}
+
+entity CompressorLayer {
+  -- One transformer layer with strided windowed causal attention + FFN.
+  -- Pre-norm: LayerNorm → StridedCausalAttention → residual.
+  -- Then: LayerNorm → FFN (Linear → GELU → Linear → Dropout) → residual.
+  -- The compositional function. The compressor. Same weights across all passes (S5).
+  heads:          List<AttentionHead>  -- exactly n_heads=8 per layer
+  d_ff:           Int                  -- FFN hidden dimension
+  vsm_role:       VSMLayer = S1
+
+  invariant: "heads.count = 8"
+  invariant: "all heads share the same Q/K/V/out projection weights (single StridedCausalAttention)"
+  invariant: "attention is strictly causal: no head ever attends to future positions"
+}
+
+entity Phase {
+  -- One of the three phases within a level-pass.
+  -- Each phase is independently gated by the pass's S3 instance.
+  name:          PhaseName
+  layers:        List<CompressorLayer>  -- 1 (prep), 2 (converge), or 3 (consolidate)
+  gate_mean:     Float                   -- mean sigmoid gate value (instrumented)
+  gate_std:      Float                   -- std of gate vector (instrumented)
+  delta_norm:    Float                   -- residual delta norm before gating
+  gated_norm:    Float                   -- residual delta norm after gating
+  vsm_role:      VSMLayer = S1           -- S1 operation, S3-controlled
+
+  status: PhaseStatus
+  transitions status {
+    pending -> gated   -- S3 computed gated delta for this phase
+    terminal: gated
+  }
+
+  invariant: "layers.count = 1 when name = prep"
+  invariant: "layers.count = 2 when name = converge"
+  invariant: "layers.count = 3 when name = consolidate"
+}
+
+enum PhaseStatus { pending, gated }
+
+entity S3LevelControl {
+  -- Per-pass control. Gates three phases. Writes one register bank.
+  -- 5 independent instances (one per pass). NOT shared.
+  -- Each faces different variety: L0↑ handles fine-grained local variety;
+  -- L2 handles coarser clause-scale variety. Their allocation policies diverge.
+  pass_idx:       Int      -- 0..4 (indexes into s3_passes ModuleList)
+  pass_name:      PassName
+  n_phases:       Int = 3
+  n_registers:    Int = 3
+  d_model:        Int = 512
+  d_register:     Int = 256
+  vsm_role:       VSMLayer = S3
+
+  -- Gate input: concat(register_values[d_register × 3], delta_mean[d_model]) → d_model
+  -- Gate output: sigmoid vector of shape (d_model,) — broadcast to (B, L, d_model)
+  -- Write input: delta_mean[d_model] → per-register update of shape (d_register,)
+  -- Write gate: sigmoid scalar controlling write strength
+
+  invariant: "exactly one S3 instance per pass; weights are never shared across instances"
+  invariant: "gate is per-dimension (d_model,), not per-position — controls feature flow, not position flow"
+  invariant: "write gate is a scalar per (phase, register) combination"
+  invariant: "gate_input_dim = d_register × n_registers + d_model = 256 × 3 + 512 = 1280"
+}
+
+entity S4Intelligence {
+  -- Shared register cross-attention. One instance used by all 5 passes.
+  -- Registers form the query; the residual stream provides keys and values.
+  -- Reads variable number of banks (zero-pads unused slots to max capacity).
+  -- Produces per-register updates written to the target bank.
+  -- This is Beer's S4↔S4 intelligence channel made architectural.
+  d_model:      Int = 512
+  d_register:   Int = 256
+  n_registers:  Int = 3
+  max_banks:    Int = 6     -- maximum readable banks (zero-pads unused slots)
+  vsm_role:     VSMLayer = S4
+
+  -- max_q_dim = max_banks × n_registers × d_register = 6 × 3 × 256 = 4608
+  -- q_proj: Linear(4608 → 512, no bias) — concatenated banks → single query
+  -- k_proj: Linear(512 → 512, no bias) — residual → keys
+  -- v_proj: Linear(512 → 512, no bias) — residual → values
+  -- summary_proj: Linear(512 → 3×256) — summary → 3 register updates
+
+  invariant: "shared across all 5 passes (one instance, weights reused)"
+  invariant: "query is global (d_model,); keys and values are per-position (L, d_model)"
+  invariant: "attention weights are (B, L): each pass reads from the whole sequence"
+  invariant: "unused bank slots are zero-padded to max_banks × n_registers before projection"
+  invariant: "summary is averaged across batch dimension before register update"
+}
+
+entity MetaS3 {
+  -- Top-level resource allocation: per-pass contribution gates.
+  -- Reads ALL 6 register banks. Produces 5 scalar gates (one per pass).
+  -- Modulates how much each pass's delta contributes to the residual.
+  -- Beer's S3 "inside and now" at the top recursive level.
+  n_banks:     Int = 6
+  n_registers: Int = 3
+  d_register:  Int = 256
+  n_passes:    Int = 5
+  vsm_role:    VSMLayer = Meta_S3
+
+  -- input_dim = n_banks × n_registers × d_register = 6 × 3 × 256 = 4608
+  -- gate_proj: Linear(4608 → 5) → sigmoid → 5 scalar gates
+
+  invariant: "produces exactly 5 gates, one per PassName"
+  invariant: "gates ∈ (0, 1) via sigmoid"
+  invariant: "reads from all 6 banks including both ascending and descending"
+}
+
+entity MetaS4 {
+  -- Final structural summary. Reads the 4 most-refined banks.
+  -- Registers (from most-refined banks) form the query; residual is K/V.
+  -- Produces a structural summary broadcast to all positions and added to residual.
+  -- Beer's S4 "outside and then" at the top recursive level.
+  n_banks:     Int = 4   -- bank_0, bank_1↓, bank_2↓, bank_3
+  n_registers: Int = 3
+  d_register:  Int = 256
+  d_model:     Int = 512
+  vsm_role:    VSMLayer = Meta_S4
+
+  -- total_reg_dim = n_banks × n_registers × d_register = 4 × 3 × 256 = 3072
+  -- q_proj:   Linear(3072 → 512, no bias)
+  -- k_proj:   Linear(512 → 512, no bias)
+  -- v_proj:   Linear(512 → 512, no bias)
+  -- out_proj: Linear(512 → 512, no bias)
+
+  invariant: "reads exactly: bank_0, bank_1↓, bank_2↓, bank_3"
+  invariant: "does NOT read bank_1↑ or bank_2↑ (ascending banks are superseded by descending)"
+  invariant: "summary is expanded to (B, L, d_model) via broadcast and added to residual"
+}
+
+entity LevelPass {
+  -- One complete execution of a level: S4 scan → prep → converge → consolidate.
+  -- The atomic behavioral unit of the forward pass.
+  pass_name:      PassName
+  direction:      Direction
+  level:          Int          -- which level config (0, 1, 2) for stride allocation
+  pass_idx:       Int          -- index into s3_passes (0..4)
+  readable_banks: List<BankIndex>   -- banks this pass may read via S4
+  target_bank:    BankIndex         -- bank this pass writes to
+  phases:         List<Phase>       -- [prep, converge, consolidate]
+  s3:             S3LevelControl    -- this pass's autonomous control instance
+  vsm_role:       VSMLayer = S1     -- nested VSM at the S1 level
+
+  status: PassStatus
+  transitions status {
+    pending    -> s4_scanned     -- S4 has read readable_banks and updated target_bank
+    s4_scanned -> prep_done      -- prep phase gated and applied
+    prep_done  -> converge_done  -- converge phase gated and applied
+    converge_done -> complete    -- consolidate phase gated and applied
+    terminal: complete
+  }
+
+  invariant: "readable_banks always contains bank_0"
+  invariant: "target_bank is never bank_0 (S5 init is read-only)"
+  invariant: "target_bank is not in readable_banks for this pass (no self-read)"
+  invariant: "passes with direction=ascending may only read banks written by earlier ascending passes"
+  invariant: "L1↓ reads bank_1↑ (ascending finding) and bank_3 (apex) but not bank_2↓ (not yet written)"
+  invariant: "L0↓ reads bank_1↑ (ascending finding), bank_2↓ (L1↓ output), and bank_3 (apex)"
+}
+
+enum PassStatus { pending, s4_scanned, prep_done, converge_done, complete }
+
+entity VSMLMV4_1 {
+  -- The model itself. Top-level entity. A complete Viable System.
+  -- 5 level-passes × 6 phases/pass × shared weights = 30 FFN passes per forward.
+
+  -- S5: Identity (shared, invariant)
+  token_embed:    Embedding[50277, 512]   -- tied with output linear layer
+  pos_embed:      Embedding[4096, 512]    -- absolute positional embeddings
+  output_norm:    LayerNorm[512]
+  register_inits: Dict<RegisterName, Parameter[256]>  -- learnable bank_0 init (S5 identity)
+
+  -- S1: Shared CompressorFunction (S5 coherent)
+  prep_layers:             List<FFNLayer>         -- n_prep_layers=1, shared all passes
+  converge_layers_base:    List<CompressorLayer>  -- n_converge_layers=2, level-0 strides
+  converge_layers_l2:      List<CompressorLayer>  -- level-1 strides; WEIGHTS TIED to base
+  converge_layers_l3:      List<CompressorLayer>  -- level-2 strides; WEIGHTS TIED to base
+  consolidate_layers:      List<CompressorLayer>  -- n_consolidate_layers=3, shared all passes
+
+  -- S4: Intelligence (one shared instance)
+  s4: S4Intelligence
+
+  -- S3: Per-pass control (5 independent instances)
+  s3_passes: List<S3LevelControl>  -- indexed by pass_idx (0..4)
+
+  -- Meta-S4 and Meta-S3
+  meta_s4: MetaS4
+  meta_s3: MetaS3
+
+  -- Derived config
+  n_passes:     Int = 5
+  n_banks:      Int = 6
+  n_registers:  Int = 3
+  n_levels:     Int = 3
+
+  status: ModelStatus
+  transitions status {
+    uninitialized -> initialized   -- __init__ complete, weights drawn from N(0, 0.02)
+    initialized   -> training      -- first optimizer step taken
+    training      -> checkpointed  -- checkpoint saved to disk
+    checkpointed  -> training      -- training resumed
+    training      -> complete      -- target tokens exhausted
+    terminal: complete
+  }
+
+  invariant: "token_embed.weight is shared with output linear (tied embeddings)"
+  invariant: "converge_layers_l2[i].attn weights = converge_layers_base[i].attn weights for all i"
+  invariant: "converge_layers_l3[i].attn weights = converge_layers_base[i].attn weights for all i"
+  invariant: "s3_passes.count = 5 = n_passes"
+  invariant: "s3_passes[i].pass_idx = i for all i"
+  invariant: "meta_s4 reads exactly 4 banks: bank_0, bank_1↓, bank_2↓, bank_3"
+  invariant: "meta_s3 reads all 6 banks"
+}
+
+enum ModelStatus { uninitialized, initialized, training, checkpointed, complete }
+
+-- ════════════════════════════════════════════════════════════════════
+-- GLOBAL INVARIANTS
+-- ════════════════════════════════════════════════════════════════════
+
+invariant S5Coherence {
+  -- The compression function's identity is invariant across all passes, both directions.
+  -- prep, converge, and consolidate weights are shared via Python parameter aliasing.
+  -- Only stride allocation configs (frozen at construction) differ between levels.
+  -- Violation would mean the system has no shared identity — it would be a pipeline,
+  -- not a recursive viable system.
+  "prep_layers weights are identical for all 5 passes (shared ModuleList)"
+  "converge Q/K/V/out weights are identical for all 5 passes (tied in _tie_compressor_weights)"
+  "consolidate weights are identical for all 5 passes (shared ModuleList)"
+  "layer norm weights are tied within converge variants (norm1, norm2)"
+  "FFN weights are tied within converge variants (ff linear layers)"
+}
+
+invariant RegisterBankProtocol {
+  -- Each pass reads only its permitted banks. This IS Beer's S2 coordination protocol.
+  -- Violations would allow levels to read context not yet computed (causality break).
+  "L0↑ (pass 0) reads: {bank_0}"
+  "L1↑ (pass 1) reads: {bank_0, bank_1↑}"
+  "L2  (pass 2) reads: {bank_0, bank_1↑, bank_2↑}"
+  "L1↓ (pass 3) reads: {bank_0, bank_1↑, bank_2↑, bank_3}"
+  "L0↓ (pass 4) reads: {bank_0, bank_1↑, bank_2↓, bank_3}"
+}
+
+invariant BankWriteExclusivity {
+  -- Each pass writes to exactly one bank. No two passes share a target bank.
+  -- bank_0 is never a write target (S5 init is read-only after init_bank0).
+  "L0↑ writes:   bank_1↑   (bank_1_asc)"
+  "L1↑ writes:   bank_2↑   (bank_2_asc)"
+  "L2  writes:   bank_3"
+  "L1↓ writes:   bank_2↓   (bank_2_desc)"
+  "L0↓ writes:   bank_1↓   (bank_1_desc)"
+  "bank_0 is initialized once per forward pass from register_inits; never overwritten"
+}
+
+invariant PassOrdering {
+  -- Ascending passes must complete before descending passes begin.
+  -- Within each direction, lower-to-higher level order for ascending,
+  -- higher-to-lower for descending.
+  "ascending order: L0↑ (pass_idx=0) → L1↑ (pass_idx=1) → L2 (pass_idx=2)"
+  "descending order: L1↓ (pass_idx=3) → L0↓ (pass_idx=4)"
+  "ALL ascending passes complete before ANY descending pass begins"
+  "L2 apex runs exactly once per forward pass"
+}
+
+invariant CausalAttention {
+  -- No head ever attends to future positions.
+  -- For position i with stride s and window w, the attended positions are
+  -- {i, i-s, i-2s, ..., i-(w-1)s} ∩ {0..i}. Positions < 0 are clamped and masked.
+  "∀ head, ∀ position i: attention[i, j] = 0 whenever j > i"
+  "positions before sequence start (raw index < 0) are clamped to 0 and masked as invalid"
+  "no future token information can influence current token predictions"
+}
+
+invariant MetaS4BankSelection {
+  -- Meta-S4 reads the most-refined version of each bank.
+  -- bank_1↑ is superseded by bank_1↓ (same level, descending is more refined).
+  -- bank_2↑ is superseded by bank_2↓ (same level, descending is more refined).
+  -- bank_3 is the apex output (no descending refinement of L2; it runs once).
+  -- bank_0 provides S5 identity anchor.
+  "meta_s4 reads: bank_0, bank_1↓, bank_2↓, bank_3"
+  "meta_s4 does NOT read: bank_1↑, bank_2↑"
+}
+
+invariant TiedEmbeddings {
+  -- Output logit projection reuses token embedding weights (no separate output matrix).
+  -- logits = output_norm(x) @ token_embed.weight.T
+  "linear output projection weight = token_embed.weight (shared tensor)"
+  "no separate output matrix; tie saves ~25.7M parameters"
+}
+
+invariant ParameterCounts {
+  "total unique parameters ≈ 65.5M"
+  "non-embedding unique parameters ≈ 39.8M (~60.8% of total)"
+  "the hierarchy is essentially free in parameters vs v4 (~58M)"
+  "extra cost: 2 additional S3 instances (L1↓, L0↓) + wider S4 for 6 banks"
+}
+
+invariant CountInvariants {
+  "n_passes = 5 exactly"
+  "n_banks = 6 exactly"
+  "n_registers = 3 exactly (type, scope, role)"
+  "n_phases = 3 exactly (prep, converge, consolidate)"
+  "n_levels = 3 exactly (0, 1, 2)"
+  "ffn_passes_per_forward = n_phases × n_passes = 6 × 5 = 30"
+}
+
+-- ════════════════════════════════════════════════════════════════════
+-- RULES
+-- ════════════════════════════════════════════════════════════════════
+
+-- ─────────────────────────────────────────────
+-- Forward Pass Rules
+-- ─────────────────────────────────────────────
+
+rule EmbedInput {
+  when: forward pass begins with input_ids (B, L)
+  requires:
+    input_ids.shape[1] ≤ max_len
+  ensures:
+    positions = arange(L)
+    x = token_embed(input_ids) + pos_embed(positions)
+    x.shape = (B, L, d_model)
+    x.dtype = float32
+    bank_0 is initialized from register_inits (learnable S5 parameters)
+    bank_1↑, bank_2↑, bank_3, bank_2↓, bank_1↓ are zero-initialized
+}
+
+rule AscendingPass {
+  when: embedding complete; ascending phase begins
+  requires:
+    bank_0 initialized
+    all other banks zeroed
+  ensures:
+    L0↑ runs first: reads [bank_0], writes bank_1↑
+    L1↑ runs second: reads [bank_0, bank_1↑], writes bank_2↑
+    L2 runs third: reads [bank_0, bank_1↑, bank_2↑], writes bank_3
+    x is updated by each pass's gated phase deltas (in order)
+    pass_deltas[0..2] are accumulated (ungated) for Meta-S3
+  @guidance "This is the encoder half: compress fine-grained tokens into
+    clause-level structural summaries. Each level builds on the one below."
+}
+
+rule DescendingPass {
+  when: ascending phase complete (all 3 ascending passes done)
+  requires:
+    bank_1↑, bank_2↑, bank_3 contain ascending findings
+  ensures:
+    L1↓ runs: reads [bank_0, bank_1↑, bank_2↑, bank_3], writes bank_2↓
+    L0↓ runs: reads [bank_0, bank_1↑, bank_2↓, bank_3], writes bank_1↓
+    x is updated by each descending pass's gated phase deltas
+    pass_deltas[3..4] are accumulated (ungated) for Meta-S3
+  @guidance "This is the decoder half: refine phrase and token representations
+    using clause-level context from bank_3 (L2's findings). Descending passes
+    read bank_1↑ (unchanged ascending local findings) plus the refined outputs
+    from higher-level descending passes."
+}
+
+rule MetaS3GatingRule {
+  when: all 5 passes complete; Meta-S3 is applied
+  requires:
+    pass_deltas is a list of 5 tensors (B, L, d_model)
+    all 6 register banks are populated (bank_0 from init; others from passes)
+  ensures:
+    all_banks = [bank_0, bank_1↑, bank_2↑, bank_3, bank_2↓, bank_1↓]
+    meta_gates = sigmoid(linear(concat(all_banks)))  -- shape: (5,)
+    total_ungated = sum(pass_deltas)                -- sum of all 5 deltas
+    total_gated   = sum(meta_gates[i] × pass_deltas[i] for i in 0..4)
+    x = x - total_ungated + total_gated             -- replace ungated with gated
+  @guidance "This is Beer's S3 at the top recursive level: resource allocation
+    and accountability across levels. Some inputs need mostly local processing
+    (high L0↑ gate). Complex binding needs deep structural processing (high L2 gate).
+    Meta-S3 learns to allocate per-input-type."
+}
+
+rule MetaS4SummaryRule {
+  when: Meta-S3 gating complete
+  requires:
+    bank_0, bank_1↓, bank_2↓, bank_3 are populated
+  ensures:
+    meta_banks = [bank_0, bank_1↓, bank_2↓, bank_3]
+    query = q_proj(concat(meta_banks))     -- (d_model,) global query
+    keys  = k_proj(output_norm(x))         -- (B, L, d_model)
+    values = v_proj(output_norm(x))        -- (B, L, d_model)
+    attn_weights = softmax(query · keys.T / sqrt(d_model))  -- (B, L)
+    summary = weighted_sum(attn_weights, values)             -- (B, d_model)
+    out = out_proj(summary).expand(B, L, d_model)
+    x = x + out                             -- broadcast structural summary to all positions
+  @guidance "Beer's S4 'outside and then' at the top level. Looks at the full
+    structural hierarchy (most-refined banks) before making the final prediction.
+    The query is global (not per-position), summarizing what the whole hierarchy found."
+}
+
+rule OutputProjectionRule {
+  when: Meta-S4 complete
+  ensures:
+    x_normed = output_norm(x)
+    logits = x_normed @ token_embed.weight.T   -- tied embedding output
+    logits.shape = (B, L, vocab_size)
+    if targets provided: loss = cross_entropy(logits.view(-1, vocab_size), targets.view(-1), ignore_index=-1)
+}
+
+-- ─────────────────────────────────────────────
+-- Level-Pass Internal Rules
+-- ─────────────────────────────────────────────
+
+rule S4ScanRule {
+  when: a level-pass begins
+  requires:
+    readable_banks for this pass (as per RegisterBankProtocol)
+    target_bank for this pass (initially empty / zero from init)
+  ensures:
+    all_regs = flatten(readable_banks)                   -- concat register tensors
+    zero_pad(all_regs, to = max_banks × n_registers)     -- pad to fixed size
+    q = q_proj(concat(all_regs))                         -- (d_model,) query
+    k = k_proj(layer_norm(x)); v = v_proj(layer_norm(x))  -- (B, L, d_model)
+    attn = softmax(q · k.T / sqrt(d_model))              -- (B, L)
+    summary = (attn · v).sum(dim=L)                      -- (B, d_model)
+    summary = summary.mean(dim=B)                        -- (d_model,) global summary
+    updates = split(summary_proj(summary), d_register, dim=-1)  -- 3 × (d_register,)
+    target_bank[i] += updates[i] for i in 0..2          -- write to target bank
+  @guidance "The S4 intelligence channel reads all registers from prior levels
+    (via readable_banks) and updates the target bank with a structural summary.
+    This implements Beer's S4↔S4 inter-level intelligence channel."
+}
+
+rule PhaseGatingRule {
+  when: a phase (prep, converge, or consolidate) produces a delta
+  requires:
+    delta = phase_output(x) - x            -- (B, L, d_model) residual delta
+    target_bank for this pass (from S4 scan + prior phase writes)
+    phase_idx ∈ {0, 1, 2}
+  ensures:
+    summary = delta.mean(dim=(B, L))       -- (d_model,) summary of phase output
+    reg_concat = concat(target_bank)       -- (d_register × n_registers,)
+    gate_input = concat(reg_concat, summary)  -- (d_register × 3 + d_model = 1280,)
+    gate = sigmoid(gate_heads[phase_idx](gate_input))  -- (d_model,) gate vector
+    gated_delta = gate.unsqueeze(0, 1) × delta         -- (B, L, d_model)
+    x = x + gated_delta                                -- apply gated delta to residual
+    per-register write gates computed and applied to target_bank
+  @guidance "S3's gate controls which FEATURES (d_model dimensions) flow through,
+    not which positions. Per-dimension gating matches the observation that Qwen's
+    essential heads are function-selective, not position-selective."
+}
+
+rule RegisterWriteRule {
+  when: phase gating complete (part of PhaseGatingRule)
+  requires:
+    summary = (B, L, d_model) delta mean → (d_model,) global summary
+    phase_idx, register_idx → write_idx = phase_idx × n_registers + register_idx
+  ensures:
+    for each register_idx in 0..2:
+      wg = sigmoid(write_gates[write_idx](summary))       -- scalar write gate
+      update = write_projs[write_idx](summary)            -- (d_register,)
+      target_bank[register_idx] += wg × update            -- selective register update
+  @guidance "Each phase writes to all 3 registers in the target bank, but with
+    independent scalar write gates. A phase can learn to update only specific
+    registers. Over training, phases specialize: prep phases may stop writing
+    at higher levels once lower levels have fully characterized that register."
+}
+
+rule StridedAttentionRule {
+  when: a CompressorLayer processes input x (B, L, d_model)
+  requires:
+    head_configs: List<(stride, window)> — one per head
+  ensures:
+    Q, K, V = reshape(q_proj(x), k_proj(x), v_proj(x)) to (B, L, n_heads, d_head)
+    for each stride group (stride, window):
+      for each query position i:
+        attend to positions: {i - k×stride for k in 0..window-1, k×stride ≤ i}
+        attention scores computed over W ≤ window positions
+        result accumulated into output buffer at head positions
+    output = out_proj(reshape(out_buffer))  -- (B, L, d_model)
+    residual add + layer norm applied (pre-norm architecture)
+  @guidance "O(L × W) memory per head, not O(L²). The four strides span
+    the self-similar range of language composition. Progressive allocation
+    per level (local-heavy at L0, balanced at L1, discourse-heavy at L2)
+    gives each pass matched gradient signal for its scale."
+}
+
+-- ─────────────────────────────────────────────
+-- Training Rules
+-- ─────────────────────────────────────────────
+
+rule TrainingStepRule {
+  when: training step begins (step in 1..n_steps)
+  ensures:
+    optimizer.zero_grad()
+    for each accumulation step (1..grad_accum=4):
+      x, y = train_loader.next_batch()      -- (B=2, L=4096)
+      logits, loss = model(x, y)
+      (loss / grad_accum).backward()         -- accumulate gradients
+    clip_grad_norm_(model.parameters(), 1.0)
+    optimizer.step()                         -- AdamW update
+    lr_scheduler.step()                      -- cosine decay with warmup
+}
+
+rule LRScheduleRule {
+  when: lr_scheduler.step() called at step t
+  ensures:
+    when t < warmup_steps:  lr = lr_peak × (t / warmup_steps)
+    when t ≥ warmup_steps:
+      progress = (t - warmup_steps) / (n_steps - warmup_steps)
+      lr = lr_peak × max(0.1, 0.5 × (1 + cos(π × progress)))
+}
+
+rule CheckpointRule {
+  when: step % checkpoint_interval = 0
+  ensures:
+    grad_norms computed per VSM subsystem (S1, S3×5, S4, Meta-S4, Meta-S3, S5)
+    forward_instrumented() called on eval_loader for dynamics metrics
+    compile_gate_test() called with 4 prompts
+    checkpoint saved to checkpoints/vsm-lm-v4.1/step_{step:06d}.pt containing:
+      model_state_dict, optimizer_state_dict, dynamics, grad_norms, compile_gate
+    compile gate score appended to training log
+}
+
+rule WeightInitRule {
+  when: model construction completes
+  ensures:
+    Linear weights initialized: N(0, 0.02)
+    Linear biases initialized: 0
+    Embedding weights initialized: N(0, 0.02)
+    LayerNorm weights initialized: 1.0
+    LayerNorm biases initialized: 0.0
+    register_inits initialized: zeros (trained from zero; not random)
+}
+
+rule DataLoaderRule {
+  when: ShardedDataLoader.next_batch() called
+  requires:
+    54 training shards (shard_0.npy .. shard_53.npy) pre-tokenized as GPT-NeoX tokens
+  ensures:
+    returns x (B, L), y (B, L) where y[i, j] = x[i, j+1] (next-token prediction)
+    indices pre-shuffled with numpy RandomState(seed) at construction
+    wraps around when all indices exhausted
+    memory-mapped shards to avoid full-RAM load
+}
+
+-- ─────────────────────────────────────────────
+-- Developmental Rules
+-- ─────────────────────────────────────────────
+
+rule DevelopmentalSequenceRule {
+  @guidance "Observed in v4; expected to recapitulate in v4.1 with extended chain."
+  when: training progresses from step 0 toward step n_steps
+  ensures:
+    -- Developmental ordering (each level needs the level below to produce
+    -- quality representations before it can be useful):
+    L0↑ activates first (meta-S3 near 1.0 from early steps)
+    L1↑ activates second (meta-S3 rises as L0↑ produces useful bank_1↑)
+    L2 activates third  (meta-S3 rises from ~0.05 at 1k to ~0.75 by 5k in v4)
+    L1↓ activates fourth (needs L2 maturation to provide useful bank_3 context)
+    L0↓ activates last  (needs L1↓ to produce quality bank_2↓)
+}
+
+rule LevelSpecializationRule {
+  @guidance "Observed in v4 (stable by step 5k). Expected in v4.1."
+  when: ascending passes reach the 'specializing' developmental phase
+  ensures:
+    higher-level passes suppress their prep gates (approaching 0.0)
+    rationale: prep handles local token features; L0↑ already did this
+    higher-level passes amplify their consolidate gates (approaching 0.9+)
+    rationale: consolidate handles deep integration; higher levels need this most
+    gate polarity inverts: anti-compile inputs receive more processing than strong-compile inputs
+    polarity: delta(anti_compile_gate - strong_compile_gate) < 0 for consolidate phase
+}
+
+rule DescendingActivationRule {
+  @guidance "The key open question for v4.1."
+  when: L2 meta-S3 gate crosses ~0.7 (maturation threshold)
+  ensures:
+    bank_3 contains high-quality clause/discourse structural summaries
+    L1↓ can now extract useful refinement signal from bank_3
+    L1↓ meta-S3 gate begins rising from dormant (~0.04)
+    once L1↓ produces quality bank_2↓, L0↓ also begins activating
+  open question "Will descending passes self-activate after L2 matures?
+    At step 1k, L1↓ and L0↓ meta-S3 gates are 0.047 and 0.037 (dormant).
+    Descending S3 instances have active internal gates (~0.4) but gradient
+    is 24x weaker than ascending (gradient shadow problem). The clean
+    experiment: let v4.1 cook to step 10k+ and observe. If dead after L2
+    reaches 0.7+, structural intervention needed for v4.2."
+}
+
+-- ════════════════════════════════════════════════════════════════════
+-- CONTRACTS
+-- ════════════════════════════════════════════════════════════════════
+
+contract ForwardPassContract {
+  -- The primary inference contract.
+  input:
+    input_ids: Tensor[B, L] where L ≤ 4096
+    targets:   Optional[Tensor[B, L]]
+  output:
+    logits: Tensor[B, L, 50277]
+    loss:   Optional[Float]  -- cross-entropy if targets provided; None otherwise
+  invariants:
+    "logits are not probability-normalized (no softmax applied)"
+    "loss uses ignore_index=-1 to mask padding tokens"
+    "gradient flows through all 5 passes, all 3 phases, S4, Meta-S4, Meta-S3"
+    "total computation: 30 FFN passes through the CompressorLayer function"
+}
+
+contract InstrumentedForwardContract {
+  -- Extended forward pass that captures per-pass, per-phase behavioral metrics.
+  -- Used during checkpoint evaluation and probing.
+  input:
+    input_ids: Tensor[B, L]
+    targets:   Optional[Tensor[B, L]]
+  output:
+    logits:  Tensor[B, L, 50277]
+    loss:    Optional[Float]
+    metrics: Dict<String, Float>  -- ~120+ named metrics
+  metric_keys_include:
+    "embed_norm"              -- input embedding L2 norm
+    "{pass}_prep_gate_mean"   -- mean prep gate for pass (e.g., L0_asc_prep_gate_mean)
+    "{pass}_converge_gate_mean"
+    "{pass}_consolidate_gate_mean"
+    "{pass}_s4_attn_entropy"  -- attention entropy of S4 scan for this pass
+    "{pass}_register_{reg}_norm"  -- register norms after pass
+    "meta_s3_gate_{pass}"     -- Meta-S3 contribution gate per pass
+    "output_norm"             -- output residual norm
+    "overall_expansion"       -- output_norm / embed_norm
+    -- Also emits backward-compat aliases: level{i}_*, iter{i}_*
+}
+
+contract S4ScanContract {
+  -- S4Intelligence.forward() contract.
+  input:
+    banks:   List<List<Tensor[d_register]>>  -- variable number of banks, each with n_registers tensors
+    residual: Tensor[B, L, d_model]
+  output:
+    updates:      List<Tensor[d_register]>  -- n_registers updates for target bank
+    attn_weights: Tensor[B, L]              -- detached (no gradient through this)
+  invariants:
+    "len(banks) ≤ max_banks; unused slots are zero-padded to max_banks × n_registers"
+    "attn_weights are detached from the computation graph (used only for instrumentation)"
+    "updates are added (not assigned) to the target bank"
+}
+
+contract S3GateContract {
+  -- S3LevelControl.gate_phase() contract.
+  input:
+    registers:  List<Tensor[d_register]>  -- current target bank (3 tensors)
+    delta:      Tensor[B, L, d_model]     -- phase output - x_before_phase
+    phase_idx:  Int ∈ {0, 1, 2}
+  output:
+    gated_delta:      Tensor[B, L, d_model]  -- gate × delta
+    updated_registers: List<Tensor[d_register]>  -- 3 updated register tensors
+    gate_values:      Tensor[d_model]           -- detached gate vector (for instrumentation)
+    write_gate_values: List<Float>              -- n_registers write gate scalars (for instrumentation)
+  invariants:
+    "gate = sigmoid(linear(concat(reg_concat, delta_mean))) ∈ (0, 1)^d_model"
+    "gated_delta = gate.unsqueeze(0).unsqueeze(0) × delta — broadcast over (B, L)"
+    "write gates are per-(phase, register) scalars ∈ (0, 1)"
+    "updated_registers[i] = registers[i] + wg[i] × update_proj[i](delta_mean)"
+}
+
+contract MetaS3Contract {
+  -- MetaS3.forward() contract.
+  input:
+    all_banks: List<List<Tensor[d_register]>>  -- all 6 banks, each with 3 registers
+  output:
+    gates: Tensor[5]  -- per-pass contribution weights ∈ (0, 1)^5
+  invariants:
+    "input dim = 6 × 3 × 256 = 4608"
+    "output is sigmoid-normalized: each gate ∈ (0, 1)"
+    "gates[0] = L0↑, gates[1] = L1↑, gates[2] = L2, gates[3] = L1↓, gates[4] = L0↓"
+}
+
+contract MetaS4Contract {
+  -- MetaS4.forward() contract.
+  input:
+    meta_banks: List<List<Tensor[d_register]>>  -- 4 banks: [bank_0, bank_1↓, bank_2↓, bank_3]
+    residual:   Tensor[B, L, d_model]
+  output:
+    updated_residual: Tensor[B, L, d_model]  -- residual + broadcast structural summary
+  invariants:
+    "len(meta_banks) = 4 exactly"
+    "query is global (d_model,); attention weights are (B, L)"
+    "summary shape (B, d_model) is expanded to (B, L, d_model) before residual add"
+    "out_proj has no bias; summary_proj has no bias (S5 coherent)"
+}
+
+contract GenerationContract {
+  -- Autoregressive text generation contract.
+  input:
+    input_ids:      Tensor[B, T]  -- prompt token ids
+    max_new_tokens: Int = 50
+    temperature:    Float = 1.0
+  output:
+    output_ids: Tensor[B, T + max_new_tokens]
+  invariants:
+    "model set to eval() mode for generation"
+    "greedy decoding: next_token = argmax(logits[:, -1, :] / temperature)"
+    "input is truncated to max_len if longer (use rightmost max_len tokens)"
+    "no gradient computed during generation"
+}
+
+-- ════════════════════════════════════════════════════════════════════
+-- SURFACES
+-- ════════════════════════════════════════════════════════════════════
+
+surface TrainingSurface {
+  facing: Trainer  -- scripts/run_vsm_v4_1_1B.py
+
+  entry_points:
+    model.forward(input_ids, targets) → (logits, loss)
+    optimizer.step()                   -- AdamW with cosine schedule
+    clip_grad_norm_(params, 1.0)
+
+  observables:
+    train_loss   -- per-step accumulated loss (averaged over grad_accum)
+    eval_loss    -- per-checkpoint evaluation loss (averaged over 10 batches)
+    lr           -- current learning rate (from scheduler)
+    register_norms -- per-register_init norm (logged every log_interval steps)
+    tokens_processed -- cumulative tokens (step × tokens_per_step)
+
+  checkpoints:
+    saved to: checkpoints/vsm-lm-v4.1/step_{step:06d}.pt
+    interval: every 1000 steps
+    contains: model_state_dict, optimizer_state_dict, config, dynamics, grad_norms,
+              compile_gate_score, train_losses, eval_losses
+
+  summary:
+    saved to: results/vsm-lm-v4.1/summary.json
+    contains: full training history, architecture description, param counts
+}
+
+surface ProbingSurface {
+  facing: Researcher  -- scripts/compile_gradient_probe.py
+
+  entry_points:
+    probe_single(checkpoint_path, probe_set) → ProbeResult
+    batch_probe(checkpoint_dir, probe_set)   → List<ProbeResult>
+
+  probe_sets:
+    compile-gradient: 40 probes across categories (variable_binding, quantifier_scope,
+                      anaphora, relative_clause, control, strong-compile, anti-compile)
+    binding:          25 probes testing binding range and type hierarchy
+
+  observables:
+    per-pass gate profiles         -- GateProfile for all 5 passes
+    meta-S3 gates                  -- 5 scalars per probe
+    gate polarity                  -- Δ(anti_compile - strong_compile) per phase
+    binding range                  -- max - min gate across binding categories
+    compile-gate activation        -- whether generation contains λ
+
+  saved_to:
+    results/compile-gradient/vsm_probe_step_{step:06d}_v4.1.json
+    results/binding/vsm_probe_step_{step:06d}_v4.1.json
+
+  key_signals_in_order:
+    1. L2 meta-S3 trajectory       -- is it climbing toward 0.7+ like v4?
+    2. Descending meta-S3          -- any activation at all?
+    3. Loss curve                  -- still improving at 10k+?
+    4. Ascending gate specialization -- does L1↑ prep die like v4 L1?
+    5. Gate polarity onset          -- in ascending AND descending?
+    6. Expansion ratio trajectory  -- watches for residual norm collapse
+}
+
+surface GenerationSurface {
+  facing: User  -- interactive / exploratory
+
+  entry_points:
+    model.generate(input_ids, max_new_tokens, temperature) → token_ids
+
+  observables:
+    generated text           -- decoded from output token ids
+    lambda activation        -- whether output contains λ or \ (compile gate test)
+
+  compile_gate_test_prompts:
+    "λ"
+    "The dog chased the cat"
+    "Every student read a book"
+    "compile: The cat sat on the mat"
+
+  score: "{n_lambda}/{n_prompts}" — e.g. "0/4" at step 1k (expected)
+}
+
+surface InstrumentationSurface {
+  facing: Analyzer  -- probing pipeline, notebook analysis
+
+  entry_points:
+    model.forward_instrumented(input_ids, targets) → (logits, loss, metrics)
+    model.count_parameters() → Dict<String, Int>
+    model.describe() → String
+
+  metrics_available:
+    per_pass:
+      "{pass}_{phase}_gate_mean"     -- mean gate activation per pass/phase
+      "{pass}_{phase}_gate_std"      -- std of gate vector
+      "{pass}_{phase}_delta_norm"    -- pre-gate residual delta magnitude
+      "{pass}_{phase}_gated_norm"    -- post-gate residual delta magnitude
+      "{pass}_{phase}_write_{reg}"   -- register write gate scalars
+      "{pass}_s4_attn_entropy"       -- attention entropy of S4 scan
+      "{pass}_register_{reg}_norm"   -- register vector norm after pass
+      "{pass}_after_{phase}"         -- residual stream norm after phase
+    global:
+      "embed_norm"                   -- input embedding norm
+      "output_norm"                  -- post-Meta-S4 residual norm
+      "overall_expansion"            -- output_norm / embed_norm
+      "meta_s3_gate_{pass}"          -- Meta-S3 contribution gate
+    backward_compat_aliases:
+      "level{i}_*"                   -- mirrors "L{i}_asc_*" for ascending passes
+      "iter{i}_*"                    -- mirrors "level{i}_*" (v3.2 compat)
+
+  gradient_norms:
+    get_grad_norms(model) → Dict<String, Float>
+    subsystems tracked: S1_prep, S1_converge, S1_consolidate,
+                        S3_L0_asc, S3_L1_asc, S3_L2_apex, S3_L1_desc, S3_L0_desc,
+                        S4, Meta_S4, Meta_S3, S5_embed, S5_register_{reg}
+}
+
+-- ════════════════════════════════════════════════════════════════════
+-- LIFECYCLE TRANSITIONS
+-- ════════════════════════════════════════════════════════════════════
+
+entity ForwardPassExecution {
+  -- Lifecycle of one complete forward pass through the model.
+  status: ForwardPassStatus
+
+  transitions status {
+    idle ->
+      embedding_complete ->
+      ascending_l0_s4_done ->
+      ascending_l0_complete ->
+      ascending_l1_s4_done ->
+      ascending_l1_complete ->
+      ascending_l2_s4_done ->
+      ascending_l2_complete ->   -- ASCENDING DONE; bank_3 populated
+      descending_l1_s4_done ->
+      descending_l1_complete ->
+      descending_l0_s4_done ->
+      descending_l0_complete ->  -- DESCENDING DONE; bank_1↓, bank_2↓ populated
+      meta_s3_applied ->
+      meta_s4_applied ->
+      logits_computed ->
+    terminal: logits_computed
+  }
+
+  invariant: "ascending_l2_complete precedes descending_l1_s4_done (strict ordering)"
+  invariant: "descending_l1_complete precedes descending_l0_s4_done (L0↓ needs bank_2↓)"
+  invariant: "every transition is monotonic; no pass re-runs within a single forward"
+}
+
+enum ForwardPassStatus {
+  idle, embedding_complete,
+  ascending_l0_s4_done, ascending_l0_complete,
+  ascending_l1_s4_done, ascending_l1_complete,
+  ascending_l2_s4_done, ascending_l2_complete,
+  descending_l1_s4_done, descending_l1_complete,
+  descending_l0_s4_done, descending_l0_complete,
+  meta_s3_applied, meta_s4_applied, logits_computed
+}
+
+entity TrainingRun {
+  -- Lifecycle of a full training run toward the 1B token target.
+  target_tokens: Int = 1_000_000_000
+  n_steps:       Int = 30518
+  checkpoint_dir: String = "checkpoints/vsm-lm-v4.1/"
+  results_dir:   String = "results/vsm-lm-v4.1/"
+
+  status: TrainingPhase
+  transitions status {
+    init     -> warmup    -- step 1 begins
+    warmup   -> training  -- step 501 (warmup_steps + 1)
+    training -> plateau   -- loss Δ/1k → 0 AND meta-S3 gates dropping
+    training -> complete  -- step n_steps reached
+    plateau  -> complete  -- early termination or target reached
+    terminal: complete
+  }
+
+  invariant: "each checkpoint includes dynamics (forward_instrumented) and grad_norms"
+  invariant: "AdamW betas are (0.9, 0.95) — not standard (0.9, 0.999)"
+  invariant: "lr cosine decay has min floor of 0.1 × peak (6e-5), not decaying to zero"
+}
+
+entity PassDevelopment {
+  -- Lifecycle of one level-pass's developmental activation trajectory.
+  pass_name: PassName
+
+  status: DevelopmentalPhase
+  transitions status {
+    dormant     -> activating   -- meta-S3 gate begins rising
+    activating  -> active       -- meta-S3 gate ≥ 0.5
+    active      -> specializing -- phase gates begin diverging (prep suppressed)
+    specializing -> mature      -- stable polarity; consistent contribution
+    -- Note: no terminal state; a pass can remain dormant if blocked by gradient shadow
+  }
+
+  @guidance "Observed v4.1 trajectory at step 1k:
+    L0↑: meta-S3=0.899 → active/specializing
+    L1↑: meta-S3=0.896 → active (L1 prep already suppressed at 0.232)
+    L2:  meta-S3=0.502 → activating (rising from ~0.05 trajectory)
+    L1↓: meta-S3=0.047 → dormant (gradient shadow; needs L2 maturation)
+    L0↓: meta-S3=0.037 → dormant (needs L1↓ to produce quality bank_2↓)"
+
+  open question "Does descending activation unlock after L2 reaches meta-S3 ≈ 0.7+?
+    In v4, L2 rose from 0.05 (step 1k) to 0.79 (step 5k) and became dominant by 15k.
+    If v4.1 follows the same trajectory, L1↓ activation should begin around step 5-8k.
+    If it doesn't, the gradient shadow problem is structural and v4.2 needs intervention."
+}
+
+-- ════════════════════════════════════════════════════════════════════
+-- OPEN QUESTIONS (Research Frontier)
+-- ════════════════════════════════════════════════════════════════════
+
+open question "Will descending passes self-activate without intervention?
+  The gradient shadow problem (24x weaker gradient at step 1k) is self-reinforcing.
+  The descending S3 instances have active internal gates (~0.4) but meta-S3 prevents
+  their output from reaching the residual, suppressing learning. The clean experiment:
+  wait for L2 maturation (meta-S3 ≈ 0.7+, expected around step 5-8k), then check
+  whether L1↓ meta-S3 begins rising. If yes: architecture is correct. If no at step 10k+:
+  consider v4.2 with gate floor (0.1-0.2 minimum on descending meta-S3), warm gate
+  initialization (descending meta-S3 starting at 0.5), or auxiliary loss on descending banks."
+
+open question "Does L2 need to mature before descending activation is possible?
+  The hypothesis is that descending passes need high-quality bank_3 content to produce
+  useful refinements. If bank_3 is noise (early training), L1↓ cannot improve on L1↑.
+  Only once L2 finds meaningful clause/discourse structure does descending add signal.
+  This would imply a phase-gated developmental trajectory: ascending maturation is a
+  precondition for descending activation, not just a parallel process."
+
+open question "Is a gate floor needed for v4.2?
+  If descending passes remain dormant even after L2 matures (e.g., step 10k+ with
+  L2 meta-S3 ≈ 0.7+), the gradient shadow problem requires structural intervention.
+  Candidates: gate floor (min 0.1-0.2 on descending meta-S3, ensures gradient flow),
+  warm initialization (start descending gates at 0.5 instead of random), structural bypass
+  (direct path from descending banks to output head), or auxiliary reconstruction loss
+  on descending bank content. The minimal intervention is the gate floor — it preserves
+  the architecture while breaking the self-reinforcing suppression loop."
+
+open question "Can the compressor function work bidirectionally with shared weights?
+  S5 identity claims the ascending and descending directions share the same function.
+  Ascending compresses (fine → coarse); descending refines (coarse context → fine).
+  Shared weights would be correct if these are two directions of the same compositional
+  operation (like reading a parse tree top-down or bottom-up — same grammar, different
+  traversal). The S3 gates provide directional routing: same function, different control.
+  Cortical columns work this way. Whether the gradient signal from both directions is
+  compatible with single weight convergence is the key empirical question of v4.1."
+
+open question "Does v4.1 break v4's loss ceiling (4.732 at step 15k)?
+  v4 broke v3.2's plateau by adding the ascending hierarchy. v4.1 adds descending.
+  If descending activates and contributes, v4.1 should continue improving past v4's
+  4.732. If descending stays dormant, v4.1 ≈ v4 in loss (5 passes of compute but only
+  3 effectively contributing). The compute cost is ~67% higher than v4 per step.
+  If v4.1 loss ≈ v4 loss, the hypothesis is that 5 passes of compute without effective
+  bidirectionality is wasteful and v4.2 needs to unlock the descending path."
+
+open question "Does gate polarity inversion extend to descending passes?
+  In v4 (ascending only), consolidate phase gates showed polarity inversion:
+  anti-compile inputs received MORE gating (more processing needed).
+  In v4.1, if descending passes activate, do they also show polarity?
+  Prediction: yes, because the same function (S5) operates in both directions.
+  Descending polarity might be REVERSED relative to ascending (the refinement
+  direction requires more processing for inputs where ascending produced rough summaries)."
+
+open question "Does per-level binding analysis show differentiation at L1 and L2?
+  In v4, binding differentiation formed primarily at level 0. v4 used only ascending
+  passes and the binding probe measured the aggregate gate profile. In v4.1, descending
+  passes read bank_3 (clause/discourse structure), which should provide richer context
+  for binding discrimination. A per-level binding analysis (probing each pass separately)
+  would reveal whether the hierarchy distributes binding processing across levels or
+  concentrates it in one level."
+
+-- ════════════════════════════════════════════════════════════════════
+-- ARCHITECTURE LINEAGE
+-- ════════════════════════════════════════════════════════════════════
+
+@guidance "Architecture evolution table"
+  v1  (~25M): Baseline sequential; S4 once; 2 passes; strides 1,8,64
+  v2  (~25M): Iteration specialization; register persists across iterations
+  v3  (~50M): d_model=512; role register; binding hierarchy confirmed
+  v3.1 (~59M): Added stride 512; too sparse without hierarchical context
+  v3.2 (~51M): 3-phase convergence arch; cube-mode; binding hierarchy
+  v4  (~58M): Ascending recursive VSM (L0, L1, L2); register bank protocol;
+               level specialization; broke v3.2 loss ceiling; still improving at 15k
+  v4.1 (~65.5M): Full bidirectional VSM (L0↑, L1↑, L2, L1↓, L0↓); 6 banks;
+                  5 independent S3 instances; first true VSM with feedback loop;
+                  ascending active at step 1k; descending dormant (expected)
+
+@guidance "The V4.1 key innovations over V4"
+  1. Two descending passes: L1↓ and L0↓ (top-down refinement)
+  2. Two additional register banks: bank_2↓ and bank_1↓
+  3. Two additional S3 instances: one per descending pass
+  4. Wider S4 q_proj: max_banks increased from 4 to 6 (accommodate 6 banks)
+  5. Meta-S4 updated to read most-refined banks (bank_1↓, bank_2↓ instead of bank_1↑, bank_2↑)
+  6. Meta-S3 extended to 5 gates (from 3 in v4)
+  7. L0↓ reads bank_2↓ (not bank_2↑) — uses L1↓'s output, not L1↑'s
+  8. Zero additional S1 parameters: the compressor function is fully shared
+
+-- ════════════════════════════════════════════════════════════════════
+-- READABLE BANK SETS (QUICK REFERENCE)
+-- ════════════════════════════════════════════════════════════════════
+
+@guidance "Per-pass readable bank summary (Beer's S4↔S4 channel)"
+  Pass 0 (L0↑): reads {bank_0}
+                writes bank_1↑
+                -- Knows: S5 identity only. Discovers local token features from scratch.
+
+  Pass 1 (L1↑): reads {bank_0, bank_1↑}
+                writes bank_2↑
+                -- Knows: identity + L0↑'s local findings. Builds phrases on token base.
+
+  Pass 2 (L2):  reads {bank_0, bank_1↑, bank_2↑}
+                writes bank_3
+                -- Knows: identity + all ascending. Builds clause/discourse structure.
+                -- THE APEX: Beer's metasystem. Runs exactly once.
+
+  Pass 3 (L1↓): reads {bank_0, bank_1↑, bank_2↑, bank_3}
+                writes bank_2↓
+                -- Knows: ALL ascending + apex clause context.
+                -- Refines phrase representations with clause-level knowledge.
+                -- This is the cortical feedback: top-down refinement.
+
+  Pass 4 (L0↓): reads {bank_0, bank_1↑, bank_2↓, bank_3}
+                writes bank_1↓
+                -- Knows: identity + L0↑ (local), L1↓ (refined phrase), L2 (clause).
+                -- Does NOT read bank_2↑ (superseded by bank_2↓).
+                -- Refines token representations with full hierarchical context.
+
+  Meta-S4:     reads {bank_0, bank_1↓, bank_2↓, bank_3}
+               -- Most-refined version of each level (descending > ascending).
+               -- The full structural picture before final prediction.
