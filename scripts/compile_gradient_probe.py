@@ -857,12 +857,12 @@ def batch_probe_checkpoints(
     checkpoint_dir: str | Path,
     device: str | None = None,
     skip_existing: bool = True,
+    probe_path: Path | None = None,
 ) -> list[tuple[int, list[dict]]]:
     """Probe all checkpoints in a directory. Load model once, swap weights.
 
     Returns list of (step, probe_results) tuples, sorted by step.
-    Skips checkpoints that already have results in RESULTS_DIR unless
-    skip_existing is False.
+    Skips checkpoints that already have results unless skip_existing is False.
     """
     from transformers import AutoTokenizer
 
@@ -879,13 +879,37 @@ def batch_probe_checkpoints(
 
     print(f"Found {len(ckpt_paths)} checkpoints in {checkpoint_dir}")
 
+    # Peek at first checkpoint to detect version for filename suffix
+    peek_ckpt = torch.load(ckpt_paths[0], map_location="cpu", weights_only=False)
+    peek_sd = peek_ckpt["model_state_dict"]
+    if "s3_levels.0.gate_heads.0.weight" in peek_sd:
+        ver_suffix = "_v4"
+    elif "prep_layers.0.norm.weight" in peek_sd:
+        ver_suffix = "_v3.2"
+    elif "register_inits.reg_type" in peek_sd:
+        ver_suffix = "_v3.1"
+    elif "register_type_init" in peek_sd:
+        ver_suffix = "_v3"
+    elif "s3.gate_heads.5.weight" in peek_sd:
+        ver_suffix = "_v2"
+    else:
+        ver_suffix = "_v1"
+    del peek_ckpt, peek_sd
+
+    # Determine results directory for skip check
+    if probe_path:
+        _probe_data = json.loads(probe_path.read_text())
+        _skip_dir = Path("results") / _probe_data.get("id", probe_path.stem)
+    else:
+        _skip_dir = RESULTS_DIR
+
     # Filter out already-probed checkpoints
     if skip_existing:
         todo = []
         for p in ckpt_paths:
             ckpt = torch.load(p, map_location="cpu", weights_only=False)
             step = ckpt["step"]
-            result_path = RESULTS_DIR / f"vsm_probe_step_{step:06d}.json"
+            result_path = _skip_dir / f"vsm_probe_step_{step:06d}{ver_suffix}.json"
             if result_path.exists():
                 print(f"  ⊘ Step {step:6d} — already probed, skipping")
             else:
@@ -908,11 +932,14 @@ def batch_probe_checkpoints(
     # Detect architecture from first checkpoint
     first_ckpt = torch.load(todo[0][0], map_location=device, weights_only=False)
     state_dict = first_ckpt["model_state_dict"]
-    is_v3_2 = "prep_layers.0.norm.weight" in state_dict
-    is_v3_1 = not is_v3_2 and "register_inits.reg_type" in state_dict
-    is_v3 = not is_v3_2 and not is_v3_1 and "register_type_init" in state_dict
-    is_v2 = not is_v3_2 and not is_v3_1 and not is_v3 and "s3.gate_heads.5.weight" in state_dict
-    if is_v3_2:
+    is_v4 = "s3_levels.0.gate_heads.0.weight" in state_dict
+    is_v3_2 = not is_v4 and "prep_layers.0.norm.weight" in state_dict
+    is_v3_1 = not is_v4 and not is_v3_2 and "register_inits.reg_type" in state_dict
+    is_v3 = not is_v4 and not is_v3_2 and not is_v3_1 and "register_type_init" in state_dict
+    is_v2 = not is_v4 and not is_v3_2 and not is_v3_1 and not is_v3 and "s3.gate_heads.5.weight" in state_dict
+    if is_v4:
+        version = "v4"
+    elif is_v3_2:
         version = "v3.2"
     elif is_v3_1:
         version = "v3.1"
@@ -925,7 +952,24 @@ def batch_probe_checkpoints(
     print(f"  Architecture: {version}")
 
     # Build model once
-    if is_v3_2:
+    if is_v4:
+        from verbum.vsm_lm_v4 import VSMLMV4
+        config = first_ckpt.get("config", {})
+        model = VSMLMV4(
+            vocab_size=config.get("vocab_size", 50277),
+            d_model=config.get("d_model", 512),
+            d_register=config.get("d_register", 256),
+            max_len=config.get("seq_len", 4096),
+            n_heads=config.get("n_heads", 8),
+            d_ff=config.get("d_ff", 1536),
+            d_ff_consolidate=config.get("d_ff_consolidate", 2048),
+            window=config.get("window", 8),
+            strides=tuple(config.get("strides", [1, 8, 64, 512])),
+            n_prep_layers=config.get("n_prep_layers", 1),
+            n_converge_layers=config.get("n_converge_layers", 2),
+            n_consolidate_layers=config.get("n_consolidate_layers", 3),
+        ).to(device)
+    elif is_v3_2:
         from verbum.vsm_lm_v3_2 import VSMLMV3_2
         model = VSMLMV3_2(
             vocab_size=50277, d_model=512, d_register=256, max_len=4096,
@@ -965,7 +1009,16 @@ def batch_probe_checkpoints(
         ).to(device)
 
     tokenizer = AutoTokenizer.from_pretrained("EleutherAI/pythia-160m-deduped")
-    probes = load_probes()
+    probes = load_probes(probe_path)
+
+    # Determine output directory from probe set
+    if probe_path:
+        probe_data = json.loads(probe_path.read_text())
+        probe_set_id = probe_data.get("id", probe_path.stem)
+        output_dir = Path("results") / probe_set_id
+    else:
+        probe_set_id = None
+        output_dir = None
 
     all_results = []
 
@@ -995,7 +1048,14 @@ def batch_probe_checkpoints(
                 positions = torch.arange(L, device=device)
                 x = model.token_embed(ids) + model.pos_embed(positions)
 
-                if is_v3_2 or is_v3_1 or is_v3:
+                if is_v4:
+                    bank_0 = model._init_bank0()
+                    s4_updates, s4_attn = model.s4([bank_0], x)
+                    register_after_s4 = [
+                        (bank_0[i] + s4_updates[i]).detach().cpu().numpy().tolist()
+                        for i in range(model.n_registers)
+                    ]
+                elif is_v3_2 or is_v3_1 or is_v3:
                     registers = model._init_registers()
                     registers, s4_attn = model.s4(registers, x)
                     register_after_s4 = [
@@ -1021,7 +1081,7 @@ def batch_probe_checkpoints(
             # Print compact summary for this checkpoint
             for pr in results:
                 m = pr["metrics"]
-                if is_v3_2:
+                if is_v4 or is_v3_2:
                     print(
                         f"  {pr['probe_id']:20s}  "
                         f"s4_ent={m['s4_attn_entropy']:.4f}  "
@@ -1040,7 +1100,8 @@ def batch_probe_checkpoints(
                         f"{m['iter0_apply_gate_mean']:.3f}]"
                     )
 
-        save_vsm_probe(results, step, version=version)
+        save_vsm_probe(results, step, output_dir=output_dir,
+                        probe_set_id=probe_set_id, version=version)
         all_results.append((step, results))
 
     print(f"\n{'═' * 60}")
@@ -1582,6 +1643,8 @@ def main():
     batch_p.add_argument("--dir", default="checkpoints/vsm-lm-v2/",
                          help="Checkpoint directory (default: checkpoints/vsm-lm-v2/)")
     batch_p.add_argument("--device", default=None)
+    batch_p.add_argument("--probes", default=None,
+                         help="Path to probe set JSON (default: probes/compile-gradient.json)")
     batch_p.add_argument("--no-skip", action="store_true",
                          help="Re-probe checkpoints even if results exist")
     batch_p.add_argument("--analyze", action="store_true",
@@ -1668,10 +1731,12 @@ def main():
                 print("\n  ⚠ No Qwen scores found. Run 'score' first for correlation analysis.")
 
     elif args.mode == "batch-probe":
+        probe_path = Path(args.probes) if args.probes else None
         batch_probe_checkpoints(
             checkpoint_dir=args.dir,
             device=args.device,
             skip_existing=not args.no_skip,
+            probe_path=probe_path,
         )
         if args.analyze:
             analyze_correlations()
