@@ -307,7 +307,7 @@ def main():
         print(f"  {k:25s}: {v:>12,}")
 
     non_embed = (
-        params["S4_intelligence"] + params["S3_levels"]
+        params["S4_intelligence"] + params["S3_passes"]
         + params["Meta_S4"] + params["Meta_S3"]
         + params["S1_total"] + params["S5_other"]
     )
