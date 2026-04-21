@@ -660,14 +660,17 @@ def probe_vsm_checkpoint(
     ckpt = torch.load(checkpoint_path, map_location=device, weights_only=False)
     step = ckpt["step"]
 
-    # Auto-detect v1 vs v2 vs v3 vs v3.1 vs v3.2 vs v4 from state_dict
+    # Auto-detect v1 vs v2 vs v3 vs v3.1 vs v3.2 vs v4 vs v4.1 from state_dict
     state_dict = ckpt["model_state_dict"]
-    is_v4 = "s3_levels.0.gate_heads.0.weight" in state_dict
-    is_v3_2 = not is_v4 and "prep_layers.0.norm.weight" in state_dict
-    is_v3_1 = not is_v4 and not is_v3_2 and "register_inits.reg_type" in state_dict
-    is_v3 = not is_v4 and not is_v3_2 and not is_v3_1 and "register_type_init" in state_dict
-    is_v2 = not is_v4 and not is_v3_2 and not is_v3_1 and not is_v3 and "s3.gate_heads.5.weight" in state_dict
-    if is_v4:
+    is_v4_1 = "s3_passes.0.gate_heads.0.weight" in state_dict
+    is_v4 = not is_v4_1 and "s3_levels.0.gate_heads.0.weight" in state_dict
+    is_v3_2 = not is_v4_1 and not is_v4 and "prep_layers.0.norm.weight" in state_dict
+    is_v3_1 = not is_v4_1 and not is_v4 and not is_v3_2 and "register_inits.reg_type" in state_dict
+    is_v3 = not is_v4_1 and not is_v4 and not is_v3_2 and not is_v3_1 and "register_type_init" in state_dict
+    is_v2 = not is_v4_1 and not is_v4 and not is_v3_2 and not is_v3_1 and not is_v3 and "s3.gate_heads.5.weight" in state_dict
+    if is_v4_1:
+        version = "v4.1"
+    elif is_v4:
         version = "v4"
     elif is_v3_2:
         version = "v3.2"
@@ -682,7 +685,24 @@ def probe_vsm_checkpoint(
     print(f"  Step: {step} ({version})")
 
     # Build model with same config as training
-    if is_v4:
+    if is_v4_1:
+        from verbum.vsm_lm_v4_1 import VSMLMV4_1
+        config = ckpt.get("config", {})
+        model = VSMLMV4_1(
+            vocab_size=config.get("vocab_size", 50277),
+            d_model=config.get("d_model", 512),
+            d_register=config.get("d_register", 256),
+            max_len=config.get("seq_len", 4096),
+            n_heads=config.get("n_heads", 8),
+            d_ff=config.get("d_ff", 1536),
+            d_ff_consolidate=config.get("d_ff_consolidate", 2048),
+            window=config.get("window", 8),
+            strides=tuple(config.get("strides", [1, 8, 64, 512])),
+            n_prep_layers=config.get("n_prep_layers", 1),
+            n_converge_layers=config.get("n_converge_layers", 2),
+            n_consolidate_layers=config.get("n_consolidate_layers", 3),
+        ).to(device)
+    elif is_v4:
         from verbum.vsm_lm_v4 import VSMLMV4
         config = ckpt.get("config", {})
         model = VSMLMV4(
@@ -770,8 +790,8 @@ def probe_vsm_checkpoint(
             positions = torch.arange(L, device=device)
             x = model.token_embed(ids) + model.pos_embed(positions)
 
-            if is_v4:
-                # v4: multi-bank registers. Extract bank_0 after S4 scan.
+            if is_v4_1 or is_v4:
+                # v4/v4.1: multi-bank registers. Extract bank_0 after S4 scan.
                 bank_0 = model._init_bank0()
                 s4_updates, s4_attn = model.s4([bank_0], x)
                 register_after_s4 = [
@@ -801,7 +821,7 @@ def probe_vsm_checkpoint(
             }
             results.append(probe_result)
 
-            if is_v4 or is_v3_2:
+            if is_v4_1 or is_v4 or is_v3_2:
                 print(
                     f"  {probe['id']:20s}  "
                     f"s4_ent={metrics['s4_attn_entropy']:.4f}  "
@@ -882,7 +902,9 @@ def batch_probe_checkpoints(
     # Peek at first checkpoint to detect version for filename suffix
     peek_ckpt = torch.load(ckpt_paths[0], map_location="cpu", weights_only=False)
     peek_sd = peek_ckpt["model_state_dict"]
-    if "s3_levels.0.gate_heads.0.weight" in peek_sd:
+    if "s3_passes.0.gate_heads.0.weight" in peek_sd:
+        ver_suffix = "_v4.1"
+    elif "s3_levels.0.gate_heads.0.weight" in peek_sd:
         ver_suffix = "_v4"
     elif "prep_layers.0.norm.weight" in peek_sd:
         ver_suffix = "_v3.2"
@@ -932,12 +954,15 @@ def batch_probe_checkpoints(
     # Detect architecture from first checkpoint
     first_ckpt = torch.load(todo[0][0], map_location=device, weights_only=False)
     state_dict = first_ckpt["model_state_dict"]
-    is_v4 = "s3_levels.0.gate_heads.0.weight" in state_dict
-    is_v3_2 = not is_v4 and "prep_layers.0.norm.weight" in state_dict
-    is_v3_1 = not is_v4 and not is_v3_2 and "register_inits.reg_type" in state_dict
-    is_v3 = not is_v4 and not is_v3_2 and not is_v3_1 and "register_type_init" in state_dict
-    is_v2 = not is_v4 and not is_v3_2 and not is_v3_1 and not is_v3 and "s3.gate_heads.5.weight" in state_dict
-    if is_v4:
+    is_v4_1 = "s3_passes.0.gate_heads.0.weight" in state_dict
+    is_v4 = not is_v4_1 and "s3_levels.0.gate_heads.0.weight" in state_dict
+    is_v3_2 = not is_v4_1 and not is_v4 and "prep_layers.0.norm.weight" in state_dict
+    is_v3_1 = not is_v4_1 and not is_v4 and not is_v3_2 and "register_inits.reg_type" in state_dict
+    is_v3 = not is_v4_1 and not is_v4 and not is_v3_2 and not is_v3_1 and "register_type_init" in state_dict
+    is_v2 = not is_v4_1 and not is_v4 and not is_v3_2 and not is_v3_1 and not is_v3 and "s3.gate_heads.5.weight" in state_dict
+    if is_v4_1:
+        version = "v4.1"
+    elif is_v4:
         version = "v4"
     elif is_v3_2:
         version = "v3.2"
@@ -952,7 +977,24 @@ def batch_probe_checkpoints(
     print(f"  Architecture: {version}")
 
     # Build model once
-    if is_v4:
+    if is_v4_1:
+        from verbum.vsm_lm_v4_1 import VSMLMV4_1
+        config = first_ckpt.get("config", {})
+        model = VSMLMV4_1(
+            vocab_size=config.get("vocab_size", 50277),
+            d_model=config.get("d_model", 512),
+            d_register=config.get("d_register", 256),
+            max_len=config.get("seq_len", 4096),
+            n_heads=config.get("n_heads", 8),
+            d_ff=config.get("d_ff", 1536),
+            d_ff_consolidate=config.get("d_ff_consolidate", 2048),
+            window=config.get("window", 8),
+            strides=tuple(config.get("strides", [1, 8, 64, 512])),
+            n_prep_layers=config.get("n_prep_layers", 1),
+            n_converge_layers=config.get("n_converge_layers", 2),
+            n_consolidate_layers=config.get("n_consolidate_layers", 3),
+        ).to(device)
+    elif is_v4:
         from verbum.vsm_lm_v4 import VSMLMV4
         config = first_ckpt.get("config", {})
         model = VSMLMV4(
@@ -1048,7 +1090,7 @@ def batch_probe_checkpoints(
                 positions = torch.arange(L, device=device)
                 x = model.token_embed(ids) + model.pos_embed(positions)
 
-                if is_v4:
+                if is_v4_1 or is_v4:
                     bank_0 = model._init_bank0()
                     s4_updates, s4_attn = model.s4([bank_0], x)
                     register_after_s4 = [
@@ -1081,7 +1123,7 @@ def batch_probe_checkpoints(
             # Print compact summary for this checkpoint
             for pr in results:
                 m = pr["metrics"]
-                if is_v4 or is_v3_2:
+                if is_v4_1 or is_v4 or is_v3_2:
                     print(
                         f"  {pr['probe_id']:20s}  "
                         f"s4_ent={m['s4_attn_entropy']:.4f}  "
