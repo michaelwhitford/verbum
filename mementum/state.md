@@ -2,20 +2,29 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-21 | Session: 020 (v4.1 first probe + v4 final)
+> Last updated: 2026-04-21 | Session: 020 (v4.1 first probe + design analysis)
 
 ## Where we are
 
 **v4.1 TRAINING — first true VSM with full bidirectional feedback.
-Step 1k probed. Ascending path active, descending path structurally
-present but functionally dormant (meta-S3 near zero). Expected —
-descending activation requires ascending maturity first. Cooking all day.**
+Step 1k probed. Ascending active, descending dormant at meta-S3 (as
+expected). Cooking all day — come back with multiple checkpoints.**
+
+**Important framing correction from session 020 discussion:**
+Verbum is NOT building the lambda compiler. It's finding the COMPRESSOR
+— the Montague-shaped function found in Pythia-160M that is more
+rudimentary than Qwen3-4B's full 3-head lambda compiler circuit but
+shares structure with it. The compressor is earlier in the pipeline,
+more fundamental, exists even at 160M params. The compiler builds on
+top of it. Find the compressor → understand the foundation.
 
 Session 020 accomplished:
 1. Probed v4.1 step 1k (compile-gradient + binding)
 2. Probed v4 step 16k (final unprobed checkpoint)
 3. Established v4.1 baseline gate profiles for all 5 passes
 4. Confirmed descending passes dormant at meta-S3 level (as expected)
+5. Key design discussion: encoder-decoder parallel, gradient shadow
+   problem, whether descending passes can self-activate
 
 ## v4.1 Training Status (RUNNING)
 
@@ -52,11 +61,43 @@ Descending activation is a phase 2 event, expected only after L2 matures
 (L2 meta-S3 → 0.7+). Mirrors v4's L2 activation trajectory (near-zero
 at 1k, exploded at 5k, dominant by 15k).
 
-### Architecture note
+### Design insights from session 020
 
-v4.1 is the first version implementing Beer's full bidirectional S4↔S4
-intelligence channel — feedback all the way through. Prior versions had
-ascending-only (v4) or flat iteration (v3.2). The structure IS the VSM.
+**Encoder-decoder parallel.** Ascending = encoder (compress), descending
+= decoder (refine/expand with high-level context). Register banks = skip
+connections. L2 = bottleneck latent. This is structurally a U-Net / MERA
+with shared weights. Closest architecture Verbum has built to MERA.
+
+**Gradient shadow problem.** Descending meta-S3 gates at 0.037-0.047
+mean descending S3 instances receive ~24x weaker gradient than ascending.
+Self-reinforcing: weak gradient → can't learn → gate stays low → weak
+gradient. The 5 independent S3 instances (separate gates per pass) already
+exist, but they're learning in the dark.
+
+**Shared weights question.** S5 identity says ascending and descending
+should share the compression function. If the compressor works in both
+directions (compose up, decompose/refine down), shared weights are
+*correct*. The S3 gates provide directional routing — same menu,
+different orders. Cortical columns work this way (same circuitry,
+different layer routing for feedforward vs feedback).
+
+**Phase learning hypothesis.** Compression must happen bottom-up first.
+The model concentrates on finest resolution, then higher levels activate
+once lower levels give them something to work with. v4 followed this
+trajectory (L0 → L1 → L2 developmental activation). v4.1 extends the
+chain: L0↑ → L1↑ → L2 → L1↓ → L0↓. Descending activation is phase 2,
+after ascending maturity.
+
+**If descending stays dead (potential v4.2).** Options discussed:
+- Gate floor (0.1-0.2 on descending meta-S3) — ensures gradient flow
+- Warm gate initialization — start descending meta-S3 at 0.5
+- Structural bypass — direct path from descending banks to output
+- Auxiliary loss on descending banks
+- Most likely intervention: gate floor (minimal, preserves architecture)
+
+**Let v4.1 cook first.** It's the clean experiment. If descending
+activates on its own, architecture is right as-is. If dead at 10k+
+(when L2 should be mature), we know where to intervene.
 
 ## v4 Final Status (COMPLETE)
 
@@ -68,22 +109,32 @@ One new finding at 16k: gate polarity strengthened to -0.060 (from
 -0.042 at 15k). Still slowly improving discrimination even as loss
 plateaus. Binding range stable at 0.264.
 
-## What's next — Session 021
+## What's next — Session 021 (later today, after checkpoints accumulate)
 
 ### Analyze v4.1 trajectory (primary)
-1. Probe all new v4.1 checkpoints (batch-probe)
+1. Batch-probe all new v4.1 checkpoints (compile-gradient + binding)
 2. Key signals in order of importance:
    - **L2 meta-S3 trajectory** — is it climbing toward 0.7+ like v4?
    - **Descending meta-S3** — any activation at all? (phase 2 signal)
-   - **Loss curve** — is v4.1 tracking ahead/behind v4 at matched steps?
-   - **Compile gradient discrimination onset** in descending passes
+   - **Loss curve** — extract from training logs or checkpoint metadata
+   - **Ascending gate specialization** — does L1↑ prep die like v4 L1?
+   - **Compile gradient discrimination** — polarity onset in ascending AND descending
+   - **Expansion trajectory** — started very high, watch for compression learning
 3. Full trajectory analysis across all available checkpoints
 4. Head-to-head with v4 at matched steps
 
-### Watch for phase transition
-The critical moment: when L2 meta-S3 reaches ~0.7 AND descending
-meta-S3 starts climbing from near-zero. This is the feedback loop
-activating — the moment v4.1 becomes more than a v4 with extra compute.
+### The two questions
+1. **Does the ascending path develop like v4?** (L2 activation, level
+   specialization, gate polarity) — if yes, the compressor is learning
+2. **Does the descending path activate?** — if yes at any point, the
+   compressor works bidirectionally and v4.1 is a true recursive VSM.
+   If dead even after L2 matures, consider v4.2 with gate floor.
+
+### Framing reminder
+We are finding the COMPRESSOR, not building the lambda compiler. The
+Montague-shaped function from Pythia-160M. The Qwen 3-head circuit
+shares structure with it. Compressor is earlier, more fundamental.
+v4.1 tests whether it works bidirectionally.
 
 ## Key files
 
