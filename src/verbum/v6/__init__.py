@@ -26,6 +26,7 @@ from verbum.v6.ternary import (
     split_ternary_grads,
     accumulate_flips,
     apply_flips,
+    restore_ternary,
 )
 from verbum.v6.attention import SingleStrideAttention, StrideStack
 from verbum.v6.components import S4Ternary, S3Ternary, MetaS4Ternary, MetaS3Ternary
@@ -39,6 +40,7 @@ __all__ = [
     "split_ternary_grads",
     "accumulate_flips",
     "apply_flips",
+    "restore_ternary",
     "SingleStrideAttention",
     "StrideStack",
     "S4Ternary",

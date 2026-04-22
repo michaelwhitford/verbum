@@ -187,6 +187,30 @@ class TernaryFFN(nn.Module):
 # ══════════════════════════════════════════════════════════════════════
 
 
+def restore_ternary(model: nn.Module) -> None:
+    """Re-cast any ternary weights back to int8 after optimizer update.
+
+    The optimizer may cast int8 weights to float during its update step.
+    This restores them to int8 (rounding to nearest integer, clamping to
+    {-1, 0, +1}). Call after every optimizer.update().
+    """
+    def _walk(mod):
+        if isinstance(mod, TernaryLinear):
+            if mod.ternary_weight.dtype != mx.int8:
+                mod.ternary_weight = mx.clip(
+                    mx.round(mod.ternary_weight), -1, 1
+                ).astype(mx.int8)
+        if isinstance(mod, nn.Module):
+            for name, child in mod.children().items():
+                if isinstance(child, nn.Module):
+                    _walk(child)
+                elif isinstance(child, list):
+                    for item in child:
+                        if isinstance(item, nn.Module):
+                            _walk(item)
+    _walk(model)
+
+
 def _walk_ternary_modules(model: nn.Module):
     """Yield (path, module) for all TernaryLinear modules in model."""
     for path, module in model.named_modules():
