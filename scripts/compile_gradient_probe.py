@@ -810,6 +810,179 @@ def _v41_print_summary(results: list[dict], step: int) -> None:
 
 
 # ══════════════════════════════════════════════════════════════════════
+# v5 display helpers
+# ══════════════════════════════════════════════════════════════════════
+
+
+def _v5_print_probe(probe_id: str, metrics: dict) -> None:
+    """Print one probe result in v5 format — gates + modulation + phase."""
+    # Meta-S3 gates across all passes
+    gates = []
+    for pname, label in zip(V41_PASSES, V41_LABELS):
+        g = metrics.get(f"meta_s3_gate_{pname}", 0)
+        gates.append(f"{label}={g:.3f}")
+    gates_str = " ".join(gates)
+
+    # Modulation at L2 apex consolidate (most interesting)
+    l2_mod = metrics.get("L2_apex_consolidate_mod_mean", 1.0)
+    l2_mod_std = metrics.get("L2_apex_consolidate_mod_std", 0.0)
+    l2_gate = metrics.get("L2_apex_consolidate_gate_mean", 0.0)
+
+    print(
+        f"  {probe_id:20s}  "
+        f"meta-S3[{gates_str}]  "
+        f"L2.cons: gate={l2_gate:.3f} mod={l2_mod:.3f}±{l2_mod_std:.3f}"
+    )
+
+
+def _v5_print_summary(results: list[dict], step: int, model=None) -> None:
+    """Print v5 summary — gates, modulation, phase angles, temperature/bias."""
+    probes = results
+    n = len(probes)
+    if n == 0:
+        return
+
+    def _mean(key):
+        vals = [p["metrics"][key] for p in probes if key in p["metrics"]]
+        return sum(vals) / len(vals) if vals else 0.0
+
+    def _mean_cat(key, cat_prefix):
+        vals = [p["metrics"][key] for p in probes
+                if key in p["metrics"] and cat_prefix in p["probe_id"]]
+        return sum(vals) / len(vals) if vals else 0.0
+
+    print()
+    print(f"  {'═' * 80}")
+    print(f"  VSM-LM v5 (spiral α, ℂ regs, phase-coherent gating, modulation)  step {step}  ({n} probes)")
+    print(f"  {'═' * 80}")
+
+    # ── Meta-S3 gate table with modulation ────────────────────────
+    print()
+    print(f"  META-S3 GATES + MODULATION")
+    print(f"  {'Pass':<8} {'Gate':>6}  {'Prep':>6} {'Conv.':>6} {'Cons.':>6}"
+          f"  {'Mod μ':>7} {'Mod σ':>7}")
+    print(f"  {'─' * 58}")
+    for pname, label in zip(V41_PASSES, V41_LABELS):
+        ms3 = _mean(f"meta_s3_gate_{pname}")
+        prep = _mean(f"{pname}_prep_gate_mean")
+        conv = _mean(f"{pname}_converge_gate_mean")
+        cons = _mean(f"{pname}_consolidate_gate_mean")
+        mod_m = _mean(f"{pname}_consolidate_mod_mean")
+        mod_s = _mean(f"{pname}_consolidate_mod_std")
+        print(
+            f"  {label:<8} {ms3:>6.3f}  {prep:>6.3f} {conv:>6.3f} {cons:>6.3f}"
+            f"  {mod_m:>7.4f} {mod_s:>7.4f}"
+        )
+
+    # ── Phase angles ──────────────────────────────────────────────
+    print()
+    print(f"  PHASE ANGLES (mean phase of ℂ registers per pass)")
+    print(f"  {'Register':<8}", end="")
+    for label in V41_LABELS:
+        print(f" {label:>8}", end="")
+    print()
+    print(f"  {'─' * 52}")
+    for rn in ["type", "scope", "role"]:
+        print(f"  {rn:<8}", end="")
+        for pname in V41_PASSES:
+            phase = _mean(f"{pname}_register_{rn}_phase_final")
+            print(f" {phase:>+8.3f}", end="")
+        print()
+
+    # ── Temperature/bias (learnable gating parameters) ────────────
+    if model is not None:
+        print()
+        print(f"  LEARNED TEMPERATURE / BIAS (per phase × pass)")
+        print(f"  {'Pass':<8} {'Phase':<12} {'Temp':>8} {'Bias':>8}")
+        print(f"  {'─' * 40}")
+        phase_names = ["prep", "converge", "consolidate"]
+        for pi, (pname, label) in enumerate(zip(V41_PASSES, V41_LABELS)):
+            for phi, phname in enumerate(phase_names):
+                temp = model.s3_passes[pi].temperature[phi].item()
+                bias = model.s3_passes[pi].learned_bias[phi].item()
+                print(f"  {label:<8} {phname:<12} {temp:>8.4f} {bias:>8.4f}")
+
+    # ── Polarity (compile-gradient discrimination) ────────────────
+    has_strong = any("strong" in p["probe_id"] for p in probes)
+    has_anti = any("anti" in p["probe_id"] for p in probes)
+    if has_strong and has_anti:
+        print()
+        print(f"  GATE POLARITY (strong - anti compile)")
+        print(f"  {'Pass':<8} {'Prep':>8} {'Conv.':>8} {'Cons.':>8} {'Meta-S3':>8} {'Mod Δ':>8}")
+        print(f"  {'─' * 50}")
+        for pname, label in zip(V41_PASSES, V41_LABELS):
+            pols = []
+            for phase in V41_PHASES:
+                key = f"{pname}_{phase}_gate_mean"
+                s = _mean_cat(key, "strong")
+                a = _mean_cat(key, "anti")
+                pols.append(s - a)
+            ms3_s = _mean_cat(f"meta_s3_gate_{pname}", "strong")
+            ms3_a = _mean_cat(f"meta_s3_gate_{pname}", "anti")
+            ms3_pol = ms3_s - ms3_a
+            mod_s = _mean_cat(f"{pname}_consolidate_mod_mean", "strong")
+            mod_a = _mean_cat(f"{pname}_consolidate_mod_mean", "anti")
+            mod_pol = mod_s - mod_a
+            print(
+                f"  {label:<8} {pols[0]:>+7.3f}  {pols[1]:>+7.3f}  "
+                f"{pols[2]:>+7.3f}  {ms3_pol:>+7.3f}  {mod_pol:>+7.4f}"
+            )
+
+    # ── Per-category meta-S3 ──────────────────────────────────────
+    categories = {}
+    for p in probes:
+        pid = p["probe_id"]
+        if "strong" in pid:
+            cat = "strong"
+        elif "medium" in pid:
+            cat = "medium"
+        elif "weak" in pid:
+            cat = "weak"
+        elif "null" in pid:
+            cat = "null"
+        elif "anti" in pid:
+            cat = "anti"
+        elif "scope" in pid:
+            cat = "scope"
+        elif "var" in pid:
+            cat = "var"
+        elif "ana" in pid:
+            cat = "ana"
+        elif "ctrl" in pid:
+            cat = "ctrl"
+        elif "rel" in pid:
+            cat = "rel"
+        elif "neg" in pid:
+            cat = "neg"
+        elif "embed" in pid:
+            cat = "embed"
+        else:
+            cat = "other"
+        categories.setdefault(cat, []).append(p)
+
+    if len(categories) > 2:
+        print()
+        print(f"  META-S3 BY CATEGORY")
+        print(f"  {'Category':<10}", end="")
+        for label in V41_LABELS:
+            print(f" {label:>6}", end="")
+        print()
+        print(f"  {'─' * 44}")
+        for cat in sorted(categories.keys()):
+            cat_probes = categories[cat]
+            print(f"  {cat:<10}", end="")
+            for pname in V41_PASSES:
+                key = f"meta_s3_gate_{pname}"
+                vals = [p["metrics"][key] for p in cat_probes if key in p["metrics"]]
+                v = sum(vals) / len(vals) if vals else 0.0
+                print(f" {v:>6.3f}", end="")
+            print()
+
+    print(f"  {'═' * 80}")
+    print()
+
+
+# ══════════════════════════════════════════════════════════════════════
 # Mode 2: VSM-LM probing — internal metrics per probe
 # ══════════════════════════════════════════════════════════════════════
 
@@ -842,15 +1015,18 @@ def probe_vsm_checkpoint(
     ckpt = torch.load(checkpoint_path, map_location=device, weights_only=False)
     step = ckpt["step"]
 
-    # Auto-detect v1 vs v2 vs v3 vs v3.1 vs v3.2 vs v4 vs v4.1 from state_dict
+    # Auto-detect v1 vs v2 vs v3 vs v3.1 vs v3.2 vs v4 vs v4.1 vs v5 from state_dict
     state_dict = ckpt["model_state_dict"]
-    is_v4_1 = "s3_passes.0.gate_heads.0.weight" in state_dict
-    is_v4 = not is_v4_1 and "s3_levels.0.gate_heads.0.weight" in state_dict
-    is_v3_2 = not is_v4_1 and not is_v4 and "prep_layers.0.norm.weight" in state_dict
-    is_v3_1 = not is_v4_1 and not is_v4 and not is_v3_2 and "register_inits.reg_type" in state_dict
-    is_v3 = not is_v4_1 and not is_v4 and not is_v3_2 and not is_v3_1 and "register_type_init" in state_dict
-    is_v2 = not is_v4_1 and not is_v4 and not is_v3_2 and not is_v3_1 and not is_v3 and "s3.gate_heads.5.weight" in state_dict
-    if is_v4_1:
+    is_v5 = "mod_projs.0.weight" in state_dict
+    is_v4_1 = not is_v5 and "s3_passes.0.gate_heads.0.weight" in state_dict
+    is_v4 = not is_v5 and not is_v4_1 and "s3_levels.0.gate_heads.0.weight" in state_dict
+    is_v3_2 = not is_v5 and not is_v4_1 and not is_v4 and "prep_layers.0.norm.weight" in state_dict
+    is_v3_1 = not is_v5 and not is_v4_1 and not is_v4 and not is_v3_2 and "register_inits.reg_type" in state_dict
+    is_v3 = not is_v5 and not is_v4_1 and not is_v4 and not is_v3_2 and not is_v3_1 and "register_type_init" in state_dict
+    is_v2 = not is_v5 and not is_v4_1 and not is_v4 and not is_v3_2 and not is_v3_1 and not is_v3 and "s3.gate_heads.5.weight" in state_dict
+    if is_v5:
+        version = "v5"
+    elif is_v4_1:
         version = "v4.1"
     elif is_v4:
         version = "v4"
@@ -867,7 +1043,25 @@ def probe_vsm_checkpoint(
     print(f"  Step: {step} ({version})")
 
     # Build model with same config as training
-    if is_v4_1:
+    if is_v5:
+        from verbum.vsm_lm_v5 import VSMLMV5
+        config = ckpt.get("config", {})
+        model = VSMLMV5(
+            vocab_size=config.get("vocab_size", 50277),
+            d_model=config.get("d_model", 512),
+            d_register=config.get("d_register", 128),
+            max_len=config.get("seq_len", 4096),
+            n_heads=config.get("n_heads", 8),
+            d_ff=config.get("d_ff", 1536),
+            d_ff_consolidate=config.get("d_ff_consolidate", 2048),
+            window=config.get("window", 8),
+            strides=tuple(config.get("strides", [1, 8, 64, 512])),
+            n_prep_layers=config.get("n_prep_layers", 1),
+            n_converge_layers=config.get("n_converge_layers", 2),
+            n_consolidate_layers=config.get("n_consolidate_layers", 3),
+            alpha=config.get("alpha", 1.18),
+        ).to(device)
+    elif is_v4_1:
         from verbum.vsm_lm_v4_1 import VSMLMV4_1
         config = ckpt.get("config", {})
         model = VSMLMV4_1(
@@ -972,7 +1166,15 @@ def probe_vsm_checkpoint(
             positions = torch.arange(L, device=device)
             x = model.token_embed(ids) + model.pos_embed(positions)
 
-            if is_v4_1 or is_v4:
+            if is_v5:
+                # v5: complex registers — extract as interleaved real
+                bank_0 = model._init_bank0()
+                s4_updates, s4_attn = model.s4([bank_0], x)
+                register_after_s4 = [
+                    torch.view_as_real(bank_0[i] + s4_updates[i]).flatten().detach().cpu().numpy().tolist()
+                    for i in range(model.n_registers)
+                ]
+            elif is_v4_1 or is_v4:
                 # v4/v4.1: multi-bank registers. Extract bank_0 after S4 scan.
                 bank_0 = model._init_bank0()
                 s4_updates, s4_attn = model.s4([bank_0], x)
@@ -1003,7 +1205,9 @@ def probe_vsm_checkpoint(
             }
             results.append(probe_result)
 
-            if is_v4_1:
+            if is_v5:
+                _v5_print_probe(probe["id"], metrics)
+            elif is_v4_1:
                 _v41_print_probe(probe["id"], metrics)
             elif is_v4 or is_v3_2:
                 print(
@@ -1024,7 +1228,9 @@ def probe_vsm_checkpoint(
                     f"{metrics['iter0_apply_gate_mean']:.3f}]"
                 )
 
-    if is_v4_1:
+    if is_v5:
+        _v5_print_summary(results, step, model)
+    elif is_v4_1:
         _v41_print_summary(results, step)
 
     return results, step, version
@@ -1089,7 +1295,9 @@ def batch_probe_checkpoints(
     # Peek at first checkpoint to detect version for filename suffix
     peek_ckpt = torch.load(ckpt_paths[0], map_location="cpu", weights_only=False)
     peek_sd = peek_ckpt["model_state_dict"]
-    if "s3_passes.0.gate_heads.0.weight" in peek_sd:
+    if "mod_projs.0.weight" in peek_sd:
+        ver_suffix = "_v5"
+    elif "s3_passes.0.gate_heads.0.weight" in peek_sd:
         ver_suffix = "_v4.1"
     elif "s3_levels.0.gate_heads.0.weight" in peek_sd:
         ver_suffix = "_v4"
@@ -1141,13 +1349,16 @@ def batch_probe_checkpoints(
     # Detect architecture from first checkpoint
     first_ckpt = torch.load(todo[0][0], map_location=device, weights_only=False)
     state_dict = first_ckpt["model_state_dict"]
-    is_v4_1 = "s3_passes.0.gate_heads.0.weight" in state_dict
-    is_v4 = not is_v4_1 and "s3_levels.0.gate_heads.0.weight" in state_dict
-    is_v3_2 = not is_v4_1 and not is_v4 and "prep_layers.0.norm.weight" in state_dict
-    is_v3_1 = not is_v4_1 and not is_v4 and not is_v3_2 and "register_inits.reg_type" in state_dict
-    is_v3 = not is_v4_1 and not is_v4 and not is_v3_2 and not is_v3_1 and "register_type_init" in state_dict
-    is_v2 = not is_v4_1 and not is_v4 and not is_v3_2 and not is_v3_1 and not is_v3 and "s3.gate_heads.5.weight" in state_dict
-    if is_v4_1:
+    is_v5 = "mod_projs.0.weight" in state_dict
+    is_v4_1 = not is_v5 and "s3_passes.0.gate_heads.0.weight" in state_dict
+    is_v4 = not is_v5 and not is_v4_1 and "s3_levels.0.gate_heads.0.weight" in state_dict
+    is_v3_2 = not is_v5 and not is_v4_1 and not is_v4 and "prep_layers.0.norm.weight" in state_dict
+    is_v3_1 = not is_v5 and not is_v4_1 and not is_v4 and not is_v3_2 and "register_inits.reg_type" in state_dict
+    is_v3 = not is_v5 and not is_v4_1 and not is_v4 and not is_v3_2 and not is_v3_1 and "register_type_init" in state_dict
+    is_v2 = not is_v5 and not is_v4_1 and not is_v4 and not is_v3_2 and not is_v3_1 and not is_v3 and "s3.gate_heads.5.weight" in state_dict
+    if is_v5:
+        version = "v5"
+    elif is_v4_1:
         version = "v4.1"
     elif is_v4:
         version = "v4"
@@ -1164,7 +1375,25 @@ def batch_probe_checkpoints(
     print(f"  Architecture: {version}")
 
     # Build model once
-    if is_v4_1:
+    if is_v5:
+        from verbum.vsm_lm_v5 import VSMLMV5
+        config = first_ckpt.get("config", {})
+        model = VSMLMV5(
+            vocab_size=config.get("vocab_size", 50277),
+            d_model=config.get("d_model", 512),
+            d_register=config.get("d_register", 128),
+            max_len=config.get("seq_len", 4096),
+            n_heads=config.get("n_heads", 8),
+            d_ff=config.get("d_ff", 1536),
+            d_ff_consolidate=config.get("d_ff_consolidate", 2048),
+            window=config.get("window", 8),
+            strides=tuple(config.get("strides", [1, 8, 64, 512])),
+            n_prep_layers=config.get("n_prep_layers", 1),
+            n_converge_layers=config.get("n_converge_layers", 2),
+            n_consolidate_layers=config.get("n_consolidate_layers", 3),
+            alpha=config.get("alpha", 1.18),
+        ).to(device)
+    elif is_v4_1:
         from verbum.vsm_lm_v4_1 import VSMLMV4_1
         config = first_ckpt.get("config", {})
         model = VSMLMV4_1(
@@ -1277,7 +1506,15 @@ def batch_probe_checkpoints(
                 positions = torch.arange(L, device=device)
                 x = model.token_embed(ids) + model.pos_embed(positions)
 
-                if is_v4_1 or is_v4:
+                if is_v5:
+                    # v5: complex registers — extract as interleaved real
+                    bank_0 = model._init_bank0()
+                    s4_updates, s4_attn = model.s4([bank_0], x)
+                    register_after_s4 = [
+                        torch.view_as_real(bank_0[i] + s4_updates[i]).flatten().detach().cpu().numpy().tolist()
+                        for i in range(model.n_registers)
+                    ]
+                elif is_v4_1 or is_v4:
                     bank_0 = model._init_bank0()
                     s4_updates, s4_attn = model.s4([bank_0], x)
                     register_after_s4 = [
@@ -1310,7 +1547,9 @@ def batch_probe_checkpoints(
             # Print compact summary for this checkpoint
             for pr in results:
                 m = pr["metrics"]
-                if is_v4_1:
+                if is_v5:
+                    _v5_print_probe(pr["probe_id"], m)
+                elif is_v4_1:
                     _v41_print_probe(pr["probe_id"], m)
                 elif is_v4 or is_v3_2:
                     print(
@@ -1331,7 +1570,9 @@ def batch_probe_checkpoints(
                         f"{m['iter0_apply_gate_mean']:.3f}]"
                     )
 
-            if is_v4_1:
+            if is_v5:
+                _v5_print_summary(results, step, model)
+            elif is_v4_1:
                 _v41_print_summary(results, step)
 
         save_vsm_probe(results, step, output_dir=output_dir,

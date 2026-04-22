@@ -244,7 +244,6 @@ def capture_registers(
       - {pass}_after_pass: (n_probes, 3, 256) — registers after full pass
     """
     from transformers import AutoTokenizer
-    from verbum.vsm_lm_v4_1 import VSMLMV4_1
 
     checkpoint_path = Path(checkpoint_path)
     probe_paths = probe_paths or DEFAULT_PROBE_PATHS
@@ -256,28 +255,50 @@ def capture_registers(
     step = ckpt["step"]
     config = ckpt.get("config", {})
 
-    # Verify v4.1
+    # Detect version
     state_dict = ckpt["model_state_dict"]
-    if "s3_passes.0.gate_heads.0.weight" not in state_dict:
-        print("  ✗ Not a v4.1 checkpoint")
+    is_v5 = "mod_projs.0.weight" in state_dict
+    is_v4_1 = not is_v5 and "s3_passes.0.gate_heads.0.weight" in state_dict
+    if not is_v5 and not is_v4_1:
+        print("  ✗ Not a v4.1 or v5 checkpoint")
         sys.exit(1)
 
-    print(f"  Step: {step} (v4.1)")
+    version = "v5" if is_v5 else "v4.1"
+    print(f"  Step: {step} ({version})")
 
-    model = VSMLMV4_1(
-        vocab_size=config.get("vocab_size", 50277),
-        d_model=config.get("d_model", 512),
-        d_register=config.get("d_register", 256),
-        max_len=config.get("seq_len", 4096),
-        n_heads=config.get("n_heads", 8),
-        d_ff=config.get("d_ff", 1536),
-        d_ff_consolidate=config.get("d_ff_consolidate", 2048),
-        window=config.get("window", 8),
-        strides=tuple(config.get("strides", [1, 8, 64, 512])),
-        n_prep_layers=config.get("n_prep_layers", 1),
-        n_converge_layers=config.get("n_converge_layers", 2),
-        n_consolidate_layers=config.get("n_consolidate_layers", 3),
-    ).to(device)
+    if is_v5:
+        from verbum.vsm_lm_v5 import VSMLMV5
+        model = VSMLMV5(
+            vocab_size=config.get("vocab_size", 50277),
+            d_model=config.get("d_model", 512),
+            d_register=config.get("d_register", 128),
+            max_len=config.get("seq_len", 4096),
+            n_heads=config.get("n_heads", 8),
+            d_ff=config.get("d_ff", 1536),
+            d_ff_consolidate=config.get("d_ff_consolidate", 2048),
+            window=config.get("window", 8),
+            strides=tuple(config.get("strides", [1, 8, 64, 512])),
+            n_prep_layers=config.get("n_prep_layers", 1),
+            n_converge_layers=config.get("n_converge_layers", 2),
+            n_consolidate_layers=config.get("n_consolidate_layers", 3),
+            alpha=config.get("alpha", 1.18),
+        ).to(device)
+    else:
+        from verbum.vsm_lm_v4_1 import VSMLMV4_1
+        model = VSMLMV4_1(
+            vocab_size=config.get("vocab_size", 50277),
+            d_model=config.get("d_model", 512),
+            d_register=config.get("d_register", 256),
+            max_len=config.get("seq_len", 4096),
+            n_heads=config.get("n_heads", 8),
+            d_ff=config.get("d_ff", 1536),
+            d_ff_consolidate=config.get("d_ff_consolidate", 2048),
+            window=config.get("window", 8),
+            strides=tuple(config.get("strides", [1, 8, 64, 512])),
+            n_prep_layers=config.get("n_prep_layers", 1),
+            n_converge_layers=config.get("n_converge_layers", 2),
+            n_consolidate_layers=config.get("n_consolidate_layers", 3),
+        ).to(device)
     model.load_state_dict(state_dict)
     model.eval()
     del ckpt
@@ -294,7 +315,8 @@ def capture_registers(
 
     n_probes = len(all_probes)
     n_regs = len(REGISTER_NAMES)
-    d_reg = config.get("d_register", 256)
+    d_reg_complex = config.get("d_register", 256 if not is_v5 else 128)
+    d_reg = d_reg_complex * 2 if is_v5 else d_reg_complex  # always 256 real components
 
     print(f"  Capturing registers for {n_probes} probes across {len(probe_paths)} probe sets")
     print()
@@ -313,6 +335,12 @@ def capture_registers(
     pass_after_full = {pn: np.zeros((n_probes, n_regs, d_reg), dtype=np.float32)
                        for pn in PASS_NAMES}
 
+    # v5: phase angles (128-dim) and modulation stats
+    if is_v5:
+        pass_phase_angles = {pn: np.zeros((n_probes, n_regs, d_reg_complex), dtype=np.float32)
+                             for pn in PASS_NAMES}
+        pass_mod_stats = {pn: [] for pn in PASS_NAMES}
+
     with torch.no_grad():
         for idx, probe in enumerate(all_probes):
             probe_ids.append(probe["id"])
@@ -325,7 +353,10 @@ def capture_registers(
                 ids = ids[:, :4096]
 
             # Run the register-capturing forward pass
-            reg_data = _forward_capture_registers(model, ids)
+            if is_v5:
+                reg_data = _forward_capture_registers_v5(model, ids)
+            else:
+                reg_data = _forward_capture_registers(model, ids)
 
             # Store bank_0 init
             for ri, rn in enumerate(REGISTER_NAMES):
@@ -336,6 +367,10 @@ def capture_registers(
                 for ri in range(n_regs):
                     pass_after_s4[pn][idx, ri] = reg_data[f"{pn}_after_s4"][ri]
                     pass_after_full[pn][idx, ri] = reg_data[f"{pn}_after_pass"][ri]
+                    if is_v5:
+                        pass_phase_angles[pn][idx, ri] = reg_data[f"{pn}_phase_angles"][ri]
+                if is_v5:
+                    pass_mod_stats[pn].append(reg_data[f"{pn}_mod_stats"])
 
             # Progress
             if (idx + 1) % 10 == 0 or idx == n_probes - 1:
@@ -343,7 +378,7 @@ def capture_registers(
 
     # Save
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
-    out_path = RESULTS_DIR / f"step_{step:06d}_v4.1.npz"
+    out_path = RESULTS_DIR / f"step_{step:06d}_{version}.npz"
 
     save_dict = {
         "probe_ids": np.array(probe_ids),
@@ -352,10 +387,18 @@ def capture_registers(
         "prompts": np.array(prompts),
         "bank_0_init": bank_0_init,
         "step": np.array(step),
+        "version": np.array(version),
     }
     for pn in PASS_NAMES:
         save_dict[f"{pn}_after_s4"] = pass_after_s4[pn]
         save_dict[f"{pn}_after_pass"] = pass_after_full[pn]
+    if is_v5:
+        for pn in PASS_NAMES:
+            save_dict[f"{pn}_phase_angles"] = pass_phase_angles[pn]
+            # Mod stats as JSON string (varying shape per probe)
+            save_dict[f"{pn}_mod_stats"] = np.array(
+                [json.dumps(ms) for ms in pass_mod_stats[pn]]
+            )
 
     np.savez_compressed(out_path, **save_dict)
     print(f"\n  Saved: {out_path}")
@@ -477,6 +520,125 @@ def _forward_capture_registers(
     return result
 
 
+def _forward_capture_registers_v5(
+    model: torch.nn.Module,
+    input_ids: torch.Tensor,
+) -> dict[str, list[np.ndarray]]:
+    """Run v5 forward pass, capturing full complex register vectors.
+
+    v5 registers are ℂ^128 — we convert to interleaved real (256-dim)
+    via torch.view_as_real().flatten() for storage compatibility.
+
+    Uses multiplicative modulation: x = x * (1 + gate · tanh(proj(δ)))
+    instead of v4.1's additive: x = x + gated_delta.
+
+    Returns dict with keys:
+      bank_0: list of 3 numpy arrays (256-dim real, interleaved from ℂ^128)
+      {pass_name}_after_s4: list of 3 numpy arrays
+      {pass_name}_after_pass: list of 3 numpy arrays
+      {pass_name}_phase_angles: list of 3 numpy arrays (128-dim, radians)
+      {pass_name}_mod_stats: dict with mod_mean/mod_std per phase
+    """
+    B, L = input_ids.shape
+    device = input_ids.device
+
+    positions = torch.arange(L, device=device)
+    x = model.token_embed(input_ids) + model.pos_embed(positions)
+
+    # Complex register banks
+    bank_0 = model._init_bank0()
+    bank_1_asc = model._fresh_bank()
+    bank_2_asc = model._fresh_bank()
+    bank_3 = model._fresh_bank()
+    bank_2_desc = model._fresh_bank()
+    bank_1_desc = model._fresh_bank()
+
+    def _complex_to_real(regs):
+        return [torch.view_as_real(r).flatten().detach().cpu().numpy() for r in regs]
+
+    def _phase_angles(regs):
+        return [torch.angle(r).detach().cpu().numpy() for r in regs]
+
+    result = {
+        "bank_0": _complex_to_real(bank_0),
+    }
+
+    pass_schedule = [
+        (0, 0, "L0_asc"),
+        (1, 1, "L1_asc"),
+        (2, 2, "L2_apex"),
+        (3, 1, "L1_desc"),
+        (4, 0, "L0_desc"),
+    ]
+
+    for pass_idx, level, pass_name in pass_schedule:
+        if pass_idx == 0:
+            readable = [bank_0]
+            target_bank = bank_1_asc
+        elif pass_idx == 1:
+            readable = [bank_0, bank_1_asc]
+            target_bank = bank_2_asc
+        elif pass_idx == 2:
+            readable = [bank_0, bank_1_asc, bank_2_asc]
+            target_bank = bank_3
+        elif pass_idx == 3:
+            readable = [bank_0, bank_1_asc, bank_2_asc, bank_3]
+            target_bank = bank_2_desc
+        elif pass_idx == 4:
+            readable = [bank_0, bank_1_asc, bank_2_desc, bank_3]
+            target_bank = bank_1_desc
+
+        # S4: complex-query scan
+        s4_updates, _ = model.s4(readable, x)
+        target_bank = [
+            target_bank[i] + s4_updates[i]
+            for i in range(model.n_registers)
+        ]
+
+        result[f"{pass_name}_after_s4"] = _complex_to_real(target_bank)
+
+        # Three phases with multiplicative modulation
+        phase_names = ["prep", "converge", "consolidate"]
+        mod_stats = {}
+
+        for phase_idx, phase_name in enumerate(phase_names):
+            if phase_name == "prep":
+                phase_out = model._run_prep(x)
+            elif phase_name == "converge":
+                phase_out = model._run_converge(x, level)
+            elif phase_name == "consolidate":
+                phase_out = model._run_consolidate(x)
+
+            delta = phase_out - x
+            _, target_bank, gate, _ = model.s3_passes[pass_idx].gate_phase(
+                target_bank, delta, phase_idx)
+
+            # Multiplicative modulation (v5)
+            modulation = 1.0 + gate * torch.tanh(model.mod_projs[phase_idx](delta))
+            x = x * modulation
+
+            mod_stats[f"{phase_name}_mod_mean"] = modulation.detach().mean().item()
+            mod_stats[f"{phase_name}_mod_std"] = modulation.detach().std().item()
+
+        result[f"{pass_name}_after_pass"] = _complex_to_real(target_bank)
+        result[f"{pass_name}_phase_angles"] = _phase_angles(target_bank)
+        result[f"{pass_name}_mod_stats"] = mod_stats
+
+        # Write back
+        if pass_idx == 0:
+            bank_1_asc = target_bank
+        elif pass_idx == 1:
+            bank_2_asc = target_bank
+        elif pass_idx == 2:
+            bank_3 = target_bank
+        elif pass_idx == 3:
+            bank_2_desc = target_bank
+        elif pass_idx == 4:
+            bank_1_desc = target_bank
+
+    return result
+
+
 # ══════════════════════════════════════════════════════════════════════
 # Mode 2: Analyze — PCA, clustering, Montague type encoding
 # ══════════════════════════════════════════════════════════════════════
@@ -503,14 +665,18 @@ def analyze_registers(npz_path: str | Path) -> dict:
     probe_ids = data["probe_ids"]
     categories = data["categories"]
     step = int(data["step"])
+    version = str(data["version"]) if "version" in data else "v4.1"
+    is_v5 = version == "v5"
     n_probes = len(probe_ids)
 
     print(f"{'═' * 72}")
-    print(f"  REGISTER ANALYSIS — v4.1 step {step}")
+    print(f"  REGISTER ANALYSIS — {version} step {step}")
     print(f"  {n_probes} probes")
+    if is_v5:
+        print(f"  Complex registers: ℂ^128 (stored as 256-dim interleaved real)")
     print(f"{'═' * 72}")
 
-    findings = {"step": step, "n_probes": n_probes}
+    findings = {"step": step, "n_probes": n_probes, "version": version}
 
     # ── 1. Per-register, per-pass PCA ─────────────────────────────
     print(f"\n  ── PCA: VARIANCE EXPLAINED ──")
@@ -552,6 +718,58 @@ def analyze_registers(npz_path: str | Path) -> dict:
 
     findings["pca"] = {k: {"top3_var": v["top3_var"], "explained": v["explained"]}
                        for k, v in pca_results.items()}
+
+    # ── 1b. v5: Separate magnitude and phase PCA ─────────────────
+    if is_v5:
+        print(f"\n  ── v5: MAGNITUDE vs PHASE PCA ──")
+        print(f"  Separating the two degrees of freedom in ℂ^128 registers")
+        print()
+        print(f"  {'Register':<8} {'Component':<12}", end="")
+        for label in PASS_LABELS:
+            print(f" {label:>8}", end="")
+        print()
+        print(f"  {'─' * 60}")
+
+        for ri, rn in enumerate(REGISTER_NAMES):
+            for component_name, extract_fn in [
+                ("magnitude", lambda v: np.sqrt(v[:, 0::2]**2 + v[:, 1::2]**2)),
+                ("phase", lambda v: np.arctan2(v[:, 1::2], v[:, 0::2])),
+            ]:
+                variances = []
+                for pn in PASS_NAMES:
+                    vecs = data[f"{pn}_after_pass"][:, ri, :]  # (n_probes, 256)
+                    component = extract_fn(vecs)  # (n_probes, 128)
+                    pca = PCA(n_components=min(10, n_probes, component.shape[1]))
+                    pca.fit(component)
+                    top3 = sum(pca.explained_variance_ratio_[:3])
+                    variances.append(top3)
+                print(f"  {rn:<8} {component_name:<12}", end="")
+                for v in variances:
+                    marker = "█" if v > 0.5 else "▓" if v > 0.3 else "░"
+                    print(f" {v:>7.3f}{marker}", end="")
+                print()
+
+        # Phase angle evolution across passes
+        if any(f"{pn}_phase_angles" in data for pn in PASS_NAMES):
+            print(f"\n  ── v5: PHASE ANGLE EVOLUTION ──")
+            print(f"  Mean phase angle (radians) per register per pass")
+            print()
+            print(f"  {'Register':<8}", end="")
+            for label in PASS_LABELS:
+                print(f" {label:>8}", end="")
+            print()
+            print(f"  {'─' * 52}")
+            for ri, rn in enumerate(REGISTER_NAMES):
+                print(f"  {rn:<8}", end="")
+                for pn in PASS_NAMES:
+                    key = f"{pn}_phase_angles"
+                    if key in data:
+                        angles = data[key][:, ri, :]  # (n_probes, 128)
+                        mean_angle = angles.mean()
+                        print(f" {mean_angle:>+8.3f}", end="")
+                    else:
+                        print(f" {'N/A':>8}", end="")
+                print()
 
     # ── 2. Montague type clustering ───────────────────────────────
     print(f"\n  ── MONTAGUE TYPE SEPARATION ──")
@@ -841,10 +1059,22 @@ def trajectory_analysis(npz_paths: list[str | Path]) -> None:
         datasets.append(d)
 
     steps = [int(d["step"]) for d in datasets]
+    versions = [str(d["version"]) if "version" in d else "v4.1" for d in datasets]
     probe_ids = datasets[0]["probe_ids"]
 
+    # Check for version mixing
+    unique_versions = set(versions)
+    if len(unique_versions) > 1:
+        print(f"  ✗ Mixed versions detected: {unique_versions}")
+        print(f"    Cannot compare register representations across architectures.")
+        print(f"    v4.1 uses ℝ^256 registers; v5 uses ℂ^128 (interleaved as ℝ^256).")
+        print(f"    Run trajectory analysis within a single version.")
+        return
+
+    version = versions[0]
+
     print(f"{'═' * 72}")
-    print(f"  REGISTER TRAJECTORY ACROSS TRAINING")
+    print(f"  REGISTER TRAJECTORY ACROSS TRAINING ({version})")
     print(f"  Steps: {steps}")
     print(f"{'═' * 72}")
 
