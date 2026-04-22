@@ -50,7 +50,7 @@ SEQ_LEN = 4096
 D_FF = 1536
 D_FF_CONSOLIDATE = 2048
 WINDOW = 8
-STRIDES = (1, 8, 64, 512)
+STRIDES = (8, 16, 32, 64, 128, 256, 512)
 N_HEADS = 8
 ALPHA = 1.18              # Spiral attention bias exponent (same as v5)
 
