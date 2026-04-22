@@ -203,11 +203,11 @@ class VSMLMV6(nn.Module):
         # ── Initialization ────────────────────────────────────────
         # Apply standard init to non-ternary modules first
         self.apply(self._init_weights)
-        # Zero-init mod_projs gamma → output = 0 → tanh(0) = 0 → modulation = 1
-        # The ternary routing pattern is random, but gamma=0 silences it at init.
-        # Training will grow gamma from zero, gradually activating modulation.
+        # Zero-init mod_projs master weights → ternary quantizes to all-zero
+        # → matmul output = 0 → tanh(0) = 0 → modulation = 1 (identity at start)
+        # Training will push master weights away from zero, developing modulation.
         for proj in self.mod_projs:
-            nn.init.zeros_(proj.gamma)
+            nn.init.zeros_(proj.weight)
 
     # ── Weight Initialization ─────────────────────────────────────────
 
@@ -776,36 +776,33 @@ class VSMLMV6(nn.Module):
                 seen_ids.add(id(p))
                 total += p.numel()
 
-        # Frozen ternary buffers (not in parameters(), only in buffers())
-        total_frozen_ternary = 0
-        seen_buf_ids: set[int] = set()
+        # Ternary-quantized params (BitLinear master weights — trained via STE)
+        total_ternary = 0
+        seen_bit_ids: set[int] = set()
         for module in self.modules():
             if isinstance(module, BitLinear):
-                buf = module.ternary_weight
-                if id(buf) not in seen_buf_ids:
-                    seen_buf_ids.add(id(buf))
-                    total_frozen_ternary += buf.numel()
+                w = module.weight
+                if id(w) not in seen_bit_ids:
+                    seen_bit_ids.add(id(w))
+                    total_ternary += w.numel()
 
-        # Trainable gamma params (per-channel scales in BitLinear)
+        # Per-channel gamma params
         total_gamma = 0
         for module in self.modules():
             if isinstance(module, BitLinear):
                 total_gamma += module.gamma.numel()
 
-        # Total trainable (parameters only, no buffers)
-        total_trainable = total  # total already counts only parameters
+        # fp16 = everything not ternary
+        total_fp16 = total - total_ternary - total_gamma
 
-        # All params + frozen buffers
-        total_with_frozen = total + total_frozen_ternary
-
-        # Inference memory: ternary at 2 bits, trainable at fp16
-        inference_bytes = total_frozen_ternary * 2 / 8 + total * 2
-        # Training memory: ternary buffers in fp32 (no optimizer), trainable × 4 (master + Adam + grad)
-        training_bytes = total_frozen_ternary * 4 + total * (4 + 4 + 4 + 4)
+        # Inference memory: ternary weights at 2 bits, gamma at fp16, rest at fp16
+        inference_bytes = total_ternary * 2 / 8 + (total_gamma + total_fp16) * 2
+        # Training memory: all params × (fp32 master + Adam m,v + grad) = × 16 bytes
+        training_bytes = total * (4 + 4 + 4 + 4)
 
         # Effective bits (inference)
-        total_bits = total_frozen_ternary * 2 + total * 16
-        effective_bits = total_bits / max(total_with_frozen, 1)
+        total_bits = total_ternary * 2 + (total_gamma + total_fp16) * 16
+        effective_bits = total_bits / max(total, 1)
 
         return {
             "S5_token_embeddings":  s5_embed,
@@ -816,10 +813,10 @@ class VSMLMV6(nn.Module):
             "S3_passes":            s3,
             "Meta_S4":              meta_s4,
             "Meta_S3":              meta_s3,
-            "total_params":         total_with_frozen,
-            "trainable":            total_trainable,
-            "frozen_ternary":       total_frozen_ternary,
-            "trainable_gamma":      total_gamma,
+            "total":                total,
+            "ternary_ste":          total_ternary,
+            "gamma":                total_gamma,
+            "fp16":                 total_fp16,
             "inference_MB":         int(inference_bytes / 1024 / 1024),
             "training_MB":          int(training_bytes / 1024 / 1024),
             "effective_bits_x1000": int(effective_bits * 1000),
@@ -857,23 +854,22 @@ class VSMLMV6(nn.Module):
 
         try:
             params = self.count_parameters()
-            tot = params.get("total_params", 1)
-            trainable = params.get("trainable", 0)
-            frozen = params.get("frozen_ternary", 0)
-            gamma = params.get("trainable_gamma", 0)
+            tot = params.get("total", 1)
+            tern = params.get("ternary_ste", 0)
+            gamma = params.get("gamma", 0)
+            fp = params.get("fp16", 0)
             inf_mb = params.get("inference_MB", 0)
             train_mb = params.get("training_MB", 0)
             eff = params.get("effective_bits_x1000", 16000) / 1000
             lines.extend([
                 f"",
-                f"  Parameters:",
-                f"    Total:           {tot / 1e6:.1f}M",
-                f"    Frozen ternary:  {frozen / 1e6:.1f}M  (random routing, no grad)",
-                f"    Trainable:       {trainable / 1e6:.1f}M  (scales + embeddings + gates)",
-                f"      of which gamma: {gamma:,}  (per-channel ternary scales)",
-                f"    Inference:       {inf_mb} MB",
-                f"    Training:        {train_mb} MB",
-                f"    Effective bits:  {eff:.2f} bits/param",
+                f"  Parameters ({tot / 1e6:.1f}M total, all trainable):",
+                f"    Ternary (STE):   {tern / 1e6:.1f}M  (master fp32, quantize in forward)",
+                f"    Per-channel γ:   {gamma:,}  (amplify/silence routing channels)",
+                f"    fp16 (embed+ctrl): {fp / 1e6:.1f}M",
+                f"    Inference:       {inf_mb} MB  (ternary at 2 bits + fp16)",
+                f"    Training:        {train_mb} MB  (all fp32 + Adam)",
+                f"    Effective bits:  {eff:.2f} bits/param (inference)",
             ])
         except Exception:
             pass  # describe() shouldn't crash if count fails
