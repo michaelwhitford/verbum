@@ -691,6 +691,50 @@ class VSMLMV6(nn.Module):
 
         return logits, loss, metrics
 
+    # ── Ternary Training Loop ─────────────────────────────────────
+
+    def continuous_parameters(self):
+        """Parameters for the optimizer (everything except ternary weights).
+
+        Use this instead of model.parameters() when building the optimizer:
+            optimizer = AdamW(model.continuous_parameters(), lr=..., wd=...)
+
+        Ternary weights learn through flip accumulation, not the optimizer.
+        """
+        ternary_ids = {
+            id(m.ternary_weight) for m in self.modules()
+            if isinstance(m, BitLinear)
+        }
+        return [p for p in self.parameters() if id(p) not in ternary_ids]
+
+    def accumulate_flips(self) -> None:
+        """Route ternary gradients to flip accumulators.
+
+        Call after loss.backward(), before optimizer.step():
+            loss.backward()
+            model.accumulate_flips()
+            optimizer.step()
+        """
+        for module in self.modules():
+            if isinstance(module, BitLinear):
+                module.accumulate()
+
+    @torch.no_grad()
+    def apply_flips(self, threshold: float = 0.1) -> int:
+        """Flip ternary weights where accumulated gradient exceeds threshold.
+
+        Call periodically (e.g., every 100 steps):
+            if step % FLIP_INTERVAL == 0:
+                n = model.apply_flips(threshold=0.1)
+
+        Returns total number of weights flipped across all layers.
+        """
+        total = 0
+        for module in self.modules():
+            if isinstance(module, BitLinear):
+                total += module.flip_step(threshold)
+        return total
+
     # ── Ternary Statistics ────────────────────────────────────────────
 
     @torch.no_grad()
@@ -776,15 +820,15 @@ class VSMLMV6(nn.Module):
                 seen_ids.add(id(p))
                 total += p.numel()
 
-        # Frozen ternary buffers
+        # Ternary weights (Parameters, but trained via flip accumulation, not optimizer)
         total_ternary = 0
-        seen_buf_ids: set[int] = set()
+        seen_tern_ids: set[int] = set()
         for module in self.modules():
             if isinstance(module, BitLinear):
-                buf = module.ternary_weight
-                if id(buf) not in seen_buf_ids:
-                    seen_buf_ids.add(id(buf))
-                    total_ternary += buf.numel()
+                w = module.ternary_weight
+                if id(w) not in seen_tern_ids:
+                    seen_tern_ids.add(id(w))
+                    total_ternary += w.numel()
 
         # Per-channel gamma (trainable)
         total_gamma = 0
@@ -792,17 +836,17 @@ class VSMLMV6(nn.Module):
             if isinstance(module, BitLinear):
                 total_gamma += module.gamma.numel()
 
-        # Total with frozen (params + buffers)
-        total_all = total + total_ternary
+        # Continuous params = total - ternary weights
+        total_continuous = total - total_ternary
 
-        # Inference: ternary at 2 bits, everything else at fp16
-        inference_bytes = total_ternary * 2 / 8 + total * 2
-        # Training: ternary buffers in fp32 (no optimizer) + trainable × 16 (fp32 + Adam + grad)
-        training_bytes = total_ternary * 4 + total * (4 + 4 + 4 + 4)
+        # Inference: ternary at 2 bits, continuous at fp16
+        inference_bytes = total_ternary * 2 / 8 + total_continuous * 2
+        # Training: ternary (fp32 param + fp32 accum, no Adam) + continuous (fp32 + Adam m,v + grad)
+        training_bytes = total_ternary * (4 + 4) + total_continuous * (4 + 4 + 4 + 4)
 
-        # Effective bits (inference, counting ternary + trainable)
-        total_bits = total_ternary * 2 + total * 16
-        effective_bits = total_bits / max(total_all, 1)
+        # Effective bits (inference)
+        total_bits = total_ternary * 2 + total_continuous * 16
+        effective_bits = total_bits / max(total, 1)
 
         return {
             "S5_token_embeddings":  s5_embed,
@@ -813,9 +857,9 @@ class VSMLMV6(nn.Module):
             "S3_passes":            s3,
             "Meta_S4":              meta_s4,
             "Meta_S3":              meta_s3,
-            "total_with_frozen":    total_all,
-            "trainable":            total,
-            "frozen_ternary":       total_ternary,
+            "total":                total,
+            "ternary_flip":         total_ternary,
+            "continuous":           total_continuous,
             "gamma":                total_gamma,
             "inference_MB":         int(inference_bytes / 1024 / 1024),
             "training_MB":          int(training_bytes / 1024 / 1024),
@@ -854,20 +898,19 @@ class VSMLMV6(nn.Module):
 
         try:
             params = self.count_parameters()
-            tot = params.get("total_with_frozen", 1)
-            trainable = params.get("trainable", 0)
-            frozen = params.get("frozen_ternary", 0)
+            tot = params.get("total", 1)
+            tern = params.get("ternary_flip", 0)
+            cont = params.get("continuous", 0)
             gamma = params.get("gamma", 0)
             inf_mb = params.get("inference_MB", 0)
             train_mb = params.get("training_MB", 0)
             eff = params.get("effective_bits_x1000", 16000) / 1000
             lines.extend([
                 f"",
-                f"  Parameters:",
-                f"    Total:           {tot / 1e6:.1f}M  ({frozen / 1e6:.1f}M ternary + {trainable / 1e6:.1f}M continuous)",
-                f"    Frozen ternary:  {frozen / 1e6:.1f}M  (fixed routing topology)",
-                f"    Trainable:       {trainable / 1e6:.1f}M  (VSM control hierarchy learns to use the wiring)",
-                f"      per-channel γ:  {gamma:,}  (amplify/silence routing channels)",
+                f"  Parameters ({tot / 1e6:.1f}M):",
+                f"    Ternary (flip):  {tern / 1e6:.1f}M  (learns via gradient accumulation + discrete flips)",
+                f"    Continuous:      {cont / 1e6:.1f}M  (learns via Adam: γ, embeddings, gates, registers)",
+                f"      per-channel γ:  {gamma:,}",
                 f"    Inference:       {inf_mb} MB",
                 f"    Training:        {train_mb} MB",
                 f"    Effective bits:  {eff:.2f} bits/param",

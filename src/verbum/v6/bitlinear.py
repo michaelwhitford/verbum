@@ -1,30 +1,25 @@
-"""BitLinear — Native ternary routing with learned continuous control.
+"""BitLinear — Ternary routing that learns through flip accumulation.
 
-The ternary weights {-1, 0, +1} define a fixed circuit topology:
-which neurons connect positively, negatively, or not at all. They are
-initialized once (Kaiming → absmean quantize) and frozen.
+The ternary weights {-1, 0, +1} define routing topology. They evolve
+during training through a lightweight accumulate-and-flip mechanism:
 
-The learning happens in the CONTINUOUS CONTROL HIERARCHY above them:
-  - per-channel gamma: amplify/silence individual routing channels
-  - RMSNorm gains: scale activations entering each layer
-  - S3 alignment gates: control phase-level information flow
-  - S3 temperature/bias: sharpen/soften gating decisions
-  - Meta-S3 gates: control pass-level contribution
-  - Embeddings, registers, norms: the semantic substrate
+  1. Forward: pure ternary matmul (x @ W_ternary) * gamma
+  2. Backward: STE computes gradient for ternary weights
+  3. Gradient routes to a flip accumulator (not to the optimizer)
+  4. Periodically: weights whose accumulator exceeds threshold FLIP
+     one step (-1→0, 0→+1, +1→0, etc.) and the accumulator resets
 
-This is NOT quantization. There are no master weights, no STE, no
-quantization step in the forward pass. The matmul is pure ternary:
-  y_j = Σ_{w=+1} x_i - Σ_{w=-1} x_i   (additions/subtractions only)
+This gives ternary weights that LEARN useful routing patterns, without
+maintaining fp32 master weights or Adam optimizer state for them.
+The flip accumulator is the only overhead: 4 bytes per ternary weight.
 
-The per-channel gamma then scales each output dimension:
-  y = (x @ W_ternary^T) * gamma
+Per ternary weight: 4 bytes (fp32 value) + 4 bytes (accumulator) = 8 bytes
+vs STE + Adam:      4 bytes (master) + 4+4 (Adam m,v) + 4 (grad) = 16 bytes
+vs frozen:          4 bytes (buffer) + 0 = 4 bytes (but doesn't learn!)
 
-The VSM's 5-pass recursive structure means each ternary circuit is
-used 5 times with different gating each time. 28M continuous params
-learn to ROUTE THROUGH 35.3M fixed ternary connections.
-
-Training: 561 MB (ternary buffers + continuous trained with Adam)
-Inference: 61 MB (ternary at 2 bits + fp16)
+The per-channel gamma (out_features,) provides continuous fine-tuning
+on top of the discrete ternary routing. Gamma is trained normally with
+Adam via the optimizer.
 
 License: MIT
 """
@@ -39,7 +34,7 @@ import torch.nn.functional as F
 
 
 # ══════════════════════════════════════════════════════════════════════
-# RMSNorm (BitNet standard — no bias, no centering)
+# RMSNorm
 # ══════════════════════════════════════════════════════════════════════
 
 
@@ -66,44 +61,45 @@ class BitRMSNorm(nn.Module):
 
 
 def _ternary_quantize(w: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
-    """Quantize weights to {-1, 0, +1} using absmean scaling.
+    """Quantize weights to {-1, 0, +1} using per-channel absmean.
 
     Returns:
         w_q: ternary weight tensor {-1, 0, +1}
         gamma: per-channel scale factors (out_features,)
     """
-    gamma = w.abs().mean(dim=-1)  # (out_features,)
+    gamma = w.abs().mean(dim=-1)
     w_scaled = w / (gamma.unsqueeze(-1) + 1e-8)
     w_q = w_scaled.round().clamp(-1, 1)
     return w_q, gamma
 
 
 # ══════════════════════════════════════════════════════════════════════
-# BitLinear — native ternary routing + learned per-channel scale
+# BitLinear — ternary routing with flip accumulation
 # ══════════════════════════════════════════════════════════════════════
 
 
 class BitLinear(nn.Module):
-    """Linear layer with native ternary routing and learned per-channel scale.
-
-    The ternary weight defines a fixed routing topology. The per-channel
-    gamma controls how much each output dimension contributes. Together
-    with the VSM's continuous control hierarchy (S3 gates, meta-S3,
-    temperature/bias, register system), the model learns to use the
-    fixed topology effectively.
+    """Linear layer with learnable ternary routing via flip accumulation.
 
     Initialization:
       1. Generate fp32 weights with Kaiming uniform
       2. Quantize to {-1, 0, +1} via per-channel absmean
-      3. Store ternary pattern as buffer (frozen, no grad)
-      4. Store per-channel gamma as parameter (trained)
+      3. Store as nn.Parameter (autograd computes gradient via STE)
+      4. Store per-channel gamma as separate nn.Parameter
+      5. Create flip accumulator buffer (same shape as weights)
 
     Forward:
       y = RMSNorm(x) @ W_ternary^T * gamma
-      (no quantization step — pure ternary matmul + scale)
 
-    Trainable: gamma (out_features) + norm.weight (in_features)
-    Frozen: ternary_weight (out_features × in_features)
+    Training loop (managed by model, not optimizer):
+      - After backward: ternary gradient → flip_accum, then zero grad
+      - Periodically: where |accum| > threshold → flip weight, reset
+      - Optimizer only sees gamma + norm (via model.continuous_parameters())
+
+    The ternary weights evolve through discrete flips, not continuous
+    gradient descent. Each flip moves one step: -1→0, 0→±1, ±1→0.
+    The accumulator captures gradient pressure; the threshold controls
+    how much evidence is needed before committing to a flip.
     """
 
     def __init__(
@@ -122,15 +118,19 @@ class BitLinear(nn.Module):
         else:
             self.norm = None
 
-        # Initialize: Kaiming → quantize → freeze ternary, learn gamma
+        # Initialize: Kaiming → quantize → ternary param + gamma param
         w_init = torch.empty(out_features, in_features)
         nn.init.kaiming_uniform_(w_init, a=math.sqrt(5))
         w_q, gamma = _ternary_quantize(w_init)
 
-        # Frozen ternary routing (no grad, no optimizer)
-        self.register_buffer("ternary_weight", w_q)
+        # Ternary routing — Parameter so autograd computes gradient,
+        # but NOT passed to optimizer. Gradient routes to flip_accum.
+        self.ternary_weight = nn.Parameter(w_q)
 
-        # Learned per-channel scale
+        # Flip accumulator — tracks gradient pressure for each weight
+        self.register_buffer("flip_accum", torch.zeros_like(w_q))
+
+        # Per-channel scale — trained normally via optimizer
         self.gamma = nn.Parameter(gamma)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -138,10 +138,43 @@ class BitLinear(nn.Module):
             x = self.norm(x)
         return F.linear(x, self.ternary_weight) * self.gamma
 
+    def accumulate(self) -> None:
+        """Route ternary gradient to flip accumulator, then zero grad.
+
+        Call after loss.backward(), before optimizer.step().
+        """
+        if self.ternary_weight.grad is not None:
+            self.flip_accum.add_(self.ternary_weight.grad)
+            self.ternary_weight.grad = None
+
+    @torch.no_grad()
+    def flip_step(self, threshold: float) -> int:
+        """Flip ternary weights where accumulated gradient exceeds threshold.
+
+        Each flip moves one step in the gradient direction:
+          -1 + positive pressure → 0
+           0 + positive pressure → +1
+          +1 + negative pressure → 0
+           0 + negative pressure → -1
+
+        Returns number of weights flipped.
+        """
+        mask = self.flip_accum.abs() > threshold
+        n_flipped = mask.sum().item()
+
+        if n_flipped > 0:
+            direction = self.flip_accum[mask].sign()
+            current = self.ternary_weight.data[mask]
+            new_vals = (current + direction).clamp(-1, 1).round()
+            self.ternary_weight.data[mask] = new_vals
+            self.flip_accum[mask] = 0.0
+
+        return int(n_flipped)
+
     @torch.no_grad()
     def ternary_stats(self) -> dict[str, float]:
-        """Report ternary weight and gamma statistics."""
-        w = self.ternary_weight
+        """Report ternary weight, gamma, and accumulator statistics."""
+        w = self.ternary_weight.data
         total = w.numel()
         return {
             "sparsity": (w == 0).sum().item() / total,
@@ -149,8 +182,8 @@ class BitLinear(nn.Module):
             "neg_frac": (w == -1).sum().item() / total,
             "gamma_mean": self.gamma.mean().item(),
             "gamma_std": self.gamma.std().item(),
-            "gamma_min": self.gamma.min().item(),
-            "gamma_max": self.gamma.max().item(),
+            "accum_mean": self.flip_accum.abs().mean().item(),
+            "accum_max": self.flip_accum.abs().max().item(),
         }
 
     def extra_repr(self) -> str:
@@ -158,8 +191,8 @@ class BitLinear(nn.Module):
             f"in_features={self.in_features}, "
             f"out_features={self.out_features}, "
             f"pre_norm={self.pre_norm}, "
-            f"ternary={self.ternary_weight.numel()} frozen, "
-            f"gamma={self.gamma.numel()} trained"
+            f"ternary={self.ternary_weight.numel()} (flip-learnable), "
+            f"gamma={self.gamma.numel()}"
         )
 
 
@@ -169,7 +202,7 @@ class BitLinear(nn.Module):
 
 
 class BitFFN(nn.Module):
-    """Feed-forward network with native ternary routing.
+    """Feed-forward network with learnable ternary routing.
 
     Pre-norm → BitLinear(up) → GELU → BitLinear(down) + residual
     """
