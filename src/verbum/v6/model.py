@@ -98,7 +98,7 @@ class VSMLMV6(nn.Module):
         d_ff: int = 1536,               # Prep/converge FFN width
         d_ff_consolidate: int = 2048,   # Consolidate FFN width
         window: int = 8,
-        strides: tuple[int, ...] = (8, 16, 32, 64, 128, 256, 512),
+        strides: tuple[int, ...] = (8, 16, 32, 64, 128, 256, 512, 1024),
         dropout: float = 0.1,
         alpha: float = 1.18,            # Spiral attention bias exponent
     ):

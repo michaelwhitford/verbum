@@ -203,7 +203,7 @@ class StrideStack(nn.Module):
     def __init__(
         self,
         d_model: int,
-        strides: tuple[int, ...] = (8, 16, 32, 64, 128, 256, 512),
+        strides: tuple[int, ...] = (8, 16, 32, 64, 128, 256, 512, 1024),
         window: int = 8,
         n_heads: int = 8,
         dropout: float = 0.1,
