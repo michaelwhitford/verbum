@@ -203,9 +203,11 @@ class VSMLMV6(nn.Module):
         # ── Initialization ────────────────────────────────────────
         # Apply standard init to non-ternary modules first
         self.apply(self._init_weights)
-        # Zero-init mod_projs weights → modulation = 1 → identity at start
+        # Zero-init mod_projs gamma → output = 0 → tanh(0) = 0 → modulation = 1
+        # The ternary routing pattern is random, but gamma=0 silences it at init.
+        # Training will grow gamma from zero, gradually activating modulation.
         for proj in self.mod_projs:
-            nn.init.zeros_(proj.weight)
+            nn.init.zeros_(proj.gamma)
 
     # ── Weight Initialization ─────────────────────────────────────────
 
@@ -774,33 +776,36 @@ class VSMLMV6(nn.Module):
                 seen_ids.add(id(p))
                 total += p.numel()
 
-        # Ternary parameter count (BitLinear weights)
-        total_ternary = 0
-        seen_bit_ids: set[int] = set()
+        # Frozen ternary buffers (not in parameters(), only in buffers())
+        total_frozen_ternary = 0
+        seen_buf_ids: set[int] = set()
         for module in self.modules():
             if isinstance(module, BitLinear):
-                if id(module.weight) not in seen_bit_ids:
-                    seen_bit_ids.add(id(module.weight))
-                    total_ternary += module.weight.numel()
+                buf = module.ternary_weight
+                if id(buf) not in seen_buf_ids:
+                    seen_buf_ids.add(id(buf))
+                    total_frozen_ternary += buf.numel()
 
-        # BitRMSNorm gains (fp16, part of ternary layers but not ternary themselves)
-        total_bitnorm = 0
-        seen_norm_ids: set[int] = set()
+        # Trainable gamma params (per-channel scales in BitLinear)
+        total_gamma = 0
         for module in self.modules():
-            if isinstance(module, BitRMSNorm):
-                if id(module.weight) not in seen_norm_ids:
-                    seen_norm_ids.add(id(module.weight))
-                    total_bitnorm += module.weight.numel()
+            if isinstance(module, BitLinear):
+                total_gamma += module.gamma.numel()
 
-        # fp16 params = everything that isn't ternary
-        total_fp16 = total - total_ternary
+        # Total trainable (parameters only, no buffers)
+        total_trainable = total  # total already counts only parameters
 
-        # Effective bits: ternary ≈ 1.58 bits/param, fp16 = 16 bits/param
-        effective_bits = (
-            (total_ternary * 1.58 + total_fp16 * 16) / max(total, 1)
-        )
-        # Return as int × 1000 for the dict (keep as float separately)
-        effective_bits_int = int(round(effective_bits * 1000))
+        # All params + frozen buffers
+        total_with_frozen = total + total_frozen_ternary
+
+        # Inference memory: ternary at 2 bits, trainable at fp16
+        inference_bytes = total_frozen_ternary * 2 / 8 + total * 2
+        # Training memory: ternary buffers in fp32 (no optimizer), trainable × 4 (master + Adam + grad)
+        training_bytes = total_frozen_ternary * 4 + total * (4 + 4 + 4 + 4)
+
+        # Effective bits (inference)
+        total_bits = total_frozen_ternary * 2 + total * 16
+        effective_bits = total_bits / max(total_with_frozen, 1)
 
         return {
             "S5_token_embeddings":  s5_embed,
@@ -811,10 +816,13 @@ class VSMLMV6(nn.Module):
             "S3_passes":            s3,
             "Meta_S4":              meta_s4,
             "Meta_S3":              meta_s3,
-            "total":                total,
-            "total_ternary":        total_ternary,
-            "total_fp16":           total_fp16,
-            "effective_bits_x1000": effective_bits_int,
+            "total_params":         total_with_frozen,
+            "trainable":            total_trainable,
+            "frozen_ternary":       total_frozen_ternary,
+            "trainable_gamma":      total_gamma,
+            "inference_MB":         int(inference_bytes / 1024 / 1024),
+            "training_MB":          int(training_bytes / 1024 / 1024),
+            "effective_bits_x1000": int(effective_bits * 1000),
         }
 
     # ── Architecture Description ──────────────────────────────────────
@@ -849,17 +857,23 @@ class VSMLMV6(nn.Module):
 
         try:
             params = self.count_parameters()
-            eff_bits = params["effective_bits_x1000"] / 1000.0
-            total_m = params["total"] / 1e6
-            ternary_m = params["total_ternary"] / 1e6
-            fp16_m = params["total_fp16"] / 1e6
+            tot = params.get("total_params", 1)
+            trainable = params.get("trainable", 0)
+            frozen = params.get("frozen_ternary", 0)
+            gamma = params.get("trainable_gamma", 0)
+            inf_mb = params.get("inference_MB", 0)
+            train_mb = params.get("training_MB", 0)
+            eff = params.get("effective_bits_x1000", 16000) / 1000
             lines.extend([
                 f"",
                 f"  Parameters:",
-                f"    Total:          {total_m:.1f}M",
-                f"    Ternary (S1):   {ternary_m:.1f}M  ({ternary_m/total_m*100:.1f}%)",
-                f"    fp16 (S4/S3/…): {fp16_m:.1f}M  ({fp16_m/total_m*100:.1f}%)",
-                f"    Effective bits: {eff_bits:.2f} bits/param",
+                f"    Total:           {tot / 1e6:.1f}M",
+                f"    Frozen ternary:  {frozen / 1e6:.1f}M  (random routing, no grad)",
+                f"    Trainable:       {trainable / 1e6:.1f}M  (scales + embeddings + gates)",
+                f"      of which gamma: {gamma:,}  (per-channel ternary scales)",
+                f"    Inference:       {inf_mb} MB",
+                f"    Training:        {train_mb} MB",
+                f"    Effective bits:  {eff:.2f} bits/param",
             ])
         except Exception:
             pass  # describe() shouldn't crash if count fails

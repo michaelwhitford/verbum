@@ -1,23 +1,34 @@
-"""BitLinear — Ternary weight quantization with Straight-Through Estimator.
+"""BitLinear — Native ternary weights with learned per-channel scales.
 
-Implements the core 1.58-bit linear layer from BitNet b1.58 (Ma et al., 2024).
+Ternary weights {-1, 0, +1} are initialized once (from Kaiming → quantize)
+and FROZEN. No fp32 master weights, no STE, no quantization overhead in the
+forward pass. The matmul is just additions and subtractions.
 
-Weight quantization (forward only — master weights stay fp32):
-  γ = mean(|W|)
-  W_q = RoundClip(W / γ, -1, 1)  →  {-1, 0, +1}
-  y = RMSNorm(x) @ W_q^T · γ
+The only trainable parameters per layer are:
+  - gamma: per-channel scale factor (out_features,) — controls how much
+    each output dimension of the ternary routing contributes
+  - norm.weight: RMSNorm gain (in_features,) — controls input magnitude
 
-Backward: STE — gradients pass through the quantization function as if
-it were identity. The optimizer updates the full-precision master weights.
+This is NOT quantization-aware training. The ternary weights define a fixed
+random routing topology. Training adjusts the gain knobs (gamma, norms) and
+the non-ternary components (embeddings, gates, registers) to exploit the
+fixed routes. Like a randomly wired circuit with learnable amplifiers.
 
-No bias (BitNet convention — RMSNorm + ternary weights make bias redundant).
+Training implications:
+  - 35.3M ternary weights → 8.4 MB buffer (no optimizer state, no gradients)
+  - ~88K gamma params + ~88K norm params → fully trained with Adam
+  - ~28M fp16 params (embeddings, gates, etc.) → fully trained
+  - Total training memory: ~590 MB (vs 964 MB with QAT, vs 1012 MB for v5)
+  - Forward pass: FASTER than QAT (no quantize step)
 
-Activation quantization (8-bit absmax, optional) is deferred — start with
-fp32 activations and add activation quantization as a refinement if needed.
+The per-channel gamma allows the model to learn which output dimensions
+of each routing layer matter. A gamma near zero effectively silences that
+dimension's routing. This is richer than a single per-layer scalar.
 
 References:
-  - "The Era of 1-bit LLMs" (Ma et al., 2024)
-  - "When Are 1.58 Bits Enough?" (Nielsen et al., 2024)
+  - Lottery ticket hypothesis (Frankle & Carlin, 2019)
+  - Random projections / reservoir computing
+  - BitNet b1.58 (Ma et al., 2024) for the ternary init distribution
 
 License: MIT
 """
@@ -58,7 +69,7 @@ class BitRMSNorm(nn.Module):
 
 
 # ══════════════════════════════════════════════════════════════════════
-# Ternary quantization functions
+# Ternary initialization
 # ══════════════════════════════════════════════════════════════════════
 
 
@@ -66,74 +77,41 @@ def _ternary_quantize(w: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
     """Quantize weights to {-1, 0, +1} using absmean scaling.
 
     Args:
-        w: full-precision weight tensor
+        w: full-precision weight tensor (out_features, in_features)
 
     Returns:
         w_q: ternary weight tensor {-1, 0, +1}
-        gamma: scale factor (mean of absolute values)
+        gamma: per-channel scale factors (out_features,)
     """
-    gamma = w.abs().mean()
-    w_scaled = w / (gamma + 1e-8)
-    # Round to nearest integer and clip to [-1, 1] → {-1, 0, +1}
+    # Per-channel absmean (one gamma per output neuron)
+    gamma = w.abs().mean(dim=-1)  # (out_features,)
+    w_scaled = w / (gamma.unsqueeze(-1) + 1e-8)
     w_q = w_scaled.round().clamp(-1, 1)
     return w_q, gamma
 
 
-class _TernaryQuantizeSTE(torch.autograd.Function):
-    """Ternary quantization with Straight-Through Estimator.
-
-    Forward: quantize to {-1, 0, +1}, scale by gamma.
-    Backward: pass gradients through as if quantization is identity.
-
-    The STE is the key training trick — it lets gradients flow to the
-    full-precision master weights even though the forward pass uses
-    ternary weights.
-    """
-
-    @staticmethod
-    def forward(ctx, w: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
-        w_q, gamma = _ternary_quantize(w)
-        ctx.save_for_backward(w)
-        return w_q, gamma
-
-    @staticmethod
-    def backward(ctx, grad_w_q, grad_gamma):
-        # STE: pass gradient through to the full-precision weights
-        return grad_w_q
-
-
-def ternary_quantize_ste(w: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
-    """Quantize weights to ternary with STE gradient.
-
-    Returns (w_q, gamma) where:
-      w_q: {-1, 0, +1} tensor (same shape as w)
-      gamma: scalar scale factor
-    """
-    return _TernaryQuantizeSTE.apply(w)
-
-
 # ══════════════════════════════════════════════════════════════════════
-# BitLinear — the ternary linear layer
+# BitLinear — native ternary with learned per-channel scales
 # ══════════════════════════════════════════════════════════════════════
 
 
 class BitLinear(nn.Module):
-    """Linear layer with ternary weight quantization.
+    """Linear layer with frozen ternary weights and learned per-channel scales.
 
-    Stores master weights in full precision (fp32). During forward:
-      1. RMSNorm the input (stabilize activations before ternary matmul)
-      2. Quantize weights to {-1, 0, +1} via absmean
-      3. Matmul (becomes additions/subtractions with ternary weights)
-      4. Scale output by gamma (the absmean of the full-precision weights)
+    Initialization:
+      1. Generate fp32 weights with Kaiming uniform
+      2. Quantize to {-1, 0, +1} via per-channel absmean
+      3. Freeze the ternary pattern as a buffer (no grad, no optimizer)
+      4. Store the per-channel gamma as a learnable parameter
 
-    During backward: STE passes gradients through to master weights.
+    Forward:
+      y = RMSNorm(x) @ W_q^T * gamma
 
-    The matmul with ternary weights is mathematically:
-      y_j = Σ_i x_i · w_q_{ij}  where w_q ∈ {-1, 0, +1}
-          = Σ_{w=+1} x_i - Σ_{w=-1} x_i  (additions only!)
+    The matmul with W_q is mathematically additions/subtractions only.
+    Gamma broadcasts per output channel, scaling each routing dimension.
 
-    No bias (BitNet convention). The RMSNorm gain provides per-feature
-    scaling, making explicit bias unnecessary.
+    Trainable parameters: gamma (out_features) + norm.weight (in_features).
+    Frozen: ternary_weight buffer (out_features × in_features).
 
     Parameters:
         in_features: input dimension
@@ -152,50 +130,54 @@ class BitLinear(nn.Module):
         self.out_features = out_features
         self.pre_norm = pre_norm
 
-        # Master weights — full precision, updated by optimizer
-        self.weight = nn.Parameter(torch.empty(out_features, in_features))
-
         # Pre-norm (RMSNorm on input before ternary matmul)
         if pre_norm:
             self.norm = BitRMSNorm(in_features)
         else:
             self.norm = None
 
-        self.reset_parameters()
+        # Initialize: Kaiming → quantize → freeze ternary, learn gamma
+        w_init = torch.empty(out_features, in_features)
+        nn.init.kaiming_uniform_(w_init, a=math.sqrt(5))
+        w_q, gamma = _ternary_quantize(w_init)
 
-    def reset_parameters(self) -> None:
-        # Kaiming uniform, same as nn.Linear default
-        nn.init.kaiming_uniform_(self.weight, a=math.sqrt(5))
+        # Frozen ternary routing pattern (no grad, no optimizer state)
+        self.register_buffer("ternary_weight", w_q)
+
+        # Learnable per-channel scale (the only trainable weight in this layer)
+        self.gamma = nn.Parameter(gamma)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         # 1. Pre-norm input
         if self.norm is not None:
             x = self.norm(x)
 
-        # 2. Quantize weights to ternary with STE
-        w_q, gamma = ternary_quantize_ste(self.weight)
-
-        # 3. Matmul with ternary weights (additions/subtractions)
-        # 4. Scale by gamma
-        return F.linear(x, w_q) * gamma
+        # 2. Ternary matmul (additions/subtractions) + per-channel scale
+        return F.linear(x, self.ternary_weight) * self.gamma
 
     @torch.no_grad()
     def ternary_stats(self) -> dict[str, float]:
-        """Report quantization statistics (for instrumentation).
+        """Report ternary weight and gamma statistics.
 
         Returns:
-            sparsity: fraction of weights quantized to 0
-            pos_frac: fraction quantized to +1
-            neg_frac: fraction quantized to -1
-            gamma: current absmean scale factor
+            sparsity: fraction of ternary weights that are 0 (fixed)
+            pos_frac: fraction that are +1 (fixed)
+            neg_frac: fraction that are -1 (fixed)
+            gamma_mean: mean of per-channel scales (evolves during training)
+            gamma_std: std of per-channel scales
+            gamma_min: minimum scale
+            gamma_max: maximum scale
         """
-        w_q, gamma = _ternary_quantize(self.weight)
-        total = w_q.numel()
+        w = self.ternary_weight
+        total = w.numel()
         return {
-            "sparsity": (w_q == 0).sum().item() / total,
-            "pos_frac": (w_q == 1).sum().item() / total,
-            "neg_frac": (w_q == -1).sum().item() / total,
-            "gamma": gamma.item(),
+            "sparsity": (w == 0).sum().item() / total,
+            "pos_frac": (w == 1).sum().item() / total,
+            "neg_frac": (w == -1).sum().item() / total,
+            "gamma_mean": self.gamma.mean().item(),
+            "gamma_std": self.gamma.std().item(),
+            "gamma_min": self.gamma.min().item(),
+            "gamma_max": self.gamma.max().item(),
         }
 
     def extra_repr(self) -> str:
@@ -203,7 +185,8 @@ class BitLinear(nn.Module):
             f"in_features={self.in_features}, "
             f"out_features={self.out_features}, "
             f"pre_norm={self.pre_norm}, "
-            f"bits=1.58"
+            f"frozen_ternary={self.ternary_weight.numel()}, "
+            f"trainable_gamma={self.gamma.numel()}"
         )
 
 
@@ -213,13 +196,12 @@ class BitLinear(nn.Module):
 
 
 class BitFFN(nn.Module):
-    """Feed-forward network with ternary weights.
+    """Feed-forward network with frozen ternary weights.
 
     Pre-norm → BitLinear(up) → GELU → BitLinear(down)
 
-    The up-projection and down-projection are both ternary.
-    GELU activation stays fp32 (activations are not quantized).
-    The pre-norm in BitLinear handles input normalization.
+    Both projections use frozen ternary routing + learned per-channel
+    scales. The GELU activation stays fp32.
     """
 
     def __init__(
