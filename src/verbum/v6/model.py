@@ -234,6 +234,232 @@ class VSMLMV6(nn.Module):
 
         return logits, loss
 
+    # ── Instrumented Forward ──────────────────────────────────────
+
+    def forward_instrumented(
+        self,
+        input_ids: mx.array,
+        targets: Optional[mx.array] = None,
+    ) -> tuple[mx.array, Optional[mx.array], dict]:
+        """Forward pass with full instrumentation for probing/diagnostics.
+
+        Captures per-pass, per-phase, per-register metrics matching the
+        PyTorch v6 convention for analysis compatibility.
+        """
+        B, L = input_ids.shape
+        metrics: dict = {}
+        reg_names = list(self.REGISTER_NAMES)
+
+        positions = mx.arange(L)
+        x = self.token_embed(input_ids) + self.pos_embed(positions)
+        mx.eval(x)
+        metrics["embed_norm"] = mx.sqrt((x * x).sum(axis=-1)).mean().item()
+
+        # Register banks
+        bank_0 = self._init_bank0()
+        bank_1_asc = self._fresh_bank()
+        bank_2_asc = self._fresh_bank()
+        bank_3 = self._fresh_bank()
+        bank_2_desc = self._fresh_bank()
+        bank_1_desc = self._fresh_bank()
+
+        for i, name in enumerate(reg_names):
+            r = bank_0[i]
+            metrics[f"register_{name}_init_norm"] = mx.sqrt(
+                (mx.real(r) ** 2 + mx.imag(r) ** 2).sum()
+            ).item()
+
+        pass_deltas = []
+
+        pass_schedule = [
+            (0, False, "L0_asc", [bank_0], None),
+            (1, False, "L1_asc", None, None),
+            (2, False, "L2_apex", None, None),
+            (3, True, "L1_desc", None, None),
+            (4, True, "L0_desc", None, None),
+        ]
+
+        for pass_idx, is_descending, pass_name, _, _ in pass_schedule:
+            pfx = pass_name
+
+            # Set readable banks and target bank per pass
+            if pass_idx == 0:
+                readable = [bank_0]
+                target_bank = bank_1_asc
+            elif pass_idx == 1:
+                readable = [bank_0, bank_1_asc]
+                target_bank = bank_2_asc
+            elif pass_idx == 2:
+                readable = [bank_0, bank_1_asc, bank_2_asc]
+                target_bank = bank_3
+            elif pass_idx == 3:
+                readable = [bank_0, bank_1_asc, bank_2_asc, bank_3]
+                target_bank = bank_2_desc
+            else:
+                readable = [bank_0, bank_1_asc, bank_2_desc, bank_3]
+                target_bank = bank_1_desc
+
+            x_before = x
+
+            # ── S4 ──────────────────────────────────────────
+            s4_updates, s4_attn = self.s4(readable, x)
+            target_bank = [target_bank[i] + s4_updates[i] for i in range(self.n_registers)]
+
+            mx.eval(s4_attn)
+            for i, name in enumerate(reg_names):
+                r = target_bank[i]
+                mx.eval(r)
+                metrics[f"{pfx}_reg_{name}_after_s4"] = mx.sqrt(
+                    (mx.real(r) ** 2 + mx.imag(r) ** 2).sum()
+                ).item()
+                metrics[f"{pfx}_reg_{name}_phase_mean"] = mx.mean(
+                    mx.arctan2(mx.imag(r), mx.real(r))
+                ).item()
+
+            s4_entropy = -(s4_attn * mx.log(s4_attn + 1e-10)).sum(axis=-1).mean()
+            metrics[f"{pfx}_s4_attn_entropy"] = s4_entropy.item()
+
+            # ── Three Phases ─────────────────────────────────
+            for phase_idx, phase_name in enumerate(self.PHASE_NAMES):
+                if phase_name == "prep":
+                    phase_out = self.prep(x)
+                elif phase_name == "converge":
+                    phase_out = self.stride_stack(x, reverse=is_descending)
+                else:
+                    phase_out = self.consolidate(x)
+
+                delta = phase_out - x
+                gated_delta, target_bank, gate, write_gates = (
+                    self.s3_passes[pass_idx].gate_phase(target_bank, delta, phase_idx)
+                )
+
+                # Modulation
+                modulation = 1.0 + gate * mx.tanh(self.mod_projs[phase_idx](delta))
+                x = x * modulation
+
+                mx.eval(delta, gated_delta, gate, modulation)
+                metrics[f"{pfx}_{phase_name}_delta_norm"] = mx.sqrt(
+                    (delta * delta).sum(axis=-1)
+                ).mean().item()
+                metrics[f"{pfx}_{phase_name}_gated_norm"] = mx.sqrt(
+                    (gated_delta * gated_delta).sum(axis=-1)
+                ).mean().item()
+                metrics[f"{pfx}_{phase_name}_gate_mean"] = gate.item()
+                metrics[f"{pfx}_{phase_name}_gate_std"] = 0.0  # scalar gate
+                metrics[f"{pfx}_{phase_name}_mod_mean"] = modulation.mean().item()
+                metrics[f"{pfx}_{phase_name}_mod_std"] = mx.sqrt(
+                    mx.var(modulation)
+                ).item()
+                mx.eval(x)
+                metrics[f"{pfx}_after_{phase_name}"] = mx.sqrt(
+                    (x * x).sum(axis=-1)
+                ).mean().item()
+                for i, rn in enumerate(reg_names):
+                    metrics[f"{pfx}_{phase_name}_write_{rn}"] = write_gates[i]
+
+            # Register norms after pass
+            for i, name in enumerate(reg_names):
+                r = target_bank[i]
+                mx.eval(r)
+                metrics[f"{pfx}_register_{name}_norm"] = mx.sqrt(
+                    (mx.real(r) ** 2 + mx.imag(r) ** 2).sum()
+                ).item()
+                metrics[f"{pfx}_register_{name}_phase_final"] = mx.mean(
+                    mx.arctan2(mx.imag(r), mx.real(r))
+                ).item()
+
+            # Write back
+            if pass_idx == 0:
+                bank_1_asc = target_bank
+            elif pass_idx == 1:
+                bank_2_asc = target_bank
+            elif pass_idx == 2:
+                bank_3 = target_bank
+            elif pass_idx == 3:
+                bank_2_desc = target_bank
+            else:
+                bank_1_desc = target_bank
+
+            pass_deltas.append(x - x_before)
+
+        # ── Level-indexed aliases for compat ──────────────────
+        level_map = {
+            "L0_asc": "level0", "L1_asc": "level1", "L2_apex": "level2",
+            "L1_desc": "level1_desc", "L0_desc": "level0_desc",
+        }
+        for pass_name, level_pfx in level_map.items():
+            for key in list(metrics.keys()):
+                if key.startswith(pass_name + "_"):
+                    suffix = key[len(pass_name) + 1:]
+                    metrics[f"{level_pfx}_{suffix}"] = metrics[key]
+
+        # Iter aliases (v4 compat)
+        for level in range(min(3, 2)):
+            src_pfx = f"level{level}"
+            dst_pfx = f"iter{level}"
+            for phase in self.PHASE_NAMES:
+                for suffix in ["delta_norm", "gated_norm", "gate_mean", "gate_std"]:
+                    k = f"{src_pfx}_{phase}_{suffix}"
+                    if k in metrics:
+                        metrics[f"{dst_pfx}_{phase}_{suffix}"] = metrics[k]
+                for rn in reg_names:
+                    k = f"{src_pfx}_{phase}_write_{rn}"
+                    if k in metrics:
+                        metrics[f"{dst_pfx}_{phase}_write_{rn}"] = metrics[k]
+            for rn in reg_names:
+                for ks in [f"reg_{rn}_after_s4", f"register_{rn}_norm"]:
+                    k = f"{src_pfx}_{ks}"
+                    if k in metrics:
+                        metrics[f"{dst_pfx}_{ks}"] = metrics[k]
+            k = f"{src_pfx}_s4_attn_entropy"
+            if k in metrics:
+                metrics[f"{dst_pfx}_s4_attn_entropy"] = metrics[k]
+            for phase in self.PHASE_NAMES:
+                k = f"{src_pfx}_after_{phase}"
+                if k in metrics:
+                    metrics[f"{dst_pfx}_after_{phase}"] = metrics[k]
+
+        # ── Meta-S3 ───────────────────────────────────────────
+        all_banks = [bank_0, bank_1_asc, bank_2_asc, bank_3, bank_2_desc, bank_1_desc]
+        meta_gates = self.meta_s3(all_banks)
+        mx.eval(meta_gates)
+
+        for i, pname in enumerate(self.PASS_NAMES):
+            metrics[f"meta_s3_gate_{pname}"] = meta_gates[i].item()
+        metrics["meta_s3_gate_level0"] = meta_gates[0].item()
+        metrics["meta_s3_gate_level1"] = meta_gates[1].item()
+        metrics["meta_s3_gate_level2"] = meta_gates[2].item()
+
+        total_ungated = sum(pass_deltas)
+        total_gated = sum(meta_gates[i] * pass_deltas[i] for i in range(self.N_PASSES))
+        x = x - total_ungated + total_gated
+
+        # ── Meta-S4 ───────────────────────────────────────────
+        meta_banks = [bank_0, bank_1_desc, bank_2_desc, bank_3]
+        x = self.meta_s4(meta_banks, x)
+
+        mx.eval(x)
+        metrics["output_norm"] = mx.sqrt((x * x).sum(axis=-1)).mean().item()
+        metrics["overall_expansion"] = metrics["output_norm"] / max(metrics["embed_norm"], 1e-8)
+
+        # Global compat
+        metrics["s4_attn_entropy"] = metrics["L0_asc_s4_attn_entropy"]
+        metrics["register_after_s4"] = sum(
+            metrics[f"L0_asc_reg_{n}_after_s4"] for n in reg_names
+        )
+
+        x = self.output_norm(x)
+        logits = x @ self.token_embed.weight.T
+
+        loss = None
+        if targets is not None:
+            loss = nn.losses.cross_entropy(
+                logits.reshape(-1, self.vocab_size),
+                targets.reshape(-1),
+            ).mean()
+
+        return logits, loss, metrics
+
     # ── Ternary stats ─────────────────────────────────────────────
 
     def ternary_stats(self) -> dict[str, dict[str, float]]:

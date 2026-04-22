@@ -38,9 +38,9 @@ kernel output matches reference to floating-point tolerance.
 - ✅ `ternary.py` — TernaryLinear, TernaryFFN, flip accumulation, tested
 - ✅ `attention.py` — SingleStrideAttention, StrideStack, tested
 - ✅ `components.py` — S4, S3, MetaS4, MetaS3, tested
-- ✅ `model.py` — VSMLMV6 full architecture, forward + backward verified
-- ⬜ `train.py` — training loop (gradient splitting, flip schedule)
-- ⬜ `probe.py` — forward_instrumented probing
+- ✅ `model.py` — VSMLMV6 full architecture, forward + backward + forward_instrumented (508 metrics)
+- ✅ `train.py` — MLX training loop (flip accumulation, restore_ternary, safetensors checkpointing)
+- ✅ `probe.py` — load checkpoint, forward_instrumented, display metrics + summary
 
 **Design doc**: `docs/v6-design.md`
 
