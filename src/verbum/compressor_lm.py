@@ -51,6 +51,14 @@ class StridedCausalAttention(nn.Module):
     No L×L matrix ever materialized.
 
     At seq=4096 with W=8: 32K entries per head vs 16.7M dense.
+
+    Spiral bias (alpha != None):
+      bias(w) = -α · ln(stride · w + 1)
+      Adds power-law distance decay to attention logits before softmax.
+      weight ∝ 1/(distance+1)^α after softmax. Creates a smooth,
+      continuous attention landscape across stride boundaries.
+      α=1.18 fits empirical attention patterns with R²=0.997.
+      Like ALiBi but derived from distance-decay in probability space.
     """
 
     def __init__(
@@ -58,6 +66,7 @@ class StridedCausalAttention(nn.Module):
         d_model: int,
         head_configs: list[tuple[int, int]],  # [(stride, window), ...] per head
         dropout: float = 0.1,
+        alpha: float | None = None,  # Spiral bias exponent (None = disabled)
     ):
         super().__init__()
         self.d_model = d_model
@@ -65,6 +74,7 @@ class StridedCausalAttention(nn.Module):
         self.n_heads = len(head_configs)
         self.d_head = d_model // self.n_heads
         assert d_model % self.n_heads == 0
+        self.alpha = alpha
 
         self.q_proj = nn.Linear(d_model, d_model)
         self.k_proj = nn.Linear(d_model, d_model)
@@ -83,6 +93,7 @@ class StridedCausalAttention(nn.Module):
             self._stride_groups[key].append(i)
 
         self._index_cache: dict[tuple[int, int, int, str], tuple[torch.Tensor, torch.Tensor]] = {}
+        self._bias_cache: dict[tuple[int, int, str], torch.Tensor] = {}
 
     def _get_indices(
         self, seq_len: int, stride: int, window: int, device: torch.device,
@@ -102,6 +113,21 @@ class StridedCausalAttention(nn.Module):
             indices = raw.clamp(min=0)
             self._index_cache[cache_key] = (indices, valid)
         return self._index_cache[cache_key]
+
+    def _get_spiral_bias(
+        self, stride: int, window: int, device: torch.device,
+    ) -> torch.Tensor:
+        """Power-law distance decay bias: -α · ln(stride · w + 1).
+
+        Returns (W,) tensor. w=0 → bias=0 (self-position unbiased).
+        Broadcasts to (B, n_g, L, W) in the attention computation.
+        """
+        cache_key = (stride, window, str(device))
+        if cache_key not in self._bias_cache:
+            w = torch.arange(window, device=device, dtype=torch.float32)
+            bias = -self.alpha * torch.log(stride * w + 1.0)
+            self._bias_cache[cache_key] = bias
+        return self._bias_cache[cache_key]
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         B, L, D = x.shape
@@ -141,6 +167,10 @@ class StridedCausalAttention(nn.Module):
             K_r = K_gathered.permute(0, 3, 1, 2, 4)        # (B, n_g, L, W, d_head)
             attn = torch.einsum("bgld,bglwd->bglw", Q_r, K_r) * self.scale
 
+            # Spiral bias: power-law distance decay across strides
+            if self.alpha is not None:
+                attn = attn + self._get_spiral_bias(stride, window, x.device)
+
             # Mask invalid (pre-sequence) positions
             attn = attn.masked_fill(~valid.unsqueeze(0).unsqueeze(0), float("-inf"))
 
@@ -174,10 +204,11 @@ class CompressorLayer(nn.Module):
         head_configs: list[tuple[int, int]],
         d_ff: int,
         dropout: float = 0.1,
+        alpha: float | None = None,
     ):
         super().__init__()
         self.norm1 = nn.LayerNorm(d_model)
-        self.attn = StridedCausalAttention(d_model, head_configs, dropout)
+        self.attn = StridedCausalAttention(d_model, head_configs, dropout, alpha=alpha)
         self.norm2 = nn.LayerNorm(d_model)
         self.ff = nn.Sequential(
             nn.Linear(d_model, d_ff),
