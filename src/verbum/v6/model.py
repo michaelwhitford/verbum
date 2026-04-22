@@ -15,9 +15,11 @@ BOTH scale-selection AND content-selection, which fights the ternary
 constraint. Separating strides into individual layers simplifies the
 learning problem and lets sparsity emerge stride-by-stride.
 
-The S4/S3/Meta complex machinery from v5 stays fp16 — high-precision
-registers matter for complex-phase encoding. Only the S1 operations
-(what we compute at every token, every pass) go ternary.
+All projection weights go ternary — S1 operations, S4/S3 routing,
+Meta-S4/S3 gating. Only embeddings, norms, and tiny gate biases
+stay fp16. The philosophy: ternary excels at routing decisions
+(attend here? gate this? match that direction?), and that's what
+most of these weights do.
 
 Changes from v5
 ---------------
@@ -51,11 +53,11 @@ import torch.nn.functional as F
 
 from verbum.v6.bitlinear import BitLinear, BitFFN, BitRMSNorm
 from verbum.v6.attention import StrideStack
-from verbum.vsm_lm_v5 import (
-    S4IntelligenceComplex,
-    S3PhaseCoherent,
-    MetaS3Complex,
-    MetaS4Complex,
+from verbum.v6.components import (
+    S4Ternary,
+    S3Ternary,
+    MetaS4Ternary,
+    MetaS3Ternary,
     _interleave_banks,
     _interleave_complex,
 )
@@ -156,7 +158,7 @@ class VSMLMV6(nn.Module):
         self.consolidate = BitFFN(d_model, d_ff_consolidate, dropout)
 
         # ── S4: Intelligence (fp16) ───────────────────────────────
-        self.s4 = S4IntelligenceComplex(
+        self.s4 = S4Ternary(
             d_model, d_register,
             n_registers=self.n_registers,
             max_banks=self.n_banks,
@@ -165,7 +167,7 @@ class VSMLMV6(nn.Module):
 
         # ── S3: Control (fp16) — 5 instances, one per pass ───────
         self.s3_passes = nn.ModuleList([
-            S3PhaseCoherent(
+            S3Ternary(
                 d_model, d_register,
                 n_phases=self.n_phases,
                 n_registers=self.n_registers,
@@ -182,16 +184,16 @@ class VSMLMV6(nn.Module):
             for _ in range(self.n_phases)
         ])
 
-        # ── Meta-S4: Final structural summary (fp16) ──────────────
-        self.meta_s4 = MetaS4Complex(
+        # ── Meta-S4: Final structural summary (ternary) ─────────────
+        self.meta_s4 = MetaS4Ternary(
             d_model, d_register,
             n_registers=self.n_registers,
             n_banks=4,
             dropout=dropout,
         )
 
-        # ── Meta-S3: Per-pass contribution gates (fp16) ───────────
-        self.meta_s3 = MetaS3Complex(
+        # ── Meta-S3: Per-pass contribution gates (fp16, tiny) ───────
+        self.meta_s3 = MetaS3Ternary(
             d_register,
             n_registers=self.n_registers,
             n_banks=self.n_banks,
@@ -714,8 +716,8 @@ class VSMLMV6(nn.Module):
 
         Returns a dict with breakdown and totals:
           S5_token_embeddings, S5_positional, S5_other  — fp16
-          S1_ternary                                     — all BitLinear/BitFFN/StrideStack
-          S4_intelligence, S3_passes, Meta_S4, Meta_S3  — fp16
+          S1_ternary                                     — BitLinear/BitFFN/StrideStack
+          S4_intelligence, S3_passes, Meta_S4, Meta_S3  — mostly ternary (BitLinear projs)
           total, total_ternary, total_fp16, effective_bits
         """
         seen_ids: set[int] = set()
@@ -754,10 +756,10 @@ class VSMLMV6(nn.Module):
         s1_mod = _count_unique(self.mod_projs)
         s1_ternary = s1_prep + s1_stride_stack + s1_consolidate + s1_mod
 
-        # --- S4: Intelligence (fp16) ---
+        # --- S4: Intelligence (ternary projections) ---
         s4 = _count_unique(self.s4)
 
-        # --- S3: Control (fp16, 5 passes) ---
+        # --- S3: Control (ternary projs + fp16 scalars, 5 passes) ---
         s3 = sum(_count_unique(s3p) for s3p in self.s3_passes)
 
         # --- Meta ---
