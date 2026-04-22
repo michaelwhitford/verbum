@@ -1,17 +1,49 @@
-"""VSM-LM v6 — Ternary Stacked Compressors.
+"""VSM-LM v6 — Ternary on Metal (MLX).
 
-v6 replaces fp16 linear layers in S1 operations with BitLinear
-(ternary {-1, 0, +1} weights, trained with STE). The key architectural
-change: instead of multi-stride attention in a single layer, each stride
-gets its own ternary attention layer, stacked sequentially.
+Custom Metal compute kernels for ternary matmul (add/sub only).
+Flip accumulation for discrete weight learning.
 
-Ternary weights unlock depth: 8 ternary attention layers use less memory
-than 2 fp16 layers, but provide 4× the compositional depth. Each stride
-layer does one thing (attend at one scale), which is simple enough for
-{-1, 0, +1} weights to express.
+Core modules:
+    TernaryLinear    — int8 ternary weights, custom Metal kernel, VJP
+    TernaryFFN       — ternary feed-forward with residual
+    StrideStack      — sequential multi-stride ternary attention
+    VSMLMV6          — full 5-pass bidirectional VSM architecture
 
-Same VSM meta-structure: 5 passes, bidirectional, complex registers,
-phase-coherent gating, multiplicative modulation.
+Training utilities:
+    split_ternary_grads   — separate ternary vs continuous gradients
+    accumulate_flips      — route gradients to flip accumulators
+    apply_flips           — flip weights where |accum| > threshold
 
-License: MIT
+Metal kernels:
+    ternary_matmul        — y = x @ w.T (w ∈ {-1,0,+1})
+    ternary_matmul_t      — y = x @ w   (transposed, for backward)
 """
+
+from verbum.v6.kernels import ternary_matmul, ternary_matmul_t
+from verbum.v6.ternary import (
+    TernaryLinear,
+    TernaryFFN,
+    split_ternary_grads,
+    accumulate_flips,
+    apply_flips,
+)
+from verbum.v6.attention import SingleStrideAttention, StrideStack
+from verbum.v6.components import S4Ternary, S3Ternary, MetaS4Ternary, MetaS3Ternary
+from verbum.v6.model import VSMLMV6
+
+__all__ = [
+    "ternary_matmul",
+    "ternary_matmul_t",
+    "TernaryLinear",
+    "TernaryFFN",
+    "split_ternary_grads",
+    "accumulate_flips",
+    "apply_flips",
+    "SingleStrideAttention",
+    "StrideStack",
+    "S4Ternary",
+    "S3Ternary",
+    "MetaS4Ternary",
+    "MetaS3Ternary",
+    "VSMLMV6",
+]

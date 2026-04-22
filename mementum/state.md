@@ -19,44 +19,36 @@ Key step 1k observations:
 - Phase angles developing, register-specific
 - No gate polarity yet (strong-anti <0.02)
 
-### v6 design (session 026) — ready to train after v5 step 10k
+### v6 implementation (session 026–027) — MLX + Metal ternary kernels
 
-Ternary stacked compressors. Radical departure from v5:
+v6 is now implemented in MLX (not PyTorch). Custom Metal compute kernels
+for ternary matmul — actual add/sub on GPU, no fp32 multiplies.
 
-**Core idea**: replace multi-stride CompressorLayers with single-stride
-ternary attention layers stacked sequentially. 9 strides, each its own
-layer, same W=8 window (fractal symmetry). Ternary weights {-1, 0, +1}
-define routing topology. Continuous params learn to use the routes.
+**Substrate**: MLX with `mx.fast.metal_kernel()` for ternary matmul.
+`@mx.custom_function` + `.vjp` for differentiable ternary linear layer.
+Both forward and backward-through-x use the custom Metal kernel.
 
-**Strides**: (1, 8, 16, 32, 64, 128, 256, 512, 1024) — geometric ladder
-from word-level to full-document. Ascending: fine→coarse. Descending:
-coarse→fine. Same StrideStack shared across all 5 passes (S5 coherence).
+**Architecture**: faithful port of the PyTorch v6 design. 5-pass
+bidirectional VSM, StrideStack, complex registers, flip accumulation.
+All 147 TernaryLinear modules use the Metal kernel. Verified:
+kernel output matches reference to floating-point tolerance.
 
-**Ternary learning — flip accumulation** (not STE, not frozen):
-- Gradients flow via STE, accumulate in per-weight buffer
-- When |accumulator| > threshold, weight flips one step (-1→0, 0→±1)
-- No fp32 master weights, no Adam state for ternary params
-- Training loop: `accumulate_flips()` after backward, `apply_flips()` periodically
-- Optimizer only sees continuous params via `model.continuous_parameters()`
+**Implementation status**:
+- ✅ `kernels.py` — Metal ternary matmul + transposed variant, tested
+- ✅ `ternary.py` — TernaryLinear, TernaryFFN, flip accumulation, tested
+- ✅ `attention.py` — SingleStrideAttention, StrideStack, tested
+- ✅ `components.py` — S4, S3, MetaS4, MetaS3, tested
+- ✅ `model.py` — VSMLMV6 full architecture, forward + backward verified
+- ⬜ `train.py` — training loop (gradient splitting, flip schedule)
+- ⬜ `probe.py` — forward_instrumented probing
 
-**All projections are ternary** — S1 (FFN, stride attention), S4 (register
-scan), S3 (alignment, write projs), Meta-S4, Meta-S3 routing. Only
-embeddings, norms, tiny gate biases, scalars (temperature/bias) stay fp16.
+**Design doc**: `docs/v6-design.md`
 
-**Per-channel gamma**: 55,808 learned scales (one per output dimension per
-BitLinear layer). Amplify useful routing channels, silence useless ones.
-
-**Numbers**:
-- 63.2M params: 35.3M ternary (flip-learnable) + 27.9M continuous (Adam)
-- 45 attention evals per forward (9 strides × 5 passes)
-- 99.6% of forward compute is addition/subtraction
-- Training: 695 MB. Inference: 61 MB (deployable via bitnet.cpp on Mac ARM)
-
-**v6 components** (self-contained, no v5 dependency for core arch):
-- `v6/bitlinear.py` — BitLinear (flip accumulation), BitRMSNorm, BitFFN
-- `v6/attention.py` — SingleStrideAttention, StrideStack
-- `v6/components.py` — S4Ternary, S3Ternary, MetaS4Ternary, MetaS3Ternary
-- `v6/model.py` — VSMLMV6
+**Key numbers** (small test model, full-size TBD):
+- 147 TernaryLinear modules, all routing through Metal kernel
+- Forward: logits correct shape, finite loss
+- Backward: gradients flow to both ternary_weight and gamma
+- Flip accumulation: tested — weights flip correctly, remain ternary
 
 ## What's next
 
@@ -82,12 +74,14 @@ BitLinear layer). Amplify useful routing channels, silence useless ones.
 | Purpose | Path |
 |---------|------|
 | **v6** | |
-| v6 BitLinear | `src/verbum/v6/bitlinear.py` |
+| v6 design doc | `docs/v6-design.md` |
+| v6 Metal kernels | `src/verbum/v6/kernels.py` |
+| v6 TernaryLinear | `src/verbum/v6/ternary.py` |
 | v6 attention | `src/verbum/v6/attention.py` |
 | v6 components | `src/verbum/v6/components.py` |
 | v6 model | `src/verbum/v6/model.py` |
-| v6 training | `scripts/v6/train.py` |
-| v6 probe | `scripts/v6/probe.py` |
+| v6 training | `scripts/v6/train.py` (⬜ needs MLX port) |
+| v6 probe | `scripts/v6/probe.py` (⬜ needs MLX port) |
 | **v5** | |
 | v5 model | `src/verbum/vsm_lm_v5.py` |
 | v5 training | `scripts/run_vsm_v5_1B.py` |
