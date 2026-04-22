@@ -917,6 +917,83 @@ def trajectory_analysis(npz_paths: list[str | Path]) -> None:
             print()
         print()
 
+    # Track: PCA variance explained (PC1) — is structure concentrating?
+    print(f"\n  ── PCA: PC1 VARIANCE EXPLAINED OVER TRAINING ──")
+    print(f"  Higher = more structure concentrated in first principal component")
+    print()
+
+    from sklearn.decomposition import PCA
+
+    for ri, rn in enumerate(REGISTER_NAMES):
+        print(f"  Register: {rn}")
+        print(f"  {'Pass':<8}", end="")
+        for step in steps:
+            print(f" {f'step_{step}':>10}", end="")
+        print()
+
+        for pi, (pn, plabel) in enumerate(zip(PASS_NAMES, PASS_LABELS)):
+            print(f"  {plabel:<8}", end="")
+            for d in datasets:
+                key = f"{pn}_after_pass"
+                if key not in d:
+                    print(f" {'N/A':>10}", end="")
+                    continue
+                vecs = d[key][:, ri, :]
+                n = min(10, vecs.shape[0], vecs.shape[1])
+                pca = PCA(n_components=n)
+                pca.fit(vecs)
+                pc1 = pca.explained_variance_ratio_[0]
+                print(f" {pc1:>10.3f}", end="")
+            print()
+        print()
+
+    # Track: depth correlation — does compositional depth encoding strengthen?
+    print(f"\n  ── COMPOSITION DEPTH CORRELATION OVER TRAINING ──")
+    print(f"  Pearson r: register norm vs FA depth (negative = deeper → smaller norm)")
+    print()
+
+    from scipy.stats import pearsonr
+
+    # Build depth arrays from probe ids
+    depth_indices = []
+    depth_values = []
+    for j, pid in enumerate(probe_ids):
+        pid_str = str(pid)
+        if pid_str in COMPOSITION_DEPTH:
+            depth_indices.append(j)
+            depth_values.append(COMPOSITION_DEPTH[pid_str])
+    depth_indices = np.array(depth_indices)
+    depth_values = np.array(depth_values, dtype=float)
+
+    n_depth = len(depth_indices)
+    print(f"  {n_depth} probes with depth labels (range {int(depth_values.min())}-{int(depth_values.max())})")
+    print()
+
+    if n_depth >= 5:
+        for ri, rn in enumerate(REGISTER_NAMES):
+            print(f"  Register: {rn}")
+            print(f"  {'Pass':<8}", end="")
+            for step in steps:
+                print(f" {f'step_{step}':>10}", end="")
+            print()
+
+            for pi, (pn, plabel) in enumerate(zip(PASS_NAMES, PASS_LABELS)):
+                print(f"  {plabel:<8}", end="")
+                for d in datasets:
+                    key = f"{pn}_after_pass"
+                    if key not in d:
+                        print(f" {'N/A':>10}", end="")
+                        continue
+                    vecs = d[key][depth_indices, ri, :]
+                    norms = np.linalg.norm(vecs, axis=1)
+                    r, _ = pearsonr(depth_values, norms)
+                    marker = "★" if abs(r) > 0.5 else "●" if abs(r) > 0.3 else "○"
+                    print(f" {r:>+8.3f}{marker}", end="")
+                print()
+            print()
+    else:
+        print(f"  Too few probes with depth labels ({n_depth}) — skipping")
+
 
 # ══════════════════════════════════════════════════════════════════════
 # CLI
