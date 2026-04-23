@@ -27,16 +27,17 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
 from verbum.v6.model import VSMLMV6
 from verbum.v6.ternary import (
     TernaryLinear,
+    _walk_ternary_modules,
+    _classify_group,
     accumulate_flips,
-    apply_flips,
-    compute_flip_threshold,
+    apply_flips_per_group,
     restore_ternary,
 )
 
 DATA_DIR = Path("/Users/mwhitford/data/fractal-bitnet/shards")
 
 # ══════════════════════════════════════════════════════════════════════
-# Config — identical to v5 where not noted
+# Config
 # ══════════════════════════════════════════════════════════════════════
 
 VOCAB_SIZE = 50277
@@ -87,6 +88,8 @@ LOG_INTERVAL = 25
 EVAL_INTERVAL = 500
 CHECKPOINT_INTERVAL = 1000
 
+# These are set from model.REGISTER_NAMES etc. after model construction.
+# Declared here so module-level functions can reference them.
 N_PASSES = 5
 PASS_NAMES = ["L0_asc", "L1_asc", "L2_apex", "L1_desc", "L0_desc"]
 REG_NAMES = ["type", "scope", "role"]
@@ -211,13 +214,238 @@ def compile_gate_test(model, tokenizer):
     results = []
     for prompt in prompts:
         ids = mx.array(tokenizer.encode(prompt)).reshape(1, -1)
-        out = model.generate(ids, max_new_tokens=30, temperature=0.8)
+        out = model.generate(ids, max_new_tokens=30)  # greedy (argmax)
         mx.eval(out)
         text = tokenizer.decode(out[0].tolist())
         has_lambda = "λ" in text[len(prompt):] or "\\" in text[len(prompt):]
         results.append({"prompt": prompt, "output": text, "has_lambda": has_lambda})
     n_lambda = sum(1 for r in results if r["has_lambda"])
     return {"score": f"{n_lambda}/{len(prompts)}", "results": results}
+
+
+# ── Per-stratum loss samples ──────────────────────────────────────
+
+STRATUM_SAMPLES = {
+    "prose": [
+        "The cat sat on the mat and looked out the window at the birds flying south.",
+        "In a quiet village nestled between rolling hills the old baker opened his shop.",
+    ],
+    "compositional": [
+        "The man who the dog that the cat chased bit ran away quickly.",
+        "If every student reads a book then some teacher is happy.",
+    ],
+    "technical": [
+        "The gradient of the loss with respect to the weights is computed via backpropagation.",
+        "Attention scores are computed as the softmax of the scaled dot product of queries and keys.",
+    ],
+    "math": [
+        "λx. λy. apply(x, y) → result",
+        "P(A|B) = P(B|A) × P(A) / P(B)",
+    ],
+}
+
+
+def phi_compression_probe(model, tokenizer):
+    """Lightweight φ-compression probe for inline training diagnostics.
+
+    Runs forward_instrumented on a few samples, returns per-pass
+    compression ratios, per-stride ratios, and gate values.
+    """
+    samples = [
+        "The cat sat on the mat and looked out the window at the birds.",
+        "Every student who passed the exam received a certificate.",
+        "In 1969 Apollo 11 landed on the moon marking a giant leap.",
+    ]
+    all_ratios = {p: [] for p in PASS_NAMES}
+    all_gates = {}  # {pass_phase: [values]}
+    all_stride_ratios = {}  # {pass_stride_key: [values]}
+    all_hilberg = {p: [] for p in PASS_NAMES}
+
+    for text in samples:
+        ids = mx.array(tokenizer.encode(text)).reshape(1, -1)
+        if ids.shape[1] > model.max_len:
+            ids = ids[:, -model.max_len:]
+        targets = mx.concatenate([ids[:, 1:], mx.zeros((1, 1), dtype=mx.int32)], axis=1)
+        _, _, metrics = model.forward_instrumented(ids, targets)
+        for p in PASS_NAMES:
+            cr_key = f"{p}_compression_ratio"
+            if cr_key in metrics:
+                all_ratios[p].append(metrics[cr_key])
+            # Gate values
+            for ph in PHASE_NAMES:
+                gk = f"{p}_{ph}"
+                gv = metrics.get(f"{p}_{ph}_gate_mean")
+                if gv is not None:
+                    all_gates.setdefault(gk, []).append(gv)
+            # Per-stride ratios
+            for key, val in metrics.items():
+                if key.startswith(f"{p}_stride_") and key.endswith("_ratio"):
+                    all_stride_ratios.setdefault(key, []).append(val)
+            # Hilberg β
+            hb = metrics.get(f"{p}_hilberg_beta")
+            hs = metrics.get(f"{p}_hilberg_slope")
+            if hb is not None:
+                all_hilberg[p].append({"slope": hs, "beta": hb})
+            elif hs is not None:
+                all_hilberg[p].append({"slope": hs, "beta": hs + 1})
+
+    result = {}
+    for p in PASS_NAMES:
+        if all_ratios[p]:
+            result[p] = sum(all_ratios[p]) / len(all_ratios[p])
+
+    if result:
+        all_cr = list(result.values())
+        result["mean"] = sum(all_cr) / len(all_cr)
+        result["mean_phi_dev"] = sum(abs(cr - INV_PHI) for cr in all_cr) / len(all_cr)
+
+    # Average gate values
+    result["gates"] = {}
+    for gk, gvs in all_gates.items():
+        result["gates"][gk] = sum(gvs) / len(gvs)
+
+    # Average Hilberg β
+    result["hilberg"] = {}
+    for p in PASS_NAMES:
+        if all_hilberg[p]:
+            avg_slope = sum(h["slope"] for h in all_hilberg[p]) / len(all_hilberg[p])
+            avg_beta = sum(h["beta"] for h in all_hilberg[p]) / len(all_hilberg[p])
+            result["hilberg"][p] = {"slope": avg_slope, "beta": avg_beta}
+
+    return result
+
+
+VSM_PROBE_TEXT = "Every student who passed the final exam received a certificate."
+
+
+def vsm_probe(model, tokenizer):
+    """Lightweight VSM signal extraction for flip feedback.
+
+    Runs forward_instrumented on one fixed sample and returns the
+    control signals the VSM uses to regulate itself:
+    - meta_s3: per-pass contribution gates (5 values)
+    - s3: per-pass × per-phase alignment gates (15 values)
+    - register_norms: per-pass × per-register structural state (15 values)
+
+    Returns a flat dict of scalars for easy before/after comparison,
+    plus a signal vector for cosine similarity.
+    """
+    ids = mx.array(tokenizer.encode(VSM_PROBE_TEXT)).reshape(1, -1)
+    if ids.shape[1] > model.max_len:
+        ids = ids[:, -model.max_len:]
+    targets = mx.concatenate([ids[:, 1:], mx.zeros((1, 1), dtype=mx.int32)], axis=1)
+
+    _, _, metrics = model.forward_instrumented(ids, targets)
+
+    signals = {}
+
+    # Meta-S3 gates: per-pass importance
+    for p in PASS_NAMES:
+        key = f"meta_s3_gate_{p}"
+        signals[key] = metrics.get(key, 0.5)
+
+    # S3 phase gates: per-pass × per-phase activity
+    for p in PASS_NAMES:
+        for ph in PHASE_NAMES:
+            key = f"{p}_{ph}_gate_mean"
+            signals[key] = metrics.get(key, 0.5)
+
+    # Register norms: structural state
+    for p in PASS_NAMES:
+        for rn in REG_NAMES:
+            key = f"{p}_register_{rn}_norm"
+            signals[key] = metrics.get(key, 0.0)
+
+    # Flatten to vector for cosine similarity
+    signal_vec = np.array([signals[k] for k in sorted(signals.keys())], dtype=np.float64)
+
+    return signals, signal_vec
+
+
+def vsm_stability(vec_before, vec_after):
+    """Cosine similarity between VSM signal vectors.
+
+    Returns similarity in [0, 1]:
+    - > 0.95: system self-stabilized, no intervention needed
+    - 0.8–0.95: mild perturbation, monitor
+    - < 0.8: destabilized, escalate to global feedback
+    """
+    dot = np.dot(vec_before, vec_after)
+    norm_b = np.linalg.norm(vec_before)
+    norm_a = np.linalg.norm(vec_after)
+    if norm_b < 1e-10 or norm_a < 1e-10:
+        return 0.0
+    return float(dot / (norm_b * norm_a))
+
+
+def compute_per_group_flip_targets(signals, base_target):
+    """Compute per-group flip targets from VSM control signals.
+
+    Inverts importance: high gate → protect (fewer flips), low gate → explore (more flips).
+    Base_target is the current global flip_target_pct.
+
+    Returns dict {group_name: target_pct}.
+    """
+    # Average S3 gates per phase across all passes
+    phase_activity = {}
+    for ph in PHASE_NAMES:
+        gates = [signals.get(f"{p}_{ph}_gate_mean", 0.5) for p in PASS_NAMES]
+        phase_activity[ph] = sum(gates) / len(gates)
+
+    # Meta-S3: overall pass importance
+    pass_importance = [signals.get(f"meta_s3_gate_{p}", 0.5) for p in PASS_NAMES]
+    mean_importance = sum(pass_importance) / len(pass_importance)
+
+    # Inversion: importance → protection factor
+    # gate=1.0 → factor=0.3 (protect: 30% of base rate)
+    # gate=0.5 → factor=1.0 (neutral: base rate)
+    # gate=0.0 → factor=2.0 (explore: 200% of base rate)
+    def invert(gate_val):
+        # Linear map: gate 0→2.0, gate 0.5→1.0, gate 1.0→0.3
+        # Clamp to [0.3, 2.0]
+        factor = 2.0 - 3.4 * gate_val  # gate=0→2.0, gate=0.5→0.3  ... wait
+        # Actually: factor = 2.0 * (1.0 - gate_val) + 0.3 * gate_val
+        # gate=0 → 2.0, gate=1 → 0.3
+        factor = 2.0 * (1.0 - gate_val) + 0.3 * gate_val
+        return max(0.3, min(2.0, factor))
+
+    targets = {
+        "prep": base_target * invert(phase_activity["prep"]),
+        "stride_stack": base_target * invert(phase_activity["converge"]),
+        "consolidate": base_target * invert(phase_activity["consolidate"]),
+        "mod_projs": base_target * invert(mean_importance),
+        # Control system: always conservative (50% of base)
+        "s3": base_target * 0.5,
+        "s4": base_target * 0.5,
+        "meta": base_target * 0.3,
+    }
+
+    # Clamp all to [FLIP_PCT_MIN, FLIP_PCT_MAX]
+    for k in targets:
+        targets[k] = max(FLIP_PCT_MIN, min(FLIP_PCT_MAX, targets[k]))
+
+    return targets
+
+
+def stratum_loss_probe(model, tokenizer):
+    """Measure loss per content stratum."""
+    results = {}
+    for sname, samples in STRATUM_SAMPLES.items():
+        losses = []
+        for text in samples:
+            ids = mx.array(tokenizer.encode(text)).reshape(1, -1)
+            if ids.shape[1] > model.max_len:
+                ids = ids[:, -model.max_len:]
+            targets = mx.concatenate([ids[:, 1:], mx.zeros((1, 1), dtype=mx.int32)], axis=1)
+            _, loss = model(ids, targets)
+            mx.eval(loss)
+            if loss is not None:
+                losses.append(loss.item())
+        if losses:
+            mean_loss = sum(losses) / len(losses)
+            rm = relational_metrics(mean_loss)
+            results[sname] = {"loss": mean_loss, **rm}
+    return results
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -272,6 +500,16 @@ def main():
     print(model.describe())
     print()
 
+    # Sync architecture constants from model (single source of truth)
+    global N_PASSES, PASS_NAMES, PHASE_NAMES, REG_NAMES
+    N_PASSES = model.N_PASSES
+    PASS_NAMES = list(model.PASS_NAMES)
+    PHASE_NAMES = list(model.PHASE_NAMES)
+    REG_NAMES = list(model.REGISTER_NAMES)
+
+    # Compute ternary weight count from model (not hardcoded)
+    _n_ternary_weights = model.count_parameters()["total_ternary"]
+
     ternary_stats_init = model.ternary_stats()
     n_ternary_modules = len(ternary_stats_init)
     if n_ternary_modules:
@@ -279,6 +517,7 @@ def main():
             s["sparsity"] for s in ternary_stats_init.values()
         ) / n_ternary_modules
         print(f"  TernaryLinear modules: {n_ternary_modules}")
+        print(f"  Ternary weights: {_n_ternary_weights:,}")
         print(f"  Initial avg sparsity: {avg_sparsity:.3f}", flush=True)
 
     # ── Data ──────────────────────────────────────────────────────
@@ -299,8 +538,7 @@ def main():
     total_flips = 0
     grad_norm = 0.0
     flip_target_pct = FLIP_TARGET_PCT
-    flip_threshold = 0.0    # computed adaptively
-    loss_before_flip = None  # for adaptive feedback
+    loss_before_flip = None  # set at flip-step if L2 detected instability; consumed at flip+25
 
     def _tree_add(a, b):
         """Add two gradient pytrees element-wise."""
@@ -353,7 +591,7 @@ def main():
             train_losses.append(step_loss)
             continue
 
-        # Clip gradients (v5 uses max_norm=1.0 — critical for stability)
+        # Clip gradients (max_norm=1.0 — critical for ternary training stability)
         accum_grads, grad_norm = optim.clip_grad_norm(accum_grads, MAX_GRAD_NORM)
 
         optimizer.learning_rate = lr_schedule(step)
@@ -364,24 +602,66 @@ def main():
 
         train_losses.append(step_loss)
 
-        # ── Flip accumulation (adaptive) ─────────────────────
-        if step % FLIP_INTERVAL == 0:
-            # Snapshot loss before flips for feedback
-            recent = [l for l in train_losses[-5:] if not np.isnan(l)]
-            loss_before_flip = sum(recent) / len(recent) if recent else None
+        # ══════════════════════════════════════════════════════
+        # FLIP: Three-level VSM-regulated control
+        #
+        # Level 1 (S3 feed-forward): VSM signals → per-group flip targets
+        #   Runs BEFORE flips. S3/Meta-S3 gates modulate where flips
+        #   happen. High importance → protect, low → explore.
+        #
+        # Level 2 (local stability): VSM signal diff after flips
+        #   Immediate check. If VSM signals stayed coherent (cosine sim
+        #   > threshold), the system self-regulated. No escalation.
+        #
+        # Level 3 (circuit breaker): Global loss ratio at step+25
+        #   Only fires if Level 2 detected instability. Emergency
+        #   adjustment of the global base flip rate.
+        # ══════════════════════════════════════════════════════
 
-            # Percentile-based threshold: flip target_pct of weights
-            flip_threshold = compute_flip_threshold(model, flip_target_pct)
-            n_flipped = apply_flips(model, threshold=flip_threshold)
+        if step % FLIP_INTERVAL == 0:
+            needs_global_feedback = False  # default; overridden by L2 if destabilized
+
+            # ── Level 1: S3 feed-forward ──────────────────────
+            signals_before, vec_before = vsm_probe(model, tokenizer)
+            group_targets = compute_per_group_flip_targets(signals_before, flip_target_pct)
+
+            # Apply per-group flips
+            group_flips = apply_flips_per_group(model, group_targets)
+            n_flipped = sum(group_flips.values())
             total_flips += n_flipped
-            pct_flipped = n_flipped / 35_258_368 * 100  # total ternary weights
+            pct_flipped = n_flipped / _n_ternary_weights * 100
+
+            # ── Level 2: local stability check ────────────────
+            signals_after, vec_after = vsm_probe(model, tokenizer)
+            stability = vsm_stability(vec_before, vec_after)
+
+            # Format per-group output
+            flip_parts = " ".join(f"{g}={c:,}" for g, c in group_flips.items() if c > 0)
+            target_parts = " ".join(f"{g}={t:.4f}" for g, t in group_targets.items() if group_flips.get(g, 0) > 0)
+
+            if stability > 0.95:
+                level_msg = "L1:self-regulated"
+                needs_global_feedback = False
+            elif stability > 0.80:
+                level_msg = f"L2:mild-perturbation(sim={stability:.3f})"
+                needs_global_feedback = False  # mild, let it settle
+            else:
+                level_msg = f"L2:DESTABILIZED(sim={stability:.3f})→L3"
+                needs_global_feedback = True
+
+            # Snapshot loss for potential L3 feedback
+            recent = [l for l in train_losses[-5:] if not np.isnan(l)]
+            loss_before_flip = sum(recent) / len(recent) if (recent and needs_global_feedback) else None
+
             print(
                 f"  ── flip @ step {step}: {n_flipped:,} ({pct_flipped:.3f}%)  "
-                f"threshold={flip_threshold:.1f}  target={flip_target_pct:.4f} ──",
+                f"stability={stability:.3f}  {level_msg}\n"
+                f"     groups=[{flip_parts}]\n"
+                f"     targets=[{target_parts}] ──",
                 flush=True,
             )
 
-        # ── Flip feedback (25 steps after flip) ──────────────
+        # ── Level 3: Circuit breaker (only if L2 escalated) ──
         if step % FLIP_INTERVAL == 25 and loss_before_flip is not None:
             recent = [l for l in train_losses[-5:] if not np.isnan(l)]
             if recent:
@@ -389,21 +669,16 @@ def main():
                 ratio = loss_after_flip / loss_before_flip
                 old_target = flip_target_pct
                 if ratio < 1.02:
-                    # Flips helped or were neutral — be more aggressive
                     flip_target_pct = min(flip_target_pct * 1.2, FLIP_PCT_MAX)
                 elif ratio > 1.10:
-                    # Flips were destabilizing — back off
                     flip_target_pct = max(flip_target_pct * 0.5, FLIP_PCT_MIN)
-                # Relational view: what fraction of remaining capacity was affected?
                 rm_before = relational_metrics(loss_before_flip)
                 rm_after = relational_metrics(loss_after_flip)
                 r_delta = rm_after["relational_loss"] - rm_before["relational_loss"]
                 print(
-                    f"  ── flip feedback: before={loss_before_flip:.4f} "
-                    f"after={loss_after_flip:.4f} ratio={ratio:.3f}  "
-                    f"Δr={r_delta:+.4f}  "
-                    f"r={rm_after['relational_loss']:.3f}  "
-                    f"xppl={rm_after['excess_ppl']:.1f}  "
+                    f"  ⚠ L3 CIRCUIT BREAKER @ step {step}: "
+                    f"before={loss_before_flip:.4f} after={loss_after_flip:.4f} "
+                    f"ratio={ratio:.3f}  Δr={r_delta:+.4f}  "
                     f"target {old_target:.4f}→{flip_target_pct:.4f} ──",
                     flush=True,
                 )
@@ -445,6 +720,71 @@ def main():
                 flush=True,
             )
 
+            # φ-compression probe (per-pass ratios, gates, Hilberg)
+            phi = phi_compression_probe(model, tokenizer)
+            if phi:
+                parts = []
+                for p in PASS_NAMES:
+                    if p in phi:
+                        cr = phi[p]
+                        marker = "←φ" if abs(cr - INV_PHI) < 0.05 else ""
+                        parts.append(f"{p}={cr:.3f}{marker}")
+                mean_cr = phi.get("mean", 0)
+                mean_pd = phi.get("mean_phi_dev", 0)
+                print(
+                    f"  ── φ-compression: {' '.join(parts)}  "
+                    f"mean={mean_cr:.3f}  φ-dev={mean_pd:.3f}  (1/φ={INV_PHI:.3f}) ──",
+                    flush=True,
+                )
+
+                # Gate trajectory (3 phases × 5 passes = 15 values)
+                gates = phi.get("gates", {})
+                if gates:
+                    gate_parts = []
+                    for p in PASS_NAMES:
+                        p_gates = [gates.get(f"{p}_{ph}", 0) for ph in PHASE_NAMES]
+                        gate_parts.append(f"{p}=[{' '.join(f'{g:.2f}' for g in p_gates)}]")
+                    print(
+                        f"  ── gates (prep/conv/cons): {' '.join(gate_parts)} ──",
+                        flush=True,
+                    )
+
+                # Hilberg β per pass
+                hilberg = phi.get("hilberg", {})
+                if hilberg:
+                    hparts = []
+                    for p in PASS_NAMES:
+                        if p in hilberg:
+                            h = hilberg[p]
+                            # hilberg dict now has {pass: {"slope": s, "beta": b}} or just beta
+                            if isinstance(h, dict):
+                                β = h.get("beta", h.get("slope", 0) + 1)
+                            else:
+                                β = h + 1  # legacy: stored slope, convert to β
+                            marker = "←!" if abs(β - 0.5) < 0.1 else ""
+                            hparts.append(f"{p}:β={β:.2f}{marker}")
+                    if hparts:
+                        print(
+                            f"  ── hilberg (β≈0.5 = self-similar): {' '.join(hparts)} ──",
+                            flush=True,
+                        )
+
+            # Per-stratum loss
+            strata = stratum_loss_probe(model, tokenizer)
+            if strata:
+                sparts = []
+                for sn in ["prose", "compositional", "technical", "math"]:
+                    if sn in strata:
+                        s = strata[sn]
+                        sparts.append(f"{sn}={s['loss']:.3f}(r={s['relational_loss']:.3f})")
+                if sparts:
+                    vals = [strata[sn]["loss"] for sn in strata]
+                    spread = max(vals) - min(vals)
+                    print(
+                        f"  ── stratum loss: {' '.join(sparts)}  spread={spread:.3f} ──",
+                        flush=True,
+                    )
+
         # ── Checkpoint ────────────────────────────────────────
         if step % CHECKPOINT_INTERVAL == 0:
             compile = compile_gate_test(model, tokenizer)
@@ -452,20 +792,13 @@ def main():
 
             print(f"  ── checkpoint {step} ({step * TOKENS_PER_STEP / 1e6:.0f}M tokens) ──")
             print(f"     compile gate: {compile['score']}")
-            print(f"     total flips: {total_flips:,}  target={flip_target_pct:.4f}  threshold={flip_threshold:.1f}")
+            print(f"     total flips: {total_flips:,} ({total_flips / _n_ternary_weights * 100:.1f}% cumulative)  target={flip_target_pct:.4f}")
 
-            # Ternary stats by group
-            group_stats: dict[str, list] = {
-                "prep": [], "stride_stack": [], "consolidate": [],
-                "mod_projs": [], "s4": [], "s3": [], "meta": [],
-            }
+            # Ternary stats by group (using canonical _classify_group)
+            group_stats: dict[str, list] = {}
             for mod_name, stat in ternary_stats.items():
-                for group_key in group_stats:
-                    if group_key in mod_name:
-                        group_stats[group_key].append(stat)
-                        break
-                else:
-                    group_stats.setdefault("other", []).append(stat)
+                group = _classify_group(mod_name)
+                group_stats.setdefault(group, []).append(stat)
 
             for grp, stat_list in group_stats.items():
                 if not stat_list:
@@ -474,6 +807,43 @@ def main():
                 avg_gm = sum(s["gamma_mean"] for s in stat_list) / len(stat_list)
                 print(f"     {grp:15s}: sparsity={avg_sp:.3f}  gamma={avg_gm:.4f}  ({len(stat_list)} modules)")
 
+            # φ-compression at checkpoint
+            phi_ckpt = phi_compression_probe(model, tokenizer)
+            if phi_ckpt:
+                parts = []
+                for p in PASS_NAMES:
+                    if p in phi_ckpt:
+                        cr = phi_ckpt[p]
+                        marker = "←φ" if abs(cr - INV_PHI) < 0.05 else ""
+                        parts.append(f"{p}={cr:.3f}{marker}")
+                print(f"     φ-compression: {' '.join(parts)}  mean={phi_ckpt.get('mean', 0):.3f}  φ-dev={phi_ckpt.get('mean_phi_dev', 0):.3f}")
+                # Gate values
+                gates = phi_ckpt.get("gates", {})
+                if gates:
+                    gate_parts = []
+                    for p in PASS_NAMES:
+                        p_gates = [gates.get(f"{p}_{ph}", 0) for ph in PHASE_NAMES]
+                        gate_parts.append(f"{p}=[{' '.join(f'{g:.2f}' for g in p_gates)}]")
+                    print(f"     gates: {' '.join(gate_parts)}")
+                # Hilberg β
+                hilberg = phi_ckpt.get("hilberg", {})
+                if hilberg:
+                    hparts = []
+                    for p in PASS_NAMES:
+                        if p in hilberg:
+                            h = hilberg[p]
+                            β = h["beta"] if isinstance(h, dict) else h + 1
+                            hparts.append(f"{p}:β={β:.2f}")
+                    if hparts:
+                        print(f"     hilberg: {' '.join(hparts)}")
+
+            # Per-stratum loss at checkpoint
+            strata_ckpt = stratum_loss_probe(model, tokenizer)
+            if strata_ckpt:
+                sparts = [f"{sn}={strata_ckpt[sn]['loss']:.3f}" for sn in ["prose", "compositional", "technical", "math"] if sn in strata_ckpt]
+                if sparts:
+                    print(f"     stratum loss: {' '.join(sparts)}")
+
             # Save checkpoint as safetensors + metadata JSON
             ckpt_path = checkpoint_dir / f"step_{step:06d}"
             ckpt_path.mkdir(exist_ok=True)
@@ -481,28 +851,16 @@ def main():
             # Save model weights
             model.save_weights(str(ckpt_path / "weights.safetensors"))
 
-            # Save flip accumulators separately (not model params)
+            # Save flip accumulators (using _walk_ternary_modules for correct traversal)
             accum_dict = {}
-            ternary_stats_all = model.ternary_stats()
-            for path in ternary_stats_all:
-                # Navigate to the module via its path
-                parts = path.split(".")
-                mod = model
-                for p in parts:
-                    if hasattr(mod, p):
-                        mod = getattr(mod, p)
-                    elif isinstance(getattr(mod, parts[-2], None), list):
-                        mod = getattr(mod, parts[-2])[int(p)]
-                        break
-                if isinstance(mod, TernaryLinear):
-                    accum_dict[f"{path}._flip_accum"] = mod._flip_accum
+            for path, mod in _walk_ternary_modules(model):
+                accum_dict[path] = mod._flip_accum
             if accum_dict:
                 mx.savez(str(ckpt_path / "flip_accum.npz"), **accum_dict)
 
-            # Save metadata (ensure all values are JSON-serializable Python types)
+            # Save metadata
             rm = relational_metrics(step_loss)
             _gn = float(grad_norm.item()) if hasattr(grad_norm, 'item') else float(grad_norm)
-            _ft = float(flip_threshold.item()) if hasattr(flip_threshold, 'item') else float(flip_threshold)
             meta = {
                 "step": step,
                 "train_loss": float(step_loss),
@@ -514,7 +872,6 @@ def main():
                 "compile_gate": compile["score"],
                 "total_flips": int(total_flips),
                 "flip_target_pct": float(flip_target_pct),
-                "flip_threshold": _ft,
                 "grad_norm": _gn,
                 "architecture": "vsm-lm-v6-mlx",
                 "config": {
@@ -523,6 +880,11 @@ def main():
                     "n_heads": N_HEADS, "strides": list(STRIDES),
                     "window": WINDOW, "vocab_size": VOCAB_SIZE,
                     "seq_len": SEQ_LEN, "alpha": ALPHA,
+                    "n_passes": N_PASSES,
+                    "pass_names": PASS_NAMES,
+                    "phase_names": PHASE_NAMES,
+                    "reg_names": REG_NAMES,
+                    "total_ternary_weights": _n_ternary_weights,
                 },
                 "ternary_stats_summary": {
                     grp: {
@@ -532,6 +894,8 @@ def main():
                     }
                     for grp, sl in group_stats.items() if sl
                 },
+                "phi_compression": phi_ckpt if phi_ckpt else None,
+                "stratum_loss": strata_ckpt if strata_ckpt else None,
             }
             (ckpt_path / "meta.json").write_text(json.dumps(meta, indent=2))
             print(f"     saved: {ckpt_path}", flush=True)
@@ -549,6 +913,8 @@ def main():
         "framework": "MLX",
         "target_tokens": TARGET_TOKENS,
         "total_flips": total_flips,
+        "total_ternary_weights": _n_ternary_weights,
+        "pct_weights_ever_flipped": total_flips / _n_ternary_weights * 100,
         "info_theoretic_constants": {
             "E_irreducible": E_IRREDUCIBLE,
             "log_V": LOG_V,

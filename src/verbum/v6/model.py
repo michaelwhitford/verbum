@@ -354,7 +354,74 @@ class VSMLMV6(nn.Module):
                 if phase_name == "prep":
                     phase_out = self.prep(x)
                 elif phase_name == "converge":
-                    phase_out = self.stride_stack(x, reverse=is_descending)
+                    # Per-stride instrumented pass through StrideStack
+                    # Instead of self.stride_stack(x, reverse=is_descending),
+                    # loop through individual strides measuring entropy at each.
+                    stride_x = x
+                    n_strides = len(self.stride_stack.layers)
+                    order = list(reversed(range(n_strides))) if is_descending else list(range(n_strides))
+                    stride_ratios = []
+
+                    for si_idx, layer_idx in enumerate(order):
+                        stride_val = self.stride_stack.strides[layer_idx]
+                        h_before = self._activation_entropy(stride_x)
+                        stride_x = self.stride_stack.layers[layer_idx](stride_x)
+                        mx.eval(stride_x)
+                        h_after = self._activation_entropy(stride_x)
+
+                        if abs(h_before) > 1e-10:
+                            sr = h_after / h_before
+                        else:
+                            sr = 1.0
+                        stride_ratios.append(sr)
+
+                        metrics[f"{pfx}_stride_{si_idx}_s{stride_val}_h_in"] = h_before
+                        metrics[f"{pfx}_stride_{si_idx}_s{stride_val}_h_out"] = h_after
+                        metrics[f"{pfx}_stride_{si_idx}_s{stride_val}_ratio"] = sr
+                        metrics[f"{pfx}_stride_{si_idx}_s{stride_val}_phi_dev"] = abs(sr - INV_PHI)
+
+                    phase_out = stride_x
+
+                    # Per-stride summary for this pass
+                    if stride_ratios:
+                        metrics[f"{pfx}_stride_mean_ratio"] = sum(stride_ratios) / len(stride_ratios)
+                        metrics[f"{pfx}_stride_spread"] = max(stride_ratios) - min(stride_ratios)
+
+                        # Hilberg exponent from stride curve.
+                        #
+                        # Hilberg (1990): block entropy H(n) ~ n^β, β ≈ 0.5
+                        # → conditional entropy at distance k: h_k ~ k^(β-1)
+                        # → entropy REDUCTION at stride s: ΔH(s) ∝ s^(β-1)
+                        # → fractional reduction: (1 - ratio) ∝ s^(β-1)
+                        #
+                        # So: log(1 - ratio) vs log(s) has slope = β - 1
+                        #     β = slope + 1
+                        #     β ≈ 0.5 → slope ≈ -0.5
+                        #
+                        # Negative slope = larger strides compress less (expected:
+                        # distant context is less informative than local context).
+                        import math as _math
+                        log_strides = []
+                        log_reductions = []
+                        for si_idx, layer_idx in enumerate(order):
+                            stride_val = self.stride_stack.strides[layer_idx]
+                            reduction = 1.0 - stride_ratios[si_idx]  # fractional entropy reduction
+                            if stride_val > 0 and reduction > 1e-10:
+                                log_strides.append(_math.log(stride_val + 1))
+                                log_reductions.append(_math.log(reduction))
+                        if len(log_strides) >= 3:
+                            # Simple linear regression for slope
+                            n = len(log_strides)
+                            sx = sum(log_strides)
+                            sy = sum(log_reductions)
+                            sxx = sum(a * a for a in log_strides)
+                            sxy = sum(a * b for a, b in zip(log_strides, log_reductions))
+                            denom = n * sxx - sx * sx
+                            if abs(denom) > 1e-10:
+                                slope = (n * sxy - sx * sy) / denom
+                                beta = slope + 1.0
+                                metrics[f"{pfx}_hilberg_slope"] = slope
+                                metrics[f"{pfx}_hilberg_beta"] = beta
                 else:
                     phase_out = self.consolidate(x)
 
@@ -426,43 +493,6 @@ class VSMLMV6(nn.Module):
             metrics[f"{pfx}_phi_deviation"] = phi_dev
             compression_ratios.append(cr)
 
-        # ── Level-indexed aliases for compat ──────────────────
-        level_map = {
-            "L0_asc": "level0", "L1_asc": "level1", "L2_apex": "level2",
-            "L1_desc": "level1_desc", "L0_desc": "level0_desc",
-        }
-        for pass_name, level_pfx in level_map.items():
-            for key in list(metrics.keys()):
-                if key.startswith(pass_name + "_"):
-                    suffix = key[len(pass_name) + 1:]
-                    metrics[f"{level_pfx}_{suffix}"] = metrics[key]
-
-        # Iter aliases (v4 compat)
-        for level in range(min(3, 2)):
-            src_pfx = f"level{level}"
-            dst_pfx = f"iter{level}"
-            for phase in self.PHASE_NAMES:
-                for suffix in ["delta_norm", "gated_norm", "gate_mean", "gate_std"]:
-                    k = f"{src_pfx}_{phase}_{suffix}"
-                    if k in metrics:
-                        metrics[f"{dst_pfx}_{phase}_{suffix}"] = metrics[k]
-                for rn in reg_names:
-                    k = f"{src_pfx}_{phase}_write_{rn}"
-                    if k in metrics:
-                        metrics[f"{dst_pfx}_{phase}_write_{rn}"] = metrics[k]
-            for rn in reg_names:
-                for ks in [f"reg_{rn}_after_s4", f"register_{rn}_norm"]:
-                    k = f"{src_pfx}_{ks}"
-                    if k in metrics:
-                        metrics[f"{dst_pfx}_{ks}"] = metrics[k]
-            k = f"{src_pfx}_s4_attn_entropy"
-            if k in metrics:
-                metrics[f"{dst_pfx}_s4_attn_entropy"] = metrics[k]
-            for phase in self.PHASE_NAMES:
-                k = f"{src_pfx}_after_{phase}"
-                if k in metrics:
-                    metrics[f"{dst_pfx}_after_{phase}"] = metrics[k]
-
         # ── φ-compression aggregate ───────────────────────────
         if compression_ratios:
             mean_cr = sum(compression_ratios) / len(compression_ratios)
@@ -478,9 +508,6 @@ class VSMLMV6(nn.Module):
 
         for i, pname in enumerate(self.PASS_NAMES):
             metrics[f"meta_s3_gate_{pname}"] = meta_gates[i].item()
-        metrics["meta_s3_gate_level0"] = meta_gates[0].item()
-        metrics["meta_s3_gate_level1"] = meta_gates[1].item()
-        metrics["meta_s3_gate_level2"] = meta_gates[2].item()
 
         total_ungated = sum(pass_deltas)
         total_gated = sum(meta_gates[i] * pass_deltas[i] for i in range(self.N_PASSES))
@@ -493,12 +520,6 @@ class VSMLMV6(nn.Module):
         mx.eval(x)
         metrics["output_norm"] = mx.sqrt((x * x).sum(axis=-1)).mean().item()
         metrics["overall_expansion"] = metrics["output_norm"] / max(metrics["embed_norm"], 1e-8)
-
-        # Global compat
-        metrics["s4_attn_entropy"] = metrics["L0_asc_s4_attn_entropy"]
-        metrics["register_after_s4"] = sum(
-            metrics[f"L0_asc_reg_{n}_after_s4"] for n in reg_names
-        )
 
         x = self.output_norm(x)
         logits = x @ self.token_embed.weight.T

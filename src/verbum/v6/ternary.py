@@ -400,3 +400,98 @@ def apply_flips(model: nn.Module, threshold: float = 0.1) -> int:
         mx.eval(*mutated)
 
     return total_flipped
+
+
+# ══════════════════════════════════════════════════════════════════════
+# Per-group flip functions (VSM-modulated)
+# ══════════════════════════════════════════════════════════════════════
+
+
+def _classify_group(path: str) -> str:
+    """Map a TernaryLinear module path to its VSM group.
+
+    Order matters: check longer/more-specific prefixes first to avoid
+    'meta_s3' matching 's3' before 'meta'.
+    """
+    # Check meta first (meta_s3, meta_s4 are control, not S3/S4 operations)
+    if path.startswith("meta_s3") or path.startswith("meta_s4") or path.startswith("meta."):
+        return "meta"
+    for gk in ["prep", "stride_stack", "consolidate", "mod_projs", "s4.", "s3_"]:
+        if gk in path:
+            return gk.rstrip("._")
+    return "other"
+
+
+def apply_flips_per_group(
+    model: nn.Module,
+    group_targets: dict[str, float],
+) -> dict[str, int]:
+    """Apply flips with per-group adaptive thresholds.
+
+    Instead of one global threshold, each VSM group gets its own
+    flip target percentage. The threshold is computed per-group
+    from the accumulator distribution within that group.
+
+    Args:
+        model: the model containing TernaryLinear modules
+        group_targets: {group_name: target_pct} from VSM signal modulation
+
+    Returns:
+        {group_name: n_flipped} — number of weights flipped per group
+    """
+    import numpy as np
+
+    # Step 1: collect modules by group
+    groups: dict[str, list[tuple[str, TernaryLinear]]] = {}
+    for path, module in _walk_ternary_modules(model):
+        group = _classify_group(path)
+        groups.setdefault(group, []).append((path, module))
+
+    # Step 2: compute per-group thresholds and apply
+    group_flipped: dict[str, int] = {}
+    mutated = []
+
+    for group, modules in groups.items():
+        target_pct = group_targets.get(group, 0.005)
+
+        # Collect accumulators for this group
+        chunks = []
+        for _, mod in modules:
+            mx.eval(mod._flip_accum)
+            if mx.any(mx.isnan(mod._flip_accum)).item():
+                continue
+            chunks.append(mx.abs(mod._flip_accum).reshape(-1))
+
+        if not chunks:
+            group_flipped[group] = 0
+            continue
+
+        # Compute group-specific threshold
+        all_abs = mx.concatenate(chunks)
+        all_np = np.array(all_abs)
+        pct = 100.0 * (1.0 - target_pct)
+        threshold = float(np.percentile(all_np, pct))
+
+        # Apply flips for this group
+        n_flipped = 0
+        for _, mod in modules:
+            if mx.any(mx.isnan(mod._flip_accum)).item():
+                mod._flip_accum = mx.zeros_like(mod._flip_accum)
+                continue
+            mask = mx.abs(mod._flip_accum) > threshold
+            n = mask.sum().item()
+            if n > 0:
+                direction = mx.sign(mod._flip_accum)
+                current = mod.ternary_weight.astype(mx.float32)
+                new_vals = mx.clip(mx.round(current + direction), -1, 1).astype(mx.int8)
+                mod.ternary_weight = mx.where(mask, new_vals, mod.ternary_weight)
+                mod._flip_accum = mx.where(mask, mx.zeros_like(mod._flip_accum), mod._flip_accum)
+                mutated.extend([mod.ternary_weight, mod._flip_accum])
+                n_flipped += int(n)
+
+        group_flipped[group] = n_flipped
+
+    if mutated:
+        mx.eval(*mutated)
+
+    return group_flipped
