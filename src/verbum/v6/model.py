@@ -63,6 +63,7 @@ class VSMLMV6(nn.Module):
         strides: tuple[int, ...] = (1, 8, 16, 32, 64, 128, 256, 512, 1024),
         dropout: float = 0.1,
         alpha: float = 1.18,
+        phi_lambda: float = 0.0,
     ):
         super().__init__()
         self.vocab_size = vocab_size
@@ -75,6 +76,7 @@ class VSMLMV6(nn.Module):
         self.window = window
         self.strides = strides
         self.alpha = alpha
+        self.phi_lambda = phi_lambda
 
         self.n_registers = len(self.REGISTER_NAMES)
         self.n_phases = len(self.PHASE_NAMES)
@@ -83,6 +85,7 @@ class VSMLMV6(nn.Module):
         # ── S5: Identity (fp16) ────────────────────────────────
         self.token_embed = nn.Embedding(vocab_size, d_model)
         self.pos_embed = nn.Embedding(max_len, d_model)
+        self.embed_norm = nn.RMSNorm(d_model)  # breaks tied-embedding amplification loop
         self.output_norm = nn.LayerNorm(d_model)
 
         # Register bank 0: learnable real init
@@ -141,12 +144,25 @@ class VSMLMV6(nn.Module):
         Returns log(mean_var + eps), which is monotonic with entropy
         for Gaussian-like distributions (differential entropy of
         N(0,σ²) = 0.5*log(2πeσ²)).
+
+        Non-differentiable (uses mx.eval). For instrumentation/probing only.
         """
         # x shape: (B, L, D)  — compute variance per feature, then mean
         var_per_feat = mx.var(x, axis=(0, 1))  # (D,)
         mean_var = mx.mean(var_per_feat)
         mx.eval(mean_var)
         return float(mx.log(mean_var + 1e-10).item())
+
+    @staticmethod
+    def _activation_entropy_differentiable(x: mx.array) -> mx.array:
+        """Differentiable entropy proxy for φ-loss computation.
+
+        Same formula as _activation_entropy but returns an mx.array
+        scalar that stays in the computation graph for backprop.
+        """
+        var_per_feat = mx.var(x, axis=(0, 1))  # (D,)
+        mean_var = mx.mean(var_per_feat)
+        return mx.log(mean_var + 1e-10)
 
     # ── Register helpers ──────────────────────────────────────────
 
@@ -201,11 +217,12 @@ class VSMLMV6(nn.Module):
         self,
         input_ids: mx.array,
         targets: Optional[mx.array] = None,
-    ) -> tuple[mx.array, Optional[mx.array]]:
+    ) -> tuple[mx.array, Optional[mx.array], Optional[mx.array]]:
         B, L = input_ids.shape
+        compute_phi = self.phi_lambda > 0 and targets is not None
 
         positions = mx.arange(L)
-        x = self.token_embed(input_ids) + self.pos_embed(positions)
+        x = self.embed_norm(self.token_embed(input_ids) + self.pos_embed(positions))
 
         # Register banks
         bank_0 = self._init_bank0()
@@ -216,23 +233,50 @@ class VSMLMV6(nn.Module):
         bank_1_desc = self._fresh_bank()
 
         pass_deltas = []
+        phi_deviations = []  # per-pass |cr - 1/φ| for φ-loss
 
         # Ascending: L0↑ → L1↑ → L2
+        if compute_phi:
+            h_in = self._activation_entropy_differentiable(x)
         x, bank_1_asc, delta = self._run_level_pass(x, 0, False, [bank_0], bank_1_asc)
         pass_deltas.append(delta)
+        if compute_phi:
+            h_out = self._activation_entropy_differentiable(x)
+            cr = h_out / (h_in + 1e-10)
+            phi_deviations.append(mx.abs(cr - INV_PHI))
+            h_in = h_out
 
         x, bank_2_asc, delta = self._run_level_pass(x, 1, False, [bank_0, bank_1_asc], bank_2_asc)
         pass_deltas.append(delta)
+        if compute_phi:
+            h_out = self._activation_entropy_differentiable(x)
+            cr = h_out / (h_in + 1e-10)
+            phi_deviations.append(mx.abs(cr - INV_PHI))
+            h_in = h_out
 
         x, bank_3, delta = self._run_level_pass(x, 2, False, [bank_0, bank_1_asc, bank_2_asc], bank_3)
         pass_deltas.append(delta)
+        if compute_phi:
+            h_out = self._activation_entropy_differentiable(x)
+            cr = h_out / (h_in + 1e-10)
+            phi_deviations.append(mx.abs(cr - INV_PHI))
+            h_in = h_out
 
         # Descending: L1↓ → L0↓
         x, bank_2_desc, delta = self._run_level_pass(x, 3, True, [bank_0, bank_1_asc, bank_2_asc, bank_3], bank_2_desc)
         pass_deltas.append(delta)
+        if compute_phi:
+            h_out = self._activation_entropy_differentiable(x)
+            cr = h_out / (h_in + 1e-10)
+            phi_deviations.append(mx.abs(cr - INV_PHI))
+            h_in = h_out
 
         x, bank_1_desc, delta = self._run_level_pass(x, 4, True, [bank_0, bank_1_asc, bank_2_desc, bank_3], bank_1_desc)
         pass_deltas.append(delta)
+        if compute_phi:
+            h_out = self._activation_entropy_differentiable(x)
+            cr = h_out / (h_in + 1e-10)
+            phi_deviations.append(mx.abs(cr - INV_PHI))
 
         # Meta-S3: per-pass contribution gates
         all_banks = [bank_0, bank_1_asc, bank_2_asc, bank_3, bank_2_desc, bank_1_desc]
@@ -250,14 +294,18 @@ class VSMLMV6(nn.Module):
         x = self.output_norm(x)
         logits = x @ self.token_embed.weight.T  # tied weights
 
-        loss = None
+        ce_loss = None
+        phi_loss = None
         if targets is not None:
-            loss = nn.losses.cross_entropy(
+            ce_loss = nn.losses.cross_entropy(
                 logits.reshape(-1, self.vocab_size),
                 targets.reshape(-1),
             ).mean()
 
-        return logits, loss
+        if compute_phi and phi_deviations:
+            phi_loss = mx.stack(phi_deviations).mean()
+
+        return logits, ce_loss, phi_loss
 
     # ── Instrumented Forward ──────────────────────────────────────
 
@@ -276,7 +324,7 @@ class VSMLMV6(nn.Module):
         reg_names = list(self.REGISTER_NAMES)
 
         positions = mx.arange(L)
-        x = self.token_embed(input_ids) + self.pos_embed(positions)
+        x = self.embed_norm(self.token_embed(input_ids) + self.pos_embed(positions))
         mx.eval(x)
         metrics["embed_norm"] = mx.sqrt((x * x).sum(axis=-1)).mean().item()
 

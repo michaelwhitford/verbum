@@ -65,7 +65,12 @@ FLIP_INTERVAL = 100
 FLIP_TARGET_PCT = 0.005   # start: 0.5% of weights per flip interval
 FLIP_PCT_MIN = 0.0001     # floor: 0.01%
 FLIP_PCT_MAX = 0.02       # ceiling: 2%
-MAX_GRAD_NORM = 1.0
+MAX_GRAD_NORM = 2.0       # relaxed from 1.0 — embed_norm internalizes the constraint
+
+# Phase 1: observe φ-compression (lambda=0.0, no gradient pressure)
+# Phase 2: gentle φ-pressure (lambda=0.01-0.1, test effect on convergence)
+# Phase 3: full φ-regulation (lambda tuned from Phase 2 findings)
+PHI_LAMBDA = 0.0
 
 # ── Information-theoretic constants ──────────────────────────────
 # Chinchilla scaling law: L(N,D) = E + A/N^α + B/D^β
@@ -154,9 +159,14 @@ class ShardedDataLoader:
 
 
 def loss_fn(model, x, y):
-    """Compute cross-entropy loss. Used with nn.value_and_grad."""
-    _, loss = model(x, y)
-    return loss
+    """Compute combined loss. Used with nn.value_and_grad.
+
+    Returns ce_loss + PHI_LAMBDA * phi_loss (when phi_lambda > 0).
+    """
+    _, ce_loss, phi_loss = model(x, y)
+    if phi_loss is not None and model.phi_lambda > 0:
+        return ce_loss + model.phi_lambda * phi_loss
+    return ce_loss
 
 
 def relational_metrics(loss: float) -> dict:
@@ -198,9 +208,9 @@ def estimate_loss(model, eval_loader, n_batches=10):
     total = 0
     for _ in range(n_batches):
         x, y = eval_loader.next_batch()
-        _, loss = model(x, y)
-        mx.eval(loss)
-        total += loss.item()
+        _, ce_loss, _ = model(x, y)
+        mx.eval(ce_loss)
+        total += ce_loss.item()
     return total / n_batches
 
 
@@ -356,8 +366,12 @@ def vsm_probe(model, tokenizer):
             key = f"{p}_register_{rn}_norm"
             signals[key] = metrics.get(key, 0.0)
 
-    # Flatten to vector for cosine similarity
-    signal_vec = np.array([signals[k] for k in sorted(signals.keys())], dtype=np.float64)
+    # φ-deviation from the same instrumented pass (for flip feedback)
+    phi_dev = metrics.get("mean_phi_deviation", None)
+    signals["phi_deviation"] = phi_dev
+
+    # Flatten to vector for cosine similarity (exclude phi_deviation — it's a separate signal)
+    signal_vec = np.array([signals[k] for k in sorted(signals.keys()) if k != "phi_deviation"], dtype=np.float64)
 
     return signals, signal_vec
 
@@ -378,11 +392,22 @@ def vsm_stability(vec_before, vec_after):
     return float(dot / (norm_b * norm_a))
 
 
-def compute_per_group_flip_targets(signals, base_target):
+def compute_per_group_flip_targets(
+    signals,
+    base_target,
+    stratum_spread: float = 0.0,
+    hilberg_beta_dev: float = 0.0,
+):
     """Compute per-group flip targets from VSM control signals.
 
     Inverts importance: high gate → protect (fewer flips), low gate → explore (more flips).
     Base_target is the current global flip_target_pct.
+
+    Additional signals:
+      stratum_spread: compositional-prose loss spread. High spread (>1.0)
+        means stride_stack isn't composing well → more exploration needed.
+      hilberg_beta_dev: |mean_β - 0.5|. High deviation means stride
+        hierarchy isn't achieving self-similar compression → explore.
 
     Returns dict {group_name: target_pct}.
     """
@@ -398,14 +423,8 @@ def compute_per_group_flip_targets(signals, base_target):
 
     # Inversion: importance → protection factor
     # gate=1.0 → factor=0.3 (protect: 30% of base rate)
-    # gate=0.5 → factor=1.0 (neutral: base rate)
     # gate=0.0 → factor=2.0 (explore: 200% of base rate)
     def invert(gate_val):
-        # Linear map: gate 0→2.0, gate 0.5→1.0, gate 1.0→0.3
-        # Clamp to [0.3, 2.0]
-        factor = 2.0 - 3.4 * gate_val  # gate=0→2.0, gate=0.5→0.3  ... wait
-        # Actually: factor = 2.0 * (1.0 - gate_val) + 0.3 * gate_val
-        # gate=0 → 2.0, gate=1 → 0.3
         factor = 2.0 * (1.0 - gate_val) + 0.3 * gate_val
         return max(0.3, min(2.0, factor))
 
@@ -419,6 +438,25 @@ def compute_per_group_flip_targets(signals, base_target):
         "s4": base_target * 0.5,
         "meta": base_target * 0.3,
     }
+
+    # ── Stratum-aware stride_stack modulation ─────────────────
+    # High compositional-prose spread → stride hierarchy isn't
+    # composing well → give it more topological exploration.
+    if stratum_spread > 1.0:
+        targets["stride_stack"] *= 1.5
+        targets["consolidate"] *= 1.3
+    elif stratum_spread > 0.5:
+        targets["stride_stack"] *= 1.2
+    elif stratum_spread < 0.2 and stratum_spread > 0:
+        targets["stride_stack"] *= 0.8  # converging, protect
+
+    # ── Hilberg β-aware stride_stack modulation ───────────────
+    # |β - 0.5| > 0.2 → strides aren't achieving self-similar
+    # compression → need more topological change.
+    if hilberg_beta_dev > 0.3:
+        targets["stride_stack"] *= 1.4
+    elif hilberg_beta_dev > 0.2:
+        targets["stride_stack"] *= 1.2
 
     # Clamp all to [FLIP_PCT_MIN, FLIP_PCT_MAX]
     for k in targets:
@@ -437,10 +475,10 @@ def stratum_loss_probe(model, tokenizer):
             if ids.shape[1] > model.max_len:
                 ids = ids[:, -model.max_len:]
             targets = mx.concatenate([ids[:, 1:], mx.zeros((1, 1), dtype=mx.int32)], axis=1)
-            _, loss = model(ids, targets)
-            mx.eval(loss)
-            if loss is not None:
-                losses.append(loss.item())
+            _, ce_loss, _ = model(ids, targets)
+            mx.eval(ce_loss)
+            if ce_loss is not None:
+                losses.append(ce_loss.item())
         if losses:
             mean_loss = sum(losses) / len(losses)
             rm = relational_metrics(mean_loss)
@@ -477,6 +515,8 @@ def main():
     print(f"  Ternary: all projections (Metal add/sub kernel)")
     print(f"  Continuous: embeddings, gamma, norms, gates (AdamW)")
     print(f"  Flip accumulation: interval={FLIP_INTERVAL}, sign-based, adaptive threshold")
+    print(f"  φ-lambda: {PHI_LAMBDA} ({'Phase 1: observe only' if PHI_LAMBDA == 0 else f'active: CE + {PHI_LAMBDA}×φ_dev'})")
+    print(f"  Embed norm: RMSNorm (internalizes grad clip constraint)")
     print(f"  Seq len: {SEQ_LEN}, Batch: {BATCH_SIZE} × {GRAD_ACCUM} accum")
     print(f"  Steps: {N_STEPS}, Tokens: {tokens_total:,}")
     print(f"  Data: SHUFFLED", flush=True)
@@ -495,6 +535,7 @@ def main():
         window=WINDOW,
         strides=STRIDES,
         alpha=ALPHA,
+        phi_lambda=PHI_LAMBDA,
     )
 
     print(model.describe())
@@ -538,7 +579,6 @@ def main():
     total_flips = 0
     grad_norm = 0.0
     flip_target_pct = FLIP_TARGET_PCT
-    loss_before_flip = None  # set at flip-step if L2 detected instability; consumed at flip+25
 
     def _tree_add(a, b):
         """Add two gradient pytrees element-wise."""
@@ -619,11 +659,49 @@ def main():
         # ══════════════════════════════════════════════════════
 
         if step % FLIP_INTERVAL == 0:
-            needs_global_feedback = False  # default; overridden by L2 if destabilized
+            # ══════════════════════════════════════════════════
+            # Three-level VSM-regulated flip control
+            #
+            # L1 (S3 feed-forward): VSM signals → per-group flip targets
+            # L2 (local stability): cosine sim of VSM signals before/after
+            # L3 (φ-feedback): φ-deviation before/after → flip rate adjust
+            #
+            # L3 is IMMEDIATE (same step), replacing the old 25-step
+            # delayed loss-ratio heuristic. φ-deviation is the right
+            # signal: did flips move the system toward self-similar
+            # compression (good) or away from it (bad)?
+            # ══════════════════════════════════════════════════
 
             # ── Level 1: S3 feed-forward ──────────────────────
             signals_before, vec_before = vsm_probe(model, tokenizer)
-            group_targets = compute_per_group_flip_targets(signals_before, flip_target_pct)
+            phi_dev_before = signals_before.get("phi_deviation")
+
+            # Compute stratum spread for stride_stack modulation
+            flip_strata = stratum_loss_probe(model, tokenizer)
+            stratum_spread = 0.0
+            if flip_strata and "compositional" in flip_strata and "prose" in flip_strata:
+                stratum_spread = flip_strata["compositional"]["loss"] - flip_strata["prose"]["loss"]
+
+            # Compute Hilberg β deviation for stride_stack modulation
+            flip_phi = phi_compression_probe(model, tokenizer)
+            hilberg_beta_dev = 0.0
+            if flip_phi:
+                hilberg = flip_phi.get("hilberg", {})
+                betas = []
+                for p in PASS_NAMES:
+                    if p in hilberg:
+                        h = hilberg[p]
+                        b = h["beta"] if isinstance(h, dict) else h + 1
+                        betas.append(b)
+                if betas:
+                    mean_beta = sum(betas) / len(betas)
+                    hilberg_beta_dev = abs(mean_beta - 0.5)
+
+            group_targets = compute_per_group_flip_targets(
+                signals_before, flip_target_pct,
+                stratum_spread=stratum_spread,
+                hilberg_beta_dev=hilberg_beta_dev,
+            )
 
             # Apply per-group flips
             group_flips = apply_flips_per_group(model, group_targets)
@@ -634,6 +712,7 @@ def main():
             # ── Level 2: local stability check ────────────────
             signals_after, vec_after = vsm_probe(model, tokenizer)
             stability = vsm_stability(vec_before, vec_after)
+            phi_dev_after = signals_after.get("phi_deviation")
 
             # Format per-group output
             flip_parts = " ".join(f"{g}={c:,}" for g, c in group_flips.items() if c > 0)
@@ -641,48 +720,48 @@ def main():
 
             if stability > 0.95:
                 level_msg = "L1:self-regulated"
-                needs_global_feedback = False
             elif stability > 0.80:
                 level_msg = f"L2:mild-perturbation(sim={stability:.3f})"
-                needs_global_feedback = False  # mild, let it settle
             else:
-                level_msg = f"L2:DESTABILIZED(sim={stability:.3f})→L3"
-                needs_global_feedback = True
+                level_msg = f"L2:DESTABILIZED(sim={stability:.3f})"
 
-            # Snapshot loss for potential L3 feedback
-            recent = [l for l in train_losses[-5:] if not np.isnan(l)]
-            loss_before_flip = sum(recent) / len(recent) if (recent and needs_global_feedback) else None
+            # ── Level 3: φ-deviation feedback (immediate) ─────
+            # Replace old 25-step delayed loss-ratio with immediate
+            # information-theoretic signal. φ-deviation measures whether
+            # flips moved the system toward self-similar compression.
+            old_target = flip_target_pct
+            phi_msg = ""
+            if phi_dev_before is not None and phi_dev_after is not None:
+                delta_phi = phi_dev_after - phi_dev_before
+                if delta_phi < -0.01:
+                    # Flips improved φ-alignment → encourage more
+                    flip_target_pct = min(flip_target_pct * 1.2, FLIP_PCT_MAX)
+                    phi_msg = f"  φ↓ good(Δ={delta_phi:+.4f}) target↑{flip_target_pct:.4f}"
+                elif delta_phi > 0.05:
+                    # Flips damaged φ-alignment → pull back
+                    flip_target_pct = max(flip_target_pct * 0.5, FLIP_PCT_MIN)
+                    phi_msg = f"  φ↑ BAD(Δ={delta_phi:+.4f}) target↓{flip_target_pct:.4f}"
+                else:
+                    phi_msg = f"  φ~neutral(Δ={delta_phi:+.4f})"
+
+                # Emergency brake: if L2 detected destabilization AND φ got worse
+                if stability < 0.80 and delta_phi > 0.02:
+                    flip_target_pct = max(flip_target_pct * 0.3, FLIP_PCT_MIN)
+                    phi_msg += f"  ⚠ BRAKE→{flip_target_pct:.4f}"
 
             print(
+                f"  ── flip @ step {step}: {n_flipped:,} ({pct_flipped:.3f}%)  "
+                f"stability={stability:.3f}  {level_msg}{phi_msg}\n"
+                f"     groups=[{flip_parts}]\n"
+                f"     targets=[{target_parts}]\n"
+                f"     φ-dev: {phi_dev_before:.4f}→{phi_dev_after:.4f} ──"
+                if phi_dev_before is not None and phi_dev_after is not None else
                 f"  ── flip @ step {step}: {n_flipped:,} ({pct_flipped:.3f}%)  "
                 f"stability={stability:.3f}  {level_msg}\n"
                 f"     groups=[{flip_parts}]\n"
                 f"     targets=[{target_parts}] ──",
                 flush=True,
             )
-
-        # ── Level 3: Circuit breaker (only if L2 escalated) ──
-        if step % FLIP_INTERVAL == 25 and loss_before_flip is not None:
-            recent = [l for l in train_losses[-5:] if not np.isnan(l)]
-            if recent:
-                loss_after_flip = sum(recent) / len(recent)
-                ratio = loss_after_flip / loss_before_flip
-                old_target = flip_target_pct
-                if ratio < 1.02:
-                    flip_target_pct = min(flip_target_pct * 1.2, FLIP_PCT_MAX)
-                elif ratio > 1.10:
-                    flip_target_pct = max(flip_target_pct * 0.5, FLIP_PCT_MIN)
-                rm_before = relational_metrics(loss_before_flip)
-                rm_after = relational_metrics(loss_after_flip)
-                r_delta = rm_after["relational_loss"] - rm_before["relational_loss"]
-                print(
-                    f"  ⚠ L3 CIRCUIT BREAKER @ step {step}: "
-                    f"before={loss_before_flip:.4f} after={loss_after_flip:.4f} "
-                    f"ratio={ratio:.3f}  Δr={r_delta:+.4f}  "
-                    f"target {old_target:.4f}→{flip_target_pct:.4f} ──",
-                    flush=True,
-                )
-                loss_before_flip = None
 
         # ── Logging ───────────────────────────────────────────
         if step % LOG_INTERVAL == 0:

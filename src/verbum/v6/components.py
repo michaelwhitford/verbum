@@ -184,10 +184,15 @@ class S3Ternary(nn.Module):
             for _ in range(n_phases * n_registers)
         ]
         # write_gates: kept as nn.Linear (has bias, tiny)
+        # Bias initialized to -2.0 → sigmoid(-2) ≈ 0.12 → registers
+        # start mostly protected; model learns to open gates.
+        # (Matches mod_projs zero-init philosophy: neutral at startup.)
         self.write_gates = [
             nn.Linear(d_model, 1)
             for _ in range(n_phases * n_registers)
         ]
+        for wg in self.write_gates:
+            wg.bias = mx.full(wg.bias.shape, -2.0)
 
     def gate_phase(
         self,

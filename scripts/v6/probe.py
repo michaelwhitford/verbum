@@ -169,7 +169,7 @@ def probe_checkpoint(model, probes, tokenizer, gate_name="compile"):
             ids = ids[:, -model.max_len:]
 
         t0 = time.time()
-        logits, _ = model(ids)
+        logits, _, _ = model(ids)
         mx.eval(logits)
         elapsed_ms = (time.time() - t0) * 1000
 
