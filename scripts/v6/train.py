@@ -12,6 +12,7 @@ Usage:
 from __future__ import annotations
 
 import json
+import math
 import sys
 import time
 from datetime import UTC, datetime
@@ -32,6 +33,7 @@ from verbum.v6.ternary import (
     accumulate_flips,
     apply_flips_per_group,
     restore_ternary,
+    zero_ternary_grads,
 )
 
 DATA_DIR = Path("/Users/mwhitford/data/fractal-bitnet/shards")
@@ -65,7 +67,7 @@ FLIP_INTERVAL = 100
 FLIP_TARGET_PCT = 0.005   # start: 0.5% of weights per flip interval
 FLIP_PCT_MIN = 0.0001     # floor: 0.01%
 FLIP_PCT_MAX = 0.02       # ceiling: 2%
-MAX_GRAD_NORM = 2.0       # relaxed from 1.0 — embed_norm internalizes the constraint
+MAX_GRAD_NORM = 1.0       # restored from 2.0 — multiplicative modulation was the real gradient amplifier
 
 # Phase 1: observe φ-compression (lambda=0.0, no gradient pressure)
 # Phase 2: gentle φ-pressure (lambda=0.01-0.1, test effect on convergence)
@@ -105,6 +107,34 @@ def banner(text: str) -> None:
     print("\n" + "=" * 60)
     print(f"  {text}")
     print("=" * 60 + "\n", flush=True)
+
+
+def _clip_per_param(tree, max_norm: float) -> tuple:
+    """Clip each parameter's gradient independently by its own L2 norm.
+
+    Global clip_grad_norm fails for deep ternary models: gamma gradients
+    from 55 sequential layers dominate the total norm, clipping
+    embedding/norm updates to near-zero. Per-parameter clipping ensures
+    each parameter gets a fair update budget regardless of depth.
+
+    Returns (clipped_grads, total_pre_clip_norm) for logging.
+    """
+    total_sq = [0.0]
+
+    def _clip(t):
+        if isinstance(t, dict):
+            return {k: _clip(v) for k, v in t.items()}
+        elif isinstance(t, list):
+            return [_clip(v) for v in t]
+        elif isinstance(t, mx.array):
+            norm_sq = (t * t).sum()
+            norm = mx.sqrt(norm_sq)
+            total_sq[0] += norm_sq.item()
+            return mx.where(norm > max_norm, t * (max_norm / (norm + 1e-10)), t)
+        return t
+
+    result = _clip(tree)
+    return result, math.sqrt(total_sq[0])
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -632,8 +662,17 @@ def main():
             train_losses.append(step_loss)
             continue
 
-        # Clip gradients (max_norm=1.0 — critical for ternary training stability)
-        accum_grads, grad_norm = optim.clip_grad_norm(accum_grads, MAX_GRAD_NORM)
+        # Zero ternary weight gradients before clipping. They've already
+        # been consumed by accumulate_flips (sign-based). Including them
+        # in clip_grad_norm would clip continuous params to near-zero
+        # because ternary grads sum over B×L positions without normalization.
+        accum_grads = zero_ternary_grads(model, accum_grads)
+
+        # Per-parameter gradient clipping. Global clip_grad_norm fails
+        # because gamma gradients from 55 sequential layers dominate the
+        # total norm, starving embedding/norm updates. Per-parameter
+        # clipping ensures each parameter gets a fair update budget.
+        accum_grads, grad_norm = _clip_per_param(accum_grads, MAX_GRAD_NORM)
 
         optimizer.learning_rate = lr_schedule(step)
         optimizer.update(model, accum_grads)

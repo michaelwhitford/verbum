@@ -191,6 +191,39 @@ class TernaryFFN(nn.Module):
 # ══════════════════════════════════════════════════════════════════════
 
 
+def zero_ternary_grads(model: nn.Module, grads: dict) -> dict:
+    """Zero out ternary_weight gradients in the grad pytree.
+
+    Ternary weight gradients feed the flip accumulator (sign-based),
+    not the optimizer. Including them in clip_grad_norm poisons the
+    continuous parameter updates: a single large ternary gradient
+    dominates the total norm, clipping continuous params to near-zero.
+
+    Call this AFTER accumulate_flips and BEFORE clip_grad_norm.
+    """
+    # Collect paths to ternary weight parameters
+    ternary_paths: set[str] = set()
+    for path, module in _walk_ternary_modules(model):
+        ternary_paths.add(f"{path}.ternary_weight" if path else "ternary_weight")
+
+    def _zero(path_prefix: str, tree):
+        if isinstance(tree, dict):
+            return {
+                k: _zero(f"{path_prefix}.{k}" if path_prefix else k, v)
+                for k, v in tree.items()
+            }
+        elif isinstance(tree, list):
+            return [
+                _zero(f"{path_prefix}.{i}" if path_prefix else str(i), v)
+                for i, v in enumerate(tree)
+            ]
+        elif isinstance(tree, mx.array) and path_prefix in ternary_paths:
+            return mx.zeros_like(tree)
+        return tree
+
+    return _zero("", grads)
+
+
 def restore_ternary(model: nn.Module) -> None:
     """Re-cast any ternary weights back to int8 after optimizer update.
 

@@ -188,8 +188,12 @@ class VSMLMV6(nn.Module):
     # ── Modulation ────────────────────────────────────────────────
 
     def _modulate(self, x, delta, gate, phase_idx):
-        modulation = 1.0 + gate * mx.tanh(self.mod_projs[phase_idx](delta))
-        return x * modulation
+        # Additive modulation: gradient flows as addition (∂/∂x = 1),
+        # not multiplication (∂/∂x = modulation). Multiplicative
+        # modulation with shared mod_projs across 5 passes creates
+        # exponential gradient amplification: at gamma=0.05, grad norms
+        # exceed 3 billion. Addition keeps gradients bounded.
+        return x + gate * mx.tanh(self.mod_projs[phase_idx](delta))
 
     # ── Core level-pass ───────────────────────────────────────────
 
@@ -502,11 +506,11 @@ class VSMLMV6(nn.Module):
                     self.s3_passes[pass_idx].gate_phase(target_bank, delta, phase_idx)
                 )
 
-                # Modulation
-                modulation = 1.0 + gate * mx.tanh(self.mod_projs[phase_idx](delta))
-                x = x * modulation
+                # Additive modulation (matches _modulate)
+                modulation_delta = gate * mx.tanh(self.mod_projs[phase_idx](delta))
+                x = x + modulation_delta
 
-                mx.eval(delta, gated_delta, gate, modulation)
+                mx.eval(delta, gated_delta, gate, modulation_delta)
                 metrics[f"{pfx}_{phase_name}_delta_norm"] = mx.sqrt(
                     (delta * delta).sum(axis=-1)
                 ).mean().item()
@@ -515,9 +519,9 @@ class VSMLMV6(nn.Module):
                 ).mean().item()
                 metrics[f"{pfx}_{phase_name}_gate_mean"] = gate.item()
                 metrics[f"{pfx}_{phase_name}_gate_std"] = 0.0  # scalar gate
-                metrics[f"{pfx}_{phase_name}_mod_mean"] = modulation.mean().item()
+                metrics[f"{pfx}_{phase_name}_mod_mean"] = modulation_delta.mean().item()
                 metrics[f"{pfx}_{phase_name}_mod_std"] = mx.sqrt(
-                    mx.var(modulation)
+                    mx.var(modulation_delta)
                 ).item()
                 mx.eval(x)
                 metrics[f"{pfx}_after_{phase_name}"] = mx.sqrt(
