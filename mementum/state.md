@@ -32,28 +32,39 @@ large gradient values (max accumulator >1e9). After the catastrophic
 flip, 76% of all ternary weights changed simultaneously, but the
 model was already dead from NaN.
 
-**Fix** (two parts):
-1. `train.py`: Added `optim.clip_grad_norm(grads, 1.0)` after
-   gradient accumulation, before optimizer step. NaN guard skips
-   optimizer step if loss is NaN. Grad norm logged every 25 steps.
-2. `ternary.py`: NaN guard in `accumulate_flips` (skip NaN grads)
-   and `apply_flips` (reset corrupted accumulators).
+**Fixes** (three parts):
+1. `train.py`: Gradient clipping — `optim.clip_grad_norm(grads, 1.0)`.
+   NaN guard skips optimizer step if loss is NaN.
+2. `ternary.py`: **Sign-based accumulation** — `accum += sign(grad)`
+   instead of raw magnitude. Each micro-batch casts a direction vote
+   (+1/-1). After N accumulations, |accum| ≤ N (bounded). Eliminates
+   scale mismatch between gradients and threshold.
+3. `train.py`: **Adaptive percentile threshold** — instead of fixed
+   threshold, flip the top `target_pct` of weights by consensus.
+   Feedback loop adjusts target_pct based on loss recovery after flips:
+   - ratio < 1.02 (flips helped): target × 1.2
+   - ratio > 1.10 (flips hurt): target × 0.5
+   - Clamped to [0.01%, 2%]
 
-**Verified**: 200-step training with grad clipping shows:
-- Embedding weight stable at 223.7–223.9 (was 224→NaN)
-- Loss decreasing 11.4→11.0 (was 11.5→NaN)
-- Healthy flip count: 934→1,358 (was 11.1M catastrophic)
-- Logit norm bounded 216–268 (was 224→717→NaN)
+**Verified**: 300-step training shows:
+- Loss steady decline: 11.4 → 10.95
+- Controlled flips: 73k (0.2%) → 195k (0.6%) → 245k (0.7%)
+- Threshold at ~228 = 57% micro-batch directional consensus
+- Feedback loop self-tuning target upward (model absorbs flips well)
+- Embedding weight stable at 223.3–223.9
+- ‖g‖ bounded 0.56–1.64
 
 **Training loop pattern** (updated):
 ```python
 loss, grads = loss_and_grad_fn(model, x, y)
-accumulate_flips(model, grads)        # ternary grads → flip accumulator
-grads, grad_norm = clip_grad_norm(grads, 1.0)  # ← THE FIX
-optimizer.update(model, grads)         # Adam updates continuous params
-restore_ternary(model)                 # re-cast int8 (optimizer upcasts)
+accumulate_flips(model, grads)            # sign(grad) → accumulator (+1/-1 votes)
+grads, grad_norm = clip_grad_norm(grads, 1.0)
+optimizer.update(model, grads)             # Adam updates continuous params
+restore_ternary(model)                     # re-cast int8
 if step % FLIP_INTERVAL == 0:
-    apply_flips(model, threshold)      # discrete weight flips
+    threshold = compute_flip_threshold(model, target_pct)  # percentile
+    apply_flips(model, threshold)          # flip top target_pct by consensus
+    # 25 steps later: measure loss ratio → adapt target_pct
 ```
 
 ### v6 architecture (unchanged from session 027)

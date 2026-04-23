@@ -29,6 +29,7 @@ from verbum.v6.ternary import (
     TernaryLinear,
     accumulate_flips,
     apply_flips,
+    compute_flip_threshold,
     restore_ternary,
 )
 
@@ -60,7 +61,9 @@ WARMUP_STEPS = 500
 SEED = 42
 
 FLIP_INTERVAL = 100
-FLIP_THRESHOLD = 0.1
+FLIP_TARGET_PCT = 0.005   # start: 0.5% of weights per flip interval
+FLIP_PCT_MIN = 0.0001     # floor: 0.01%
+FLIP_PCT_MAX = 0.02       # ceiling: 2%
 MAX_GRAD_NORM = 1.0
 
 LOG_INTERVAL = 25
@@ -210,7 +213,7 @@ def main():
     print(f"  Strides: {STRIDES}")
     print(f"  Ternary: all projections (Metal add/sub kernel)")
     print(f"  Continuous: embeddings, gamma, norms, gates (AdamW)")
-    print(f"  Flip accumulation: interval={FLIP_INTERVAL}, threshold={FLIP_THRESHOLD}")
+    print(f"  Flip accumulation: interval={FLIP_INTERVAL}, sign-based, adaptive threshold")
     print(f"  Seq len: {SEQ_LEN}, Batch: {BATCH_SIZE} × {GRAD_ACCUM} accum")
     print(f"  Steps: {N_STEPS}, Tokens: {tokens_total:,}")
     print(f"  Data: SHUFFLED", flush=True)
@@ -260,6 +263,9 @@ def main():
     eval_losses = []
     total_flips = 0
     grad_norm = 0.0
+    flip_target_pct = FLIP_TARGET_PCT
+    flip_threshold = 0.0    # computed adaptively
+    loss_before_flip = None  # for adaptive feedback
 
     def _tree_add(a, b):
         """Add two gradient pytrees element-wise."""
@@ -323,10 +329,43 @@ def main():
 
         train_losses.append(step_loss)
 
-        # ── Flip accumulation ─────────────────────────────────
+        # ── Flip accumulation (adaptive) ─────────────────────
         if step % FLIP_INTERVAL == 0:
-            n_flipped = apply_flips(model, threshold=FLIP_THRESHOLD)
+            # Snapshot loss before flips for feedback
+            recent = [l for l in train_losses[-5:] if not np.isnan(l)]
+            loss_before_flip = sum(recent) / len(recent) if recent else None
+
+            # Percentile-based threshold: flip target_pct of weights
+            flip_threshold = compute_flip_threshold(model, flip_target_pct)
+            n_flipped = apply_flips(model, threshold=flip_threshold)
             total_flips += n_flipped
+            pct_flipped = n_flipped / 35_258_368 * 100  # total ternary weights
+            print(
+                f"  ── flip @ step {step}: {n_flipped:,} ({pct_flipped:.3f}%)  "
+                f"threshold={flip_threshold:.1f}  target={flip_target_pct:.4f} ──",
+                flush=True,
+            )
+
+        # ── Flip feedback (25 steps after flip) ──────────────
+        if step % FLIP_INTERVAL == 25 and loss_before_flip is not None:
+            recent = [l for l in train_losses[-5:] if not np.isnan(l)]
+            if recent:
+                loss_after_flip = sum(recent) / len(recent)
+                ratio = loss_after_flip / loss_before_flip
+                old_target = flip_target_pct
+                if ratio < 1.02:
+                    # Flips helped or were neutral — be more aggressive
+                    flip_target_pct = min(flip_target_pct * 1.2, FLIP_PCT_MAX)
+                elif ratio > 1.10:
+                    # Flips were destabilizing — back off
+                    flip_target_pct = max(flip_target_pct * 0.5, FLIP_PCT_MIN)
+                print(
+                    f"  ── flip feedback: before={loss_before_flip:.4f} "
+                    f"after={loss_after_flip:.4f} ratio={ratio:.3f}  "
+                    f"target {old_target:.4f}→{flip_target_pct:.4f} ──",
+                    flush=True,
+                )
+                loss_before_flip = None
 
         # ── Logging ───────────────────────────────────────────
         if step % LOG_INTERVAL == 0:
@@ -340,6 +379,7 @@ def main():
                 f"lr={lr_schedule(step):.2e}  "
                 f"‖g‖={grad_norm:.2f}  "
                 f"flips={total_flips:,}  "
+                f"target={flip_target_pct:.4f}  "
                 f"tokens={total_tokens/1e6:.0f}M ({pct:.0f}%)  "
                 f"tok/s={tps:.0f}  "
                 f"elapsed={elapsed:.0f}s",
@@ -414,6 +454,9 @@ def main():
                 "eval_loss": eval_losses[-1]["loss"] if eval_losses else None,
                 "compile_gate": compile["score"],
                 "total_flips": total_flips,
+                "flip_target_pct": flip_target_pct,
+                "flip_threshold": flip_threshold,
+                "grad_norm": grad_norm,
                 "architecture": "vsm-lm-v6-mlx",
                 "config": {
                     "d_model": D_MODEL, "d_register": D_REGISTER,

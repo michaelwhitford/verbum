@@ -271,13 +271,18 @@ def split_ternary_grads(
 
 
 def accumulate_flips(model: nn.Module, ternary_grads: dict[str, Any]) -> None:
-    """Add ternary weight gradients to flip accumulators.
+    """Accumulate gradient direction votes for ternary weight flips.
 
-    Call after loss backward, before optimizer step.
+    Uses sign(grad) rather than raw gradient magnitude. Each call
+    adds +1 or -1 per weight, so after N calls |accum| ≤ N. This
+    makes the accumulator scale-invariant and the threshold meaningful
+    in units of "directional consensus across micro-batches."
+
+    Call after loss backward, per micro-batch.
 
     Args:
         model: the model containing TernaryLinear modules
-        ternary_grads: ternary portion of gradient pytree
+        ternary_grads: gradient pytree (full or ternary-only)
     """
     def _extract_grad(tree, path_parts):
         """Navigate the grad pytree to find the gradient at a given path."""
@@ -299,11 +304,15 @@ def accumulate_flips(model: nn.Module, ternary_grads: dict[str, Any]) -> None:
         parts.append("ternary_weight")
         grad = _extract_grad(ternary_grads, parts)
         if grad is not None:
-            grad_f32 = grad.astype(mx.float32)
             # NaN guard: don't poison the accumulator with NaN gradients
-            if mx.any(mx.isnan(grad_f32)).item():
+            if mx.any(mx.isnan(grad)).item():
                 continue
-            module._flip_accum = module._flip_accum + grad_f32
+            # Sign-based accumulation: direction only, not magnitude.
+            # Each micro-batch casts a vote (+1 or -1) per weight.
+            # After N accumulations, |accum| ≤ N (bounded).
+            # This eliminates the scale mismatch between raw gradient
+            # magnitudes and the flip threshold.
+            module._flip_accum = module._flip_accum + mx.sign(grad).astype(mx.float32)
             accums.append(module._flip_accum)
 
     # Materialize accumulators to prevent lazy graph buildup.
@@ -311,6 +320,36 @@ def accumulate_flips(model: nn.Module, ternary_grads: dict[str, Any]) -> None:
     # 100 steps × 4 micro-batches × 147 modules the graph leaks GBs.
     if accums:
         mx.eval(*accums)
+
+
+def compute_flip_threshold(model: nn.Module, target_pct: float) -> float:
+    """Compute threshold to flip approximately target_pct of ternary weights.
+
+    Uses the percentile of accumulator absolute values so that exactly
+    target_pct fraction of weights exceed the threshold. This decouples
+    the flip decision from accumulator scale.
+
+    Args:
+        model: the model containing TernaryLinear modules
+        target_pct: fraction of weights to flip (e.g. 0.005 = 0.5%)
+
+    Returns:
+        Threshold value. Returns float('inf') if no valid accumulators.
+    """
+    import numpy as np
+    chunks = []
+    for _, module in _walk_ternary_modules(model):
+        mx.eval(module._flip_accum)
+        if mx.any(mx.isnan(module._flip_accum)).item():
+            continue
+        chunks.append(mx.abs(module._flip_accum).reshape(-1))
+    if not chunks:
+        return float("inf")
+    all_abs = mx.concatenate(chunks)
+    # Convert to numpy for percentile (mx doesn't have percentile)
+    all_np = np.array(all_abs)
+    pct = 100.0 * (1.0 - target_pct)
+    return float(np.percentile(all_np, pct))
 
 
 def apply_flips(model: nn.Module, threshold: float = 0.1) -> int:
@@ -321,6 +360,9 @@ def apply_flips(model: nn.Module, threshold: float = 0.1) -> int:
        0 + positive pressure → +1
       +1 + negative pressure → 0
        0 + negative pressure → -1
+
+    With sign-based accumulation, |accum| ≤ N after N accumulations.
+    Use compute_flip_threshold() for adaptive percentile-based threshold.
 
     Args:
         model: the model containing TernaryLinear modules
