@@ -2,78 +2,94 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-23 | Session: 031
+> Last updated: 2026-04-23 | Session: 032
 
 ## Where we are
 
-**v6 instrumented and architecture-coherent. Three-level VSM-regulated
-flip control. Stratified φ-compression probing. Ready to train.**
+**v6 design evolved. Feedback internalized into VSM. Ready to train.**
 
-Session 031 was a deep instrumentation session. Started from the
-φ-compression hypothesis page, added comprehensive measurement
-infrastructure, then discovered the flip feedback was outside the
-VSM hierarchy and redesigned it so the model self-regulates.
+Session 032 was a design evolution session. Deep architectural audit
+of all feedback/feedforward loops, then systematic internalization of
+external mechanisms into the model. No training run yet — all changes
+are pre-training design improvements.
 
-### v6 status — ready to train (session 031)
+### v6 status — ready to train (session 032)
 
-**New in session 031:**
+**New in session 032:**
 
-1. **Stratified φ-compression probing** — samples split by content type
-   (prose / compositional / technical / math). Measures compression
-   ratio per pass AND per stratum. Two convergence signals to watch:
-   - Cross-stratum spread → 0 = universal compressor emerging
-   - Mean ratio → 1/φ = φ-compression confirmed
+1. **FlipS3 — learned flip policy component:**
+   - Reads all 6 register banks (same input as MetaS3)
+   - Outputs per-group flip rate factors in [0.3, 2.0]
+   - nn.Linear (fp16, tiny) — trained by AdamW through main loss
+   - Replaces hand-coded `compute_per_group_flip_targets` inversion
+   - Zero-init → sigmoid=0.5 → factor=1.15 (neutral at startup)
+   - The model LEARNS which groups need protection vs exploration
+   - Stratum spread and Hilberg β still modulate on top (additive)
 
-2. **Per-stride entropy** — 9 strides × 5 passes = 45 compression
-   ratios per checkpoint. Each stride in the StrideStack measured
-   individually. Enables Hilberg exponent computation.
+2. **Int8 flip accumulators — 60% memory savings:**
+   - `_flip_accum`: fp32 → int8 with saturating clip at ±127
+   - Training memory per ternary weight: 5 bytes → 2 bytes
+   - At full scale (35M weights): ~105MB saved
+   - NaN guards removed (int8 can't be NaN)
 
-3. **Hilberg exponent (β)** — computed from log(1-ratio) vs log(stride).
-   β = slope + 1. Hilberg predicts β ≈ 0.5 for natural language.
-   If the sieve learns this, it's found the self-similar compression
-   structure independently.
+3. **φ-deviation loss term (opt-in via phi_lambda):**
+   - `model.__call__` returns `(logits, ce_loss, phi_loss)`
+   - Differentiable per-pass compression ratios via `_activation_entropy_differentiable`
+   - Phase 1 (now): `PHI_LAMBDA=0.0` — observe only
+   - Phase 2 (later): tune to 0.01–0.1 for gradient pressure toward φ
 
-4. **S3 gate trajectory** — 15 gate values (5 passes × 3 phases)
-   logged at eval intervals. Direct readout of Montague phase
-   specialization (prep/converge/consolidate differentiating per pass).
+4. **φ-deviation replaces L3 circuit breaker:**
+   - Old: 25-step delayed loss-ratio comparison (external Python scalar)
+   - New: immediate φ-deviation before/after flips (same step)
+   - Information-theoretic signal instead of loss-delta heuristic
+   - Emergency brake when L2 destabilization AND φ regression coincide
 
-5. **Per-stratum loss** — loss measured separately for prose,
-   compositional, technical, math. Tracks which content types the
-   model learns first (prediction: prose fast, math slow).
+5. **Stratum-aware + Hilberg β flip routing:**
+   - `compute_per_group_flip_targets` accepts `stratum_spread` and `hilberg_beta_dev`
+   - High compositional-prose spread → more stride_stack exploration
+   - |β - 0.5| > 0.2 → strides need more topological freedom
 
-6. **Three-level VSM-regulated flip control:**
-   - **L1 (S3 feed-forward):** Before flips, S3/Meta-S3 gates modulate
-     per-group flip targets. High importance → protect (0.3× base).
-     Low importance → explore (2.0× base). Control system (s3/s4/meta)
-     always conservative.
-   - **L2 (local stability):** After flips, cosine similarity of VSM
-     signal vectors (before vs after). sim > 0.95 → self-regulated.
-     sim < 0.80 → destabilized, escalate to L3.
-   - **L3 (circuit breaker):** Only fires if L2 detected instability.
-     Global loss ratio at step+25. Emergency adjustment. If this fires
-     often, per-group modulation needs tuning.
+6. **embed_norm (RMSNorm after embedding):**
+   - Breaks tied-embedding amplification loop internally
+   - `MAX_GRAD_NORM` relaxed from 1.0 to 2.0 (root cause contained)
 
-7. **15-issue audit fix:**
-   - **Critical:** flip accumulator save was silently failing for ~120/171
-     modules (anything in a list: s3_passes, stride_stack.layers, mod_projs).
-     Fixed with `_walk_ternary_modules`.
-   - Removed all v4 compat aliases from `forward_instrumented`
-   - Removed dead `flip_threshold` state, dead imports
-   - Hardcoded ternary count → `model.count_parameters()`
-   - Constants synced from model at startup (single source of truth)
-   - Group classification uses `_classify_group` (meta_s4 no longer
-     misclassified as s4)
-   - Checkpoint meta.json now self-describing with all architecture params
+7. **Write gate bias init -2.0:**
+   - sigmoid(-2) ≈ 0.12 → registers start mostly protected
+   - Matches mod_projs zero-init philosophy
+   - Smoke test showed gates already diverging by step 150:
+     consolidate ≈ 0.93, converge ≈ 0.32 (learning to differentiate)
 
-### Key insight: flip feedback belongs inside the VSM
+8. **Per-stride contribution metrics:**
+   - `delta_norm`: ||stride_out - stride_in|| per stride
+   - `rel_contrib`: delta_norm / ||x|| — relative influence
+   - Probe displays contribution table with ★ on dominant stride
 
-The previous design measured flips from outside (global loss ratio).
-The VSM already has an internal control system (S3 gates, Meta-S3,
-registers). Flips are an S1 operation. S3 should regulate them.
+### Key architectural insight: mx.eval inside value_and_grad = GPU hang
 
-The three-level design makes the global feedback a circuit breaker,
-not a controller. If the VSM self-regulates correctly, L3 never fires.
-L3 firing is a diagnostic event — it means self-regulation failed.
+FlipS3 initially called `mx.eval()` inside the forward pass (via
+`factors_dict()`). When `nn.value_and_grad` is tracing the computation
+graph, forcing synchronous Metal evaluation deadlocks the GPU. Fix:
+store raw tensor, eval after `loss_and_grad_fn` returns.
+
+**Rule: never call `mx.eval()` inside a forward pass that
+`nn.value_and_grad` is tracing.**
+
+### Smoke test results (150 steps, random data)
+
+- Loss: 15.97 → 11.32 (learning)
+- Flips: 407K across 3 intervals
+- FlipS3: all neutral at 1.15 (expected — needs real training to learn)
+- Write gates: diverged from 0.12 init to 0.32–0.93 (healthy)
+- Int8 accumulators: working correctly, dtype verified after flips
+- Full probe pipeline: all 386 metrics captured
+
+### What was NOT changed
+
+- **Flip execution** stays in train.py (discrete weight mutation can't
+  be in the computation graph)
+- **LR schedule** stays external (cosine, no model signal)
+- **Write gate coherence constraint** deferred (observe first)
+- **Stability-conditioned flip trigger** deferred (low priority)
 
 ### v5 status
 
@@ -81,39 +97,32 @@ Stopped at step 5k. Checkpoints at steps 1k–5k (PyTorch).
 
 ## What's next
 
-1. **Train v6** — fresh start with all instrumentation:
+1. **Train v6** — fresh start with all design improvements:
    ```bash
    uv run python scripts/v6/train.py
    ```
    Watch for:
-   - Flip control level (L1 self-regulated vs L3 circuit breaker)
-   - Per-group flip distribution (where is learning pressure?)
-   - Gate specialization (do passes differentiate?)
-   - Stratum loss spread (does it converge?)
-   - Compression ratios (do they approach 1/φ?)
-   - Hilberg β (does it approach 0.5?)
+   - FlipS3 factor differentiation (are groups getting different rates?)
+   - Write gate evolution (do they specialize per phase?)
+   - Per-stride contribution (which strides dominate?)
+   - Gradient norms (smoke test showed huge norms on random data)
+   - φ-compression convergence toward 1/φ ≈ 0.618
+   - Hilberg β convergence toward 0.5
+   - Stratum spread convergence toward 0
 
-2. **Probe checkpoints** as they drop:
+2. **If gradient norms explode:** tighten `MAX_GRAD_NORM` back to 1.0.
+   The embed_norm handles the root cause but the 5-pass depth can still
+   produce large gradients.
+
+3. **Phase 2 φ-loss** — once initial training shows signal:
+   - Set `PHI_LAMBDA = 0.01` and observe effect on convergence
+   - If compression ratios move toward φ without hurting CE loss, increase
+
+4. **Probe checkpoints** as they drop:
    ```bash
-   # Single checkpoint (full probe)
    uv run python scripts/v6/probe.py checkpoints/vsm-lm-v6/step_001000
-
-   # φ-only (faster)
-   uv run python scripts/v6/probe.py checkpoints/vsm-lm-v6/step_001000 --phi-only
-
-   # Evolution across checkpoints
-   uv run python scripts/v6/probe.py checkpoints/vsm-lm-v6/step_*
+   uv run python scripts/v6/probe.py checkpoints/vsm-lm-v6/step_* --phi-only
    ```
-
-3. **Three convergence signals** to track across training:
-   - Stratum spread → 0 (content-independent compression)
-   - φ-dev → 0 (self-similar compression at golden ratio)
-   - Hilberg β → 0.5 (power-law scaling matches natural language)
-
-4. **If L3 fires frequently:** tune the inversion function in
-   `compute_per_group_flip_targets` (currently linear gate→factor map).
-
-5. **φ-regularization** (Phase 2) — only if Phase 1 shows signal.
 
 ## Key files
 
@@ -121,18 +130,17 @@ Stopped at step 5k. Checkpoints at steps 1k–5k (PyTorch).
 |---------|------|
 | **v6 (MLX)** | |
 | Metal kernels | `src/verbum/v6/kernels.py` |
-| TernaryLinear + flip | `src/verbum/v6/ternary.py` |
+| TernaryLinear + flip (int8 accum) | `src/verbum/v6/ternary.py` |
 | Attention / StrideStack | `src/verbum/v6/attention.py` |
-| VSM components | `src/verbum/v6/components.py` |
-| Full model | `src/verbum/v6/model.py` |
-| Training loop | `scripts/v6/train.py` |
-| Probe script | `scripts/v6/probe.py` |
+| VSM components (S3, S4, Meta, FlipS3) | `src/verbum/v6/components.py` |
+| Full model (embed_norm, φ-loss, FlipS3) | `src/verbum/v6/model.py` |
+| Training loop (FlipS3 policy, φ-feedback) | `scripts/v6/train.py` |
+| Probe script (stride contrib, FlipS3 display) | `scripts/v6/probe.py` |
 | **Research** | |
 | Research program | `mementum/knowledge/explore/VERBUM.md` |
 | Flip accumulation | `mementum/knowledge/explore/v6-flip-accumulation.md` |
 | φ-compression hypothesis | `mementum/knowledge/explore/relational-loss-phi-compression.md` |
 | CompressorLM architecture | `mementum/knowledge/explore/compressor-architecture.md` |
-| Session 004 (Pythia findings) | `mementum/knowledge/explore/session-004-findings.md` |
 
 ## Architecture lineage
 
@@ -144,7 +152,30 @@ Stopped at step 5k. Checkpoints at steps 1k–5k (PyTorch).
 | v4 | 58M | PyTorch | Recursive VSM (ascending) | 4.713 |
 | v4.1 | 65.5M | PyTorch | Bidirectional VSM | 4.728* |
 | v5 | 66.3M | PyTorch | Spiral + ℂ regs + phase gate | TBD |
-| v6 | ~63M | **MLX** | Ternary Metal + VSM flip control | TBD |
+| v6 | ~63M | **MLX** | Ternary Metal + FlipS3 + φ-loss | TBD |
+
+## VSM feedback map (session 032)
+
+What's internal vs external after this session:
+
+```
+INTERNAL (model self-regulates):
+  S3 gates        → residual stream modulation (per phase)
+  Meta-S3 gates   → per-pass contribution weighting
+  S4 register scan → intra-pass feedforward
+  Write gates     → register update gating (init bias -2.0)
+  FlipS3          → learned per-group flip rate factors [NEW]
+  embed_norm      → embedding scale constraint [NEW]
+  φ-loss          → gradient pressure toward self-similar compression [NEW, opt-in]
+
+EXTERNAL (train.py, informed by model signals):
+  Flip execution  → apply_flips_per_group (discrete mutation)
+  φ-feedback      → immediate φ-dev before/after → flip_target_pct [NEW]
+  Stratum routing → compositional-prose spread → stride_stack [NEW]
+  Hilberg routing → |β-0.5| → stride_stack [NEW]
+  LR schedule     → cosine decay (no model signal)
+  Grad clipping   → MAX_GRAD_NORM=2.0 (relaxed, embed_norm handles root cause)
+```
 
 ## Probing pipeline
 
