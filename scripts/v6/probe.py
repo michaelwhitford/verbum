@@ -447,7 +447,8 @@ def print_summary(
             pct = total_flips / max(n_ternary, 1) * 100
             print(f"  Flips: {total_flips:,} ({pct:.2f}% of {n_ternary:,} ternary weights)")
         if flip_target is not None:
-            print(f"  Adaptive: target={flip_target:.4f}  threshold={flip_thresh:.1f}")
+            thresh_str = f"{flip_thresh:.1f}" if flip_thresh is not None else "N/A"
+            print(f"  Adaptive: target={flip_target:.4f}  threshold={thresh_str}")
         if grad_norm is not None:
             print(f"  Grad norm: {grad_norm:.2f}")
 
