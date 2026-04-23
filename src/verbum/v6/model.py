@@ -135,8 +135,10 @@ class VSMLMV6(nn.Module):
         # ── Flip-S3 (fp16, tiny) — learned flip policy ───
         self.flip_s3 = FlipS3(d_register, n_registers=self.n_registers,
                                n_banks=self.n_banks)
-        # Buffer for training loop to read (not a parameter, not saved)
-        self._flip_targets: Optional[dict[str, float]] = None
+        # Raw factors tensor for training loop to read after mx.eval.
+        # Do NOT call mx.eval on this during forward — it may be inside
+        # nn.value_and_grad's computation graph.
+        self._flip_factors_raw: Optional[mx.array] = None
 
     # ── Entropy estimation ─────────────────────────────────────────
 
@@ -294,10 +296,10 @@ class VSMLMV6(nn.Module):
         x = x - total_ungated + total_gated
 
         # Flip-S3: learned flip policy (reads same banks as Meta-S3)
-        # Produces per-group flip factors for the training loop.
-        # factors_dict() calls mx.eval internally, so this is safe
-        # to call even though it doesn't affect the residual stream.
-        self._flip_targets = self.flip_s3.factors_dict(all_banks)
+        # Store raw factors tensor — do NOT mx.eval here, we may be
+        # inside nn.value_and_grad's forward pass. The training loop
+        # reads this after mx.eval(loss, grads).
+        self._flip_factors_raw = self.flip_s3(all_banks)  # (n_groups,) tensor
 
         # Meta-S4: final structural summary
         meta_banks = [bank_0, bank_1_desc, bank_2_desc, bank_3]
@@ -575,9 +577,11 @@ class VSMLMV6(nn.Module):
         x = x - total_ungated + total_gated
 
         # ── Flip-S3 (learned flip policy) ─────────────────────
-        self._flip_targets = self.flip_s3.factors_dict(all_banks)
-        for gname, factor in self._flip_targets.items():
-            metrics[f"flip_s3_{gname}"] = factor
+        flip_factors = self.flip_s3(all_banks)
+        mx.eval(flip_factors)
+        self._flip_factors_raw = flip_factors
+        for i, gname in enumerate(self.flip_s3.GROUP_NAMES):
+            metrics[f"flip_s3_{gname}"] = flip_factors[i].item()
 
         # ── Meta-S4 ───────────────────────────────────────────
         meta_banks = [bank_0, bank_1_desc, bank_2_desc, bank_3]

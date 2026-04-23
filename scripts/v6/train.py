@@ -681,10 +681,17 @@ def main():
             phi_dev_before = signals_before.get("phi_deviation")
 
             # FlipS3 factors (learned from register bank state)
-            flip_factors = dict(model._flip_targets) if model._flip_targets else {}
+            # vsm_probe calls forward_instrumented which populates
+            # _flip_factors_raw. Eval + convert to dict here.
+            from verbum.v6.components import FlipS3
+            flip_factors = {}
+            if model._flip_factors_raw is not None:
+                mx.eval(model._flip_factors_raw)
+                for i, gname in enumerate(FlipS3.GROUP_NAMES):
+                    flip_factors[gname] = model._flip_factors_raw[i].item()
             group_targets = {
                 g: flip_target_pct * flip_factors.get(g, 1.15)
-                for g in ("prep", "stride_stack", "consolidate", "mod_projs", "s3", "s4", "meta")
+                for g in FlipS3.GROUP_NAMES
             }
 
             # ── Additive corrections from information-theoretic signals ──
