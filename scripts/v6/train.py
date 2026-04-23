@@ -492,6 +492,7 @@ def stratum_loss_probe(model, tokenizer):
 
 
 def main():
+    global N_PASSES, PASS_NAMES, PHASE_NAMES, REG_NAMES
     from transformers import AutoTokenizer
 
     results_dir = Path("results/vsm-lm-v6")
@@ -543,7 +544,6 @@ def main():
     print()
 
     # Sync architecture constants from model (single source of truth)
-    global N_PASSES, PASS_NAMES, PHASE_NAMES, REG_NAMES
     N_PASSES = model.N_PASSES
     PASS_NAMES = list(model.PASS_NAMES)
     PHASE_NAMES = list(model.PHASE_NAMES)
