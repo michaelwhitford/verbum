@@ -293,12 +293,20 @@ def accumulate_flips(model: nn.Module, ternary_grads: dict[str, Any]) -> None:
                 return None
         return node
 
+    accums = []
     for path, module in _walk_ternary_modules(model):
         parts = path.split(".") if path else []
         parts.append("ternary_weight")
         grad = _extract_grad(ternary_grads, parts)
         if grad is not None:
             module._flip_accum = module._flip_accum + grad.astype(mx.float32)
+            accums.append(module._flip_accum)
+
+    # Materialize accumulators to prevent lazy graph buildup.
+    # Without this, each call chains another addition node — after
+    # 100 steps × 4 micro-batches × 147 modules the graph leaks GBs.
+    if accums:
+        mx.eval(*accums)
 
 
 def apply_flips(model: nn.Module, threshold: float = 0.1) -> int:
