@@ -313,3 +313,56 @@ class MetaS3Ternary(nn.Module):
     def __call__(self, all_banks: list[list[mx.array]]) -> mx.array:
         flat = _interleave_banks(all_banks)
         return mx.sigmoid(self.gate_proj(flat))
+
+
+# ══════════════════════════════════════════════════════════════════════
+# FlipS3 — Learned flip policy (topology change control)
+# ══════════════════════════════════════════════════════════════════════
+
+
+class FlipS3(nn.Module):
+    """Learned flip policy — reads register banks, outputs per-group flip factors.
+
+    Replaces the hand-coded `compute_per_group_flip_targets` inversion
+    function with a learned mapping from VSM state to flip rates.
+
+    Reads the same register banks as MetaS3 (all 6 banks after all passes).
+    Outputs one sigmoid per group, mapped to [0.3, 2.0] flip factor:
+      sigmoid(0) = 0.5 → factor = 0.3 + 1.7*0.5 = 1.15 ≈ neutral
+      sigmoid(+∞) = 1.0 → factor = 2.0 (explore: 2× base rate)
+      sigmoid(-∞) = 0.0 → factor = 0.3 (protect: 0.3× base rate)
+
+    gate_proj kept as nn.Linear (has bias, tiny, same as MetaS3).
+    Bias initialized to 0.0 → sigmoid = 0.5 → neutral at startup.
+    The model learns to deviate from neutral as training progresses.
+
+    Groups: prep, stride_stack, consolidate, mod_projs, s3, s4, meta
+    """
+
+    # Canonical group ordering — must match train.py usage
+    GROUP_NAMES = ("prep", "stride_stack", "consolidate", "mod_projs", "s3", "s4", "meta")
+    FACTOR_MIN = 0.3
+    FACTOR_MAX = 2.0
+    FACTOR_RANGE = FACTOR_MAX - FACTOR_MIN  # 1.7
+
+    def __init__(self, d_register: int, n_registers: int, n_banks: int):
+        super().__init__()
+        input_dim = n_banks * n_registers * d_register * 2
+        n_groups = len(self.GROUP_NAMES)
+        self.gate_proj = nn.Linear(input_dim, n_groups)
+        # Bias = 0 → sigmoid = 0.5 → factor ≈ 1.15 (neutral)
+        # Weight also zero-init so output is pure bias at start
+        self.gate_proj.weight = mx.zeros_like(self.gate_proj.weight)
+        self.gate_proj.bias = mx.zeros_like(self.gate_proj.bias)
+
+    def __call__(self, all_banks: list[list[mx.array]]) -> mx.array:
+        """Returns per-group flip factors in [0.3, 2.0]."""
+        flat = _interleave_banks(all_banks)
+        raw = mx.sigmoid(self.gate_proj(flat))  # (n_groups,) in [0, 1]
+        return self.FACTOR_MIN + self.FACTOR_RANGE * raw
+
+    def factors_dict(self, all_banks: list[list[mx.array]]) -> dict[str, float]:
+        """Convenience: returns {group_name: factor} dict."""
+        factors = self(all_banks)
+        mx.eval(factors)
+        return {name: factors[i].item() for i, name in enumerate(self.GROUP_NAMES)}

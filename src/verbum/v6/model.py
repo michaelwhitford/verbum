@@ -28,6 +28,7 @@ from verbum.v6.components import (
     S3Ternary,
     MetaS4Ternary,
     MetaS3Ternary,
+    FlipS3,
     _interleave_banks,
 )
 
@@ -130,6 +131,12 @@ class VSMLMV6(nn.Module):
         # ── Meta-S3 (fp16, tiny) ─────────────────────────────
         self.meta_s3 = MetaS3Ternary(d_register, n_registers=self.n_registers,
                                       n_banks=self.n_banks, n_passes=self.N_PASSES)
+
+        # ── Flip-S3 (fp16, tiny) — learned flip policy ───
+        self.flip_s3 = FlipS3(d_register, n_registers=self.n_registers,
+                               n_banks=self.n_banks)
+        # Buffer for training loop to read (not a parameter, not saved)
+        self._flip_targets: Optional[dict[str, float]] = None
 
     # ── Entropy estimation ─────────────────────────────────────────
 
@@ -285,6 +292,12 @@ class VSMLMV6(nn.Module):
         total_ungated = sum(pass_deltas)
         total_gated = sum(meta_gates[i] * pass_deltas[i] for i in range(self.N_PASSES))
         x = x - total_ungated + total_gated
+
+        # Flip-S3: learned flip policy (reads same banks as Meta-S3)
+        # Produces per-group flip factors for the training loop.
+        # factors_dict() calls mx.eval internally, so this is safe
+        # to call even though it doesn't affect the residual stream.
+        self._flip_targets = self.flip_s3.factors_dict(all_banks)
 
         # Meta-S4: final structural summary
         meta_banks = [bank_0, bank_1_desc, bank_2_desc, bank_3]
@@ -560,6 +573,11 @@ class VSMLMV6(nn.Module):
         total_ungated = sum(pass_deltas)
         total_gated = sum(meta_gates[i] * pass_deltas[i] for i in range(self.N_PASSES))
         x = x - total_ungated + total_gated
+
+        # ── Flip-S3 (learned flip policy) ─────────────────────
+        self._flip_targets = self.flip_s3.factors_dict(all_banks)
+        for gname, factor in self._flip_targets.items():
+            metrics[f"flip_s3_{gname}"] = factor
 
         # ── Meta-S4 ───────────────────────────────────────────
         meta_banks = [bank_0, bank_1_desc, bank_2_desc, bank_3]

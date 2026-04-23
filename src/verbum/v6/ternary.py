@@ -138,8 +138,12 @@ class TernaryLinear(nn.Module):
         self.gamma = gamma
 
         # Flip accumulator — tracks gradient pressure per weight
-        # Not a parameter (not trained by optimizer), but needs to persist
-        self._flip_accum = mx.zeros(w_q.shape, dtype=mx.float32)
+        # Not a parameter (not trained by optimizer), but needs to persist.
+        # Int8 with saturation at ±127: each micro-batch votes ±1, so
+        # |accum| ≤ N_votes. Saturating at 127 means 127+ consecutive
+        # votes in one direction = overwhelming consensus. Cuts training
+        # memory from 5 bytes/weight (int8 + fp32) to 2 bytes/weight.
+        self._flip_accum = mx.zeros(w_q.shape, dtype=mx.int8)
 
     def __call__(self, x: mx.array) -> mx.array:
         if self.pre_norm:
@@ -156,8 +160,8 @@ class TernaryLinear(nn.Module):
             "neg_frac": (w == -1).sum().item() / total,
             "gamma_mean": self.gamma.mean().item(),
             "gamma_std": mx.sqrt(mx.var(self.gamma)).item(),
-            "accum_mean": mx.abs(self._flip_accum).mean().item(),
-            "accum_max": mx.abs(self._flip_accum).max().item(),
+            "accum_mean": mx.abs(self._flip_accum.astype(mx.float32)).mean().item(),
+            "accum_max": mx.abs(self._flip_accum.astype(mx.float32)).max().item(),
         }
 
 
@@ -309,10 +313,15 @@ def accumulate_flips(model: nn.Module, ternary_grads: dict[str, Any]) -> None:
                 continue
             # Sign-based accumulation: direction only, not magnitude.
             # Each micro-batch casts a vote (+1 or -1) per weight.
-            # After N accumulations, |accum| ≤ N (bounded).
-            # This eliminates the scale mismatch between raw gradient
-            # magnitudes and the flip threshold.
-            module._flip_accum = module._flip_accum + mx.sign(grad).astype(mx.float32)
+            # Int8 with saturating clip at ±127: 127+ consecutive votes
+            # in one direction = overwhelming consensus. Beyond that,
+            # additional votes don't add information.
+            # Memory: 2 bytes/weight (int8 weight + int8 accum) vs 5.
+            vote = mx.sign(grad).astype(mx.int8)
+            module._flip_accum = mx.clip(
+                module._flip_accum.astype(mx.int16) + vote.astype(mx.int16),
+                -127, 127,
+            ).astype(mx.int8)
             accums.append(module._flip_accum)
 
     # Materialize accumulators to prevent lazy graph buildup.
@@ -340,9 +349,8 @@ def compute_flip_threshold(model: nn.Module, target_pct: float) -> float:
     chunks = []
     for _, module in _walk_ternary_modules(model):
         mx.eval(module._flip_accum)
-        if mx.any(mx.isnan(module._flip_accum)).item():
-            continue
-        chunks.append(mx.abs(module._flip_accum).reshape(-1))
+        # Int8 accumulators can't be NaN — skip the guard
+        chunks.append(mx.abs(module._flip_accum).astype(mx.int16).reshape(-1))
     if not chunks:
         return float("inf")
     all_abs = mx.concatenate(chunks)
@@ -361,7 +369,7 @@ def apply_flips(model: nn.Module, threshold: float = 0.1) -> int:
       +1 + negative pressure → 0
        0 + negative pressure → -1
 
-    With sign-based accumulation, |accum| ≤ N after N accumulations.
+    With sign-based int8 accumulation, |accum| ≤ min(N, 127).
     Use compute_flip_threshold() for adaptive percentile-based threshold.
 
     Args:
@@ -375,17 +383,15 @@ def apply_flips(model: nn.Module, threshold: float = 0.1) -> int:
     mutated = []
 
     for _, module in _walk_ternary_modules(model):
-        # NaN guard: reset corrupted accumulators
-        if mx.any(mx.isnan(module._flip_accum)).item():
-            module._flip_accum = mx.zeros_like(module._flip_accum)
-            continue
-        mask = mx.abs(module._flip_accum) > threshold
+        # Int8 accumulators can't be NaN — no guard needed
+        accum_abs = mx.abs(module._flip_accum.astype(mx.int16)).astype(mx.int8)
+        mask = accum_abs > int(threshold)
         n_flipped = mask.sum().item()
 
         if n_flipped > 0:
-            direction = mx.sign(module._flip_accum)
-            current = module.ternary_weight.astype(mx.float32)
-            new_vals = mx.clip(mx.round(current + direction), -1, 1).astype(mx.int8)
+            direction = mx.sign(module._flip_accum.astype(mx.int16)).astype(mx.int8)
+            current = module.ternary_weight.astype(mx.int16)
+            new_vals = mx.clip(current + direction.astype(mx.int16), -1, 1).astype(mx.int8)
 
             # Apply: flip where mask is true, keep where false
             module.ternary_weight = mx.where(mask, new_vals, module.ternary_weight)
@@ -454,13 +460,11 @@ def apply_flips_per_group(
     for group, modules in groups.items():
         target_pct = group_targets.get(group, 0.005)
 
-        # Collect accumulators for this group
+        # Collect accumulators for this group (int8 — no NaN possible)
         chunks = []
         for _, mod in modules:
             mx.eval(mod._flip_accum)
-            if mx.any(mx.isnan(mod._flip_accum)).item():
-                continue
-            chunks.append(mx.abs(mod._flip_accum).reshape(-1))
+            chunks.append(mx.abs(mod._flip_accum.astype(mx.int16)).reshape(-1))
 
         if not chunks:
             group_flipped[group] = 0
@@ -475,15 +479,13 @@ def apply_flips_per_group(
         # Apply flips for this group
         n_flipped = 0
         for _, mod in modules:
-            if mx.any(mx.isnan(mod._flip_accum)).item():
-                mod._flip_accum = mx.zeros_like(mod._flip_accum)
-                continue
-            mask = mx.abs(mod._flip_accum) > threshold
+            accum_abs = mx.abs(mod._flip_accum.astype(mx.int16)).astype(mx.int8)
+            mask = accum_abs > int(threshold)
             n = mask.sum().item()
             if n > 0:
-                direction = mx.sign(mod._flip_accum)
-                current = mod.ternary_weight.astype(mx.float32)
-                new_vals = mx.clip(mx.round(current + direction), -1, 1).astype(mx.int8)
+                direction = mx.sign(mod._flip_accum.astype(mx.int16)).astype(mx.int8)
+                current = mod.ternary_weight.astype(mx.int16)
+                new_vals = mx.clip(current + direction.astype(mx.int16), -1, 1).astype(mx.int8)
                 mod.ternary_weight = mx.where(mask, new_vals, mod.ternary_weight)
                 mod._flip_accum = mx.where(mask, mx.zeros_like(mod._flip_accum), mod._flip_accum)
                 mutated.extend([mod.ternary_weight, mod._flip_accum])
