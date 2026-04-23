@@ -6,40 +6,42 @@
 
 ## Where we are
 
-**v6 restarting with sign-based flip accumulation + adaptive threshold.**
+**v6 ready to train — now with relational loss monitoring + φ-compression hypothesis.**
 
-All prior v6 checkpoints invalid (NaN). Three bugs found and fixed
-in session 028. Training restarting fresh.
+Session 028: fixed three bugs (NaN, flip cascade, fixed threshold).
+Session 030: added information-theoretic monitoring and φ-compression
+instrumentation. Training has not started yet — next step.
 
 ### v5 status
 
 Stopped at step 5k. Checkpoints at steps 1k–5k (PyTorch).
 
-### v6 status — ready to train (session 028)
+### v6 status — ready to train (sessions 028 + 030)
 
-Three training attempts, three failures, three fixes:
+**Session 028 fixes** (all three resolved):
+1. NaN from missing grad clipping → added `clip_grad_norm(1.0)`
+2. Catastrophic flip cascade → sign-based accumulation
+3. Fixed threshold → adaptive percentile with loss feedback
 
-1. **NaN from missing grad clipping** — v5 has `clip_grad_norm_(1.0)`,
-   v6 had none. Embedding weights diverged (224→NaN). Fixed: added
-   `optim.clip_grad_norm(grads, 1.0)`.
+**Session 030 additions — relational loss + φ-compression:**
 
-2. **Catastrophic flip cascade** — grad clipping protected the
-   optimizer but the flip accumulator still saw raw gradients.
-   Accumulators reached billions, threshold was 0.1 → 76% of weights
-   flipped simultaneously → model destroyed. Fixed: **sign-based
-   accumulation** — `accum += sign(grad)` bounds accumulators to ±N.
+Inspired by [Relational_Loss_ML](https://github.com/massimilianoconcas0-del/Relational_Loss_ML)
+(Concas 2026), added information-theoretic monitoring:
 
-3. **Flip-induced loss spikes** — even with sign accumulation, fixed
-   threshold can't adapt to training dynamics. Fixed: **adaptive
-   percentile threshold** with loss-based feedback loop:
-   - `compute_flip_threshold(model, target_pct)` → flip top N% by consensus
-   - 25 steps after flips, measure loss ratio
-   - ratio < 1.02 → target × 1.2 (be aggressive)
-   - ratio > 1.10 → target × 0.5 (back off)
+- **Relational loss** `r = (L - E) / (log(V) - E)` — fraction of
+  learnable capacity remaining [0=optimal, 1=random]
+  - E = 1.69 nats (Chinchilla irreducible entropy)
+  - log(V) = 10.83 nats (uniform over vocab)
+- **Excess perplexity** `xppl = exp(L - E)` — how many × worse than optimal
+- **φ-compression monitoring** — per-pass compression ratios measured in
+  `forward_instrumented`, compared against 1/φ ≈ 0.618 (golden ratio)
 
-**Verified 300 steps**: loss 11.4→10.95, controlled flips (0.2%→0.7%),
-threshold ~228 (57% micro-batch consensus), embedding weight stable,
-feedback loop self-tuning upward. No collapse.
+**The φ hypothesis** (untested): Hilberg's conjecture (1990) shows
+language entropy grows as a power law (self-similar). If the compression
+at each hierarchical scale follows the golden ratio, the model's
+per-layer compression ratios should naturally converge toward 1/φ.
+Seven scales of linguistic hierarchy × self-similar compression = the
+learnable structure has geometric (not arbitrary) form.
 
 ### Two timescales of learning
 
@@ -57,18 +59,23 @@ See `mementum/knowledge/explore/v6-flip-accumulation.md` for details.
    ```bash
    uv run python scripts/v6/train.py
    ```
-   Watch: flip rate trajectory, loss sawtooth pattern, adaptive
-   target_pct evolution, ternary sparsity changes.
+   Watch: flip rate, loss sawtooth, adaptive target_pct, **plus new
+   relational metrics** (`r=`, `xppl=` in log lines).
 
-2. **Probe v6 checkpoints** as they arrive:
+2. **Probe v6 checkpoints** — φ-compression analysis:
    ```bash
    uv run python scripts/v6/probe.py checkpoints/vsm-lm-v6/step_001000
    ```
-   Probe now shows: flips, adaptive state, accumulator stats per group.
+   Probe now shows: per-pass compression ratios, phi deviation,
+   flips, adaptive state, accumulator stats per group.
+   **Key question**: do compression ratios converge toward 1/φ ≈ 0.618?
 
 3. **Compare v5 vs v6** once v6 has matching checkpoints at 1k–5k.
 
-4. **Kernel optimization** — after training validates correctness.
+4. **φ-regularization** (Phase 2) — if compression ratios show signal
+   toward φ, test adding `λ * mean_phi_deviation` to the loss.
+
+5. **Kernel optimization** — after training validates correctness.
 
 ## Key files
 
@@ -91,6 +98,7 @@ See `mementum/knowledge/explore/v6-flip-accumulation.md` for details.
 | **Research** | |
 | Research program | `mementum/knowledge/explore/VERBUM.md` |
 | Flip accumulation | `mementum/knowledge/explore/v6-flip-accumulation.md` |
+| φ-compression hypothesis | `mementum/knowledge/explore/relational-loss-phi-compression.md` |
 | Training trajectory | `mementum/knowledge/explore/v4.1-training-trajectory.md` |
 
 ## Architecture lineage

@@ -23,8 +23,14 @@ from pathlib import Path
 
 import mlx.core as mx
 import mlx.nn as nn
+import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
+
+# Information-theoretic constants (must match train.py)
+E_IRREDUCIBLE = 1.69
+PHI = (1 + np.sqrt(5)) / 2
+INV_PHI = 1 / PHI
 
 PROBES_PATH = Path("probes/compile-gradient.json")
 GATES_DIR = Path("gates/")
@@ -149,11 +155,93 @@ def probe_checkpoint(model, probes, tokenizer, gate_name="compile"):
 
 
 # ══════════════════════════════════════════════════════════════════════
+# φ-Compression Analysis (forward_instrumented)
+# ══════════════════════════════════════════════════════════════════════
+
+
+def analyze_phi_compression(model, tokenizer, n_samples=5):
+    """Run forward_instrumented on sample texts and extract φ-compression metrics.
+
+    Returns dict with per-pass compression ratios, phi deviations, and aggregates.
+    """
+    samples = [
+        "The cat sat on the mat and looked out the window at the birds.",
+        "In 1969, Apollo 11 landed on the moon, marking a giant leap for mankind.",
+        "Every student who passed the exam received a certificate of achievement.",
+        "λx. λy. apply(x, y) → result",
+        "The quick brown fox jumps over the lazy dog near the river bank.",
+    ]
+
+    pass_names = ["L0_asc", "L1_asc", "L2_apex", "L1_desc", "L0_desc"]
+    all_ratios = {p: [] for p in pass_names}
+    all_h_in = {p: [] for p in pass_names}
+    all_h_out = {p: [] for p in pass_names}
+    all_phi_dev = {p: [] for p in pass_names}
+    all_losses = []
+
+    for text in samples[:n_samples]:
+        ids = mx.array(tokenizer.encode(text)).reshape(1, -1)
+        if ids.shape[1] > model.max_len:
+            ids = ids[:, -model.max_len:]
+        targets = mx.concatenate([ids[:, 1:], mx.zeros((1, 1), dtype=mx.int32)], axis=1)
+
+        _, loss, metrics = model.forward_instrumented(ids, targets)
+        mx.eval(loss)
+        if loss is not None:
+            all_losses.append(loss.item())
+
+        for p in pass_names:
+            cr_key = f"{p}_compression_ratio"
+            pd_key = f"{p}_phi_deviation"
+            hi_key = f"{p}_h_in"
+            ho_key = f"{p}_h_out"
+            if cr_key in metrics:
+                all_ratios[p].append(metrics[cr_key])
+            if pd_key in metrics:
+                all_phi_dev[p].append(metrics[pd_key])
+            if hi_key in metrics:
+                all_h_in[p].append(metrics[hi_key])
+            if ho_key in metrics:
+                all_h_out[p].append(metrics[ho_key])
+
+    # Aggregate
+    result = {"pass_metrics": {}, "samples": n_samples}
+    for p in pass_names:
+        if all_ratios[p]:
+            mean_cr = sum(all_ratios[p]) / len(all_ratios[p])
+            mean_pd = sum(all_phi_dev[p]) / len(all_phi_dev[p])
+            mean_hi = sum(all_h_in[p]) / len(all_h_in[p])
+            mean_ho = sum(all_h_out[p]) / len(all_h_out[p])
+            result["pass_metrics"][p] = {
+                "compression_ratio": mean_cr,
+                "phi_deviation": mean_pd,
+                "h_in": mean_hi,
+                "h_out": mean_ho,
+            }
+
+    if all_losses:
+        mean_loss = sum(all_losses) / len(all_losses)
+        log_v = float(np.log(model.vocab_size))
+        result["mean_loss"] = mean_loss
+        result["relational_loss"] = (mean_loss - E_IRREDUCIBLE) / (log_v - E_IRREDUCIBLE)
+        result["excess_ppl"] = float(np.exp(max(mean_loss - E_IRREDUCIBLE, 0)))
+
+    if result["pass_metrics"]:
+        all_cr = [m["compression_ratio"] for m in result["pass_metrics"].values()]
+        all_pd = [m["phi_deviation"] for m in result["pass_metrics"].values()]
+        result["mean_compression_ratio"] = sum(all_cr) / len(all_cr)
+        result["mean_phi_deviation"] = sum(all_pd) / len(all_pd)
+        result["inv_phi"] = INV_PHI
+
+    return result
+
+
+# ══════════════════════════════════════════════════════════════════════
 # Display
 # ══════════════════════════════════════════════════════════════════════
 
 
-def print_summary(results, step, model, meta=None):
+def print_summary(results, step, model, meta=None, phi_analysis=None):
     print("\n" + "=" * 70)
     print(f"  v6 Probe Summary — step {step:,}")
     print("=" * 70)
@@ -170,6 +258,20 @@ def print_summary(results, step, model, meta=None):
         loss_str = f"train={train_loss:.4f}" if train_loss else ""
         if eval_loss:
             loss_str += f"  eval={eval_loss:.4f}"
+
+        # Relational metrics (from checkpoint meta or computed)
+        r_loss = meta.get("relational_loss")
+        xppl = meta.get("excess_ppl")
+        ppl = meta.get("ppl")
+        if r_loss is not None:
+            loss_str += f"  r={r_loss:.3f}  xppl={xppl:.1f}  ppl={ppl:.1f}"
+        elif train_loss:
+            log_v = float(np.log(model.vocab_size))
+            r = (train_loss - E_IRREDUCIBLE) / (log_v - E_IRREDUCIBLE)
+            xp = float(np.exp(max(train_loss - E_IRREDUCIBLE, 0)))
+            pp = float(np.exp(train_loss))
+            loss_str += f"  r={r:.3f}  xppl={xp:.1f}  ppl={pp:.1f}"
+
         if loss_str:
             print(f"\n  Loss: {loss_str}")
 
@@ -180,6 +282,32 @@ def print_summary(results, step, model, meta=None):
             print(f"  Adaptive: target={flip_target:.4f}  threshold={flip_thresh:.1f}")
         if grad_norm is not None:
             print(f"  Grad norm: {grad_norm:.2f}")
+
+    # ── φ-Compression analysis ────────────────────────────────
+    if phi_analysis and phi_analysis.get("pass_metrics"):
+        pm = phi_analysis["pass_metrics"]
+        mean_cr = phi_analysis.get("mean_compression_ratio", 0)
+        mean_pd = phi_analysis.get("mean_phi_deviation", 0)
+
+        print(f"\n  φ-Compression Analysis (1/φ = {INV_PHI:.4f}):")
+        print(f"  {'Pass':12s} {'h_in':>8} {'h_out':>8} {'ratio':>8} {'φ-dev':>8}")
+        print(f"  {'─'*12} {'─'*8} {'─'*8} {'─'*8} {'─'*8}")
+        for pname in ["L0_asc", "L1_asc", "L2_apex", "L1_desc", "L0_desc"]:
+            if pname in pm:
+                m = pm[pname]
+                cr = m["compression_ratio"]
+                # Mark if close to 1/φ
+                marker = " ←φ" if m["phi_deviation"] < 0.05 else ""
+                print(
+                    f"  {pname:12s} {m['h_in']:>8.3f} {m['h_out']:>8.3f} "
+                    f"{cr:>8.4f} {m['phi_deviation']:>8.4f}{marker}"
+                )
+        print(f"  {'─'*12} {'─'*8} {'─'*8} {'─'*8} {'─'*8}")
+        print(f"  {'mean':12s} {'':>8} {'':>8} {mean_cr:>8.4f} {mean_pd:>8.4f}")
+
+        if phi_analysis.get("relational_loss") is not None:
+            print(f"\n  Instrumented: r={phi_analysis['relational_loss']:.3f}  "
+                  f"xppl={phi_analysis['excess_ppl']:.1f}")
 
     # ── Probe results by category ─────────────────────────────
     categories: dict[str, list] = {}
@@ -270,7 +398,11 @@ def main():
             print(f"  {lm} {r['probe_id']:20s} [{r['category']:15s}]")
             print(f"     gen: {r['generation'][:60]!r}  ({r['elapsed_ms']:.0f}ms)")
 
-    print_summary(results, step, model, meta=meta)
+    # φ-compression analysis via forward_instrumented
+    print(f"\n  Running φ-compression analysis...")
+    phi_analysis = analyze_phi_compression(model, tokenizer)
+
+    print_summary(results, step, model, meta=meta, phi_analysis=phi_analysis)
 
     # Save
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
@@ -286,6 +418,10 @@ def main():
         "grad_norm": meta.get("grad_norm"),
         "train_loss": meta.get("train_loss"),
         "eval_loss": meta.get("eval_loss"),
+        "relational_loss": meta.get("relational_loss"),
+        "excess_ppl": meta.get("excess_ppl"),
+        "ppl": meta.get("ppl"),
+        "phi_compression": phi_analysis,
         "n_probes": len(results),
         "n_lambda": sum(1 for r in results if r["has_lambda"]),
         "results": results,

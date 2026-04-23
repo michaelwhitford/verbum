@@ -66,6 +66,23 @@ FLIP_PCT_MIN = 0.0001     # floor: 0.01%
 FLIP_PCT_MAX = 0.02       # ceiling: 2%
 MAX_GRAD_NORM = 1.0
 
+# ── Information-theoretic constants ──────────────────────────────
+# Chinchilla scaling law: L(N,D) = E + A/N^α + B/D^β
+# E = irreducible entropy of natural language (nats/token)
+# Source: Hoffmann et al. 2022, Epoch AI replication 2024
+# Relational framing inspired by:
+#   https://github.com/massimilianoconcas0-del/Relational_Loss_ML
+#   (Concas 2026, "Relational Calculus for Efficient ML")
+E_IRREDUCIBLE = 1.69       # nats/token (Chinchilla); Epoch AI: 1.82
+LOG_V = float(np.log(VOCAB_SIZE))  # max entropy = log(vocab) ≈ 10.83
+LEARNABLE_RANGE = LOG_V - E_IRREDUCIBLE
+
+# Golden ratio hypothesis: true entropy rate may be 1/φ ≈ 0.618 bits/char
+# Within error bars of Shannon (0.6-1.3), Chinchilla (0.667 bits/byte)
+# If compression is self-similar (Hilberg 1990), φ is the fixed point
+PHI = (1 + np.sqrt(5)) / 2    # ≈ 1.618
+INV_PHI = 1 / PHI              # ≈ 0.618
+
 LOG_INTERVAL = 25
 EVAL_INTERVAL = 500
 CHECKPOINT_INTERVAL = 1000
@@ -137,6 +154,24 @@ def loss_fn(model, x, y):
     """Compute cross-entropy loss. Used with nn.value_and_grad."""
     _, loss = model(x, y)
     return loss
+
+
+def relational_metrics(loss: float) -> dict:
+    """Compute information-theoretic metrics from raw CE loss.
+
+    Returns dict with:
+      - relational_loss: fraction of learnable capacity remaining [0=optimal, 1=random]
+      - excess_ppl: how many x more confused than theoretically necessary
+      - ppl: standard perplexity
+      - reducible_loss: nats of learnable structure still uncaptured
+    """
+    reducible = loss - E_IRREDUCIBLE
+    return {
+        "relational_loss": reducible / LEARNABLE_RANGE,
+        "excess_ppl": float(np.exp(max(reducible, 0))),
+        "ppl": float(np.exp(loss)),
+        "reducible_loss": reducible,
+    }
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -359,9 +394,16 @@ def main():
                 elif ratio > 1.10:
                     # Flips were destabilizing — back off
                     flip_target_pct = max(flip_target_pct * 0.5, FLIP_PCT_MIN)
+                # Relational view: what fraction of remaining capacity was affected?
+                rm_before = relational_metrics(loss_before_flip)
+                rm_after = relational_metrics(loss_after_flip)
+                r_delta = rm_after["relational_loss"] - rm_before["relational_loss"]
                 print(
                     f"  ── flip feedback: before={loss_before_flip:.4f} "
                     f"after={loss_after_flip:.4f} ratio={ratio:.3f}  "
+                    f"Δr={r_delta:+.4f}  "
+                    f"r={rm_after['relational_loss']:.3f}  "
+                    f"xppl={rm_after['excess_ppl']:.1f}  "
                     f"target {old_target:.4f}→{flip_target_pct:.4f} ──",
                     flush=True,
                 )
@@ -373,9 +415,12 @@ def main():
             total_tokens = step * TOKENS_PER_STEP
             tps = total_tokens / elapsed
             pct = total_tokens / TARGET_TOKENS * 100
+            rm = relational_metrics(step_loss)
             print(
                 f"  step {step:5d}/{N_STEPS}  "
                 f"loss={step_loss:.4f}  "
+                f"r={rm['relational_loss']:.3f}  "
+                f"xppl={rm['excess_ppl']:.1f}  "
                 f"lr={lr_schedule(step):.2e}  "
                 f"‖g‖={grad_norm:.2f}  "
                 f"flips={total_flips:,}  "
@@ -390,8 +435,15 @@ def main():
         if step % EVAL_INTERVAL == 0:
             eval_loader.reset()
             el = estimate_loss(model, eval_loader)
-            eval_losses.append({"step": step, "loss": el})
-            print(f"  ── eval loss at step {step}: {el:.4f} ──", flush=True)
+            erm = relational_metrics(el)
+            eval_losses.append({"step": step, "loss": el, **erm})
+            print(
+                f"  ── eval @ step {step}: loss={el:.4f}  "
+                f"r={erm['relational_loss']:.3f}  "
+                f"xppl={erm['excess_ppl']:.1f}  "
+                f"ppl={erm['ppl']:.1f} ──",
+                flush=True,
+            )
 
         # ── Checkpoint ────────────────────────────────────────
         if step % CHECKPOINT_INTERVAL == 0:
@@ -448,9 +500,14 @@ def main():
                 mx.savez(str(ckpt_path / "flip_accum.npz"), **accum_dict)
 
             # Save metadata
+            rm = relational_metrics(step_loss)
             meta = {
                 "step": step,
                 "train_loss": step_loss,
+                "relational_loss": rm["relational_loss"],
+                "excess_ppl": rm["excess_ppl"],
+                "ppl": rm["ppl"],
+                "reducible_loss": rm["reducible_loss"],
                 "eval_loss": eval_losses[-1]["loss"] if eval_losses else None,
                 "compile_gate": compile["score"],
                 "total_flips": total_flips,
@@ -481,6 +538,8 @@ def main():
     elapsed = time.time() - start
     banner(f"DONE — {elapsed:.0f}s ({elapsed / 3600:.1f}h)")
 
+    # Compute final relational metrics
+    final_rm = relational_metrics(train_losses[-1]) if train_losses else {}
     summary = {
         "timestamp": datetime.now(UTC).isoformat(),
         "elapsed_s": elapsed,
@@ -488,6 +547,15 @@ def main():
         "framework": "MLX",
         "target_tokens": TARGET_TOKENS,
         "total_flips": total_flips,
+        "info_theoretic_constants": {
+            "E_irreducible": E_IRREDUCIBLE,
+            "log_V": LOG_V,
+            "learnable_range": LEARNABLE_RANGE,
+            "phi": PHI,
+            "inv_phi": INV_PHI,
+            "note": "E from Chinchilla (Hoffmann 2022). φ hypothesis: true H ≈ 1/φ bits/char (Hilberg 1990 self-similarity).",
+        },
+        "final_relational": final_rm,
         "train_losses": train_losses,
         "eval_losses": eval_losses,
     }

@@ -11,10 +11,15 @@ License: MIT
 
 from __future__ import annotations
 
+import math
 from typing import Optional
 
 import mlx.core as mx
 import mlx.nn as nn
+
+# Golden ratio — φ-compression hypothesis (Hilberg self-similarity)
+PHI = (1 + math.sqrt(5)) / 2
+INV_PHI = 1 / PHI  # ≈ 0.618
 
 from verbum.v6.ternary import TernaryLinear, TernaryFFN
 from verbum.v6.attention import StrideStack
@@ -122,6 +127,26 @@ class VSMLMV6(nn.Module):
         # ── Meta-S3 (fp16, tiny) ─────────────────────────────
         self.meta_s3 = MetaS3Ternary(d_register, n_registers=self.n_registers,
                                       n_banks=self.n_banks, n_passes=self.N_PASSES)
+
+    # ── Entropy estimation ─────────────────────────────────────────
+
+    @staticmethod
+    def _activation_entropy(x: mx.array) -> float:
+        """Estimate entropy of activation tensor via log-variance proxy.
+
+        Uses mean per-feature variance across batch and sequence as a
+        proxy for the information content of the representation.
+        Higher variance → more information → higher entropy.
+
+        Returns log(mean_var + eps), which is monotonic with entropy
+        for Gaussian-like distributions (differential entropy of
+        N(0,σ²) = 0.5*log(2πeσ²)).
+        """
+        # x shape: (B, L, D)  — compute variance per feature, then mean
+        var_per_feat = mx.var(x, axis=(0, 1))  # (D,)
+        mean_var = mx.mean(var_per_feat)
+        mx.eval(mean_var)
+        return float(mx.log(mean_var + 1e-10).item())
 
     # ── Register helpers ──────────────────────────────────────────
 
@@ -270,6 +295,7 @@ class VSMLMV6(nn.Module):
             ).item()
 
         pass_deltas = []
+        compression_ratios = []
 
         pass_schedule = [
             (0, False, "L0_asc", [bank_0], None),
@@ -300,6 +326,10 @@ class VSMLMV6(nn.Module):
                 target_bank = bank_1_desc
 
             x_before = x
+
+            # ── φ-compression: measure entropy before pass ──
+            h_in = self._activation_entropy(x)
+            metrics[f"{pfx}_h_in"] = h_in
 
             # ── S4 ──────────────────────────────────────────
             s4_updates, s4_attn = self.s4(readable, x)
@@ -382,6 +412,20 @@ class VSMLMV6(nn.Module):
 
             pass_deltas.append(x - x_before)
 
+            # ── φ-compression: measure entropy after pass ───
+            h_out = self._activation_entropy(x)
+            metrics[f"{pfx}_h_out"] = h_out
+            # Compression ratio: h_out/h_in (< 1 = compressing, > 1 = expanding)
+            if abs(h_in) > 1e-10:
+                cr = h_out / h_in
+                phi_dev = abs(cr - INV_PHI)
+            else:
+                cr = 1.0
+                phi_dev = abs(1.0 - INV_PHI)
+            metrics[f"{pfx}_compression_ratio"] = cr
+            metrics[f"{pfx}_phi_deviation"] = phi_dev
+            compression_ratios.append(cr)
+
         # ── Level-indexed aliases for compat ──────────────────
         level_map = {
             "L0_asc": "level0", "L1_asc": "level1", "L2_apex": "level2",
@@ -418,6 +462,14 @@ class VSMLMV6(nn.Module):
                 k = f"{src_pfx}_after_{phase}"
                 if k in metrics:
                     metrics[f"{dst_pfx}_after_{phase}"] = metrics[k]
+
+        # ── φ-compression aggregate ───────────────────────────
+        if compression_ratios:
+            mean_cr = sum(compression_ratios) / len(compression_ratios)
+            mean_phi_dev = sum(abs(cr - INV_PHI) for cr in compression_ratios) / len(compression_ratios)
+            metrics["mean_compression_ratio"] = mean_cr
+            metrics["mean_phi_deviation"] = mean_phi_dev
+            metrics["inv_phi"] = INV_PHI  # reference constant for plotting
 
         # ── Meta-S3 ───────────────────────────────────────────
         all_banks = [bank_0, bank_1_asc, bank_2_asc, bank_3, bank_2_desc, bank_1_desc]
