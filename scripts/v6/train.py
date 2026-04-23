@@ -499,21 +499,23 @@ def main():
             if accum_dict:
                 mx.savez(str(ckpt_path / "flip_accum.npz"), **accum_dict)
 
-            # Save metadata
+            # Save metadata (ensure all values are JSON-serializable Python types)
             rm = relational_metrics(step_loss)
+            _gn = float(grad_norm.item()) if hasattr(grad_norm, 'item') else float(grad_norm)
+            _ft = float(flip_threshold.item()) if hasattr(flip_threshold, 'item') else float(flip_threshold)
             meta = {
                 "step": step,
-                "train_loss": step_loss,
-                "relational_loss": rm["relational_loss"],
-                "excess_ppl": rm["excess_ppl"],
-                "ppl": rm["ppl"],
-                "reducible_loss": rm["reducible_loss"],
-                "eval_loss": eval_losses[-1]["loss"] if eval_losses else None,
+                "train_loss": float(step_loss),
+                "relational_loss": float(rm["relational_loss"]),
+                "excess_ppl": float(rm["excess_ppl"]),
+                "ppl": float(rm["ppl"]),
+                "reducible_loss": float(rm["reducible_loss"]),
+                "eval_loss": float(eval_losses[-1]["loss"]) if eval_losses else None,
                 "compile_gate": compile["score"],
-                "total_flips": total_flips,
-                "flip_target_pct": flip_target_pct,
-                "flip_threshold": flip_threshold,
-                "grad_norm": grad_norm,
+                "total_flips": int(total_flips),
+                "flip_target_pct": float(flip_target_pct),
+                "flip_threshold": _ft,
+                "grad_norm": _gn,
                 "architecture": "vsm-lm-v6-mlx",
                 "config": {
                     "d_model": D_MODEL, "d_register": D_REGISTER,
