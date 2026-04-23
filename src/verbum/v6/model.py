@@ -546,4 +546,5 @@ class VSMLMV6(nn.Module):
             logits = logits[:, -1, :] / temperature
             next_token = mx.argmax(logits, axis=-1, keepdims=True)
             input_ids = mx.concatenate([input_ids, next_token], axis=1)
+            mx.eval(input_ids)  # materialize to break lazy concatenation chain
         return input_ids

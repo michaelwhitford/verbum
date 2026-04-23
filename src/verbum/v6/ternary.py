@@ -326,6 +326,7 @@ def apply_flips(model: nn.Module, threshold: float = 0.1) -> int:
         Total number of weights flipped across all modules.
     """
     total_flipped = 0
+    mutated = []
 
     for _, module in _walk_ternary_modules(model):
         mask = mx.abs(module._flip_accum) > threshold
@@ -341,6 +342,11 @@ def apply_flips(model: nn.Module, threshold: float = 0.1) -> int:
             # Reset accumulator at flipped positions
             module._flip_accum = mx.where(mask, mx.zeros_like(module._flip_accum), module._flip_accum)
 
+            mutated.extend([module.ternary_weight, module._flip_accum])
             total_flipped += int(n_flipped)
+
+    # Materialize all mutated tensors to prevent lazy graph buildup
+    if mutated:
+        mx.eval(*mutated)
 
     return total_flipped
