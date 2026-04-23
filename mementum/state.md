@@ -2,7 +2,7 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-23 | Session: 028
+> Last updated: 2026-04-23 | Session: 030
 
 ## Where we are
 
