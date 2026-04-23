@@ -277,9 +277,11 @@ def _run_phi_samples(model, tokenizer, samples):
                     if wv is not None:
                         all_write_gates.setdefault(wk, []).append(wv)
 
-            # Per-stride ratios
+            # Per-stride ratios and contributions
             for key, val in metrics.items():
-                if key.startswith(f"{p}_stride_") and key.endswith("_ratio"):
+                if key.startswith(f"{p}_stride_") and (
+                    key.endswith("_ratio") or key.endswith("_delta_norm") or key.endswith("_rel_contrib")
+                ):
                     all_stride_data.setdefault(key, []).append(val)
 
             # Hilberg β
@@ -595,35 +597,54 @@ def print_summary(
                 print(f" {mean_val:>8.3f}", end="")
             print()
 
-    # ── Per-stride compression ────────────────────────────────
+    # ── Per-stride compression & contribution ────────────────
     if phi_overall and phi_overall.get("strides"):
         strides_data = phi_overall["strides"]
-        # Collect unique stride values and pass names
         stride_keys = sorted(strides_data.keys())
         if stride_keys:
-            # Parse stride indices from keys like "L0_asc_stride_0_s1_ratio"
-            # Group by pass
-            print(f"\n  Per-stride compression (9 strides × 5 passes):")
-            for p in PASS_NAMES:
-                p_strides = {}
-                for k, v in strides_data.items():
-                    if k.startswith(f"{p}_stride_"):
-                        # Extract stride index and value from key
-                        # Format: {pass}_stride_{idx}_s{stride}_ratio
+            # Parse stride data by pass and metric type
+            # Key format: {pass}_stride_{idx}_s{stride}_{metric}
+            def _parse_stride_data(data, pass_name, metric_suffix):
+                result = {}
+                for k, v in data.items():
+                    if k.startswith(f"{pass_name}_stride_") and k.endswith(f"_{metric_suffix}"):
                         parts_k = k.split("_")
-                        # Find the s{N} part
                         for pk in parts_k:
                             if pk.startswith("s") and pk[1:].isdigit():
-                                p_strides[int(pk[1:])] = v
+                                result[int(pk[1:])] = v
                                 break
-                if p_strides:
-                    sorted_strides = sorted(p_strides.keys())
-                    vals = [p_strides[s] for s in sorted_strides]
-                    labels = [f"s{s}" for s in sorted_strides]
+                return result
+
+            # Compression ratios
+            print(f"\n  Per-stride compression (ratio, 1/φ={INV_PHI:.3f}):")
+            for p in PASS_NAMES:
+                p_ratios = _parse_stride_data(strides_data, p, "ratio")
+                if p_ratios:
+                    sorted_s = sorted(p_ratios.keys())
+                    labels = [f"s{s}" for s in sorted_s]
+                    vals = [p_ratios[s] for s in sorted_s]
                     markers = ["←φ" if abs(v - INV_PHI) < 0.05 else "" for v in vals]
                     val_strs = [f"{v:.3f}{m}" for v, m in zip(vals, markers)]
                     print(f"  {p:12s} " + " ".join(f"{l:>7s}" for l in labels))
                     print(f"  {'':12s} " + " ".join(f"{v:>7s}" for v in val_strs))
+
+            # Contribution (relative delta norm)
+            has_contrib = any(k.endswith("_rel_contrib") for k in strides_data)
+            if has_contrib:
+                print(f"\n  Per-stride contribution (Δ‖/‖x‖, higher = more influence):")
+                for p in PASS_NAMES:
+                    p_contrib = _parse_stride_data(strides_data, p, "rel_contrib")
+                    p_delta = _parse_stride_data(strides_data, p, "delta_norm")
+                    if p_contrib:
+                        sorted_s = sorted(p_contrib.keys())
+                        labels = [f"s{s}" for s in sorted_s]
+                        vals = [p_contrib[s] for s in sorted_s]
+                        # Highlight the dominant stride
+                        max_val = max(vals) if vals else 0
+                        markers = [" ★" if v == max_val and v > 0 else "" for v in vals]
+                        val_strs = [f"{v:.3f}{m}" for v, m in zip(vals, markers)]
+                        print(f"  {p:12s} " + " ".join(f"{l:>7s}" for l in labels))
+                        print(f"  {'':12s} " + " ".join(f"{v:>7s}" for v in val_strs))
 
     # ── Hilberg exponent ─────────────────────────────────────
     if phi_overall and phi_overall.get("hilberg"):

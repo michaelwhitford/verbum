@@ -428,6 +428,7 @@ class VSMLMV6(nn.Module):
                     for si_idx, layer_idx in enumerate(order):
                         stride_val = self.stride_stack.strides[layer_idx]
                         h_before = self._activation_entropy(stride_x)
+                        stride_x_before = stride_x
                         stride_x = self.stride_stack.layers[layer_idx](stride_x)
                         mx.eval(stride_x)
                         h_after = self._activation_entropy(stride_x)
@@ -438,10 +439,18 @@ class VSMLMV6(nn.Module):
                             sr = 1.0
                         stride_ratios.append(sr)
 
+                        # Per-stride contribution: how much this stride changed the residual
+                        stride_delta = stride_x - stride_x_before
+                        delta_norm = mx.sqrt((stride_delta * stride_delta).sum(axis=-1)).mean().item()
+                        x_norm = mx.sqrt((stride_x_before * stride_x_before).sum(axis=-1)).mean().item()
+                        rel_contrib = delta_norm / max(x_norm, 1e-8)
+
                         metrics[f"{pfx}_stride_{si_idx}_s{stride_val}_h_in"] = h_before
                         metrics[f"{pfx}_stride_{si_idx}_s{stride_val}_h_out"] = h_after
                         metrics[f"{pfx}_stride_{si_idx}_s{stride_val}_ratio"] = sr
                         metrics[f"{pfx}_stride_{si_idx}_s{stride_val}_phi_dev"] = abs(sr - INV_PHI)
+                        metrics[f"{pfx}_stride_{si_idx}_s{stride_val}_delta_norm"] = delta_norm
+                        metrics[f"{pfx}_stride_{si_idx}_s{stride_val}_rel_contrib"] = rel_contrib
 
                     phase_out = stride_x
 
