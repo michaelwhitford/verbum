@@ -58,7 +58,7 @@ def load_checkpoint(path: Path) -> tuple:
         path: directory containing weights.safetensors + meta.json
 
     Returns:
-        (model, step, config)
+        (model, step, meta) where meta is the full checkpoint metadata
     """
     from verbum.v6.model import VSMLMV6
 
@@ -67,12 +67,12 @@ def load_checkpoint(path: Path) -> tuple:
 
     if not meta_path.exists():
         print(f"  WARNING: no meta.json in {path}, using defaults")
-        config = {}
-        step = 0
+        meta = {}
     else:
         meta = json.loads(meta_path.read_text())
-        config = meta.get("config", {})
-        step = meta.get("step", 0)
+
+    config = meta.get("config", {})
+    step = meta.get("step", 0)
 
     model = VSMLMV6(
         vocab_size=config.get("vocab_size", 50277),
@@ -91,7 +91,7 @@ def load_checkpoint(path: Path) -> tuple:
         model.load_weights(str(weights_path))
         print(f"  Loaded weights from {weights_path}")
 
-    return model, step, config
+    return model, step, meta
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -153,11 +153,35 @@ def probe_checkpoint(model, probes, tokenizer, gate_name="compile"):
 # ══════════════════════════════════════════════════════════════════════
 
 
-def print_summary(results, step, model):
+def print_summary(results, step, model, meta=None):
     print("\n" + "=" * 70)
     print(f"  v6 Probe Summary — step {step:,}")
     print("=" * 70)
 
+    # ── Checkpoint metadata ───────────────────────────────────
+    if meta:
+        train_loss = meta.get("train_loss")
+        eval_loss = meta.get("eval_loss")
+        total_flips = meta.get("total_flips")
+        flip_target = meta.get("flip_target_pct")
+        flip_thresh = meta.get("flip_threshold")
+        grad_norm = meta.get("grad_norm")
+
+        loss_str = f"train={train_loss:.4f}" if train_loss else ""
+        if eval_loss:
+            loss_str += f"  eval={eval_loss:.4f}"
+        if loss_str:
+            print(f"\n  Loss: {loss_str}")
+
+        if total_flips is not None:
+            pct = total_flips / 35_258_368 * 100
+            print(f"  Flips: {total_flips:,} ({pct:.2f}% of ternary weights)")
+        if flip_target is not None:
+            print(f"  Adaptive: target={flip_target:.4f}  threshold={flip_thresh:.1f}")
+        if grad_norm is not None:
+            print(f"  Grad norm: {grad_norm:.2f}")
+
+    # ── Probe results by category ─────────────────────────────
     categories: dict[str, list] = {}
     for r in results:
         categories.setdefault(r["category"], []).append(r)
@@ -175,7 +199,7 @@ def print_summary(results, step, model):
         lambda_frac = sum(1 for r in cat_results if r["has_lambda"]) / n * 100
         print(f"  {cat:20s} {n:>3} {lambda_frac:>5.0f}%")
 
-    # Ternary stats
+    # ── Ternary stats ─────────────────────────────────────────
     ternary_stats = model.ternary_stats()
     if ternary_stats:
         print(f"\n  Ternary statistics ({len(ternary_stats)} modules):")
@@ -191,15 +215,17 @@ def print_summary(results, step, model):
             else:
                 group_stats.setdefault("other", []).append(stat)
 
-        print(f"  {'Group':15s} {'#':>4} {'sparsity':>9} {'gamma':>8}")
-        print(f"  {'─'*15} {'─'*4} {'─'*9} {'─'*8}")
+        print(f"  {'Group':15s} {'#':>4} {'sparsity':>9} {'gamma':>8} {'accum_mean':>11} {'accum_max':>10}")
+        print(f"  {'─'*15} {'─'*4} {'─'*9} {'─'*8} {'─'*11} {'─'*10}")
         for grp, sl in group_stats.items():
             if not sl:
                 continue
             n = len(sl)
             sp = sum(s["sparsity"] for s in sl) / n
             gm = sum(s["gamma_mean"] for s in sl) / n
-            print(f"  {grp:15s} {n:>4} {sp:>9.3f} {gm:>8.4f}")
+            am = sum(s.get("accum_mean", 0) for s in sl) / n
+            ax = max(s.get("accum_max", 0) for s in sl)
+            print(f"  {grp:15s} {n:>4} {sp:>9.3f} {gm:>8.4f} {am:>11.2f} {ax:>10.1f}")
 
     n_total = len(results)
     n_lambda = sum(1 for r in results if r["has_lambda"])
@@ -225,7 +251,8 @@ def main():
     print(f"{'=' * 60}")
     print(f"  Checkpoint: {args.checkpoint}")
 
-    model, step, config = load_checkpoint(args.checkpoint)
+    model, step, meta = load_checkpoint(args.checkpoint)
+    config = meta.get("config", {})
     print(f"  Loaded v6 model at step {step:,}")
     print(model.describe())
 
@@ -243,7 +270,7 @@ def main():
             print(f"  {lm} {r['probe_id']:20s} [{r['category']:15s}]")
             print(f"     gen: {r['generation'][:60]!r}  ({r['elapsed_ms']:.0f}ms)")
 
-    print_summary(results, step, model)
+    print_summary(results, step, model, meta=meta)
 
     # Save
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
@@ -253,6 +280,12 @@ def main():
         "architecture": "vsm-lm-v6-mlx",
         "step": step,
         "config": config,
+        "total_flips": meta.get("total_flips"),
+        "flip_target_pct": meta.get("flip_target_pct"),
+        "flip_threshold": meta.get("flip_threshold"),
+        "grad_norm": meta.get("grad_norm"),
+        "train_loss": meta.get("train_loss"),
+        "eval_loss": meta.get("eval_loss"),
         "n_probes": len(results),
         "n_lambda": sum(1 for r in results if r["has_lambda"]),
         "results": results,

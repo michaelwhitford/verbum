@@ -400,7 +400,7 @@ def main():
 
             print(f"  ── checkpoint {step} ({step * TOKENS_PER_STEP / 1e6:.0f}M tokens) ──")
             print(f"     compile gate: {compile['score']}")
-            print(f"     total flips so far: {total_flips:,}")
+            print(f"     total flips: {total_flips:,}  target={flip_target_pct:.4f}  threshold={flip_threshold:.1f}")
 
             # Ternary stats by group
             group_stats: dict[str, list] = {
