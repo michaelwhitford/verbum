@@ -130,6 +130,7 @@ def load_checkpoint(path: Path) -> tuple:
         window=config.get("window", 8),
         strides=tuple(config.get("strides", [1, 8, 16, 32, 64, 128, 256, 512, 1024])),
         alpha=config.get("alpha", 1.18),
+        phi_lambda=config.get("phi_lambda", 0.0),
     )
 
     if weights_path.exists():
@@ -210,10 +211,15 @@ def _run_phi_samples(model, tokenizer, samples):
     all_h_in = {p: [] for p in PASS_NAMES}
     all_h_out = {p: [] for p in PASS_NAMES}
     all_losses = []
-    all_gates = {}        # {pass_phase: [values]}
-    all_stride_data = {}  # {pass_stride_key: [ratios]}
+    all_gates = {}          # {pass_phase: [values]}
+    all_meta_gates = {}     # {pass_name: [values]}
+    all_write_gates = {}    # {pass_phase_reg: [values]}
+    all_stride_data = {}    # {pass_stride_key: [ratios]}
     all_hilberg = {p: [] for p in PASS_NAMES}
+    all_embed_norms = []
     per_sample = []
+
+    REG_NAMES = list(model.REGISTER_NAMES)
 
     for text in samples:
         ids = mx.array(tokenizer.encode(text)).reshape(1, -1)
@@ -225,6 +231,11 @@ def _run_phi_samples(model, tokenizer, samples):
         mx.eval(loss)
         if loss is not None:
             all_losses.append(loss.item())
+
+        # Embed norm
+        en = metrics.get("embed_norm")
+        if en is not None:
+            all_embed_norms.append(en)
 
         sample_data = {"text": text[:60], "passes": {}}
         for p in PASS_NAMES:
@@ -240,12 +251,24 @@ def _run_phi_samples(model, tokenizer, samples):
                     "ratio": cr, "phi_dev": abs(cr - INV_PHI),
                 }
 
-            # Gate values per phase
+            # Meta-S3 gates (per-pass contribution)
+            mg = metrics.get(f"meta_s3_gate_{p}")
+            if mg is not None:
+                all_meta_gates.setdefault(p, []).append(mg)
+
+            # S3 gate values per phase
             for ph in PHASE_NAMES:
                 gk = f"{p}_{ph}"
                 gv = metrics.get(f"{p}_{ph}_gate_mean")
                 if gv is not None:
                     all_gates.setdefault(gk, []).append(gv)
+
+                # Write gate values per phase × register
+                for rn in REG_NAMES:
+                    wk = f"{p}_{ph}_write_{rn}"
+                    wv = metrics.get(wk)
+                    if wv is not None:
+                        all_write_gates.setdefault(wk, []).append(wv)
 
             # Per-stride ratios
             for key, val in metrics.items():
@@ -266,6 +289,8 @@ def _run_phi_samples(model, tokenizer, samples):
 
     # Average gates
     avg_gates = {k: sum(v) / len(v) for k, v in all_gates.items() if v}
+    avg_meta_gates = {k: sum(v) / len(v) for k, v in all_meta_gates.items() if v}
+    avg_write_gates = {k: sum(v) / len(v) for k, v in all_write_gates.items() if v}
 
     # Average stride ratios
     avg_strides = {k: sum(v) / len(v) for k, v in all_stride_data.items() if v}
@@ -281,8 +306,11 @@ def _run_phi_samples(model, tokenizer, samples):
 
     extras = {
         "gates": avg_gates,
+        "meta_gates": avg_meta_gates,
+        "write_gates": avg_write_gates,
         "strides": avg_strides,
         "hilberg": avg_hilberg,
+        "embed_norm": sum(all_embed_norms) / len(all_embed_norms) if all_embed_norms else None,
     }
 
     return all_ratios, all_h_in, all_h_out, all_losses, per_sample, extras
@@ -346,8 +374,11 @@ def analyze_phi_compression(model, tokenizer, strata=None):
     )
     overall = _summarize_ratios(all_ratios, all_h_in, all_h_out, all_losses)
     overall["gates"] = extras["gates"]
+    overall["meta_gates"] = extras["meta_gates"]
+    overall["write_gates"] = extras["write_gates"]
     overall["strides"] = extras["strides"]
     overall["hilberg"] = extras["hilberg"]
+    overall["embed_norm"] = extras["embed_norm"]
 
     # Per-stratum (including per-stratum loss)
     strata_summaries = {}
@@ -402,8 +433,9 @@ def print_summary(
             print(f"\n  Loss: {loss_str}")
 
         if total_flips is not None:
-            pct = total_flips / 35_258_368 * 100
-            print(f"  Flips: {total_flips:,} ({pct:.2f}% of ternary weights)")
+            n_ternary = model.count_parameters()["total_ternary"]
+            pct = total_flips / max(n_ternary, 1) * 100
+            print(f"  Flips: {total_flips:,} ({pct:.2f}% of {n_ternary:,} ternary weights)")
         if flip_target is not None:
             print(f"  Adaptive: target={flip_target:.4f}  threshold={flip_thresh:.1f}")
         if grad_norm is not None:
@@ -481,7 +513,23 @@ def print_summary(
                     f"{sl['excess_ppl']:>8.1f}"
                 )
 
-    # ── Gate values (S3 phase gates) ──────────────────────────
+    # ── Embed norm ─────────────────────────────────────────────
+    if phi_overall and phi_overall.get("embed_norm") is not None:
+        print(f"\n  Embed norm (RMSNorm): {phi_overall['embed_norm']:.3f}")
+
+    # ── Meta-S3 gates (per-pass contribution) ─────────────────
+    if phi_overall and phi_overall.get("meta_gates"):
+        meta_gates = phi_overall["meta_gates"]
+        print(f"\n  Meta-S3 gates (per-pass contribution — used for flip control):")
+        print(f"  {'pass':12s} {'gate':>8} {'→flip_factor':>13}")
+        print(f"  {'─'*12} {'─'*8} {'─'*13}")
+        for p in PASS_NAMES:
+            g = meta_gates.get(p, 0.5)
+            # Show the inversion: what flip factor this gate value implies
+            factor = 2.0 * (1.0 - g) + 0.3 * g
+            print(f"  {p:12s} {g:>8.3f} {factor:>13.2f}×")
+
+    # ── S3 phase gates ────────────────────────────────────────
     if phi_overall and phi_overall.get("gates"):
         gates = phi_overall["gates"]
         print(f"\n  S3 Gate values (per pass × phase):")
@@ -492,6 +540,28 @@ def print_summary(
             g_conv = gates.get(f"{p}_converge", 0)
             g_cons = gates.get(f"{p}_consolidate", 0)
             print(f"  {p:12s} {g_prep:>8.3f} {g_conv:>10.3f} {g_cons:>13.3f}")
+
+    # ── Write gates (register protection) ─────────────────────
+    if phi_overall and phi_overall.get("write_gates"):
+        wg = phi_overall["write_gates"]
+        reg_names = list(model.REGISTER_NAMES)
+        # Show average write gate per phase across passes
+        print(f"\n  Write gates (register protection — init≈0.12, higher=more open):")
+        print(f"  {'phase':12s}", end="")
+        for rn in reg_names:
+            print(f" {rn:>8s}", end="")
+        print()
+        print(f"  {'─'*12}", end="")
+        for _ in reg_names:
+            print(f" {'─'*8}", end="")
+        print()
+        for ph in PHASE_NAMES:
+            print(f"  {ph:12s}", end="")
+            for rn in reg_names:
+                vals = [wg.get(f"{p}_{ph}_write_{rn}", 0) for p in PASS_NAMES]
+                mean_val = sum(vals) / len(vals) if vals else 0
+                print(f" {mean_val:>8.3f}", end="")
+            print()
 
     # ── Per-stride compression ────────────────────────────────
     if phi_overall and phi_overall.get("strides"):
@@ -611,20 +681,15 @@ def print_summary(
         print(f"\n  Overall λ generation: {n_lambda}/{n_total} ({n_lambda / n_total * 100:.0f}%)")
 
     # ── Ternary stats ─────────────────────────────────────────
+    from verbum.v6.ternary import _classify_group
+
     ternary_stats = model.ternary_stats()
     if ternary_stats:
         print(f"\n  Ternary statistics ({len(ternary_stats)} modules):")
-        group_stats: dict[str, list] = {
-            "prep": [], "stride_stack": [], "consolidate": [],
-            "mod_projs": [], "s4": [], "s3": [], "meta": [],
-        }
+        group_stats: dict[str, list] = {}
         for mod_name, stat in ternary_stats.items():
-            for gk in group_stats:
-                if gk in mod_name:
-                    group_stats[gk].append(stat)
-                    break
-            else:
-                group_stats.setdefault("other", []).append(stat)
+            grp = _classify_group(mod_name)
+            group_stats.setdefault(grp, []).append(stat)
 
         print(f"  {'Group':15s} {'#':>4} {'sparsity':>9} {'gamma':>8} {'accum_mean':>11} {'accum_max':>10}")
         print(f"  {'─'*15} {'─'*4} {'─'*9} {'─'*8} {'─'*11} {'─'*10}")
