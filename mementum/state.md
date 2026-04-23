@@ -2,18 +2,62 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-23 | Session: 032
+> Last updated: 2026-04-23 | Session: 033
 
 ## Where we are
 
-**v6 design evolved. Feedback internalized into VSM. Ready to train.**
+**v6 gradient explosion fixed. Ready to retrain.**
 
-Session 032 was a design evolution session. Deep architectural audit
-of all feedback/feedforward loops, then systematic internalization of
-external mechanisms into the model. No training run yet — all changes
-are pre-training design improvements.
+Session 033: first v6 training run collapsed — loss plateaued at 11.3,
+grad norms 86-197 billion. Root-caused to three interacting bugs and
+fixed all three. Ready to launch fresh v6 training.
 
-### v6 status — ready to train (session 032)
+### v6 status — gradient fix applied, ready to retrain (session 033)
+
+**Session 033 fixes (critical):**
+
+1. **Multiplicative modulation → additive:**
+   `x *= (1 + gate * tanh(mod_proj(delta)))` was the primary cause.
+   Shared mod_projs across 5 passes created exponential gradient
+   amplification. At gamma=0.05, grad norms exceeded **3 billion**.
+   Fixed to `x += gate * tanh(mod_proj(delta))`. Gradient now flows
+   as addition (∂/∂x = 1), not multiplication (∂/∂x = modulation).
+
+2. **Ternary grad zeroing before clip:**
+   Ternary weight gradients (sum over B×L positions, unbounded) were
+   included in `clip_grad_norm`, drowning continuous param updates.
+   Now zeroed after `accumulate_flips` and before clipping — they only
+   feed the sign-based flip accumulator, not the optimizer.
+
+3. **Per-parameter gradient clipping:**
+   Global `clip_grad_norm` fails for 55-layer depth: gamma gradients
+   dominate total norm, starving embedding/norm updates. Replaced with
+   per-parameter clipping — each tensor clipped by its own L2 norm.
+
+**Evidence:** 300-step test: loss 15.96 → 11.27 with continued descent
+(vs old approach: plateau at 11.35 by step 75, no further improvement).
+
+### Key architectural insight: multiplicative modulation + weight sharing = explosion
+
+The forward path applies `x *= modulation` 15 times (3 phases × 5 passes)
+using the **same 3 mod_proj modules**. Backward: the gradient at pass 0
+is amplified by the product of all modulations from passes 1-4. With
+shared weights, gradients from all 5 applications add up, each carrying
+exponentially different magnitudes.
+
+Measured scaling (multiplicative, at different gamma values):
+| gamma | total grad norm |
+|-------|-----------------|
+| 0.000 | 2.1 |
+| 0.010 | 9,081 |
+| 0.050 | 3.1 × 10⁹ |
+| 0.100 | 1.8 × 10¹² |
+| 0.500 | 1.3 × 10¹⁶ |
+
+AdamW pushes gamma to 0.05 in ~200 steps → collapse.
+
+**Rule: never use multiplicative modulation with shared weights across
+sequential passes. Additive modulation is the standard for a reason.**
 
 **New in session 032:**
 
@@ -97,28 +141,25 @@ Stopped at step 5k. Checkpoints at steps 1k–5k (PyTorch).
 
 ## What's next
 
-1. **Train v6** — fresh start with all design improvements:
+1. **Retrain v6** — fresh start with gradient fixes:
    ```bash
    uv run python scripts/v6/train.py
    ```
    Watch for:
+   - Loss should steadily decrease past 11.3 (was plateaued there)
+   - ‖g‖ (pre-clip total) will be large but per-param clipping handles it
    - FlipS3 factor differentiation (are groups getting different rates?)
    - Write gate evolution (do they specialize per phase?)
    - Per-stride contribution (which strides dominate?)
-   - Gradient norms (smoke test showed huge norms on random data)
    - φ-compression convergence toward 1/φ ≈ 0.618
    - Hilberg β convergence toward 0.5
    - Stratum spread convergence toward 0
 
-2. **If gradient norms explode:** tighten `MAX_GRAD_NORM` back to 1.0.
-   The embed_norm handles the root cause but the 5-pass depth can still
-   produce large gradients.
-
-3. **Phase 2 φ-loss** — once initial training shows signal:
+2. **Phase 2 φ-loss** — once initial training shows signal:
    - Set `PHI_LAMBDA = 0.01` and observe effect on convergence
    - If compression ratios move toward φ without hurting CE loss, increase
 
-4. **Probe checkpoints** as they drop:
+3. **Probe checkpoints** as they drop:
    ```bash
    uv run python scripts/v6/probe.py checkpoints/vsm-lm-v6/step_001000
    uv run python scripts/v6/probe.py checkpoints/vsm-lm-v6/step_* --phi-only
