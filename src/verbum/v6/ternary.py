@@ -299,7 +299,11 @@ def accumulate_flips(model: nn.Module, ternary_grads: dict[str, Any]) -> None:
         parts.append("ternary_weight")
         grad = _extract_grad(ternary_grads, parts)
         if grad is not None:
-            module._flip_accum = module._flip_accum + grad.astype(mx.float32)
+            grad_f32 = grad.astype(mx.float32)
+            # NaN guard: don't poison the accumulator with NaN gradients
+            if mx.any(mx.isnan(grad_f32)).item():
+                continue
+            module._flip_accum = module._flip_accum + grad_f32
             accums.append(module._flip_accum)
 
     # Materialize accumulators to prevent lazy graph buildup.
@@ -329,6 +333,10 @@ def apply_flips(model: nn.Module, threshold: float = 0.1) -> int:
     mutated = []
 
     for _, module in _walk_ternary_modules(model):
+        # NaN guard: reset corrupted accumulators
+        if mx.any(mx.isnan(module._flip_accum)).item():
+            module._flip_accum = mx.zeros_like(module._flip_accum)
+            continue
         mask = mx.abs(module._flip_accum) > threshold
         n_flipped = mask.sum().item()
 

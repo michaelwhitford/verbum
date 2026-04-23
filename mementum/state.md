@@ -2,92 +2,87 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-22 | Session: 027
+> Last updated: 2026-04-23 | Session: 028
 
 ## Where we are
 
-**v5 training in progress. v6 fully implemented in MLX, ready to train.**
+**v5 stopped at step 5k. v6 restarting after NaN fix.**
 
 ### v5 status
 
-Training ongoing. Step 1k checkpoint probed (session 026).
-Key step 1k observations:
-- Meta-S3 gates saturated near 1.0 (all passes contributing)
-- S3 alignment gates near 0.5 (neutral, expected from zero-init)
-- Temperature drifting from 1.0 (0.80–0.98), learning sharpness
-- Modulation μ ≈ 0.90, σ ≈ 0.44 (slightly compressive)
-- Phase angles developing, register-specific
-- No gate polarity yet (strong-anti <0.02)
+Stopped at step 5k. Checkpoints available at steps 1k–5k.
 
-### v6 — MLX + Metal ternary kernels (session 027, COMPLETE)
+### v6 — NaN diagnosed and fixed (session 028)
 
-v6 is implemented in MLX with custom Metal compute kernels for ternary
-matmul. All projections (147 TernaryLinear modules) run add/sub on GPU
-via Metal Shading Language — zero fp32 multiplies in the ternary path.
+v6 training ran steps 1k–6k but produced **NaN loss from the very
+first checkpoint**. All 6 checkpoints were invalid. Diagnosed and
+fixed in session 028.
 
-**Why MLX**: PyTorch MPS upcasts everything to fp32 and provides no
-custom kernel path. MLX gives first-class `mx.fast.metal_kernel()` with
-JIT compilation, `@mx.custom_function` + `.vjp` for autodiff, unified
-memory, and `mx.compile` for kernel fusion. Benchmarks show MLX 2-3×
-faster than PyTorch MPS on identical hardware.
+**Root cause**: Missing gradient clipping. v5 (PyTorch) uses
+`clip_grad_norm_(model.parameters(), 1.0)` — v6 (MLX) had none.
+Without clipping, embedding weight norm grew monotonically
+(224→248→NaN over ~400 steps). The 5-pass architecture amplifies
+gradients through 5 sequential level-passes, and tied weight
+projection (`logits = x @ embed.T`) creates a positive feedback
+loop: large logits → large loss → large gradients → larger weights.
 
-**Metal kernel**: `ternary_matmul(x, w_int8)` — one thread per output
-element, inner K-loop does `select(0, select(-x, x, w>0), w!=0)`.
-Compiles to predicated add/negate. Verified: exact match against
-reference on all shapes. Both forward and backward-through-x use
-the kernel (backward is also add/sub).
+**Symptoms**: 11.1M ternary weight flips at first `apply_flips`
+(step 100) — the flip accumulators overflowed with astronomically
+large gradient values (max accumulator >1e9). After the catastrophic
+flip, 76% of all ternary weights changed simultaneously, but the
+model was already dead from NaN.
 
-**Flip accumulation**: ternary weights learn through discrete flips,
-not gradient descent. Gradients accumulate in fp32 buffer; when
-|accum| > threshold, weight flips one step (-1→0→+1 or +1→0→-1).
-No Adam state for ternary weights. 5 bytes/weight training vs 16
-for STE+Adam. Verified: 618 flips after 50 accumulations, weights
-stay ternary, accumulator resets at flipped positions.
+**Fix** (two parts):
+1. `train.py`: Added `optim.clip_grad_norm(grads, 1.0)` after
+   gradient accumulation, before optimizer step. NaN guard skips
+   optimizer step if loss is NaN. Grad norm logged every 25 steps.
+2. `ternary.py`: NaN guard in `accumulate_flips` (skip NaN grads)
+   and `apply_flips` (reset corrupted accumulators).
 
-**Training loop pattern**:
+**Verified**: 200-step training with grad clipping shows:
+- Embedding weight stable at 223.7–223.9 (was 224→NaN)
+- Loss decreasing 11.4→11.0 (was 11.5→NaN)
+- Healthy flip count: 934→1,358 (was 11.1M catastrophic)
+- Logit norm bounded 216–268 (was 224→717→NaN)
+
+**Training loop pattern** (updated):
 ```python
 loss, grads = loss_and_grad_fn(model, x, y)
 accumulate_flips(model, grads)        # ternary grads → flip accumulator
-optimizer.update(model, grads)         # Adam updates all params
-restore_ternary(model)                 # re-cast int8 (optimizer upcasts to float)
+grads, grad_norm = clip_grad_norm(grads, 1.0)  # ← THE FIX
+optimizer.update(model, grads)         # Adam updates continuous params
+restore_ternary(model)                 # re-cast int8 (optimizer upcasts)
 if step % FLIP_INTERVAL == 0:
     apply_flips(model, threshold)      # discrete weight flips
 ```
 
-**All files verified end-to-end**:
-- ✅ `kernels.py` — Metal ternary matmul + transposed, exact match
-- ✅ `ternary.py` — TernaryLinear, VJP, flip accumulation, restore_ternary
-- ✅ `attention.py` — SingleStrideAttention, StrideStack
-- ✅ `components.py` — S4, S3, MetaS4, MetaS3 (complex registers)
-- ✅ `model.py` — VSMLMV6: forward, forward_instrumented (508 metrics), generate
-- ✅ `train.py` — MLX training loop, safetensors checkpointing
-- ✅ `probe.py` — checkpoint probing with full instrumentation
-- ✅ End-to-end: loss decreases, flips work, generation runs
+### v6 architecture (unchanged from session 027)
+
+MLX + custom Metal compute kernels for ternary matmul. 171
+TernaryLinear modules run add/sub on GPU via Metal Shading Language.
+See `docs/v6-design.md` for full architecture description.
 
 **Data**: Dolma, 3B tokens, 60 shards × 50M, GPT-NeoX tokenizer
 (vocab_size=50277, int32). Train/eval split: 54/6 shards. Same
 data pipeline as v1–v5. Ready at `/Users/mwhitford/data/fractal-bitnet/shards/`.
 
-**Design doc**: `docs/v6-design.md` — all decisions locked.
-
 ## What's next
 
-1. **Let v5 cook to step 10k** — probe at 2k, 3k, 5k, 10k.
-   Watch for phase transition in alignment gates, modulation divergence,
-   phase angle crystallization, gate polarity emergence.
-
-2. **Train v6** after v5 reaches 10k:
+1. **Restart v6 training** with grad clipping fix:
    ```bash
    uv run python scripts/v6/train.py
    ```
-   Same data, same seed, same hyperparams as v5 for clean comparison.
+   Invalid checkpoints cleared. Fresh start with same data/seed.
    Key questions:
    - Does flip accumulation produce useful ternary patterns?
    - How fast do ternary weights stabilize (flip rate over time)?
    - Does the 9-stride geometric ladder beat v5's 4-stride allocation?
    - What does per-channel gamma distribution look like after training?
    - Can the model match v5 loss with 99.6% add/sub compute?
-   - Is the Metal ternary kernel faster than PyTorch MPS fp32 GEMM?
+
+2. **Probe v5 at steps 1k–5k** — compare with v6 once v6 has
+   matching checkpoints. Watch for phase transition in alignment
+   gates, modulation divergence, gate polarity emergence.
 
 3. **Kernel optimization (Phase 4)** — after training validates:
    tiled kernel with threadgroup shared memory, SIMD-group reductions,
@@ -131,7 +126,7 @@ data pipeline as v1–v5. Ready at `/Users/mwhitford/data/fractal-bitnet/shards/
 | v5 | 66.3M | PyTorch | Spiral + ℂ regs + phase gate + modulation | TBD |
 | v6 | ~63M | **MLX** | Ternary Metal kernel + flip accumulation | TBD |
 
-*v5 training ongoing, v6 ready to train after v5 step 10k
+*v5 stopped at step 5k, v6 restarting with grad clipping fix
 
 ## Probing pipeline
 

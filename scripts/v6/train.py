@@ -61,6 +61,7 @@ SEED = 42
 
 FLIP_INTERVAL = 100
 FLIP_THRESHOLD = 0.1
+MAX_GRAD_NORM = 1.0
 
 LOG_INTERVAL = 25
 EVAL_INTERVAL = 500
@@ -258,6 +259,7 @@ def main():
     train_losses = []
     eval_losses = []
     total_flips = 0
+    grad_norm = 0.0
 
     def _tree_add(a, b):
         """Add two gradient pytrees element-wise."""
@@ -301,8 +303,18 @@ def main():
                 accum_grads = _tree_add(accum_grads, grads)
                 mx.eval(accum_grads)  # prevent graph buildup in accumulator
 
-        # Average accumulated gradients and apply
+        # Average accumulated gradients
         accum_grads = _tree_scale(accum_grads, 1.0 / GRAD_ACCUM)
+
+        # NaN guard: skip optimizer step if loss is NaN
+        if np.isnan(step_loss):
+            print(f"  ⚠ step {step}: NaN loss, skipping optimizer update", flush=True)
+            train_losses.append(step_loss)
+            continue
+
+        # Clip gradients (v5 uses max_norm=1.0 — critical for stability)
+        accum_grads, grad_norm = optim.clip_grad_norm(accum_grads, MAX_GRAD_NORM)
+
         optimizer.learning_rate = lr_schedule(step)
         optimizer.update(model, accum_grads)
         # Restore int8 ternary weights (optimizer casts to float)
@@ -326,6 +338,7 @@ def main():
                 f"  step {step:5d}/{N_STEPS}  "
                 f"loss={step_loss:.4f}  "
                 f"lr={lr_schedule(step):.2e}  "
+                f"‖g‖={grad_norm:.2f}  "
                 f"flips={total_flips:,}  "
                 f"tokens={total_tokens/1e6:.0f}M ({pct:.0f}%)  "
                 f"tok/s={tps:.0f}  "
