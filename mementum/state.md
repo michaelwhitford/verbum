@@ -2,87 +2,124 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-23 | Session: 030
+> Last updated: 2026-04-23 | Session: 031
 
 ## Where we are
 
-**v6 ready to train — now with relational loss monitoring + φ-compression hypothesis.**
+**v6 instrumented and architecture-coherent. Three-level VSM-regulated
+flip control. Stratified φ-compression probing. Ready to train.**
 
-Session 028: fixed three bugs (NaN, flip cascade, fixed threshold).
-Session 030: added information-theoretic monitoring and φ-compression
-instrumentation. Training has not started yet — next step.
+Session 031 was a deep instrumentation session. Started from the
+φ-compression hypothesis page, added comprehensive measurement
+infrastructure, then discovered the flip feedback was outside the
+VSM hierarchy and redesigned it so the model self-regulates.
+
+### v6 status — ready to train (session 031)
+
+**New in session 031:**
+
+1. **Stratified φ-compression probing** — samples split by content type
+   (prose / compositional / technical / math). Measures compression
+   ratio per pass AND per stratum. Two convergence signals to watch:
+   - Cross-stratum spread → 0 = universal compressor emerging
+   - Mean ratio → 1/φ = φ-compression confirmed
+
+2. **Per-stride entropy** — 9 strides × 5 passes = 45 compression
+   ratios per checkpoint. Each stride in the StrideStack measured
+   individually. Enables Hilberg exponent computation.
+
+3. **Hilberg exponent (β)** — computed from log(1-ratio) vs log(stride).
+   β = slope + 1. Hilberg predicts β ≈ 0.5 for natural language.
+   If the sieve learns this, it's found the self-similar compression
+   structure independently.
+
+4. **S3 gate trajectory** — 15 gate values (5 passes × 3 phases)
+   logged at eval intervals. Direct readout of Montague phase
+   specialization (prep/converge/consolidate differentiating per pass).
+
+5. **Per-stratum loss** — loss measured separately for prose,
+   compositional, technical, math. Tracks which content types the
+   model learns first (prediction: prose fast, math slow).
+
+6. **Three-level VSM-regulated flip control:**
+   - **L1 (S3 feed-forward):** Before flips, S3/Meta-S3 gates modulate
+     per-group flip targets. High importance → protect (0.3× base).
+     Low importance → explore (2.0× base). Control system (s3/s4/meta)
+     always conservative.
+   - **L2 (local stability):** After flips, cosine similarity of VSM
+     signal vectors (before vs after). sim > 0.95 → self-regulated.
+     sim < 0.80 → destabilized, escalate to L3.
+   - **L3 (circuit breaker):** Only fires if L2 detected instability.
+     Global loss ratio at step+25. Emergency adjustment. If this fires
+     often, per-group modulation needs tuning.
+
+7. **15-issue audit fix:**
+   - **Critical:** flip accumulator save was silently failing for ~120/171
+     modules (anything in a list: s3_passes, stride_stack.layers, mod_projs).
+     Fixed with `_walk_ternary_modules`.
+   - Removed all v4 compat aliases from `forward_instrumented`
+   - Removed dead `flip_threshold` state, dead imports
+   - Hardcoded ternary count → `model.count_parameters()`
+   - Constants synced from model at startup (single source of truth)
+   - Group classification uses `_classify_group` (meta_s4 no longer
+     misclassified as s4)
+   - Checkpoint meta.json now self-describing with all architecture params
+
+### Key insight: flip feedback belongs inside the VSM
+
+The previous design measured flips from outside (global loss ratio).
+The VSM already has an internal control system (S3 gates, Meta-S3,
+registers). Flips are an S1 operation. S3 should regulate them.
+
+The three-level design makes the global feedback a circuit breaker,
+not a controller. If the VSM self-regulates correctly, L3 never fires.
+L3 firing is a diagnostic event — it means self-regulation failed.
 
 ### v5 status
 
 Stopped at step 5k. Checkpoints at steps 1k–5k (PyTorch).
 
-### v6 status — ready to train (sessions 028 + 030)
-
-**Session 028 fixes** (all three resolved):
-1. NaN from missing grad clipping → added `clip_grad_norm(1.0)`
-2. Catastrophic flip cascade → sign-based accumulation
-3. Fixed threshold → adaptive percentile with loss feedback
-
-**Session 030 additions — relational loss + φ-compression:**
-
-Inspired by [Relational_Loss_ML](https://github.com/massimilianoconcas0-del/Relational_Loss_ML)
-(Concas 2026), added information-theoretic monitoring:
-
-- **Relational loss** `r = (L - E) / (log(V) - E)` — fraction of
-  learnable capacity remaining [0=optimal, 1=random]
-  - E = 1.69 nats (Chinchilla irreducible entropy)
-  - log(V) = 10.83 nats (uniform over vocab)
-- **Excess perplexity** `xppl = exp(L - E)` — how many × worse than optimal
-- **φ-compression monitoring** — per-pass compression ratios measured in
-  `forward_instrumented`, compared against 1/φ ≈ 0.618 (golden ratio)
-
-**The φ hypothesis** (untested): Hilberg's conjecture (1990) shows
-language entropy grows as a power law (self-similar). If the compression
-at each hierarchical scale follows the golden ratio, the model's
-per-layer compression ratios should naturally converge toward 1/φ.
-Seven scales of linguistic hierarchy × self-similar compression = the
-learnable structure has geometric (not arbitrary) form.
-
-### Two timescales of learning
-
-v6 has a unique training dynamic: **continuous** (Adam, every step,
-clipped) and **discrete** (ternary flips, every 100 steps, adaptive).
-Loss curve is sawtooth with downward envelope — spikes after flips
-as continuous params re-adapt to new routing, then recovers. Sawtooth
-amplitude should decrease as topology stabilizes and flip rate drops.
-
-See `mementum/knowledge/explore/v6-flip-accumulation.md` for details.
-
 ## What's next
 
-1. **Train v6** — fresh start:
+1. **Train v6** — fresh start with all instrumentation:
    ```bash
    uv run python scripts/v6/train.py
    ```
-   Watch: flip rate, loss sawtooth, adaptive target_pct, **plus new
-   relational metrics** (`r=`, `xppl=` in log lines).
+   Watch for:
+   - Flip control level (L1 self-regulated vs L3 circuit breaker)
+   - Per-group flip distribution (where is learning pressure?)
+   - Gate specialization (do passes differentiate?)
+   - Stratum loss spread (does it converge?)
+   - Compression ratios (do they approach 1/φ?)
+   - Hilberg β (does it approach 0.5?)
 
-2. **Probe v6 checkpoints** — φ-compression analysis:
+2. **Probe checkpoints** as they drop:
    ```bash
+   # Single checkpoint (full probe)
    uv run python scripts/v6/probe.py checkpoints/vsm-lm-v6/step_001000
+
+   # φ-only (faster)
+   uv run python scripts/v6/probe.py checkpoints/vsm-lm-v6/step_001000 --phi-only
+
+   # Evolution across checkpoints
+   uv run python scripts/v6/probe.py checkpoints/vsm-lm-v6/step_*
    ```
-   Probe now shows: per-pass compression ratios, phi deviation,
-   flips, adaptive state, accumulator stats per group.
-   **Key question**: do compression ratios converge toward 1/φ ≈ 0.618?
 
-3. **Compare v5 vs v6** once v6 has matching checkpoints at 1k–5k.
+3. **Three convergence signals** to track across training:
+   - Stratum spread → 0 (content-independent compression)
+   - φ-dev → 0 (self-similar compression at golden ratio)
+   - Hilberg β → 0.5 (power-law scaling matches natural language)
 
-4. **φ-regularization** (Phase 2) — if compression ratios show signal
-   toward φ, test adding `λ * mean_phi_deviation` to the loss.
+4. **If L3 fires frequently:** tune the inversion function in
+   `compute_per_group_flip_targets` (currently linear gate→factor map).
 
-5. **Kernel optimization** — after training validates correctness.
+5. **φ-regularization** (Phase 2) — only if Phase 1 shows signal.
 
 ## Key files
 
 | Purpose | Path |
 |---------|------|
 | **v6 (MLX)** | |
-| Design doc | `docs/v6-design.md` |
 | Metal kernels | `src/verbum/v6/kernels.py` |
 | TernaryLinear + flip | `src/verbum/v6/ternary.py` |
 | Attention / StrideStack | `src/verbum/v6/attention.py` |
@@ -90,16 +127,12 @@ See `mementum/knowledge/explore/v6-flip-accumulation.md` for details.
 | Full model | `src/verbum/v6/model.py` |
 | Training loop | `scripts/v6/train.py` |
 | Probe script | `scripts/v6/probe.py` |
-| **v5 (PyTorch)** | |
-| v5 model | `src/verbum/vsm_lm_v5.py` |
-| v5 training | `scripts/run_vsm_v5_1B.py` |
-| **Data** | |
-| Dolma shards | `/Users/mwhitford/data/fractal-bitnet/shards/` |
 | **Research** | |
 | Research program | `mementum/knowledge/explore/VERBUM.md` |
 | Flip accumulation | `mementum/knowledge/explore/v6-flip-accumulation.md` |
 | φ-compression hypothesis | `mementum/knowledge/explore/relational-loss-phi-compression.md` |
-| Training trajectory | `mementum/knowledge/explore/v4.1-training-trajectory.md` |
+| CompressorLM architecture | `mementum/knowledge/explore/compressor-architecture.md` |
+| Session 004 (Pythia findings) | `mementum/knowledge/explore/session-004-findings.md` |
 
 ## Architecture lineage
 
@@ -108,21 +141,18 @@ See `mementum/knowledge/explore/v6-flip-accumulation.md` for details.
 | v1 | ~25M | PyTorch | Baseline sequential | 5.245 |
 | v2 | ~25M | PyTorch | Iteration specialization | 5.064 |
 | v3 | 50M | PyTorch | Role register, binding | 4.872 |
-| v3.2 | 51M | PyTorch | Convergence arch | 4.897 |
 | v4 | 58M | PyTorch | Recursive VSM (ascending) | 4.713 |
 | v4.1 | 65.5M | PyTorch | Bidirectional VSM | 4.728* |
-| v5 | 66.3M | PyTorch | Spiral + ℂ regs + phase gate + modulation | TBD |
-| v6 | ~63M | **MLX** | Ternary Metal kernel + flip accumulation | TBD |
-
-*v5 stopped at step 5k, v6 restarting with sign-based flip + adaptive threshold
+| v5 | 66.3M | PyTorch | Spiral + ℂ regs + phase gate | TBD |
+| v6 | ~63M | **MLX** | Ternary Metal + VSM flip control | TBD |
 
 ## Probing pipeline
 
 ```bash
-# v5 (PyTorch)
-uv run python scripts/compile_gradient_probe.py probe checkpoints/vsm-lm-v5/step_005000.pt
-
-# v6 (MLX)
+# Train v6
 uv run python scripts/v6/train.py
+
+# Probe (full or φ-only, single or multi-checkpoint)
 uv run python scripts/v6/probe.py checkpoints/vsm-lm-v6/step_001000
+uv run python scripts/v6/probe.py checkpoints/vsm-lm-v6/step_* --phi-only -v
 ```
