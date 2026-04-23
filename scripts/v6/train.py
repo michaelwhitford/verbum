@@ -259,25 +259,55 @@ def main():
     eval_losses = []
     total_flips = 0
 
+    def _tree_add(a, b):
+        """Add two gradient pytrees element-wise."""
+        if isinstance(a, dict):
+            return {k: _tree_add(a[k], b[k]) for k in a}
+        elif isinstance(a, list):
+            return [_tree_add(ai, bi) for ai, bi in zip(a, b)]
+        else:
+            return a + b
+
+    def _tree_scale(tree, s):
+        """Scale all arrays in a gradient pytree by scalar s."""
+        if isinstance(tree, dict):
+            return {k: _tree_scale(v, s) for k, v in tree.items()}
+        elif isinstance(tree, list):
+            return [_tree_scale(v, s) for v in tree]
+        else:
+            return tree * s
+
     for step in range(1, N_STEPS + 1):
         step_loss = 0.0
+        accum_grads = None
 
         for accum_idx in range(GRAD_ACCUM):
             x, y = train_loader.next_batch()
             loss, grads = loss_and_grad_fn(model, x, y)
-            mx.eval(loss)
+
+            # CRITICAL: evaluate both loss AND grads to materialize tensors
+            # and free the computation graph. Without this, each micro-batch
+            # retains the full forward+backward graph in memory → OOM.
+            mx.eval(loss, grads)
             step_loss += loss.item() / GRAD_ACCUM
 
-            # Route ternary grads to flip accumulator
+            # Route ternary grads to flip accumulator (per micro-batch)
             accumulate_flips(model, grads)
 
-            # Apply all gradients via optimizer (last accumulation step)
-            if accum_idx == GRAD_ACCUM - 1:
-                optimizer.learning_rate = lr_schedule(step)
-                optimizer.update(model, grads)
-                # Restore int8 ternary weights (optimizer casts to float)
-                restore_ternary(model)
-                mx.eval(model.parameters())
+            # Accumulate gradients across micro-batches
+            if accum_grads is None:
+                accum_grads = grads
+            else:
+                accum_grads = _tree_add(accum_grads, grads)
+                mx.eval(accum_grads)  # prevent graph buildup in accumulator
+
+        # Average accumulated gradients and apply
+        accum_grads = _tree_scale(accum_grads, 1.0 / GRAD_ACCUM)
+        optimizer.learning_rate = lr_schedule(step)
+        optimizer.update(model, accum_grads)
+        # Restore int8 ternary weights (optimizer casts to float)
+        restore_ternary(model)
+        mx.eval(model.parameters())
 
         train_losses.append(step_loss)
 
