@@ -212,6 +212,8 @@ def _run_phi_samples(model, tokenizer, samples):
     all_h_out = {p: [] for p in PASS_NAMES}
     all_losses = []
     all_gates = {}          # {pass_phase: [values]}
+    all_mod_mean = {}       # {pass_phase: [values]} — additive modulation delta
+    all_mod_std = {}        # {pass_phase: [values]}
     all_meta_gates = {}     # {pass_name: [values]}
     all_write_gates = {}    # {pass_phase_reg: [values]}
     all_flip_s3 = {}        # {group_name: [factors]}
@@ -263,12 +265,20 @@ def _run_phi_samples(model, tokenizer, samples):
             if mg is not None:
                 all_meta_gates.setdefault(p, []).append(mg)
 
-            # S3 gate values per phase
+            # S3 gate values and modulation per phase
             for ph in PHASE_NAMES:
                 gk = f"{p}_{ph}"
                 gv = metrics.get(f"{p}_{ph}_gate_mean")
                 if gv is not None:
                     all_gates.setdefault(gk, []).append(gv)
+
+                # Modulation delta (additive: 0 = neutral, +/- = active)
+                mv = metrics.get(f"{p}_{ph}_mod_mean")
+                if mv is not None:
+                    all_mod_mean.setdefault(gk, []).append(mv)
+                ms = metrics.get(f"{p}_{ph}_mod_std")
+                if ms is not None:
+                    all_mod_std.setdefault(gk, []).append(ms)
 
                 # Write gate values per phase × register
                 for rn in REG_NAMES:
@@ -296,8 +306,10 @@ def _run_phi_samples(model, tokenizer, samples):
             sample_data["loss"] = loss.item()
         per_sample.append(sample_data)
 
-    # Average gates
+    # Average gates and modulation
     avg_gates = {k: sum(v) / len(v) for k, v in all_gates.items() if v}
+    avg_mod_mean = {k: sum(v) / len(v) for k, v in all_mod_mean.items() if v}
+    avg_mod_std = {k: sum(v) / len(v) for k, v in all_mod_std.items() if v}
     avg_meta_gates = {k: sum(v) / len(v) for k, v in all_meta_gates.items() if v}
     avg_write_gates = {k: sum(v) / len(v) for k, v in all_write_gates.items() if v}
     avg_flip_s3 = {k: sum(v) / len(v) for k, v in all_flip_s3.items() if v}
@@ -316,6 +328,8 @@ def _run_phi_samples(model, tokenizer, samples):
 
     extras = {
         "gates": avg_gates,
+        "mod_mean": avg_mod_mean,
+        "mod_std": avg_mod_std,
         "meta_gates": avg_meta_gates,
         "write_gates": avg_write_gates,
         "flip_s3": avg_flip_s3,
@@ -385,6 +399,8 @@ def analyze_phi_compression(model, tokenizer, strata=None):
     )
     overall = _summarize_ratios(all_ratios, all_h_in, all_h_out, all_losses)
     overall["gates"] = extras["gates"]
+    overall["mod_mean"] = extras["mod_mean"]
+    overall["mod_std"] = extras["mod_std"]
     overall["meta_gates"] = extras["meta_gates"]
     overall["write_gates"] = extras["write_gates"]
     overall["flip_s3"] = extras["flip_s3"]
@@ -574,6 +590,27 @@ def print_summary(
             g_conv = gates.get(f"{p}_converge", 0)
             g_cons = gates.get(f"{p}_consolidate", 0)
             print(f"  {p:12s} {g_prep:>8.3f} {g_conv:>10.3f} {g_cons:>13.3f}")
+
+    # ── Additive modulation ──────────────────────────────────
+    if phi_overall and phi_overall.get("mod_mean"):
+        mod_mean = phi_overall["mod_mean"]
+        mod_std = phi_overall.get("mod_std", {})
+        print(f"\n  Modulation delta (additive, 0=neutral, ±=active):")
+        print(f"  {'pass':12s} {'prep':>12} {'converge':>12} {'consolidate':>12}")
+        print(f"  {'─'*12} {'─'*12} {'─'*12} {'─'*12}")
+        for p in PASS_NAMES:
+            parts = [f"  {p:12s}"]
+            for ph in PHASE_NAMES:
+                mm = mod_mean.get(f"{p}_{ph}")
+                ms = mod_std.get(f"{p}_{ph}")
+                if mm is not None:
+                    if ms is not None and ms > 0.001:
+                        parts.append(f" {mm:>+6.4f}±{ms:<4.3f}")
+                    else:
+                        parts.append(f" {mm:>+11.4f} ")
+                else:
+                    parts.append(f" {'—':>12}")
+            print("".join(parts))
 
     # ── Write gates (register protection) ─────────────────────
     if phi_overall and phi_overall.get("write_gates"):

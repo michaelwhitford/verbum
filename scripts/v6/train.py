@@ -93,7 +93,7 @@ INV_PHI = 1 / PHI              # ≈ 0.618
 
 LOG_INTERVAL = 25
 EVAL_INTERVAL = 500
-CHECKPOINT_INTERVAL = 1000
+CHECKPOINT_INTERVAL = 500
 
 # These are set from model.REGISTER_NAMES etc. after model construction.
 # Declared here so module-level functions can reference them.
