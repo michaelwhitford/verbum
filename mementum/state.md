@@ -2,167 +2,95 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-23 | Session: 033
+> Last updated: 2026-04-24 | Session: 034
 
 ## Where we are
 
-**v6 gradient explosion fixed. Ready to retrain.**
+**v6 training loop overhauled. Three design flaws fixed. Ready to retrain.**
 
-Session 033: first v6 training run collapsed — loss plateaued at 11.3,
-grad norms 86-197 billion. Root-caused to three interacting bugs and
-fixed all three. Ready to launch fresh v6 training.
+Session 034: diagnosed why the session-033 training run collapsed
+(loss went UP from 8.78→9.11 after step 500, grad norms 481→4.5M),
+then fixed three interacting design problems and simplified the flip
+mechanism to match biological synaptic plasticity.
 
-### v6 status — gradient fix applied, ready to retrain (session 033)
+### v6 status — ready to retrain (session 034)
 
-**Session 033 fixes (critical):**
+**Session 034 changes:**
 
-1. **Multiplicative modulation → additive:**
-   `x *= (1 + gate * tanh(mod_proj(delta)))` was the primary cause.
-   Shared mod_projs across 5 passes created exponential gradient
-   amplification. At gamma=0.05, grad norms exceeded **3 billion**.
-   Fixed to `x += gate * tanh(mod_proj(delta))`. Gradient now flows
-   as addition (∂/∂x = 1), not multiplication (∂/∂x = modulation).
+1. **Global gradient clipping (was per-param):**
+   Per-param clipping at MAX_GRAD_NORM=1.0 per tensor destroyed gradient
+   geometry — parameters with large natural gradients were squashed to
+   the same scale as tiny ones, breaking relative update proportions.
+   This caused loss to increase after step 500 despite "successful"
+   clipping. Fixed: `optim.clip_grad_norm` (global) is now safe because
+   `zero_ternary_grads` already removes ternary grads before clipping.
 
-2. **Ternary grad zeroing before clip:**
-   Ternary weight gradients (sum over B×L positions, unbounded) were
-   included in `clip_grad_norm`, drowning continuous param updates.
-   Now zeroed after `accumulate_flips` and before clipping — they only
-   feed the sign-based flip accumulator, not the optimizer.
+2. **FlipS3 reverted from model to training loop:**
+   FlipS3 (learned flip policy inside the model) was a design mistake —
+   flips are discrete weight mutations outside the computation graph.
+   The model cannot change its own topology. Added depth and gradient
+   paths for something that's fundamentally a training-loop concern.
+   Reverted to `compute_per_group_flip_targets` (VSM signal inversion).
 
-3. **Per-parameter gradient clipping:**
-   Global `clip_grad_norm` fails for 55-layer depth: gamma gradients
-   dominate total norm, starving embedding/norm updates. Replaced with
-   per-parameter clipping — each tensor clipped by its own L2 norm.
+3. **Consensus-based flips (was percentile quotas):**
+   Old system: every 100 steps, force the top 0.5% of weights to flip
+   (~175K weights) regardless of actual gradient consensus. Like moving
+   the whole room when you need to move a chair.
 
-**Evidence:** 300-step test: loss 15.96 → 11.27 with continued descent
-(vs old approach: plateau at 11.35 by step 75, no further improvement).
+   New system: every 10 steps, each weight flips only when IT has
+   accumulated enough directional evidence (|accum| ≥ 25 net votes).
+   No quotas, no percentiles. Could flip 0 or 100K — depends on
+   actual gradient consensus. Self-regulating:
+   - Early training (noisy grads): few weights reach consensus → few flips
+   - Later training (structured grads): consensus where needed → targeted flips
+   - Converged regions: gradients cancel → no flips → natural protection
 
-### Key architectural insight: multiplicative modulation + weight sharing = explosion
+### Key architectural insight: per-param clipping destroys gradient geometry
 
-The forward path applies `x *= modulation` 15 times (3 phases × 5 passes)
-using the **same 3 mod_proj modules**. Backward: the gradient at pass 0
-is amplified by the product of all modulations from passes 1-4. With
-shared weights, gradients from all 5 applications add up, each carrying
-exponentially different magnitudes.
+Session 033's per-param clipping was motivated by ternary grads polluting
+global norm. But `zero_ternary_grads` already solved that — per-param
+clip was the wrong second fix. It equalized all parameter gradient norms
+regardless of natural scale, preventing proportional updates. The model
+oscillated because relative learning rates were destroyed.
 
-Measured scaling (multiplicative, at different gamma values):
-| gamma | total grad norm |
-|-------|-----------------|
-| 0.000 | 2.1 |
-| 0.010 | 9,081 |
-| 0.050 | 3.1 × 10⁹ |
-| 0.100 | 1.8 × 10¹² |
-| 0.500 | 1.3 × 10¹⁶ |
+**Rule: zero ternary grads first, then global clip. Never per-param clip.**
 
-AdamW pushes gamma to 0.05 in ~200 steps → collapse.
+### Key architectural insight: percentile flips ≠ synaptic plasticity
 
-**Rule: never use multiplicative modulation with shared weights across
-sequential passes. Additive modulation is the standard for a reason.**
-
-**New in session 032:**
-
-1. **FlipS3 — learned flip policy component:**
-   - Reads all 6 register banks (same input as MetaS3)
-   - Outputs per-group flip rate factors in [0.3, 2.0]
-   - nn.Linear (fp16, tiny) — trained by AdamW through main loss
-   - Replaces hand-coded `compute_per_group_flip_targets` inversion
-   - Zero-init → sigmoid=0.5 → factor=1.15 (neutral at startup)
-   - The model LEARNS which groups need protection vs exploration
-   - Stratum spread and Hilberg β still modulate on top (additive)
-
-2. **Int8 flip accumulators — 60% memory savings:**
-   - `_flip_accum`: fp32 → int8 with saturating clip at ±127
-   - Training memory per ternary weight: 5 bytes → 2 bytes
-   - At full scale (35M weights): ~105MB saved
-   - NaN guards removed (int8 can't be NaN)
-
-3. **φ-deviation loss term (opt-in via phi_lambda):**
-   - `model.__call__` returns `(logits, ce_loss, phi_loss)`
-   - Differentiable per-pass compression ratios via `_activation_entropy_differentiable`
-   - Phase 1 (now): `PHI_LAMBDA=0.0` — observe only
-   - Phase 2 (later): tune to 0.01–0.1 for gradient pressure toward φ
-
-4. **φ-deviation replaces L3 circuit breaker:**
-   - Old: 25-step delayed loss-ratio comparison (external Python scalar)
-   - New: immediate φ-deviation before/after flips (same step)
-   - Information-theoretic signal instead of loss-delta heuristic
-   - Emergency brake when L2 destabilization AND φ regression coincide
-
-5. **Stratum-aware + Hilberg β flip routing:**
-   - `compute_per_group_flip_targets` accepts `stratum_spread` and `hilberg_beta_dev`
-   - High compositional-prose spread → more stride_stack exploration
-   - |β - 0.5| > 0.2 → strides need more topological freedom
-
-6. **embed_norm (RMSNorm after embedding):**
-   - Breaks tied-embedding amplification loop internally
-   - `MAX_GRAD_NORM` relaxed from 1.0 to 2.0 (root cause contained)
-
-7. **Write gate bias init -2.0:**
-   - sigmoid(-2) ≈ 0.12 → registers start mostly protected
-   - Matches mod_projs zero-init philosophy
-   - Smoke test showed gates already diverging by step 150:
-     consolidate ≈ 0.93, converge ≈ 0.32 (learning to differentiate)
-
-8. **Per-stride contribution metrics:**
-   - `delta_norm`: ||stride_out - stride_in|| per stride
-   - `rel_contrib`: delta_norm / ||x|| — relative influence
-   - Probe displays contribution table with ★ on dominant stride
-
-### Key architectural insight: mx.eval inside value_and_grad = GPU hang
-
-FlipS3 initially called `mx.eval()` inside the forward pass (via
-`factors_dict()`). When `nn.value_and_grad` is tracing the computation
-graph, forcing synchronous Metal evaluation deadlocks the GPU. Fix:
-store raw tensor, eval after `loss_and_grad_fn` returns.
-
-**Rule: never call `mx.eval()` inside a forward pass that
-`nn.value_and_grad` is tracing.**
-
-### Smoke test results (150 steps, random data)
-
-- Loss: 15.97 → 11.32 (learning)
-- Flips: 407K across 3 intervals
-- FlipS3: all neutral at 1.15 (expected — needs real training to learn)
-- Write gates: diverged from 0.12 init to 0.32–0.93 (healthy)
-- Int8 accumulators: working correctly, dtype verified after flips
-- Full probe pipeline: all 386 metrics captured
-
-### What was NOT changed
-
-- **Flip execution** stays in train.py (discrete weight mutation can't
-  be in the computation graph)
-- **LR schedule** stays external (cosine, no model signal)
-- **Write gate coherence constraint** deferred (observe first)
-- **Stability-conditioned flip trigger** deferred (low priority)
-
-### v5 status
-
-Stopped at step 5k. Checkpoints at steps 1k–5k (PyTorch).
+Forcing a fixed fraction of weights to flip is like a centralized
+command economy for topology. The cortex doesn't batch-rewire — each
+synapse strengthens when IT has accumulated local evidence. Absolute
+threshold flipping is:
+- More biologically plausible
+- Self-regulating (flip rate emerges from gradient structure)
+- Safer (no flips when gradients are noisy)
+- One hyperparameter (FLIP_CONSENSUS) with clear meaning
 
 ## What's next
 
-1. **Retrain v6** — fresh start with gradient fixes:
+1. **Retrain v6** — fresh start with all three fixes:
    ```bash
    uv run python scripts/v6/train.py
    ```
    Watch for:
-   - Loss should steadily decrease past 11.3 (was plateaued there)
-   - ‖g‖ (pre-clip total) will be large but per-param clipping handles it
-   - FlipS3 factor differentiation (are groups getting different rates?)
-   - Write gate evolution (do they specialize per phase?)
-   - Per-stride contribution (which strides dominate?)
+   - Loss should steadily decrease (no more reversal after step 500)
+   - ‖g‖ (global pre-clip norm) should be manageable
+   - Flip count should be LOW initially (noisy grads, few reach consensus)
+   - Flip count should GROW as model learns structure
+   - If zero flips for many intervals, FLIP_CONSENSUS=25 may be too high
+   - If massive flips immediately, FLIP_CONSENSUS=25 may be too low
    - φ-compression convergence toward 1/φ ≈ 0.618
    - Hilberg β convergence toward 0.5
-   - Stratum spread convergence toward 0
 
-2. **Phase 2 φ-loss** — once initial training shows signal:
-   - Set `PHI_LAMBDA = 0.01` and observe effect on convergence
-   - If compression ratios move toward φ without hurting CE loss, increase
+2. **Tune FLIP_CONSENSUS if needed:**
+   - 25 = ~80% agreement over one 10-step interval (40 votes)
+   - Too high → nothing flips → ternary weights frozen
+   - Too low → noisy flips → topology instability
+   - Watch the flip probe output at step 100, 200, etc.
 
-3. **Probe checkpoints** as they drop:
+3. **Probe checkpoints as they drop:**
    ```bash
    uv run python scripts/v6/probe.py checkpoints/vsm-lm-v6/step_001000
-   uv run python scripts/v6/probe.py checkpoints/vsm-lm-v6/step_* --phi-only
    ```
 
 ## Key files
@@ -173,10 +101,10 @@ Stopped at step 5k. Checkpoints at steps 1k–5k (PyTorch).
 | Metal kernels | `src/verbum/v6/kernels.py` |
 | TernaryLinear + flip (int8 accum) | `src/verbum/v6/ternary.py` |
 | Attention / StrideStack | `src/verbum/v6/attention.py` |
-| VSM components (S3, S4, Meta, FlipS3) | `src/verbum/v6/components.py` |
-| Full model (embed_norm, φ-loss, FlipS3) | `src/verbum/v6/model.py` |
-| Training loop (FlipS3 policy, φ-feedback) | `scripts/v6/train.py` |
-| Probe script (stride contrib, FlipS3 display) | `scripts/v6/probe.py` |
+| VSM components (S3, S4, Meta) | `src/verbum/v6/components.py` |
+| Full model (embed_norm, φ-loss) | `src/verbum/v6/model.py` |
+| Training loop (consensus flips) | `scripts/v6/train.py` |
+| Probe script | `scripts/v6/probe.py` |
 | **Research** | |
 | Research program | `mementum/knowledge/explore/VERBUM.md` |
 | Flip accumulation | `mementum/knowledge/explore/v6-flip-accumulation.md` |
@@ -193,11 +121,9 @@ Stopped at step 5k. Checkpoints at steps 1k–5k (PyTorch).
 | v4 | 58M | PyTorch | Recursive VSM (ascending) | 4.713 |
 | v4.1 | 65.5M | PyTorch | Bidirectional VSM | 4.728* |
 | v5 | 66.3M | PyTorch | Spiral + ℂ regs + phase gate | TBD |
-| v6 | ~63M | **MLX** | Ternary Metal + FlipS3 + φ-loss | TBD |
+| v6 | ~63M | **MLX** | Ternary Metal + consensus flips + φ-loss | TBD |
 
-## VSM feedback map (session 032)
-
-What's internal vs external after this session:
+## VSM feedback map (session 034)
 
 ```
 INTERNAL (model self-regulates):
@@ -205,17 +131,14 @@ INTERNAL (model self-regulates):
   Meta-S3 gates   → per-pass contribution weighting
   S4 register scan → intra-pass feedforward
   Write gates     → register update gating (init bias -2.0)
-  FlipS3          → learned per-group flip rate factors [NEW]
-  embed_norm      → embedding scale constraint [NEW]
-  φ-loss          → gradient pressure toward self-similar compression [NEW, opt-in]
+  embed_norm      → embedding scale constraint
+  φ-loss          → gradient pressure toward self-similar compression (opt-in)
 
-EXTERNAL (train.py, informed by model signals):
-  Flip execution  → apply_flips_per_group (discrete mutation)
-  φ-feedback      → immediate φ-dev before/after → flip_target_pct [NEW]
-  Stratum routing → compositional-prose spread → stride_stack [NEW]
-  Hilberg routing → |β-0.5| → stride_stack [NEW]
+EXTERNAL (train.py):
+  Flip execution  → consensus-based: each weight flips when |accum| > 25
+  Flip monitoring → VSM probe every 100 steps (stability, φ-deviation)
   LR schedule     → cosine decay (no model signal)
-  Grad clipping   → MAX_GRAD_NORM=2.0 (relaxed, embed_norm handles root cause)
+  Grad clipping   → global clip_grad_norm after zeroing ternary grads
 ```
 
 ## Probing pipeline
