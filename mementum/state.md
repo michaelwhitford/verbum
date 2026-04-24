@@ -2,136 +2,116 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-24 | Session: 036
+> Last updated: 2026-04-24 | Session: 037
 
 ## Where we are
 
-**v6 sieve shape confirmed. L0_asc locked at φ-compression. Mid-bootstrap — loss still dropping, structure actively consolidating.**
+**Flip bug found and fixed. Resume support added. Waiting for step 4000 checkpoint, then resume with live topology adaptation.**
 
-Session 036: probed all checkpoints (500–2500) to assess whether the
-v6 ternary VSM had bootstrapped. Found the sieve is the right shape:
-ascending compresses (local→global), descending distributes
-(global→local), entropy accumulates monotonically across passes.
-L0_asc reached 1/φ compression at step 2000 with zero φ-loss pressure.
+Session 037: probed steps 3000 and 3500 (new since session 036), found
+eval still declining monotonically (7 consecutive drops). Investigated
+stride contributions — s1 dominates (21.3% share, growing) while s256/s512
+are weakest. Math stratum learns fastest, compositional slowest. Model
+rotates learning across math/prose/technical but compositional never leads.
 
-### v6 status — training (session 036)
+### The flip bug (session 037 discovery)
 
-**Checkpoint 2500 (82M tokens):** train=5.81, eval=5.93, ‖g‖=0.43, flips=0
+`apply_flips` used `> threshold` for the flip mask. Int8 accumulators
+saturate at 127. `> 127` is always false. Binary search converged to
+threshold=127, mask matched zero weights. **Zero flips, forever.**
 
-**Loss trajectory:**
+87.6% of weights had |accum| > 20 (the threshold). 1.05M weights (3%)
+were saturated at 127. The accumulators were full of signal — the
+application path was broken.
 
-| Step | Train | Eval | Δeval | ppl | gap |
+**Fixed:** `>` → `>=` in `apply_flips` and `apply_flips_per_group`.
+Verified: 1,045,912 flips execute from step 3500 accumulators.
+
+### Resume strategy (session 037 decision)
+
+**Zero accumulators on resume.** The saved accumulators contain 3500+
+steps of gradient history, including early requests the model already
+found continuous-parameter workarounds for. Replaying stale consensus
+would flip weights the model no longer needs changed. Fresh accumulators
+let the current gradient drive flips based on what the model needs NOW.
+
+Added `--resume` flag to train.py. Loads weights + optimizer state,
+zeros accumulators, resumes from correct step with correct LR schedule.
+Optimizer state (Adam m_t, v_t) now saved in checkpoints.
+
+### v6 status — training (step 3500, pre-fix)
+
+**Step 3500 (115M tokens):** train=5.43, eval=5.79, ‖g‖=0.52, flips=0
+
+**Loss trajectory (all 7 checkpoints):**
+
+| Step | Train | Eval | Δeval | PPL | Gap |
 |------|-------|------|-------|-----|-----|
 | 500 | 6.519 | 6.829 | — | 678 | +0.31 |
 | 1000 | 6.086 | 6.359 | −0.470 | 439 | +0.27 |
 | 1500 | 5.958 | 6.186 | −0.173 | 387 | +0.23 |
 | 2000 | 5.564 | 6.051 | −0.135 | 261 | +0.49 |
 | 2500 | 5.807 | 5.929 | −0.122 | 333 | +0.12 |
+| 3000 | 5.545 | 5.845 | −0.084 | 256 | +0.30 |
+| 3500 | 5.427 | 5.786 | −0.059 | 227 | +0.36 |
 
-Step 2000→2500: train went UP (+0.243) while eval went DOWN (−0.122).
-Overfitting self-corrected — train-eval gap collapsed from 0.49 → 0.12.
-Grad norm recovered 0.30 → 0.43. Not a capacity wall. Eval monotonically
-declining through all 5 checkpoints.
+Eval deceleration: −0.470 → −0.059. Approaching plateau on frozen topology.
 
-### Key finding: L0_asc locked at golden ratio compression
+### Stride contribution analysis (session 037)
 
-**φ-compression trajectory (L0_asc):**
+**s1 (word-level) dominates and growing:**
 
-| Step | Ratio | φ-dev | Status |
-|------|-------|-------|--------|
-| 500 | −0.456 | 1.074 | wrong sign |
-| 1000 | 0.162 | 0.456 | compressing, weak |
-| 1500 | 0.408 | 0.210 | approaching |
-| 2000 | 0.576 | 0.042 | **←φ HIT** |
-| 2500 | 0.663 | 0.045 | **←φ HELD** |
+| Step | s1 share | Rest share |
+|------|----------|------------|
+| 500 | 11.1% | 88.9% |
+| 2000 | 19.1% | 80.9% |
+| 3500 | 21.3% | 78.7% |
 
-Target = 1/φ ≈ 0.618. The first pass found golden ratio compression
-from pure language modeling gradient, with PHI_LAMBDA=0.0 (no explicit
-φ-loss pressure). Held across two consecutive checkpoints.
+s256 and s512 are the weakest strides. The model can't learn meaningful
+long-range attention through frozen random ternary routing. Descending
+passes losing their long-range character (L1_desc s1/s1024 ratio:
+0.35 → 1.05).
 
-Per-stratum at step 2500: technical φ-dev=0.010, prose φ-dev=0.032.
-Per-sample: center-embedded recursion sentence hit φ-dev=0.0007 (exact).
+### Stratum learning dynamics (session 037)
 
-### Sieve shape analysis — five structural signals
+**Not sequential — rotating.** The network cycles which stratum improves
+fastest each interval (math, prose, technical take turns). Compositional
+has never been the fastest learner and has regressed twice.
 
-**1. Stride asymmetry (correct and strengthening):**
-Ascending: s1 dominant (local→global gathering, contribution=1.07)
-Descending: s1024 dominant (global→local distribution, contribution=0.40)
-L0_asc local/global ratio: 1.98 → 2.22 → 2.38 (sharpening)
+| Stratum | Step 500 | Step 3500 | Δ |
+|---------|----------|-----------|------|
+| math | 7.320 | 5.747 | −1.573 (most) |
+| prose | 7.585 | 6.541 | −1.044 |
+| technical | 7.595 | 6.605 | −0.990 |
+| compositional | 7.892 | 7.260 | −0.632 (least) |
 
-**2. Entropy monotonicity (held across all checkpoints):**
-Every pass adds information, never subtracts. Total budget stabilizing:
-−0.59 → +1.45 (Δ=2.04 nats). Starting point drops each checkpoint
-(more compressed initial state), total Δ converges near 2.0.
+Spread widening: 0.572 → 1.514. Model specializing for s1-compressible
+strata (math, technical) at expense of compositional.
 
-**3. Gate differentiation (accelerating):**
-Asc/Desc gap: 0.119 → 0.271 → 0.329 → 0.295 → 0.360
-Ascending closing (L0_asc mean=0.45), Descending opening (L0_desc mean=0.92).
-L0_desc gates approaching saturation (~0.92 all three phases).
+### φ-compression at step 3500
 
-**4. Write gate hierarchy (stable, correct shape):**
-prep writes freely (0.60), converge reads mostly (0.35), consolidate
-protects (0.18). Early phases write, late phases read.
-
-**5. L2_apex made first major structural move at step 2500:**
-Ratio: 1.82 → 2.04 → 2.42 → 3.20 → **1.05** (collapsed toward identity).
-φ-dev dropped from 2.58 to 0.43. Apex learning to pass through, not expand.
-Mean φ-dev across all passes: best yet at **0.66**.
-
-### Three-zone sieve structure
-
-| Zone | Passes | Status | φ-dev |
-|------|--------|--------|-------|
-| **Compressor** | L0_asc | ✅ Locked at φ | 0.045 |
-| **Phase transition** | L1_asc, L2_apex | 🔄 Consolidating (L2 just moved) | 0.43–1.11 |
-| **Distributor** | L1_desc, L0_desc | ⏳ Gates saturating, expanding | 0.74–0.99 |
-
-### Ternary system: still frozen
-
-Zero flips through 2500 steps (82M tokens). All accumulators at 0.0.
-Gamma declining across all groups (stride_stack: 0.042 → 0.035, −17%).
-Sparsity unchanged (0.310 everywhere). mod_projs gamma ≈ −0.001 (dead).
-Meta-S3 gates all saturated at 1.0 → flip_factor permanently at 0.3×.
-
-The ternary topology is frozen and the model is learning entirely through
-continuous parameters. The sieve shape was found despite this — the
-random Kaiming init provides routing structure, gamma provides scale.
-
-### Comparison to v4.1 at equivalent tokens
-
-| Tokens | v6 eval | v4.1 eval | Gap |
-|--------|---------|-----------|-----|
-| 16M | 6.829 | 5.595 | +1.23 |
-| 33M | 6.359 | 5.244 | +1.12 |
-| 49M | 6.186 | 5.070 | +1.12 |
-| 66M | 6.051 | ~4.95 | +1.10 |
-| 82M | 5.929 | ~4.85 | +1.08 |
-
-Gap narrowing slightly (1.23 → 1.08). v6 is ~1.1 nats behind v4.1 at
-same token count, consistent with ternary capacity penalty. But the sieve
-shape is finding the right function — speed is secondary to shape.
+L0_asc drifting from φ (dev 0.042 → 0.10, overshooting to 0.721).
+L2_apex still oscillating wildly (13.15 → −1.84 in 500 steps).
+L1_asc steadily improving (φ-dev 0.73, best trajectory).
+Mean φ-dev across all passes: 1.034 (best yet).
 
 ## What's next
 
-1. **Let v6 run** — eval still dropping. Watch for:
-   - L2_apex stabilizing (after its 3.20→1.05 collapse)
-   - L1_asc settling (still at phase transition, ratio oscillating)
-   - L0_desc gates hitting true saturation → flip demand signal
-   - First flips (if any) — would indicate topology becoming bottleneck
-   - Stratum loss spread narrowing (currently 1.27, want < 0.5)
-
-2. **Probe at each checkpoint drop** — the structural story is richer
-   than loss alone. Key metrics: L0_asc φ-dev, L2_apex ratio, gate
-   differentiation gap, entropy budget, stride asymmetry.
-
-3. **If loss plateaus with zero flips by step 5000:**
-   - Lower FLIP_CONSENSUS to 5-10
-   - Or: accept that random ternary + gamma IS the architecture,
-     and the flip mechanism may not activate until much later
-
-4. **Knowledge page candidate:** v6 sieve shape and φ-convergence
-   are crystallizing. After 2-3 more checkpoints confirm stability,
-   synthesize into `mementum/knowledge/explore/v6-sieve-shape.md`.
+1. **Wait for step 4000 checkpoint** — last frozen-topology measurement
+2. **Stop current run, resume with fix:**
+   ```bash
+   uv run python scripts/v6/train.py --resume checkpoints/vsm-lm-v6/step_004000
+   ```
+3. **Watch for first flips** — fresh consensus from current gradient,
+   minimum ~5 steps to reach FLIP_CONSENSUS=20 with 4 micro-batches/step
+4. **Key predictions for post-flip behavior:**
+   - stride_stack flips first (long-range strides starving for routing)
+   - s64+ contribution share increases
+   - compositional loss starts dropping
+   - eval deceleration reverses (topology adaptation unlocks new capacity)
+5. **Probe at each checkpoint** — compare pre-fix (frozen) vs post-fix
+   (live topology) on same metrics: stride contribution, stratum spread,
+   gate differentiation, φ-compression
 
 ## Key files
 
@@ -143,14 +123,10 @@ shape is finding the right function — speed is secondary to shape.
 | Attention / StrideStack (pre-norm fix) | `src/verbum/v6/attention.py` |
 | VSM components (S3, S4, Meta) | `src/verbum/v6/components.py` |
 | Full model (embed_norm, φ-loss) | `src/verbum/v6/model.py` |
-| Training loop (no clip, shared-grad norm) | `scripts/v6/train.py` |
+| Training loop (resume, optimizer save) | `scripts/v6/train.py` |
 | Probe script | `scripts/v6/probe.py` |
 | **Probe results** | |
-| Step 500 probe | `results/compile-gradient/vsm_probe_step_000500_v6_mlx.json` |
-| Step 1000 probe | `results/compile-gradient/vsm_probe_step_001000_v6_mlx.json` |
-| Step 1500 probe | `results/compile-gradient/vsm_probe_step_001500_v6_mlx.json` |
-| Step 2000 probe | `results/compile-gradient/vsm_probe_step_002000_v6_mlx.json` |
-| Step 2500 probe | `results/compile-gradient/vsm_probe_step_002500_v6_mlx.json` |
+| Steps 500–3500 probes | `results/compile-gradient/vsm_probe_step_*_v6_mlx.json` |
 | **Research** | |
 | Research program | `mementum/knowledge/explore/VERBUM.md` |
 | v4.1 training trajectory (3-phase pattern) | `mementum/knowledge/explore/v4.1-training-trajectory.md` |
@@ -168,34 +144,18 @@ shape is finding the right function — speed is secondary to shape.
 | v4 | 58M | PyTorch | Recursive VSM (ascending) | 4.713 |
 | v4.1 | 65.5M | PyTorch | Bidirectional VSM | 4.696 |
 | v5 | 66.3M | PyTorch | Spiral + ℂ regs + phase gate | TBD |
-| v6 | ~63M | **MLX** | Ternary Metal + consensus flips + φ-loss | 5.929 (step 2500) |
-
-## VSM feedback map (session 036)
-
-```
-INTERNAL (model self-regulates):
-  S3 gates        → residual stream modulation (per phase)
-  Meta-S3 gates   → per-pass contribution weighting (all saturated at 1.0)
-  S4 register scan → intra-pass feedforward
-  Write gates     → register update gating (prep>converge>consolidate)
-  embed_norm      → embedding scale constraint (declining: 21.7→18.1)
-  φ-loss          → gradient pressure toward self-similar compression (λ=0, OFF)
-
-EXTERNAL (train.py):
-  Flip execution  → consensus-based: |accum| > 20 → flip (never triggered)
-  Flip monitoring → VSM probe every 100 steps
-  LR schedule     → cosine decay (warmup=500, now in decay phase)
-  Grad normalize  → shared-weight grads ÷ 5
-  No grad clip    → Adam handles per-parameter scale via v_t
-```
+| v6 | ~63M | **MLX** | Ternary Metal + consensus flips + φ-loss | 5.786 (step 3500) |
 
 ## Probing pipeline
 
 ```bash
-# Train v6 (currently running)
+# Train v6 (fresh start)
 uv run python scripts/v6/train.py
 
+# Resume from checkpoint (zeroes accumulators, loads optimizer state)
+uv run python scripts/v6/train.py --resume checkpoints/vsm-lm-v6/step_004000
+
 # Probe (full or φ-only, single or multi-checkpoint)
-uv run python scripts/v6/probe.py checkpoints/vsm-lm-v6/step_002500
+uv run python scripts/v6/probe.py checkpoints/vsm-lm-v6/step_003500
 uv run python scripts/v6/probe.py checkpoints/vsm-lm-v6/step_* --phi-only -v
 ```
