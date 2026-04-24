@@ -74,6 +74,12 @@ MAX_GRAD_NORM = 1.0       # restored from 2.0 — multiplicative modulation was 
 # Phase 3: full φ-regulation (lambda tuned from Phase 2 findings)
 PHI_LAMBDA = 0.0
 
+# φ-feedback on flip rate only activates below this loss. Above it,
+# compression ratios are meaningless noise — the model hasn't learned
+# enough structure for φ-deviation to be a real signal. Flips run at
+# the base rate to explore topology freely during early training.
+PHI_FEEDBACK_LOSS = 7.0
+
 # ── Information-theoretic constants ──────────────────────────────
 # Chinchilla scaling law: L(N,D) = E + A/N^α + B/D^β
 # E = irreducible entropy of natural language (nats/token)
@@ -799,14 +805,22 @@ def main():
                 level_msg = f"L2:DESTABILIZED(sim={stability:.3f})"
 
             # ── Level 3: φ-deviation feedback (immediate) ─────
-            # Replace old 25-step delayed loss-ratio with immediate
-            # information-theoretic signal. φ-deviation measures whether
-            # flips moved the system toward self-similar compression.
+            # φ-deviation measures whether flips moved the system toward
+            # self-similar compression. Only meaningful once the model
+            # has learned enough structure — gated by PHI_FEEDBACK_LOSS.
+            # Before that, flips run at the base rate to explore topology.
             old_target = flip_target_pct
             phi_msg = ""
+            phi_feedback_active = (
+                phi_dev_before is not None
+                and phi_dev_after is not None
+                and step_loss < PHI_FEEDBACK_LOSS
+            )
             if phi_dev_before is not None and phi_dev_after is not None:
                 delta_phi = phi_dev_after - phi_dev_before
-                if delta_phi < -0.01:
+                if not phi_feedback_active:
+                    phi_msg = f"  φ~gated(loss={step_loss:.2f}>{PHI_FEEDBACK_LOSS})"
+                elif delta_phi < -0.01:
                     # Flips improved φ-alignment → encourage more
                     flip_target_pct = min(flip_target_pct * 1.2, FLIP_PCT_MAX)
                     phi_msg = f"  φ↓ good(Δ={delta_phi:+.4f}) target↑{flip_target_pct:.4f}"
@@ -818,6 +832,7 @@ def main():
                     phi_msg = f"  φ~neutral(Δ={delta_phi:+.4f})"
 
                 # Emergency brake: if L2 detected destabilization AND φ got worse
+                # (always active, not gated — stability is meaningful at any loss)
                 if stability < 0.80 and delta_phi > 0.02:
                     flip_target_pct = max(flip_target_pct * 0.3, FLIP_PCT_MIN)
                     phi_msg += f"  ⚠ BRAKE→{flip_target_pct:.4f}"
