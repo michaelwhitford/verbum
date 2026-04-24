@@ -629,30 +629,14 @@ def main():
             print(f"  ✗ No weights.safetensors in {resume_path}")
             sys.exit(1)
 
-        # Load flip accumulators
-        accum_path = resume_path / "flip_accum.npz"
-        if accum_path.exists():
-            accum_data = mx.load(str(accum_path))
-            n_restored = 0
-            for path, mod in _walk_ternary_modules(model):
-                if path in accum_data:
-                    mod._flip_accum = accum_data[path].astype(mx.int8)
-                    n_restored += 1
-            mx.eval(*[mod._flip_accum for _, mod in _walk_ternary_modules(model)])
-            print(f"  ✓ Flip accumulators restored ({n_restored} modules)")
-
-            # Report accumulator state
-            abs_max = max(
-                mx.abs(mod._flip_accum.astype(mx.int16)).max().item()
-                for _, mod in _walk_ternary_modules(model)
-            )
-            abs_mean = np.mean([
-                mx.abs(mod._flip_accum.astype(mx.float32)).mean().item()
-                for _, mod in _walk_ternary_modules(model)
-            ])
-            print(f"    Mean |accum|: {abs_mean:.1f}, Max |accum|: {abs_max}")
-        else:
-            print(f"  ⚠ No flip_accum.npz — accumulators start fresh")
+        # Zero flip accumulators on resume. The saved accumulators contain
+        # gradient votes from the model's entire history, including early
+        # requests the model already found continuous-parameter workarounds
+        # for. Replaying that stale consensus would flip weights the model
+        # no longer needs changed, disrupting the adapted topology. Fresh
+        # accumulators let the current gradient signal drive flips based on
+        # what the model needs NOW, not what it needed 3000 steps ago.
+        print(f"  ✓ Flip accumulators zeroed (fresh consensus from current gradient)")
 
         print(f"  LR at step {start_step + 1}: {lr_schedule(start_step + 1):.2e}")
         print(flush=True)
