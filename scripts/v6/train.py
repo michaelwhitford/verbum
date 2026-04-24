@@ -400,7 +400,7 @@ def vsm_stability(vec_before, vec_after):
     return float(dot / (norm_b * norm_a))
 
 
-def compute_per_group_flip_targets(  # DEPRECATED: replaced by FlipS3 (model-internal learned policy)
+def compute_per_group_flip_targets(
     signals,
     base_target,
     stratum_spread: float = 0.0,
@@ -524,7 +524,7 @@ def main():
     print(f"  Ternary: all projections (Metal add/sub kernel)")
     print(f"  Continuous: embeddings, gamma, norms, gates (AdamW)")
     print(f"  Flip accumulation: interval={FLIP_INTERVAL}, sign-based int8 accum, adaptive threshold")
-    print(f"  Flip policy: FlipS3 (learned) + stratum/Hilberg corrections")
+    print(f"  Flip policy: VSM-signal inversion + stratum/Hilberg corrections")
     print(f"  φ-lambda: {PHI_LAMBDA} ({'Phase 1: observe only' if PHI_LAMBDA == 0 else f'active: CE + {PHI_LAMBDA}×φ_dev'})")
     print(f"  Embed norm: RMSNorm (internalizes grad clip constraint)")
     print(f"  Seq len: {SEQ_LEN}, Batch: {BATCH_SIZE} × {GRAD_ACCUM} accum")
@@ -690,47 +690,19 @@ def main():
             # compression (good) or away from it (bad)?
             # ══════════════════════════════════════════════════
 
-            # ── Level 1: FlipS3 learned policy ────────────────
-            # vsm_probe runs forward_instrumented, which populates
-            # model._flip_targets via FlipS3. We read those learned
-            # factors and apply stratum/Hilberg corrections on top.
+            # ── Level 1: VSM-signal flip policy ───────────────
+            # VSM signals → per-group flip targets via importance
+            # inversion. High gate = protect, low gate = explore.
+            # Stratum spread and Hilberg β correct on top.
             signals_before, vec_before = vsm_probe(model, tokenizer)
             phi_dev_before = signals_before.get("phi_deviation")
 
-            # FlipS3 factors (learned from register bank state)
-            # vsm_probe calls forward_instrumented which populates
-            # _flip_factors_raw. Eval + convert to dict here.
-            from verbum.v6.components import FlipS3
-            flip_factors = {}
-            if model._flip_factors_raw is not None:
-                mx.eval(model._flip_factors_raw)
-                for i, gname in enumerate(FlipS3.GROUP_NAMES):
-                    flip_factors[gname] = model._flip_factors_raw[i].item()
-            group_targets = {
-                g: flip_target_pct * flip_factors.get(g, 1.15)
-                for g in FlipS3.GROUP_NAMES
-            }
-
-            # ── Additive corrections from information-theoretic signals ──
-            # These modulate ON TOP of FlipS3's learned base policy.
-            # FlipS3 learns the gate→flip relationship; stratum and
-            # Hilberg correct for content-type and scale-specific gaps.
-
-            # Stratum spread: stride_stack modulation
+            # Compute stratum spread and Hilberg β for flip routing
             flip_strata = stratum_loss_probe(model, tokenizer)
             stratum_spread = 0.0
             if flip_strata and "compositional" in flip_strata and "prose" in flip_strata:
                 stratum_spread = flip_strata["compositional"]["loss"] - flip_strata["prose"]["loss"]
 
-            if stratum_spread > 1.0:
-                group_targets["stride_stack"] *= 1.5
-                group_targets["consolidate"] *= 1.3
-            elif stratum_spread > 0.5:
-                group_targets["stride_stack"] *= 1.2
-            elif 0 < stratum_spread < 0.2:
-                group_targets["stride_stack"] *= 0.8
-
-            # Hilberg β deviation: stride_stack modulation
             flip_phi = phi_compression_probe(model, tokenizer)
             hilberg_beta_dev = 0.0
             if flip_phi:
@@ -745,14 +717,12 @@ def main():
                     mean_beta = sum(betas) / len(betas)
                     hilberg_beta_dev = abs(mean_beta - 0.5)
 
-            if hilberg_beta_dev > 0.3:
-                group_targets["stride_stack"] *= 1.4
-            elif hilberg_beta_dev > 0.2:
-                group_targets["stride_stack"] *= 1.2
-
-            # Clamp all to [FLIP_PCT_MIN, FLIP_PCT_MAX]
-            for k in group_targets:
-                group_targets[k] = max(FLIP_PCT_MIN, min(FLIP_PCT_MAX, group_targets[k]))
+            # VSM signal inversion → per-group targets (with stratum/Hilberg corrections)
+            group_targets = compute_per_group_flip_targets(
+                signals_before, flip_target_pct,
+                stratum_spread=stratum_spread,
+                hilberg_beta_dev=hilberg_beta_dev,
+            )
 
             # Apply per-group flips
             group_flips = apply_flips_per_group(model, group_targets)
@@ -809,14 +779,10 @@ def main():
                     flip_target_pct = max(flip_target_pct * 0.3, FLIP_PCT_MIN)
                     phi_msg += f"  ⚠ BRAKE→{flip_target_pct:.4f}"
 
-            # Format FlipS3 factors
-            fs3_parts = " ".join(f"{g}={f:.2f}" for g, f in flip_factors.items() if f != 1.15) if flip_factors else "init"
-
             if phi_dev_before is not None and phi_dev_after is not None:
                 print(
                     f"  ── flip @ step {step}: {n_flipped:,} ({pct_flipped:.3f}%)  "
                     f"stability={stability:.3f}  {level_msg}{phi_msg}\n"
-                    f"     FlipS3=[{fs3_parts}]\n"
                     f"     groups=[{flip_parts}]\n"
                     f"     targets=[{target_parts}]\n"
                     f"     φ-dev: {phi_dev_before:.4f}→{phi_dev_after:.4f} ──",
@@ -826,7 +792,6 @@ def main():
                 print(
                     f"  ── flip @ step {step}: {n_flipped:,} ({pct_flipped:.3f}%)  "
                     f"stability={stability:.3f}  {level_msg}\n"
-                    f"     FlipS3=[{fs3_parts}]\n"
                     f"     groups=[{flip_parts}]\n"
                     f"     targets=[{target_parts}] ──",
                     flush=True,

@@ -216,7 +216,7 @@ def _run_phi_samples(model, tokenizer, samples):
     all_mod_std = {}        # {pass_phase: [values]}
     all_meta_gates = {}     # {pass_name: [values]}
     all_write_gates = {}    # {pass_phase_reg: [values]}
-    all_flip_s3 = {}        # {group_name: [factors]}
+
     all_stride_data = {}    # {pass_stride_key: [ratios]}
     all_hilberg = {p: [] for p in PASS_NAMES}
     all_embed_norms = []
@@ -239,12 +239,6 @@ def _run_phi_samples(model, tokenizer, samples):
         en = metrics.get("embed_norm")
         if en is not None:
             all_embed_norms.append(en)
-
-        # FlipS3 factors (per-group learned flip policy)
-        for key, val in metrics.items():
-            if key.startswith("flip_s3_"):
-                gname = key[len("flip_s3_"):]
-                all_flip_s3.setdefault(gname, []).append(val)
 
         sample_data = {"text": text[:60], "passes": {}}
         for p in PASS_NAMES:
@@ -312,8 +306,6 @@ def _run_phi_samples(model, tokenizer, samples):
     avg_mod_std = {k: sum(v) / len(v) for k, v in all_mod_std.items() if v}
     avg_meta_gates = {k: sum(v) / len(v) for k, v in all_meta_gates.items() if v}
     avg_write_gates = {k: sum(v) / len(v) for k, v in all_write_gates.items() if v}
-    avg_flip_s3 = {k: sum(v) / len(v) for k, v in all_flip_s3.items() if v}
-
     # Average stride ratios
     avg_strides = {k: sum(v) / len(v) for k, v in all_stride_data.items() if v}
 
@@ -332,7 +324,6 @@ def _run_phi_samples(model, tokenizer, samples):
         "mod_std": avg_mod_std,
         "meta_gates": avg_meta_gates,
         "write_gates": avg_write_gates,
-        "flip_s3": avg_flip_s3,
         "strides": avg_strides,
         "hilberg": avg_hilberg,
         "embed_norm": sum(all_embed_norms) / len(all_embed_norms) if all_embed_norms else None,
@@ -403,7 +394,6 @@ def analyze_phi_compression(model, tokenizer, strata=None):
     overall["mod_std"] = extras["mod_std"]
     overall["meta_gates"] = extras["meta_gates"]
     overall["write_gates"] = extras["write_gates"]
-    overall["flip_s3"] = extras["flip_s3"]
     overall["strides"] = extras["strides"]
     overall["hilberg"] = extras["hilberg"]
     overall["embed_norm"] = extras["embed_norm"]
@@ -557,27 +547,6 @@ def print_summary(
             # Show the inversion: what flip factor this gate value implies
             factor = 2.0 * (1.0 - g) + 0.3 * g
             print(f"  {p:12s} {g:>8.3f} {factor:>13.2f}×")
-
-    # ── FlipS3 (learned flip policy) ─────────────────────────
-    if phi_overall and phi_overall.get("flip_s3"):
-        fs3 = phi_overall["flip_s3"]
-        print(f"\n  FlipS3 (learned topology change policy):")
-        print(f"  {'group':15s} {'factor':>8} {'meaning':>20}")
-        print(f"  {'─'*15} {'─'*8} {'─'*20}")
-        for gname in ("prep", "stride_stack", "consolidate", "mod_projs", "s3", "s4", "meta"):
-            f = fs3.get(gname, 1.15)
-            if f < 0.6:
-                meaning = "strong protect"
-            elif f < 0.9:
-                meaning = "protect"
-            elif f < 1.3:
-                meaning = "neutral"
-            elif f < 1.7:
-                meaning = "explore"
-            else:
-                meaning = "strong explore"
-            print(f"  {gname:15s} {f:>8.3f} {meaning:>20}")
-        print(f"  {'':15s} {'':>8} {'[0.3=protect, 2.0=explore]':>28}")
 
     # ── S3 phase gates ────────────────────────────────────────
     if phi_overall and phi_overall.get("gates"):
