@@ -434,22 +434,20 @@ def apply_flips(model: nn.Module, threshold: int = 50, max_flip_pct: float = 0.0
     max_flips = int(total_ternary * max_flip_pct)
 
     # Step 2: find effective threshold (raise above base if too many qualify)
-    all_above = []
+    # Count how many exceed threshold across all modules
+    n_qualifying = 0
     for _, accum_abs in candidates:
-        above = accum_abs[accum_abs > threshold]
-        if above.size > 0:
-            all_above.append(above.reshape(-1))
+        n_qualifying += (accum_abs > threshold).sum().item()
 
     effective_threshold = threshold
-    if all_above:
-        all_above_flat = mx.concatenate(all_above)
-        n_qualifying = all_above_flat.size
-        if n_qualifying > max_flips and max_flips > 0:
-            # Too many qualify — raise threshold to cap at max_flips
-            all_np = np.array(all_above_flat)
-            # We want the top max_flips values, so threshold = (n-max_flips)/n percentile
-            pct = 100.0 * (1.0 - max_flips / n_qualifying)
-            effective_threshold = max(threshold, float(np.percentile(all_np, pct)))
+    if n_qualifying > max_flips and max_flips > 0:
+        # Too many qualify — raise threshold to cap at max_flips.
+        # Collect all accumulator magnitudes, find the cutoff.
+        all_flat = mx.concatenate([a.reshape(-1) for _, a in candidates])
+        all_np = np.array(all_flat)
+        # Top max_flips out of total: percentile that leaves max_flips above
+        pct = 100.0 * (1.0 - max_flips / total_ternary)
+        effective_threshold = max(threshold, float(np.percentile(all_np, pct)))
 
     # Step 3: apply flips with effective threshold
     total_flipped = 0
