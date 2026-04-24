@@ -32,6 +32,7 @@ from verbum.v6.ternary import (
     _classify_group,
     accumulate_flips,
     apply_flips,
+    normalize_shared_grads,
     restore_ternary,
     zero_ternary_grads,
 )
@@ -65,13 +66,17 @@ SEED = 42
 
 FLIP_INTERVAL = 10        # check for consensus flips (cheap: just threshold + mx.where)
 FLIP_PROBE_INTERVAL = 100 # re-run VSM probes for monitoring (expensive: 13 forward passes)
-FLIP_CONSENSUS = 50       # absolute threshold: net votes needed to flip (int8 accum units)
-                          # Reachable with ~75% agreement sustained over 2-3 intervals.
+FLIP_CONSENSUS = 20       # absolute threshold: net votes needed to flip (int8 accum units)
+                          # Accumulators persist across intervals — only reset on flip.
+                          # 20 net votes = moderate directional consensus before committing.
 FLIP_MAX_PCT = 0.01       # cap: at most 1% of ternary weights flip per interval (~350K of 35M)
                           # Early training wants to move a lot of topology to find a good
                           # starting point. Cap prevents catastrophic all-at-once mutation
                           # while giving the model room to explore.
-MAX_GRAD_NORM = 1.0       # global clip after ternary grads zeroed — safe now that they don't pollute the norm
+# No gradient clipping — Adam handles per-parameter scale adaptation.
+# Shared-weight gradients are normalized by 1/N_PASSES instead (see normalize_shared_grads).
+# MAX_GRAD_NORM removed: clipping at any fixed threshold creates unstable
+# scaling when ‖g‖ oscillates 10⁴-10⁹ (as it does in this 5-pass shared-weight architecture).
 
 # Phase 1: observe φ-compression (lambda=0.0, no gradient pressure)
 # Phase 2: gentle φ-pressure (lambda=0.01-0.1, test effect on convergence)
@@ -529,7 +534,7 @@ def main():
     print(f"  Flip policy: consensus={FLIP_CONSENSUS}, cap={FLIP_MAX_PCT*100:.1f}%, every {FLIP_INTERVAL} steps, probe every {FLIP_PROBE_INTERVAL}")
     print(f"  Flip mechanism: strongest consensus first, capped to prevent mass mutation")
     print(f"  φ-lambda: {PHI_LAMBDA} ({'Phase 1: observe only' if PHI_LAMBDA == 0 else f'active: CE + {PHI_LAMBDA}×φ_dev'})")
-    print(f"  Embed norm: RMSNorm (internalizes grad clip constraint)")
+    print(f"  Embed norm: RMSNorm (constrains embedding scale)")
     print(f"  Seq len: {SEQ_LEN}, Batch: {BATCH_SIZE} × {GRAD_ACCUM} accum")
     print(f"  Steps: {N_STEPS}, Tokens: {tokens_total:,}")
     print(f"  Data: SHUFFLED", flush=True)
@@ -643,17 +648,26 @@ def main():
             train_losses.append(step_loss)
             continue
 
-        # Zero ternary weight gradients before clipping. They've already
-        # been consumed by accumulate_flips (sign-based). Including them
-        # in clip_grad_norm would clip continuous params to near-zero
-        # because ternary grads sum over B×L positions without normalization.
+        # Zero ternary weight gradients. They've already been consumed
+        # by accumulate_flips (sign-based). Keeping them would pollute
+        # Adam's statistics for continuous params.
         accum_grads = zero_ternary_grads(model, accum_grads)
 
-        # Global gradient clipping. Now safe because ternary grads are
-        # already zeroed above — only continuous params contribute to the
-        # norm. This preserves gradient geometry (relative scale across
-        # params) unlike per-param clipping which distorts it.
-        accum_grads, grad_norm = optim.clip_grad_norm(accum_grads, MAX_GRAD_NORM)
+        # Normalize shared-weight gradients by 1/N_PASSES.
+        # Shared modules (prep, stride_stack, consolidate, mod_projs, s4)
+        # accumulate gradient from 5 passes with VARYING ∂L/∂x magnitudes.
+        # The sum oscillates 10⁴-10⁹ between steps, defeating Adam's v_t.
+        # Dividing by 5 turns the volatile sum into a stable average.
+        accum_grads = normalize_shared_grads(model, accum_grads, n_passes=N_PASSES)
+
+        # NO gradient clipping. Adam handles per-parameter scale adaptation
+        # via its second moment (v_t). Clipping at a fixed threshold creates
+        # a scaling factor that varies by 10⁵× when ‖g‖ is unstable,
+        # which destroys Adam's running statistics. LR warmup protects
+        # early training while v_t converges.
+        #
+        # Compute grad norm for logging/diagnostics only.
+        _, grad_norm = optim.clip_grad_norm(accum_grads, float('inf'))
 
         optimizer.learning_rate = lr_schedule(step)
         optimizer.update(model, accum_grads)

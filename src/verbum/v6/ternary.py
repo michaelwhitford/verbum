@@ -393,6 +393,45 @@ def compute_flip_threshold(model: nn.Module, target_pct: float) -> float:
     return float(np.percentile(all_np, pct))
 
 
+def normalize_shared_grads(model: nn.Module, grads: dict, n_passes: int = 5) -> dict:
+    """Divide gradients of shared-across-passes modules by n_passes.
+
+    The VSM runs 5 passes through the same shared weights (prep,
+    stride_stack, consolidate, mod_projs, s4). Each pass contributes
+    a gradient computed from a DIFFERENT ∂L/∂x magnitude (pass 0 sees
+    accumulated gradient from all downstream; pass 4 sees only direct
+    output gradient). Their sum oscillates wildly between steps.
+
+    Dividing by n_passes turns this volatile sum into a stable average.
+    This is the key fix for gradient norm instability — it lets Adam's
+    running statistics (v_t) converge instead of chasing a moving target.
+
+    Only affects continuous parameters (gamma, norm weights).
+    Ternary weights are already zeroed by zero_ternary_grads.
+
+    Shared:     prep, stride_stack, consolidate, mod_projs, s4
+    Not shared: s3_passes (per-pass), meta_s3, meta_s4, embeds, norms
+    """
+    shared_prefixes = {"prep", "stride_stack", "consolidate", "mod_projs", "s4"}
+    scale = 1.0 / n_passes
+
+    def _scale(path: str, tree):
+        if isinstance(tree, dict):
+            return {k: _scale(f"{path}.{k}" if path else k, v)
+                    for k, v in tree.items()}
+        elif isinstance(tree, list):
+            return [_scale(f"{path}.{i}" if path else str(i), v)
+                    for i, v in enumerate(tree)]
+        elif isinstance(tree, mx.array):
+            top_key = path.split(".")[0] if path else ""
+            if top_key in shared_prefixes:
+                return tree * scale
+            return tree
+        return tree
+
+    return _scale("", grads)
+
+
 def apply_flips(model: nn.Module, threshold: int = 50, max_flip_pct: float = 0.001) -> int:
     """Flip ternary weights where accumulated consensus exceeds threshold.
 
