@@ -421,8 +421,6 @@ def apply_flips(model: nn.Module, threshold: int = 50, max_flip_pct: float = 0.0
     Returns:
         Total number of weights flipped across all modules.
     """
-    import numpy as np
-
     # Step 1: collect all accumulators that exceed threshold
     candidates = []  # [(module, accum_abs_flat)]
     total_ternary = 0
@@ -434,20 +432,24 @@ def apply_flips(model: nn.Module, threshold: int = 50, max_flip_pct: float = 0.0
     max_flips = int(total_ternary * max_flip_pct)
 
     # Step 2: find effective threshold (raise above base if too many qualify)
-    # Count how many exceed threshold across all modules
-    n_qualifying = 0
-    for _, accum_abs in candidates:
-        n_qualifying += (accum_abs > threshold).sum().item()
+    # Count qualifying per threshold using cheap per-module sums (no big concat).
+    def _count_above(t):
+        return sum((a > t).sum().item() for _, a in candidates)
 
+    n_qualifying = _count_above(threshold)
     effective_threshold = threshold
+
     if n_qualifying > max_flips and max_flips > 0:
-        # Too many qualify — raise threshold to cap at max_flips.
-        # Collect all accumulator magnitudes, find the cutoff.
-        all_flat = mx.concatenate([a.reshape(-1) for _, a in candidates])
-        all_np = np.array(all_flat)
-        # Top max_flips out of total: percentile that leaves max_flips above
-        pct = 100.0 * (1.0 - max_flips / total_ternary)
-        effective_threshold = max(threshold, float(np.percentile(all_np, pct)))
+        # Too many qualify — binary search for threshold that caps at max_flips.
+        # Range: [threshold, 127] (int8 accum saturates at 127).
+        lo, hi = threshold, 127
+        while lo < hi:
+            mid = (lo + hi) // 2
+            if _count_above(mid) > max_flips:
+                lo = mid + 1
+            else:
+                hi = mid
+        effective_threshold = lo
 
     # Step 3: apply flips with effective threshold
     total_flipped = 0
