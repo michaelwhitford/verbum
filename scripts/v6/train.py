@@ -78,7 +78,7 @@ PHI_LAMBDA = 0.0
 # compression ratios are meaningless noise — the model hasn't learned
 # enough structure for φ-deviation to be a real signal. Flips run at
 # the base rate to explore topology freely during early training.
-PHI_FEEDBACK_LOSS = 7.0
+PHI_FEEDBACK_LOSS = 6.0
 
 # ── Information-theoretic constants ──────────────────────────────
 # Chinchilla scaling law: L(N,D) = E + A/N^α + B/D^β
