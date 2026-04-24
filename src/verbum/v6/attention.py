@@ -65,8 +65,15 @@ class SingleStrideAttention(nn.Module):
         self.scale = self.d_head ** -0.5
         self.alpha = alpha
 
-        # Ternary projections
-        self.q_proj = TernaryLinear(d_model, d_model, pre_norm=True)
+        # Pre-norm: single RMSNorm for the attention block input.
+        # All of Q, K, V see normalized x. Without this, K and V see
+        # raw x — if x grows from residual accumulation (45 additions
+        # across 9 strides × 5 passes), V output grows proportionally,
+        # creating a positive feedback loop that explodes gradients.
+        self.norm = nn.RMSNorm(d_model)
+
+        # Ternary projections (all pre_norm=False, block norm handles it)
+        self.q_proj = TernaryLinear(d_model, d_model, pre_norm=False)
         self.k_proj = TernaryLinear(d_model, d_model, pre_norm=False)
         self.v_proj = TernaryLinear(d_model, d_model, pre_norm=False)
         self.out_proj = TernaryLinear(d_model, d_model, pre_norm=False)
@@ -85,10 +92,13 @@ class SingleStrideAttention(nn.Module):
         H, Dh = self.n_heads, self.d_head
         W = self.window
 
+        # Pre-norm: all projections see normalized input
+        x_norm = self.norm(x)
+
         # Project Q, K, V via ternary matmul
-        Q = self.q_proj(x).reshape(B, L, H, Dh)
-        K = self.k_proj(x).reshape(B, L, H, Dh)
-        V = self.v_proj(x).reshape(B, L, H, Dh)
+        Q = self.q_proj(x_norm).reshape(B, L, H, Dh)
+        K = self.k_proj(x_norm).reshape(B, L, H, Dh)
+        V = self.v_proj(x_norm).reshape(B, L, H, Dh)
 
         # Build gather indices: (L, W) — positions to attend to
         query_pos = mx.arange(L)[:, None]              # (L, 1)
