@@ -66,11 +66,11 @@ SEED = 42
 FLIP_INTERVAL = 10        # check for consensus flips (cheap: just threshold + mx.where)
 FLIP_PROBE_INTERVAL = 100 # re-run VSM probes for monitoring (expensive: 13 forward passes)
 FLIP_CONSENSUS = 50       # absolute threshold: net votes needed to flip (int8 accum units)
-                          # Accumulators persist — threshold must exceed random walk noise.
-                          # After N votes, SD of pure noise = sqrt(N). At 200 votes (50 steps):
-                          #   T=25 → 2.7M noise flips (7.7%) — catastrophic
-                          #   T=50 → 14K noise flips (0.04%) — safe, requires genuine signal
                           # Reachable with ~75% agreement sustained over 2-3 intervals.
+FLIP_MAX_PCT = 0.001      # cap: at most 0.1% of ternary weights flip per interval (~35K of 35M)
+                          # Early training: gradients are globally coherent, every weight agrees.
+                          # Without cap, millions flip from real-but-undifferentiated signal → NaN.
+                          # Cap ensures strongest consensus goes first, rest wait.
 MAX_GRAD_NORM = 1.0       # global clip after ternary grads zeroed — safe now that they don't pollute the norm
 
 # Phase 1: observe φ-compression (lambda=0.0, no gradient pressure)
@@ -526,8 +526,8 @@ def main():
     print(f"  Strides: {STRIDES}")
     print(f"  Ternary: all projections (Metal add/sub kernel)")
     print(f"  Continuous: embeddings, gamma, norms, gates (AdamW)")
-    print(f"  Flip policy: consensus threshold={FLIP_CONSENSUS}, check every {FLIP_INTERVAL} steps, probe every {FLIP_PROBE_INTERVAL}")
-    print(f"  Flip mechanism: individual weights flip when |accum| > {FLIP_CONSENSUS} (synaptic, not batch)")
+    print(f"  Flip policy: consensus={FLIP_CONSENSUS}, cap={FLIP_MAX_PCT*100:.1f}%, every {FLIP_INTERVAL} steps, probe every {FLIP_PROBE_INTERVAL}")
+    print(f"  Flip mechanism: strongest consensus first, capped to prevent mass mutation")
     print(f"  φ-lambda: {PHI_LAMBDA} ({'Phase 1: observe only' if PHI_LAMBDA == 0 else f'active: CE + {PHI_LAMBDA}×φ_dev'})")
     print(f"  Embed norm: RMSNorm (internalizes grad clip constraint)")
     print(f"  Seq len: {SEQ_LEN}, Batch: {BATCH_SIZE} × {GRAD_ACCUM} accum")
@@ -676,7 +676,7 @@ def main():
         # ══════════════════════════════════════════════════════
 
         if step % FLIP_INTERVAL == 0:
-            n_flipped = apply_flips(model, threshold=FLIP_CONSENSUS)
+            n_flipped = apply_flips(model, threshold=FLIP_CONSENSUS, max_flip_pct=FLIP_MAX_PCT)
             total_flips += n_flipped
             flips_since_last_probe += n_flipped
 

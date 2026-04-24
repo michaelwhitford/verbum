@@ -393,12 +393,18 @@ def compute_flip_threshold(model: nn.Module, target_pct: float) -> float:
     return float(np.percentile(all_np, pct))
 
 
-def apply_flips(model: nn.Module, threshold: int = 25) -> int:
+def apply_flips(model: nn.Module, threshold: int = 50, max_flip_pct: float = 0.001) -> int:
     """Flip ternary weights where accumulated consensus exceeds threshold.
 
     Like synaptic plasticity: each weight flips only when IT has
-    accumulated enough directional evidence. No quotas, no percentiles.
-    Could flip 0 weights or 100,000 — depends on actual gradient consensus.
+    accumulated enough directional evidence. But capped: at most
+    max_flip_pct of total ternary weights can flip per call, to prevent
+    catastrophic mass mutation when early-training gradients are globally
+    coherent (every weight agrees because the model knows nothing).
+
+    When more weights cross the threshold than the cap allows, only the
+    strongest consensus (highest |accum|) flip. This preserves the
+    synaptic metaphor: strongest evidence goes first.
 
     Each flip moves one step in the gradient direction:
       -1 + positive pressure → 0
@@ -406,24 +412,51 @@ def apply_flips(model: nn.Module, threshold: int = 25) -> int:
       +1 + negative pressure → 0
        0 + negative pressure → -1
 
-    With sign-based int8 accumulation, |accum| ≤ min(N, 127).
-    Threshold is in vote units: threshold=25 means 25 net votes in
-    one direction (e.g. 32 of 40 votes agree over one interval).
-
     Args:
         model: the model containing TernaryLinear modules
         threshold: minimum |accumulator| to trigger a flip (vote units)
+        max_flip_pct: maximum fraction of ternary weights to flip per call
+                      (0.001 = 0.1% = ~35K of 35M weights)
 
     Returns:
         Total number of weights flipped across all modules.
     """
+    import numpy as np
+
+    # Step 1: collect all accumulators that exceed threshold
+    candidates = []  # [(module, accum_abs_flat)]
+    total_ternary = 0
+    for _, module in _walk_ternary_modules(model):
+        total_ternary += module.ternary_weight.size
+        accum_abs = mx.abs(module._flip_accum.astype(mx.int16))
+        candidates.append((module, accum_abs))
+
+    max_flips = int(total_ternary * max_flip_pct)
+
+    # Step 2: find effective threshold (raise above base if too many qualify)
+    all_above = []
+    for _, accum_abs in candidates:
+        above = accum_abs[accum_abs > threshold]
+        if above.size > 0:
+            all_above.append(above.reshape(-1))
+
+    effective_threshold = threshold
+    if all_above:
+        all_above_flat = mx.concatenate(all_above)
+        n_qualifying = all_above_flat.size
+        if n_qualifying > max_flips and max_flips > 0:
+            # Too many qualify — raise threshold to cap at max_flips
+            all_np = np.array(all_above_flat)
+            # We want the top max_flips values, so threshold = (n-max_flips)/n percentile
+            pct = 100.0 * (1.0 - max_flips / n_qualifying)
+            effective_threshold = max(threshold, float(np.percentile(all_np, pct)))
+
+    # Step 3: apply flips with effective threshold
     total_flipped = 0
     mutated = []
 
-    for _, module in _walk_ternary_modules(model):
-        # Int8 accumulators can't be NaN — no guard needed
-        accum_abs = mx.abs(module._flip_accum.astype(mx.int16)).astype(mx.int8)
-        mask = accum_abs > int(threshold)
+    for module, accum_abs in candidates:
+        mask = accum_abs > int(effective_threshold)
         n_flipped = mask.sum().item()
 
         if n_flipped > 0:
@@ -431,15 +464,12 @@ def apply_flips(model: nn.Module, threshold: int = 25) -> int:
             current = module.ternary_weight.astype(mx.int16)
             new_vals = mx.clip(current + direction.astype(mx.int16), -1, 1).astype(mx.int8)
 
-            # Apply: flip where mask is true, keep where false
             module.ternary_weight = mx.where(mask, new_vals, module.ternary_weight)
-            # Reset accumulator at flipped positions
             module._flip_accum = mx.where(mask, mx.zeros_like(module._flip_accum), module._flip_accum)
 
             mutated.extend([module.ternary_weight, module._flip_accum])
             total_flipped += int(n_flipped)
 
-    # Materialize all mutated tensors to prevent lazy graph buildup
     if mutated:
         mx.eval(*mutated)
 
