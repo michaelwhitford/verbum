@@ -1,0 +1,61 @@
+
+============================================================
+  VSM-LM v6 — Ternary on Metal (MLX)
+============================================================
+
+  Framework: MLX + custom Metal ternary matmul kernel
+  Architecture: VSM-LM-v6 (ternary StrideStack + α=1.18)
+  Passes: 5 (L0↑, L1↑, L2, L1↓, L0↓)
+  Strides: (1, 8, 16, 32, 64, 128, 256, 512, 1024)
+  Ternary: all projections (Metal add/sub kernel)
+  Continuous: embeddings, gamma, norms, gates (AdamW)
+  Flip policy: consensus=40, cap=0.1%, every 4 steps, probe every 100
+  Flip mechanism: strongest consensus first, capped to prevent mass mutation
+  φ-lambda: 0.0 (Phase 1: observe only)
+  Embed norm: RMSNorm (constrains embedding scale)
+  Seq len: 4096, Batch: 2 × 4 accum
+  Steps: 30518, Tokens: 1,000,013,824
+  Data: SHUFFLED
+
+============================================================
+  BUILDING MODEL
+============================================================
+
+VSM-LM v6 — Ternary on Metal (MLX)
+  d_model=512, d_register=ℂ^128, seq_len=4096
+  Passes: 5 (L0↑, L1↑, L2, L1↓, L0↓)
+  Phases: prep(TernaryFFN) → converge(StrideStack) → consolidate(TernaryFFN)
+  Strides: s1 → s8 → s16 → s32 → s64 → s128 → s256 → s512 → s1024 (W=8, α=1.18)
+  Parameters: 63.2M total
+    Ternary: 35.3M (Metal add/sub kernel)
+    Continuous: 27.9M (Adam optimizer)
+    Effective bits: 8.19
+    Inference: 61 MB, Training: 594 MB
+
+  TernaryLinear modules: 171
+  Ternary weights: 35,258,368
+  Initial avg sparsity: 0.310
+
+============================================================
+  RESUMING FROM checkpoints/vsm-lm-v6/step_004000
+============================================================
+
+  Step: 4000
+  Train loss: 5.184653282165527
+  Eval loss: 5.745796823501587
+  Total flips: 0
+  ✓ Model weights loaded
+  ✓ Flip accumulators zeroed (fresh consensus from current gradient)
+  LR at step 4001: 5.80e-04
+
+  ⚠ No optimizer_state.npz — Adam moments start fresh
+    (Adam v_t reconverges within ~100 steps)
+
+
+============================================================
+  TRAINING (resuming from step 4000)
+============================================================
+
+  step  4025/30518  loss=5.8079  r=0.451  xppl=61.4  lr=5.80e-04  ‖g‖=0.75  flips=12,192  tokens=132M (13%)  tok/s=754491  elapsed=175s
+  step  4050/30518  loss=6.1336  r=0.486  xppl=85.1  lr=5.80e-04  ‖g‖=0.98  flips=163,667  tokens=133M (13%)  tok/s=380364  elapsed=349s
+  step  4075/30518  loss=6.5349  r=0.530  xppl=127.1  lr=5.79e-04  ‖g‖=0.60  flips=326,694  tokens=134M (13%)  tok/s=250428  elapsed=533s

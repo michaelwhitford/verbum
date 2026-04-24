@@ -66,15 +66,19 @@ N_STEPS = TARGET_TOKENS // TOKENS_PER_STEP + 1  # 30,518
 WARMUP_STEPS = 500
 SEED = 42
 
-FLIP_INTERVAL = 10        # check for consensus flips (cheap: just threshold + mx.where)
+FLIP_INTERVAL = 4         # check for consensus flips every 4 steps (cheap: just threshold + mx.where)
 FLIP_PROBE_INTERVAL = 100 # re-run VSM probes for monitoring (expensive: 13 forward passes)
-FLIP_CONSENSUS = 20       # absolute threshold: net votes needed to flip (int8 accum units)
+FLIP_CONSENSUS = 40       # absolute threshold: net votes needed to flip (int8 accum units)
                           # Accumulators persist across intervals — only reset on flip.
-                          # 20 net votes = moderate directional consensus before committing.
-FLIP_MAX_PCT = 0.01       # cap: at most 1% of ternary weights flip per interval (~350K of 35M)
-                          # Early training wants to move a lot of topology to find a good
-                          # starting point. Cap prevents catastrophic all-at-once mutation
-                          # while giving the model room to explore.
+                          # 40 net votes = strong directional consensus before committing.
+                          # At interval=4 (16 votes/interval), needs ~3 intervals to flip:
+                          # prevents single-interval cascade while staying responsive.
+FLIP_MAX_PCT = 0.001      # cap: at most 0.1% of ternary weights flip per interval (~35K of 35M)
+                          # Small blast radius lets Adam's running statistics (m_t, v_t)
+                          # stay approximately valid across topology changes. Evolution not
+                          # revolution — continuous params can compensate within a few steps.
+                          # Previous: 1% (350K) caused cascading instability on resume from
+                          # frozen topology (loss 5.18 → 11.59 in 125 steps).
 # No gradient clipping — Adam handles per-parameter scale adaptation.
 # Shared-weight gradients are normalized by 1/N_PASSES instead (see normalize_shared_grads).
 # MAX_GRAD_NORM removed: clipping at any fixed threshold creates unstable
@@ -764,7 +768,7 @@ def main():
         # evidence (|accum| > FLIP_CONSENSUS). No quotas, no percentiles.
         # Could flip 0 weights or 100,000 — depends on gradient consensus.
         #
-        # Every FLIP_INTERVAL (10 steps): apply flips silently.
+        # Every FLIP_INTERVAL steps: apply flips silently.
         # Every FLIP_PROBE_INTERVAL (100 steps): run VSM probes for
         #   stability monitoring and diagnostics.
         # ══════════════════════════════════════════════════════

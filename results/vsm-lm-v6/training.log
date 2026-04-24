@@ -361,3 +361,28 @@ VSM-LM v6 — Ternary on Metal (MLX)
   step  3875/30518  loss=5.5517  r=0.423  xppl=47.5  lr=5.81e-04  ‖g‖=0.31  flips=0  tokens=127M (13%)  tok/s=4570  elapsed=27786s
   ── flip probe @ step 3900: 0 flips (0.000%) since last probe  total=0  φ-dev=1.8512 ──
   step  3900/30518  loss=5.3248  r=0.398  xppl=37.9  lr=5.81e-04  ‖g‖=0.41  flips=0  tokens=128M (13%)  tok/s=4569  elapsed=27971s
+  step  3925/30518  loss=5.5631  r=0.424  xppl=48.1  lr=5.81e-04  ‖g‖=0.29  flips=0  tokens=129M (13%)  tok/s=4567  elapsed=28160s
+  step  3950/30518  loss=5.8386  r=0.454  xppl=63.3  lr=5.81e-04  ‖g‖=0.36  flips=0  tokens=129M (13%)  tok/s=4566  elapsed=28348s
+  step  3975/30518  loss=5.4424  r=0.411  xppl=42.6  lr=5.80e-04  ‖g‖=0.27  flips=0  tokens=130M (13%)  tok/s=4565  elapsed=28535s
+  ── flip probe @ step 4000: 0 flips (0.000%) since last probe  total=0  φ-dev=1.7018 ──
+  step  4000/30518  loss=5.1847  r=0.383  xppl=32.9  lr=5.80e-04  ‖g‖=0.37  flips=0  tokens=131M (13%)  tok/s=4564  elapsed=28718s
+  ── eval @ step 4000: loss=5.7458  r=0.444  xppl=57.7  ppl=312.9 ──
+  ── φ-compression: L0_asc=0.739 L1_asc=0.013 L2_apex=-3.216 L1_desc=1.822 L0_desc=1.405  mean=0.153  φ-dev=1.310  (1/φ=0.618) ──
+  ── gates (prep/conv/cons): L0_asc=[0.35 0.59 0.36] L1_asc=[0.42 0.90 0.49] L2_apex=[0.53 0.90 0.61] L1_desc=[0.87 0.90 0.85] L0_desc=[0.92 0.88 0.92] ──
+  ── stratum loss: prose=6.629(r=0.541) compositional=7.230(r=0.606) technical=6.579(r=0.535) math=5.732(r=0.442)  spread=1.498 ──
+  ── checkpoint 4000 (131M tokens) ──
+     compile gate: 1/4
+     total flips: 0 (0.0% cumulative)  consensus=20
+     prep           : sparsity=0.310  gamma=0.0370  (2 modules)
+     stride_stack   : sparsity=0.310  gamma=0.0337  (36 modules)
+     consolidate    : sparsity=0.310  gamma=0.0369  (2 modules)
+     s4             : sparsity=0.310  gamma=0.0312  (4 modules)
+     s3             : sparsity=0.310  gamma=0.0416  (120 modules)
+     mod_projs      : sparsity=0.309  gamma=-0.0008  (3 modules)
+     meta           : sparsity=0.309  gamma=0.0463  (4 modules)
+     φ-compression: L0_asc=0.737 L1_asc=0.027 L2_apex=-3.326 L1_desc=1.850 L0_desc=1.421  mean=0.142  φ-dev=1.338
+     gates: L0_asc=[0.36 0.59 0.35] L1_asc=[0.43 0.89 0.49] L2_apex=[0.54 0.86 0.62] L1_desc=[0.85 0.85 0.79] L0_desc=[0.88 0.84 0.92]
+     stratum loss: prose=6.594 compositional=7.185 technical=6.540 math=5.728
+     saved: checkpoints/vsm-lm-v6/step_004000
+  step  4025/30518  loss=5.4161  r=0.408  xppl=41.5  lr=5.80e-04  ‖g‖=0.36  flips=0  tokens=132M (13%)  tok/s=4562  elapsed=28911s
+  step  4050/30518  loss=5.3937  r=0.405  xppl=40.6  lr=5.80e-04  ‖g‖=0.27  flips=0  tokens=133M (13%)  tok/s=4562  elapsed=29093s
