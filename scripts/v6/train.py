@@ -31,7 +31,7 @@ from verbum.v6.ternary import (
     _walk_ternary_modules,
     _classify_group,
     accumulate_flips,
-    apply_flips_per_group,
+    apply_flips,
     restore_ternary,
     zero_ternary_grads,
 )
@@ -63,11 +63,11 @@ N_STEPS = TARGET_TOKENS // TOKENS_PER_STEP + 1  # 30,518
 WARMUP_STEPS = 500
 SEED = 42
 
-FLIP_INTERVAL = 25        # cheap: just apply flips from cached group targets
-FLIP_PROBE_INTERVAL = 100 # expensive: re-run VSM probes to update group targets + stability/φ feedback
-FLIP_TARGET_PCT = 0.005   # start: 0.5% of weights per flip interval
-FLIP_PCT_MIN = 0.0001     # floor: 0.01%
-FLIP_PCT_MAX = 0.02       # ceiling: 2%
+FLIP_INTERVAL = 10        # check for consensus flips (cheap: just threshold + mx.where)
+FLIP_PROBE_INTERVAL = 100 # re-run VSM probes for monitoring (expensive: 13 forward passes)
+FLIP_CONSENSUS = 25       # absolute threshold: net votes needed to flip (int8 accum units)
+                          # 25 = ~80% agreement over one 10-step interval (40 votes)
+                          # or sustained ~60% agreement over 2-3 intervals
 MAX_GRAD_NORM = 1.0       # global clip after ternary grads zeroed — safe now that they don't pollute the norm
 
 # Phase 1: observe φ-compression (lambda=0.0, no gradient pressure)
@@ -75,10 +75,9 @@ MAX_GRAD_NORM = 1.0       # global clip after ternary grads zeroed — safe now 
 # Phase 3: full φ-regulation (lambda tuned from Phase 2 findings)
 PHI_LAMBDA = 0.0
 
-# φ-feedback on flip rate only activates below this loss. Above it,
+# φ-feedback monitoring only activates below this loss. Above it,
 # compression ratios are meaningless noise — the model hasn't learned
-# enough structure for φ-deviation to be a real signal. Flips run at
-# the base rate to explore topology freely during early training.
+# enough structure for φ-deviation to be a real signal.
 PHI_FEEDBACK_LOSS = 6.0
 
 # ── Information-theoretic constants ──────────────────────────────
@@ -524,8 +523,8 @@ def main():
     print(f"  Strides: {STRIDES}")
     print(f"  Ternary: all projections (Metal add/sub kernel)")
     print(f"  Continuous: embeddings, gamma, norms, gates (AdamW)")
-    print(f"  Flip accumulation: apply every {FLIP_INTERVAL} steps, probe every {FLIP_PROBE_INTERVAL} steps")
-    print(f"  Flip policy: VSM-signal inversion + stratum/Hilberg corrections")
+    print(f"  Flip policy: consensus threshold={FLIP_CONSENSUS}, check every {FLIP_INTERVAL} steps, probe every {FLIP_PROBE_INTERVAL}")
+    print(f"  Flip mechanism: individual weights flip when |accum| > {FLIP_CONSENSUS} (synaptic, not batch)")
     print(f"  φ-lambda: {PHI_LAMBDA} ({'Phase 1: observe only' if PHI_LAMBDA == 0 else f'active: CE + {PHI_LAMBDA}×φ_dev'})")
     print(f"  Embed norm: RMSNorm (internalizes grad clip constraint)")
     print(f"  Seq len: {SEQ_LEN}, Batch: {BATCH_SIZE} × {GRAD_ACCUM} accum")
@@ -588,10 +587,7 @@ def main():
     eval_losses = []
     total_flips = 0
     grad_norm = 0.0
-    flip_target_pct = FLIP_TARGET_PCT
-    # Cached group targets for cheap flip steps (updated every FLIP_PROBE_INTERVAL)
-    cached_group_targets = {g: FLIP_TARGET_PCT for g in
-                            ("prep", "stride_stack", "consolidate", "mod_projs", "s3", "s4", "meta")}
+    flips_since_last_probe = 0
 
     def _tree_add(a, b):
         """Add two gradient pytrees element-wise."""
@@ -665,138 +661,41 @@ def main():
         train_losses.append(step_loss)
 
         # ══════════════════════════════════════════════════════
-        # FLIP: Three-level VSM-regulated control
+        # FLIP: Consensus-based synaptic plasticity
         #
-        # Level 1 (S3 feed-forward): VSM signals → per-group flip targets
-        #   Runs BEFORE flips. S3/Meta-S3 gates modulate where flips
-        #   happen. High importance → protect, low → explore.
+        # Each weight flips when IT has accumulated enough directional
+        # evidence (|accum| > FLIP_CONSENSUS). No quotas, no percentiles.
+        # Could flip 0 weights or 100,000 — depends on gradient consensus.
         #
-        # Level 2 (local stability): VSM signal diff after flips
-        #   Immediate check. If VSM signals stayed coherent (cosine sim
-        #   > threshold), the system self-regulated. No escalation.
-        #
-        # Level 3 (circuit breaker): Global loss ratio at step+25
-        #   Only fires if Level 2 detected instability. Emergency
-        #   adjustment of the global base flip rate.
+        # Every FLIP_INTERVAL (10 steps): apply flips silently.
+        # Every FLIP_PROBE_INTERVAL (100 steps): run VSM probes for
+        #   stability monitoring and diagnostics.
         # ══════════════════════════════════════════════════════
 
         if step % FLIP_INTERVAL == 0:
-            # ══════════════════════════════════════════════════
-            # Two-tier flip control:
-            #
-            # Every FLIP_INTERVAL (25 steps): apply flips using cached
-            #   group_targets. Cheap — just percentile + mx.where.
-            #
-            # Every FLIP_PROBE_INTERVAL (100 steps): re-run full VSM
-            #   probe pipeline to update group_targets, check stability,
-            #   and adjust flip_target_pct via φ-feedback. Expensive
-            #   (13 forward passes) but only 1/4 as often as flips.
-            # ══════════════════════════════════════════════════
-
-            is_probe_step = (step % FLIP_PROBE_INTERVAL == 0)
-
-            if is_probe_step:
-                # ── Full probe: update group targets + stability/φ feedback ──
-                signals_before, vec_before = vsm_probe(model, tokenizer)
-                phi_dev_before = signals_before.get("phi_deviation")
-
-                # Compute stratum spread and Hilberg β for flip routing
-                flip_strata = stratum_loss_probe(model, tokenizer)
-                stratum_spread = 0.0
-                if flip_strata and "compositional" in flip_strata and "prose" in flip_strata:
-                    stratum_spread = flip_strata["compositional"]["loss"] - flip_strata["prose"]["loss"]
-
-                flip_phi = phi_compression_probe(model, tokenizer)
-                hilberg_beta_dev = 0.0
-                if flip_phi:
-                    hilberg = flip_phi.get("hilberg", {})
-                    betas = []
-                    for p in PASS_NAMES:
-                        if p in hilberg:
-                            h = hilberg[p]
-                            b = h["beta"] if isinstance(h, dict) else h + 1
-                            betas.append(b)
-                    if betas:
-                        mean_beta = sum(betas) / len(betas)
-                        hilberg_beta_dev = abs(mean_beta - 0.5)
-
-                # VSM signal inversion → per-group targets
-                cached_group_targets = compute_per_group_flip_targets(
-                    signals_before, flip_target_pct,
-                    stratum_spread=stratum_spread,
-                    hilberg_beta_dev=hilberg_beta_dev,
-                )
-
-            # ── Apply flips using cached targets ──────────────
-            group_flips = apply_flips_per_group(model, cached_group_targets)
-            n_flipped = sum(group_flips.values())
+            n_flipped = apply_flips(model, threshold=FLIP_CONSENSUS)
             total_flips += n_flipped
-            pct_flipped = n_flipped / _n_ternary_weights * 100
+            flips_since_last_probe += n_flipped
 
-            if is_probe_step:
-                # ── Stability check + φ-feedback (probe steps only) ──
-                signals_after, vec_after = vsm_probe(model, tokenizer)
-                stability = vsm_stability(vec_before, vec_after)
-                phi_dev_after = signals_after.get("phi_deviation")
+            # ── Probe step: VSM diagnostics (every 100 steps) ──
+            if step % FLIP_PROBE_INTERVAL == 0:
+                pct_flipped = flips_since_last_probe / _n_ternary_weights * 100
 
-                if stability > 0.95:
-                    level_msg = "L1:self-regulated"
-                elif stability > 0.80:
-                    level_msg = f"L2:mild-perturbation(sim={stability:.3f})"
+                signals_before, vec_before = vsm_probe(model, tokenizer)
+                phi_dev = signals_before.get("phi_deviation")
+
+                if phi_dev is not None:
+                    phi_msg = f"φ-dev={phi_dev:.4f}"
                 else:
-                    level_msg = f"L2:DESTABILIZED(sim={stability:.3f})"
+                    phi_msg = "φ-dev=N/A"
 
-                # φ-deviation feedback
-                phi_msg = ""
-                phi_feedback_active = (
-                    phi_dev_before is not None
-                    and phi_dev_after is not None
-                    and step_loss < PHI_FEEDBACK_LOSS
-                )
-                if phi_dev_before is not None and phi_dev_after is not None:
-                    delta_phi = phi_dev_after - phi_dev_before
-                    if not phi_feedback_active:
-                        phi_msg = f"  φ~gated(loss={step_loss:.2f}>{PHI_FEEDBACK_LOSS})"
-                    elif delta_phi < -0.01:
-                        flip_target_pct = min(flip_target_pct * 1.2, FLIP_PCT_MAX)
-                        phi_msg = f"  φ↓ good(Δ={delta_phi:+.4f}) target↑{flip_target_pct:.4f}"
-                    elif delta_phi > 0.05:
-                        flip_target_pct = max(flip_target_pct * 0.5, FLIP_PCT_MIN)
-                        phi_msg = f"  φ↑ BAD(Δ={delta_phi:+.4f}) target↓{flip_target_pct:.4f}"
-                    else:
-                        phi_msg = f"  φ~neutral(Δ={delta_phi:+.4f})"
-
-                    if stability < 0.80 and delta_phi > 0.02:
-                        flip_target_pct = max(flip_target_pct * 0.3, FLIP_PCT_MIN)
-                        phi_msg += f"  ⚠ BRAKE→{flip_target_pct:.4f}"
-
-                # Full diagnostic output
-                flip_parts = " ".join(f"{g}={c:,}" for g, c in group_flips.items() if c > 0)
-                target_parts = " ".join(f"{g}={t:.4f}" for g, t in cached_group_targets.items() if group_flips.get(g, 0) > 0)
-                if phi_dev_before is not None and phi_dev_after is not None:
-                    print(
-                        f"  ── flip @ step {step}: {n_flipped:,} ({pct_flipped:.3f}%)  "
-                        f"stability={stability:.3f}  {level_msg}{phi_msg}\n"
-                        f"     groups=[{flip_parts}]\n"
-                        f"     targets=[{target_parts}]\n"
-                        f"     φ-dev: {phi_dev_before:.4f}→{phi_dev_after:.4f} ──",
-                        flush=True,
-                    )
-                else:
-                    print(
-                        f"  ── flip @ step {step}: {n_flipped:,} ({pct_flipped:.3f}%)  "
-                        f"stability={stability:.3f}  {level_msg}\n"
-                        f"     groups=[{flip_parts}]\n"
-                        f"     targets=[{target_parts}] ──",
-                        flush=True,
-                    )
-            else:
-                # Lightweight log for non-probe flips
                 print(
-                    f"  ── flip @ step {step}: {n_flipped:,} ({pct_flipped:.3f}%)  "
-                    f"target={flip_target_pct:.4f} ──",
+                    f"  ── flip probe @ step {step}: {flips_since_last_probe:,} flips "
+                    f"({pct_flipped:.3f}%) since last probe  "
+                    f"total={total_flips:,}  {phi_msg} ──",
                     flush=True,
                 )
+                flips_since_last_probe = 0
 
         # ── Logging ───────────────────────────────────────────
         if step % LOG_INTERVAL == 0:
@@ -813,7 +712,6 @@ def main():
                 f"lr={lr_schedule(step):.2e}  "
                 f"‖g‖={grad_norm:.2f}  "
                 f"flips={total_flips:,}  "
-                f"target={flip_target_pct:.4f}  "
                 f"tokens={total_tokens/1e6:.0f}M ({pct:.0f}%)  "
                 f"tok/s={tps:.0f}  "
                 f"elapsed={elapsed:.0f}s",
@@ -906,7 +804,7 @@ def main():
 
             print(f"  ── checkpoint {step} ({step * TOKENS_PER_STEP / 1e6:.0f}M tokens) ──")
             print(f"     compile gate: {compile['score']}")
-            print(f"     total flips: {total_flips:,} ({total_flips / _n_ternary_weights * 100:.1f}% cumulative)  target={flip_target_pct:.4f}")
+            print(f"     total flips: {total_flips:,} ({total_flips / _n_ternary_weights * 100:.1f}% cumulative)  consensus={FLIP_CONSENSUS}")
 
             # Ternary stats by group (using canonical _classify_group)
             group_stats: dict[str, list] = {}
@@ -985,7 +883,7 @@ def main():
                 "eval_loss": float(eval_losses[-1]["loss"]) if eval_losses else None,
                 "compile_gate": compile["score"],
                 "total_flips": int(total_flips),
-                "flip_target_pct": float(flip_target_pct),
+                "flip_consensus": FLIP_CONSENSUS,
                 "grad_norm": _gn,
                 "architecture": "vsm-lm-v6-mlx",
                 "config": {

@@ -393,8 +393,12 @@ def compute_flip_threshold(model: nn.Module, target_pct: float) -> float:
     return float(np.percentile(all_np, pct))
 
 
-def apply_flips(model: nn.Module, threshold: float = 0.1) -> int:
-    """Flip ternary weights where accumulated gradient exceeds threshold.
+def apply_flips(model: nn.Module, threshold: int = 25) -> int:
+    """Flip ternary weights where accumulated consensus exceeds threshold.
+
+    Like synaptic plasticity: each weight flips only when IT has
+    accumulated enough directional evidence. No quotas, no percentiles.
+    Could flip 0 weights or 100,000 — depends on actual gradient consensus.
 
     Each flip moves one step in the gradient direction:
       -1 + positive pressure → 0
@@ -403,11 +407,12 @@ def apply_flips(model: nn.Module, threshold: float = 0.1) -> int:
        0 + negative pressure → -1
 
     With sign-based int8 accumulation, |accum| ≤ min(N, 127).
-    Use compute_flip_threshold() for adaptive percentile-based threshold.
+    Threshold is in vote units: threshold=25 means 25 net votes in
+    one direction (e.g. 32 of 40 votes agree over one interval).
 
     Args:
         model: the model containing TernaryLinear modules
-        threshold: minimum |accumulator| to trigger a flip
+        threshold: minimum |accumulator| to trigger a flip (vote units)
 
     Returns:
         Total number of weights flipped across all modules.
