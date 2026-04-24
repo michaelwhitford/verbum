@@ -7,10 +7,12 @@ Continuous params (gamma, embeddings, norms, gates) use AdamW.
 
 Usage:
     uv run python scripts/v6/train.py
+    uv run python scripts/v6/train.py --resume checkpoints/vsm-lm-v6/step_003500
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 import math
 import sys
@@ -511,6 +513,14 @@ def main():
     global N_PASSES, PASS_NAMES, PHASE_NAMES, REG_NAMES
     from transformers import AutoTokenizer
 
+    # ── CLI ────────────────────────────────────────────────────────
+    parser = argparse.ArgumentParser(description="VSM-LM v6 training")
+    parser.add_argument(
+        "--resume", type=str, default=None,
+        help="Path to checkpoint directory to resume from (e.g. checkpoints/vsm-lm-v6/step_003500)",
+    )
+    args = parser.parse_args()
+
     results_dir = Path("results/vsm-lm-v6")
     results_dir.mkdir(parents=True, exist_ok=True)
     checkpoint_dir = Path("checkpoints/vsm-lm-v6")
@@ -578,6 +588,75 @@ def main():
         print(f"  Ternary weights: {_n_ternary_weights:,}")
         print(f"  Initial avg sparsity: {avg_sparsity:.3f}", flush=True)
 
+    # ── Resume from checkpoint ─────────────────────────────────────
+    start_step = 0
+    resumed_total_flips = 0
+
+    if args.resume:
+        resume_path = Path(args.resume)
+        if not resume_path.exists():
+            print(f"  ✗ Resume path not found: {resume_path}")
+            sys.exit(1)
+
+        banner(f"RESUMING FROM {resume_path}")
+
+        # Load metadata to get step and total_flips
+        meta_path = resume_path / "meta.json"
+        if meta_path.exists():
+            with open(meta_path) as f:
+                resume_meta = json.loads(f.read())
+            start_step = resume_meta["step"]
+            resumed_total_flips = resume_meta.get("total_flips", 0)
+            print(f"  Step: {start_step}")
+            print(f"  Train loss: {resume_meta.get('train_loss', 'N/A')}")
+            print(f"  Eval loss: {resume_meta.get('eval_loss', 'N/A')}")
+            print(f"  Total flips: {resumed_total_flips:,}")
+        else:
+            # Try to infer step from directory name
+            try:
+                start_step = int(resume_path.name.split("_")[-1])
+            except ValueError:
+                print(f"  ✗ Cannot determine step from {resume_path} (no meta.json)")
+                sys.exit(1)
+            print(f"  Step (inferred from dirname): {start_step}")
+
+        # Load model weights
+        weights_path = resume_path / "weights.safetensors"
+        if weights_path.exists():
+            model.load_weights(str(weights_path))
+            print(f"  ✓ Model weights loaded")
+        else:
+            print(f"  ✗ No weights.safetensors in {resume_path}")
+            sys.exit(1)
+
+        # Load flip accumulators
+        accum_path = resume_path / "flip_accum.npz"
+        if accum_path.exists():
+            accum_data = mx.load(str(accum_path))
+            n_restored = 0
+            for path, mod in _walk_ternary_modules(model):
+                if path in accum_data:
+                    mod._flip_accum = accum_data[path].astype(mx.int8)
+                    n_restored += 1
+            mx.eval(*[mod._flip_accum for _, mod in _walk_ternary_modules(model)])
+            print(f"  ✓ Flip accumulators restored ({n_restored} modules)")
+
+            # Report accumulator state
+            abs_max = max(
+                mx.abs(mod._flip_accum.astype(mx.int16)).max().item()
+                for _, mod in _walk_ternary_modules(model)
+            )
+            abs_mean = np.mean([
+                mx.abs(mod._flip_accum.astype(mx.float32)).mean().item()
+                for _, mod in _walk_ternary_modules(model)
+            ])
+            print(f"    Mean |accum|: {abs_mean:.1f}, Max |accum|: {abs_max}")
+        else:
+            print(f"  ⚠ No flip_accum.npz — accumulators start fresh")
+
+        print(f"  LR at step {start_step + 1}: {lr_schedule(start_step + 1):.2e}")
+        print(flush=True)
+
     # ── Data ──────────────────────────────────────────────────────
     train_loader = ShardedDataLoader(DATA_DIR, BATCH_SIZE, SEQ_LEN, "train", seed=SEED)
     eval_loader = ShardedDataLoader(DATA_DIR, BATCH_SIZE, SEQ_LEN, "eval", seed=SEED + 1)
@@ -585,15 +664,32 @@ def main():
     # ── Optimizer (continuous params only) ─────────────────────────
     optimizer = optim.AdamW(learning_rate=LEARNING_RATE, weight_decay=WEIGHT_DECAY)
 
+    # Restore optimizer state if resuming and state file exists
+    if args.resume:
+        opt_path = Path(args.resume) / "optimizer_state.npz"
+        if opt_path.exists():
+            from mlx.utils import tree_unflatten
+            opt_loaded = dict(mx.load(str(opt_path)))
+            opt_flat = list(opt_loaded.items())
+            optimizer.state = tree_unflatten(opt_flat)
+            print(f"  ✓ Optimizer state restored (Adam m_t, v_t)")
+        else:
+            # No optimizer state — need to prime Adam by doing one dummy step
+            # so it initializes its state structure, then training proceeds normally.
+            # Adam will reconverge its moments within ~100 steps.
+            print(f"  ⚠ No optimizer_state.npz — Adam moments start fresh")
+            print(f"    (Adam v_t reconverges within ~100 steps)")
+        print(flush=True)
+
     # ── Loss + grad function ──────────────────────────────────────
     loss_and_grad_fn = nn.value_and_grad(model, loss_fn)
 
     # ── Training ──────────────────────────────────────────────────
-    banner("TRAINING")
+    banner("TRAINING" + (f" (resuming from step {start_step})" if start_step > 0 else ""))
 
     train_losses = []
     eval_losses = []
-    total_flips = 0
+    total_flips = resumed_total_flips
     grad_norm = 0.0
     flips_since_last_probe = 0
 
@@ -615,7 +711,7 @@ def main():
         else:
             return tree * s
 
-    for step in range(1, N_STEPS + 1):
+    for step in range(start_step + 1, N_STEPS + 1):
         step_loss = 0.0
         accum_grads = None
 
@@ -886,6 +982,13 @@ def main():
                 accum_dict[path] = mod._flip_accum
             if accum_dict:
                 mx.savez(str(ckpt_path / "flip_accum.npz"), **accum_dict)
+
+            # Save optimizer state (Adam m_t, v_t for warm resume)
+            from mlx.utils import tree_flatten
+            opt_flat = tree_flatten(optimizer.state)
+            if opt_flat:
+                opt_dict = {k: v for k, v in opt_flat}
+                mx.savez(str(ckpt_path / "optimizer_state.npz"), **opt_dict)
 
             # Save metadata
             rm = relational_metrics(step_loss)

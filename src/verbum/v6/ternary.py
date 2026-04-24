@@ -472,19 +472,22 @@ def apply_flips(model: nn.Module, threshold: int = 50, max_flip_pct: float = 0.0
 
     # Step 2: find effective threshold (raise above base if too many qualify)
     # Count qualifying per threshold using cheap per-module sums (no big concat).
-    def _count_above(t):
-        return sum((a > t).sum().item() for _, a in candidates)
+    def _count_at_or_above(t):
+        return sum((a >= t).sum().item() for _, a in candidates)
 
-    n_qualifying = _count_above(threshold)
+    n_qualifying = _count_at_or_above(threshold)
     effective_threshold = threshold
 
     if n_qualifying > max_flips and max_flips > 0:
         # Too many qualify — binary search for threshold that caps at max_flips.
         # Range: [threshold, 127] (int8 accum saturates at 127).
+        # Uses >= so that weights AT the threshold qualify. Without this,
+        # weights at exactly 127 (int8 max) would never flip because
+        # > 127 is always false for int8.
         lo, hi = threshold, 127
         while lo < hi:
             mid = (lo + hi) // 2
-            if _count_above(mid) > max_flips:
+            if _count_at_or_above(mid) > max_flips:
                 lo = mid + 1
             else:
                 hi = mid
@@ -495,7 +498,7 @@ def apply_flips(model: nn.Module, threshold: int = 50, max_flip_pct: float = 0.0
     mutated = []
 
     for module, accum_abs in candidates:
-        mask = accum_abs > int(effective_threshold)
+        mask = accum_abs >= int(effective_threshold)
         n_flipped = mask.sum().item()
 
         if n_flipped > 0:
@@ -587,7 +590,7 @@ def apply_flips_per_group(
         n_flipped = 0
         for _, mod in modules:
             accum_abs = mx.abs(mod._flip_accum.astype(mx.int16)).astype(mx.int8)
-            mask = accum_abs > int(threshold)
+            mask = accum_abs >= int(threshold)
             n = mask.sum().item()
             if n > 0:
                 direction = mx.sign(mod._flip_accum.astype(mx.int16)).astype(mx.int8)
