@@ -67,7 +67,7 @@ FLIP_INTERVAL = 10        # check for consensus flips (cheap: just threshold + m
 FLIP_PROBE_INTERVAL = 100 # re-run VSM probes for monitoring (expensive: 13 forward passes)
 FLIP_CONSENSUS = 50       # absolute threshold: net votes needed to flip (int8 accum units)
                           # Reachable with ~75% agreement sustained over 2-3 intervals.
-FLIP_MAX_PCT = 0.03       # cap: at most 3% of ternary weights flip per interval (~1.05M of 35M)
+FLIP_MAX_PCT = 0.01       # cap: at most 1% of ternary weights flip per interval (~350K of 35M)
                           # Early training wants to move a lot of topology to find a good
                           # starting point. Cap prevents catastrophic all-at-once mutation
                           # while giving the model room to explore.
