@@ -65,9 +65,12 @@ SEED = 42
 
 FLIP_INTERVAL = 10        # check for consensus flips (cheap: just threshold + mx.where)
 FLIP_PROBE_INTERVAL = 100 # re-run VSM probes for monitoring (expensive: 13 forward passes)
-FLIP_CONSENSUS = 25       # absolute threshold: net votes needed to flip (int8 accum units)
-                          # 25 = ~80% agreement over one 10-step interval (40 votes)
-                          # or sustained ~60% agreement over 2-3 intervals
+FLIP_CONSENSUS = 50       # absolute threshold: net votes needed to flip (int8 accum units)
+                          # Accumulators persist — threshold must exceed random walk noise.
+                          # After N votes, SD of pure noise = sqrt(N). At 200 votes (50 steps):
+                          #   T=25 → 2.7M noise flips (7.7%) — catastrophic
+                          #   T=50 → 14K noise flips (0.04%) — safe, requires genuine signal
+                          # Reachable with ~75% agreement sustained over 2-3 intervals.
 MAX_GRAD_NORM = 1.0       # global clip after ternary grads zeroed — safe now that they don't pollute the norm
 
 # Phase 1: observe φ-compression (lambda=0.0, no gradient pressure)
