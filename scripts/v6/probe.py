@@ -427,8 +427,7 @@ def print_summary(
         train_loss = meta.get("train_loss")
         eval_loss = meta.get("eval_loss")
         total_flips = meta.get("total_flips")
-        flip_target = meta.get("flip_target_pct")
-        flip_thresh = meta.get("flip_threshold")
+        flip_consensus = meta.get("flip_consensus")
         grad_norm = meta.get("grad_norm")
 
         loss_str = f"train={train_loss:.4f}" if train_loss else ""
@@ -454,9 +453,8 @@ def print_summary(
             n_ternary = model.count_parameters()["total_ternary"]
             pct = total_flips / max(n_ternary, 1) * 100
             print(f"  Flips: {total_flips:,} ({pct:.2f}% of {n_ternary:,} ternary weights)")
-        if flip_target is not None:
-            thresh_str = f"{flip_thresh:.1f}" if flip_thresh is not None else "N/A"
-            print(f"  Adaptive: target={flip_target:.4f}  threshold={thresh_str}")
+        if flip_consensus is not None:
+            print(f"  Flip consensus threshold: {flip_consensus}")
         if grad_norm is not None:
             print(f"  Grad norm: {grad_norm:.2f}")
 
@@ -969,8 +967,7 @@ def main():
             "step": step,
             "config": config,
             "total_flips": meta.get("total_flips"),
-            "flip_target_pct": meta.get("flip_target_pct"),
-            "flip_threshold": meta.get("flip_threshold"),
+            "flip_consensus": meta.get("flip_consensus"),
             "grad_norm": meta.get("grad_norm"),
             "train_loss": meta.get("train_loss"),
             "eval_loss": meta.get("eval_loss"),
