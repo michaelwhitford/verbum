@@ -67,10 +67,10 @@ FLIP_INTERVAL = 10        # check for consensus flips (cheap: just threshold + m
 FLIP_PROBE_INTERVAL = 100 # re-run VSM probes for monitoring (expensive: 13 forward passes)
 FLIP_CONSENSUS = 50       # absolute threshold: net votes needed to flip (int8 accum units)
                           # Reachable with ~75% agreement sustained over 2-3 intervals.
-FLIP_MAX_PCT = 0.001      # cap: at most 0.1% of ternary weights flip per interval (~35K of 35M)
-                          # Early training: gradients are globally coherent, every weight agrees.
-                          # Without cap, millions flip from real-but-undifferentiated signal → NaN.
-                          # Cap ensures strongest consensus goes first, rest wait.
+FLIP_MAX_PCT = 0.04       # cap: at most 4% of ternary weights flip per interval (~1.4M of 35M)
+                          # Early training wants to move a lot of topology to find a good
+                          # starting point. Cap prevents catastrophic all-at-once mutation
+                          # while giving the model room to explore.
 MAX_GRAD_NORM = 1.0       # global clip after ternary grads zeroed — safe now that they don't pollute the norm
 
 # Phase 1: observe φ-compression (lambda=0.0, no gradient pressure)
