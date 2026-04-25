@@ -7,7 +7,7 @@ during training through a lightweight accumulate-and-flip mechanism:
   2. Backward: STE computes gradient for ternary weights
   3. Gradient routes to a flip accumulator (not to the optimizer)
   4. Periodically: weights whose accumulator exceeds threshold FLIP
-     one step (-1→0, 0→+1, +1→0, etc.) and the accumulator resets
+     one step (-1→0, 0→+1, +1→0, etc.) and ALL accumulators reset
 
 Per-channel gamma provides continuous fine-tuning on top of the
 discrete ternary routing. Gamma is trained normally with Adam.
@@ -197,12 +197,11 @@ class TernaryLinear(nn.Module):
         self.ternary_weight = w_packed
         self.gamma = gamma
 
-        # Flip accumulator — tracks gradient pressure per weight.
-        # Stays unpacked int8 [out_features, in_features]: per-weight vote counter.
-        # Not a parameter (not trained by optimizer), but needs to persist.
-        # Int8 with saturation at ±127: each micro-batch votes ±1, so
-        # |accum| ≤ N_votes. Saturating at 127 means 127+ consecutive
-        # votes in one direction = overwhelming consensus.
+        # Flip accumulator — tracks gradient pressure per weight within
+        # one flip interval. Reset to zero after every flip check (not
+        # just for flipped weights) so each interval asks a fresh question:
+        # "given current topology, which weights want to flip NOW?"
+        # Int8 with saturation at ±127. Each micro-batch votes ±1.
         self._flip_accum = mx.zeros((out_features, in_features), dtype=mx.int8)
 
     def __call__(self, x: mx.array) -> mx.array:
@@ -395,6 +394,9 @@ def accumulate_flips(model: nn.Module, ternary_grads: dict[str, Any]) -> None:
     adds +1 or -1 per weight, so after N calls |accum| ≤ N. This
     makes the accumulator scale-invariant and the threshold meaningful
     in units of "directional consensus across micro-batches."
+
+    Accumulators are reset to zero by apply_flips after each flip check,
+    so they measure consensus within one interval only.
 
     Call after loss backward, per micro-batch.
 
@@ -611,10 +613,20 @@ def apply_flips(model: nn.Module, threshold: int = 50, max_flip_pct: float = 0.0
             updated = mx.where(mask, new_vals, w_int8)
 
             module.ternary_weight = pack_ternary(updated)
-            module._flip_accum = mx.where(mask, mx.zeros_like(module._flip_accum), module._flip_accum)
-
-            mutated.extend([module.ternary_weight, module._flip_accum])
+            mutated.append(module.ternary_weight)
             total_flipped += int(n_flipped)
+
+    # Reset ALL accumulators — not just flipped weights.
+    # Each interval asks a fresh question: "given the current topology
+    # and 25 steps of Adam adaptation, which weights want to flip NOW?"
+    # Without this, non-flipped weights accumulate a backlog that grows
+    # without bound, making flips effectively irreversible: a weight
+    # that flipped wrong would need ~630K steps to flip back because
+    # millions of backlogged weights saturate at ±127 and win every
+    # random lottery. Resetting ensures recent evidence drives decisions.
+    for module, _ in candidates:
+        module._flip_accum = mx.zeros_like(module._flip_accum)
+        mutated.append(module._flip_accum)
 
     if mutated:
         mx.eval(*mutated)
@@ -704,9 +716,13 @@ def apply_flips_per_group(
                 new_vals = mx.clip(current + direction.astype(mx.int16), -1, 1).astype(mx.int8)
                 updated = mx.where(mask, new_vals, w_int8)
                 mod.ternary_weight = pack_ternary(updated)
-                mod._flip_accum = mx.where(mask, mx.zeros_like(mod._flip_accum), mod._flip_accum)
-                mutated.extend([mod.ternary_weight, mod._flip_accum])
+                mutated.append(mod.ternary_weight)
                 n_flipped += int(n)
+
+        # Reset all accumulators in this group (same reasoning as apply_flips)
+        for _, mod in modules:
+            mod._flip_accum = mx.zeros_like(mod._flip_accum)
+            mutated.append(mod._flip_accum)
 
         group_flipped[group] = n_flipped
 
