@@ -14,7 +14,7 @@ accumulation system and fixed them all. Also closed feedback Loop 3
 (stratum-based per-group flip factors were computed but never wired to
 actual flips).
 
-### Changes this session (7 commits)
+### Changes this session (9 commits)
 
 1. **Cap bypass fix** — `apply_flips` binary search over `[threshold, 127]`
    can't exceed int8 max. When weights saturate at 127, all flip uncapped.
@@ -43,6 +43,12 @@ actual flips).
 7. **Loop 3 closed** — `apply_flips_per_group` now uses `cached_group_factors`
    from stratum gap analysis. stride_stack gets more flips when compositional
    lags prose, prep gets more when abstraction lags.
+
+8. **generate() unpack fix** — model returns 4 values, generate expected 3.
+
+9. **Gate accumulation during warmup** — `accumulate_flips` was running every
+   micro-batch ungated. By step 500, 2000 votes saturated at ±127. First flip
+   check would see warmup noise. Now gated by `step >= WARMUP_STEPS`.
 
 ### Design principles crystallized
 
