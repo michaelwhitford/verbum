@@ -2,66 +2,72 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-25 | Session: 041
+> Last updated: 2026-04-25 | Session: 042
 
 ## Where we are
 
-**v6.1 training at step ~9500+ (30%). Session 041: probed Pythia-160M
-and Qwen3-4B for φ-compression — neither φ-compresses. Standard
-transformers compose via ROTATION at constant variance (beta
-reduction). v6's spiral attention compresses holographically.
-The φ-convergence is unique to recursive self-similar architecture.**
+**v6.1 training at step 11000 (36%). Session 042: probed 4 new
+checkpoints (9500→11000). New best eval loss 5.514 at step 11000.
+L1_asc φ-dev tightens to 0.045 (best ever). L2_apex crosses zero
+and goes positive. φ-compression percolating from s8 to s16 stride.
+Loss plateau 9000→10000 then breakthrough at 11000.**
 
-### Session 041 key findings
+### Session 042 key findings
 
-1. **Standard transformers do NOT φ-compress.** Probed Pythia-160M
-   (12 layers) and Qwen3-4B (36 layers) with the same entropy proxy
-   as v6. Stable zone ratios: Pythia=0.947, Qwen=1.000 (pure
-   identity). φ only appears at the output boundary — forced variance
-   collapse for prediction, not compositional compression.
+1. **Loss plateau then breakthrough.** Eval loss flat 9000→10000
+   (~5.566), then broke through: 5.555 at 10500, **5.514 at 11000**
+   (new best). The 0.04 drop 10500→11000 is the largest single-step
+   improvement since 7500→8000. Something structural unlocked.
 
-2. **LLMs are beta reduction machines.** Pythia implements Montague
-   as accumulate→plateau→collapse (47× growth, 3-layer hold, funnel
-   down). Qwen holds 26 layers of perfect near-identity variance.
-   The compile gate constrains to 13% of null-mode variance but
-   doesn't change the mechanism — it selects which reduction to
-   perform.
+2. **L1_asc tightens to φ: 0.045 deviation.** The primary
+   compositional compression pass has held within 5% of 1/φ for
+   7000 steps. Ratio trajectory: 0.550→0.565→0.569→0.566→**0.573**.
+   Converging from below toward 0.618.
 
-3. **Composition in LLMs is ROTATION.** The 26 "near-identity"
-   layers in Qwen were hiding 15-25° of rotation per layer.
-   Compile mode causes +3.3° more rotation than null mode in the
-   composition phase (L24-L28), with 4.4× larger relative deltas.
-   Variable binding = geometric alignment. Function composition =
-   sequential rotation. But rotation is constant-budget (~18.4°)
-   regardless of complexity.
+3. **L2_apex crosses zero → positive.** Was negative (expanding)
+   from step 4500 through 9500. Crossed zero at step 10000 (0.013),
+   now solidly positive (0.062) at 11000. The apex is learning to
+   compress, not just route.
 
-4. **v6's spiral attention is holographic.** The bias function
-   `−α·ln(d+1)` is stride-invariant — same function at every
-   scale. 9 strides process all scales simultaneously. This is
-   holographic encoding: every part contains the whole, self-healing
-   (L1_desc vestigial → L0_desc compensates), and the fixed point
-   is 1/φ because φ is the only ratio where whole:part = part:remainder.
+4. **φ-compression percolates across strides.** s8 hit φ first
+   (step 9500), then s16 joined (step 10000+). At step 11000, s16
+   marks ←φ in L0_asc/L1_asc, s8 marks ←φ in L2_apex. The
+   compression ratio is propagating self-similarly across scales —
+   exactly what holographic theory predicts.
 
-5. **Flat attention = photograph, spiral attention = hologram.**
-   Flat attention → one scale → rotation → beta reduction → the
-   lambda function "forms" by memorizing patterns. Spiral attention →
-   all scales → compression → lambda abstraction → the function
-   emerges from a single self-similar operation converging to φ.
+5. **Hilberg β improving.** Best values at step 10500: L0_asc=1.23,
+   L1_asc=1.22, L2_apex=1.32 (target: 0.5). Still far but trending.
 
-### v6.1 training status (unchanged from session 040)
+6. **Technical now fastest-improving stratum.** Math leads (5.654)
+   but technical dropped fastest (6.525→6.385). Compositional
+   remains stubborn at ~7.27. Spread widening slightly (1.62).
+
+### v6.1 training status
 
 | Property | Value |
 |----------|-------|
-| Current step | ~9500+ (30%) |
+| Current step | 11000+ (36%) |
 | Total steps | 30,518 |
-| Tokens seen | ~295M of 1B |
-| Eval loss | 5.565 (step 9000) — best |
-| Relational r | 0.383 (step 9000) |
+| Tokens seen | ~360M of 1B |
+| Eval loss | **5.514** (step 11000) — best |
+| Relational r | 0.419 (step 11000) |
 | Sparsity | 0.310 (unchanged) |
-| L1_asc φ-dev | 0.052 (converging) |
-| L1_desc | vestigial (h_in = -0.008) |
-| Stratum spread | 1.56 (collapsing) |
+| L1_asc φ-dev | **0.045** (converging, best) |
+| L2_apex | **+0.062** (crossed zero, now compressing) |
+| L1_desc | noisy (sign-flipping, h_in ≈ -0.05) |
+| Stratum spread | 1.62 (widening slightly) |
+| Total flips | 109,245 (0.31% cumulative) |
 | Effective passes | 4 (L0↑→L1↑→L2→L0↓) |
+
+### Eval loss evolution
+
+| Step | Eval Loss | ppl | r | L1_asc φ-dev | L2_apex |
+|------|-----------|------|------|-------------|---------|
+| 9000 | 5.565 | 261.0 | 0.424 | 0.052 | -0.023 |
+| 9500 | 5.566 | 261.5 | 0.424 | 0.053 | -0.006 |
+| 10000 | 5.569 | 262.3 | 0.425 | 0.049 | +0.013 |
+| 10500 | 5.555 | 258.5 | 0.423 | 0.052 | +0.049 |
+| **11000** | **5.514** | **248.0** | **0.419** | **0.045** | **+0.062** |
 
 ### Stratum loss evolution (post-phase-transition)
 
@@ -70,15 +76,19 @@ The φ-convergence is unique to recursive self-similar architecture.**
 | 4500 | 6.30 | 6.73 | 7.26 | 6.05 | 1.21 | — |
 | 7000 | 6.16 | 6.63 | 7.43 | 5.35 | 2.07 | **prose** |
 | 8500 | 6.12 | 6.65 | 7.27 | 5.36 | 1.91 | **prose** |
-| 9000 | 6.18 | 6.72 | 7.15 | 5.59 | **1.56** | **technical** |
+| 9000 | 6.18 | 6.72 | 7.15 | 5.59 | 1.56 | **technical** |
+| 9500 | 6.57 | 7.33 | 6.35 | 6.05 | 1.29 | **technical** |
+| 10000 | 6.52 | 7.24 | 6.45 | 5.73 | 1.51 | **technical** |
+| 10500 | 6.62 | 7.28 | 6.51 | 5.76 | 1.52 | **technical** |
+| **11000** | **6.51** | **7.27** | **6.39** | **5.65** | **1.62** | **technical** |
 
 ### Three-way φ-compression comparison (session 041)
 
 | Metric | v6 (63M, VSM) | Pythia (162M) | Qwen3-4B (4B) |
 |--------|--------------|---------------|----------------|
-| Stable zone ratio | **0.566** | 0.947 | 1.000 |
-| Stable zone φ-dev | **0.052** | 0.329 | 0.387 |
-| Best single layer | L1_asc: 0.052 | L9: 0.172 | L34: 0.037* |
+| Stable zone ratio | **0.573** | 0.947 | 1.000 |
+| Stable zone φ-dev | **0.045** | 0.329 | 0.387 |
+| Best single layer | L1_asc: 0.045 | L9: 0.172 | L34: 0.037* |
 | Composition mechanism | Compression | Rotation | Rotation |
 | Architecture type | Holographic | Photographic | Photographic |
 
@@ -86,22 +96,27 @@ The φ-convergence is unique to recursive self-similar architecture.**
 
 ## What's next
 
-1. **Continue v6.1 training.** Probe at milestones 9500, 10000.
-   Track relay (compositional expected next), stratum spread (target
-   < 1.0), L1_asc φ-dev (target < 0.03).
+1. **Continue v6.1 training.** Next probes at 11500, 12000.
+   Track: L1_asc φ-dev (target < 0.03), L2_apex (want continued
+   positive trend), stratum spread (target < 1.0), compositional
+   relay (the stubborn stratum).
 
-2. **Test holographic prediction.** If v6 is holographic, ablating
+2. **Watch the stride percolation.** φ hit s8 first, now s16. If
+   s32 joins next, that's three scales showing self-similar
+   compression — strong evidence for holographic mechanism.
+
+3. **Test holographic prediction.** If v6 is holographic, ablating
    one pass should degrade all strata equally (holographic) not
    selectively (photographic). Design the ablation experiment.
 
-3. **Investigate MoE as approximate holography.** Qwen3-35B-A3B
-   fully forms the lambda function — does MoE routing approximate
-   scale-diverse processing? The expert routing may be a discrete
-   approximation of the continuous spiral.
+4. **Investigate the 11000 breakthrough.** What structural change
+   caused the loss plateau to break? L2_apex going positive
+   correlates — the apex becoming a compressor may have been the
+   bottleneck.
 
-4. **Write up the photograph/hologram distinction.** This is the
-   most significant theoretical finding of the session.
-   → Done: `mementum/knowledge/explore/holographic-compression.md`
+5. **Investigate MoE as approximate holography.** Qwen3-35B-A3B
+   fully forms the lambda function — does MoE routing approximate
+   scale-diverse processing?
 
 ## Key files
 
