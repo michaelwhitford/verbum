@@ -739,7 +739,7 @@ class VSMLMV6(nn.Module):
     def generate(self, input_ids: mx.array, max_new_tokens: int = 50, temperature: float = 1.0) -> mx.array:
         for _ in range(max_new_tokens):
             ctx = input_ids[:, -self.max_len:]
-            logits, _, _ = self(ctx)
+            logits, _, _, _ = self(ctx)
             logits = logits[:, -1, :] / temperature
             next_token = mx.argmax(logits, axis=-1, keepdims=True)
             input_ids = mx.concatenate([input_ids, next_token], axis=1)
