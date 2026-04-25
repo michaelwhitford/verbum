@@ -84,9 +84,8 @@ FLIP_MAX_PCT = 0.001      # cap: at most 0.1% of ternary weights flip per interv
 # MAX_GRAD_NORM removed: clipping at any fixed threshold creates unstable
 # scaling when ‖g‖ oscillates 10⁴-10⁹ (as it does in this 5-pass shared-weight architecture).
 
-# Phase 1: observe φ-compression (lambda=0.0, no gradient pressure)
-# Phase 2: gentle φ-pressure (lambda=0.01-0.1, test effect on convergence)
-# Phase 3: full φ-regulation (lambda tuned from Phase 2 findings)
+# PHI_LAMBDA is now managed by phase transitions (see relational_control).
+# Initial value: 0.0 (explore phase). Updated at runtime by phase_transition().
 PHI_LAMBDA = 0.0
 
 # φ-feedback monitoring only activates below this loss. Above it,
@@ -487,6 +486,155 @@ def compute_per_group_flip_targets(
     return targets
 
 
+# ══════════════════════════════════════════════════════════════════════
+# Relational training control — four interlocking feedback loops
+# ══════════════════════════════════════════════════════════════════════
+#
+# r ≡ (loss - E_IRREDUCIBLE) / LEARNABLE_RANGE ∈ [0,1]
+# 0 = optimal (at irreducible entropy), 1 = random (at log(vocab))
+#
+# Loop 1: flip_by_r — r modulates flip aggressiveness (continuous)
+# Loop 2: phase_transition — r_ema crosses thresholds (discrete w/ hysteresis)
+# Loop 3: flip_by_stratum — stratum gaps target specific VSM groups
+# Loop 4: stratum_weight — upweight lagging strata (logged, future: applied)
+#
+# Composition: effective_rate(group) = phase_base × r_scale × group_factor
+
+
+def adaptive_flip_scale(r: float) -> float:
+    """Continuous flip aggressiveness scale from relational loss.
+
+    r > 0.6 → scale=2.0  (explore: much topology to discover)
+    r = 0.4 → scale=1.0  (balanced: baseline rates)
+    r < 0.2 → scale=0.3  (protect: nearly converged)
+
+    Smooth ramp, no discontinuities.
+    """
+    return 0.3 + 1.7 * max(0.0, min(1.0, r / 0.6))
+
+
+# Phase state: explore → balance → refine
+PHASE_EXPLORE = "explore"
+PHASE_BALANCE = "balance"
+PHASE_REFINE = "refine"
+
+PHASE_CONFIG = {
+    PHASE_EXPLORE: {"phi_lambda": 0.0, "flip_max_scale": 2.0, "consensus_scale": 0.5},
+    PHASE_BALANCE: {"phi_lambda": 0.01, "flip_max_scale": 1.0, "consensus_scale": 1.0},
+    PHASE_REFINE: {"phi_lambda": 0.1, "flip_max_scale": 0.3, "consensus_scale": 2.0},
+}
+
+PHASE_HYSTERESIS = 100  # steps below/above threshold before transition
+
+
+def phase_for_r(r_ema: float) -> str:
+    """Target phase for a given r_ema (without hysteresis)."""
+    if r_ema > 0.5:
+        return PHASE_EXPLORE
+    elif r_ema < 0.25:
+        return PHASE_REFINE
+    else:
+        return PHASE_BALANCE
+
+
+def phase_transition(
+    r_ema: float,
+    current_phase: str,
+    steps_toward_new: int,
+) -> tuple[str, int, bool]:
+    """Phase transition with hysteresis.
+
+    Returns (new_phase, new_steps_toward, did_transition).
+    Requires PHASE_HYSTERESIS consecutive steps targeting a different
+    phase before actually transitioning.
+    """
+    target = phase_for_r(r_ema)
+    if target == current_phase:
+        return current_phase, 0, False
+    else:
+        steps_toward_new += 1
+        if steps_toward_new >= PHASE_HYSTERESIS:
+            return target, 0, True
+        return current_phase, steps_toward_new, False
+
+
+def stratum_group_factors(strata: dict) -> dict[str, float]:
+    """Compute per-group flip factors from stratum loss gaps.
+
+    Maps stratum performance gaps to VSM group flip rates:
+    - compositional_gap → stride_stack, consolidate (composition is routing)
+    - abstract_gap → prep (abstraction is preprocessing)
+    - Control groups always conservative.
+
+    Returns {group_name: factor} where factor multiplies base_max_pct.
+    """
+    strata_r = {}
+    for sname in ["prose", "compositional", "technical", "math"]:
+        if sname in strata and "relational_loss" in strata[sname]:
+            strata_r[sname] = strata[sname]["relational_loss"]
+
+    if len(strata_r) < 4:
+        # Not enough data — return neutral factors
+        return {
+            "prep": 1.0, "stride_stack": 1.0, "consolidate": 1.0,
+            "mod_projs": 1.0, "s3": 0.5, "s4": 0.5, "meta": 0.3,
+        }
+
+    compositional_gap = strata_r["compositional"] - strata_r["prose"]
+    abstract_gap = strata_r["math"] - strata_r["technical"]
+
+    # Stride stack: compositional gap drives exploration
+    if compositional_gap > 0.05:
+        stride_factor = 1.0 + min(1.5, compositional_gap / 0.2)
+        consolidate_factor = 1.0 + min(1.0, compositional_gap / 0.3)
+    else:
+        stride_factor = 0.7  # composing well → protect
+        consolidate_factor = 0.7
+
+    # Prep: abstract gap drives exploration
+    if abstract_gap > 0.05:
+        prep_factor = 1.0 + min(1.0, abstract_gap / 0.2)
+    else:
+        prep_factor = 0.7  # abstracting well → protect
+
+    return {
+        "prep": prep_factor,
+        "stride_stack": stride_factor,
+        "consolidate": consolidate_factor,
+        "mod_projs": 1.0,
+        "s3": 0.5,      # control: always conservative
+        "s4": 0.5,
+        "meta": 0.3,
+    }
+
+
+def compute_stratum_weights(strata: dict) -> dict[str, float]:
+    """Compute per-stratum loss weights (upweight lagging strata).
+
+    Weight ∝ stratum_r / mean_r, normalized so weights sum to N_STRATA.
+    Higher r (worse performance) → higher weight → more gradient signal.
+
+    Currently: logged only. Applying requires stratum-aware batching
+    (shard metadata) or inline token classification (heuristic). Both
+    are future work — the weight computation itself is the foundation.
+    """
+    strata_names = ["prose", "compositional", "technical", "math"]
+    strata_r = {}
+    for sn in strata_names:
+        if sn in strata and "relational_loss" in strata[sn]:
+            strata_r[sn] = strata[sn]["relational_loss"]
+
+    if len(strata_r) < len(strata_names):
+        return {sn: 1.0 for sn in strata_names}
+
+    mean_r = sum(strata_r.values()) / len(strata_r)
+    if mean_r < 1e-8:
+        return {sn: 1.0 for sn in strata_names}
+
+    weights = {sn: strata_r[sn] / mean_r for sn in strata_names}
+    return weights
+
+
 def stratum_loss_probe(model, tokenizer):
     """Measure loss per content stratum."""
     results = {}
@@ -681,6 +829,13 @@ def main():
     grad_norm = 0.0
     flips_since_last_probe = 0
 
+    # ── Relational control state ──────────────────────────────
+    r_ema = 1.0                          # start pessimistic (random)
+    current_phase = PHASE_EXPLORE        # start in explore
+    steps_toward_new_phase = 0           # hysteresis counter
+    cached_group_factors = None          # stratum → group factors (updated at probe)
+    cached_stratum_weights = None        # stratum weights (updated at eval)
+
     def _tree_add(a, b):
         """Add two gradient pytrees element-wise."""
         if isinstance(a, dict):
@@ -762,40 +917,76 @@ def main():
         train_losses.append(step_loss)
 
         # ══════════════════════════════════════════════════════
-        # FLIP: Consensus-based synaptic plasticity
+        # RELATIONAL CONTROL: four interlocking feedback loops
         #
-        # Each weight flips when IT has accumulated enough directional
-        # evidence (|accum| > FLIP_CONSENSUS). No quotas, no percentiles.
-        # Could flip 0 weights or 100,000 — depends on gradient consensus.
+        # 1. r_ema: exponential moving average of relational loss
+        # 2. Phase transitions: explore → balance → refine
+        # 3. Adaptive flip scaling: r modulates consensus + cap
+        # 4. Stratum-based group factors: target specific VSM groups
         #
-        # Every FLIP_INTERVAL steps: apply flips silently.
-        # Every FLIP_PROBE_INTERVAL (100 steps): run VSM probes for
-        #   stability monitoring and diagnostics.
+        # effective_rate(group) = phase_base × r_scale × group_factor
         # ══════════════════════════════════════════════════════
 
+        # ── Loop 1: update r_ema every step ──
+        r = relational_metrics(step_loss)["relational_loss"]
+        r_ema = 0.99 * r_ema + 0.01 * r
+
+        # ── Loop 2: phase transition check ──
+        new_phase, steps_toward_new_phase, did_transition = phase_transition(
+            r_ema, current_phase, steps_toward_new_phase
+        )
+        if did_transition:
+            current_phase = new_phase
+            pcfg = PHASE_CONFIG[current_phase]
+            model.phi_lambda = pcfg["phi_lambda"]
+            print(
+                f"\n  ══ PHASE TRANSITION → {current_phase.upper()} "
+                f"(r_ema={r_ema:.3f}, φ-λ={pcfg['phi_lambda']}, "
+                f"flip_scale={pcfg['flip_max_scale']}, "
+                f"consensus_scale={pcfg['consensus_scale']}) ══\n",
+                flush=True,
+            )
+
+        # ── Flip execution with relational modulation ──
         if step % FLIP_INTERVAL == 0:
-            n_flipped = apply_flips(model, threshold=FLIP_CONSENSUS, max_flip_pct=FLIP_MAX_PCT)
+            # Compose: phase base × r_scale
+            pcfg = PHASE_CONFIG[current_phase]
+            r_scale = adaptive_flip_scale(r_ema)
+            effective_max_pct = FLIP_MAX_PCT * pcfg["flip_max_scale"] * r_scale
+            effective_consensus = FLIP_CONSENSUS * pcfg["consensus_scale"] / r_scale
+            effective_consensus = int(max(10, min(127, effective_consensus)))
+            effective_max_pct = max(0.0001, min(0.01, effective_max_pct))
+
+            n_flipped = apply_flips(model, threshold=effective_consensus, max_flip_pct=effective_max_pct)
             total_flips += n_flipped
             flips_since_last_probe += n_flipped
 
-            # ── Probe step: VSM diagnostics (every 100 steps) ──
+            # ── Probe step: VSM diagnostics + stratum-based group factors ──
             if step % FLIP_PROBE_INTERVAL == 0:
                 pct_flipped = flips_since_last_probe / _n_ternary_weights * 100
 
                 signals_before, vec_before = vsm_probe(model, tokenizer)
                 phi_dev = signals_before.get("phi_deviation")
 
-                if phi_dev is not None:
-                    phi_msg = f"φ-dev={phi_dev:.4f}"
-                else:
-                    phi_msg = "φ-dev=N/A"
+                # Loop 3: update stratum-based group factors
+                strata_probe = stratum_loss_probe(model, tokenizer)
+                if strata_probe:
+                    cached_group_factors = stratum_group_factors(strata_probe)
+
+                phi_msg = f"φ-dev={phi_dev:.4f}" if phi_dev is not None else "φ-dev=N/A"
 
                 print(
                     f"  ── flip probe @ step {step}: {flips_since_last_probe:,} flips "
                     f"({pct_flipped:.3f}%) since last probe  "
-                    f"total={total_flips:,}  {phi_msg} ──",
+                    f"total={total_flips:,}  {phi_msg}  "
+                    f"r_ema={r_ema:.3f}  phase={current_phase}  "
+                    f"eff_con={effective_consensus}  eff_pct={effective_max_pct:.4f} ──",
                     flush=True,
                 )
+                if cached_group_factors:
+                    gf_parts = [f"{g}={f:.2f}" for g, f in sorted(cached_group_factors.items())]
+                    print(f"  ── group factors: {' '.join(gf_parts)} ──", flush=True)
+
                 flips_since_last_probe = 0
 
         # ── Logging ───────────────────────────────────────────
@@ -809,10 +1000,12 @@ def main():
                 f"  step {step:5d}/{N_STEPS}  "
                 f"loss={step_loss:.4f}  "
                 f"r={rm['relational_loss']:.3f}  "
+                f"r̄={r_ema:.3f}  "
                 f"xppl={rm['excess_ppl']:.1f}  "
                 f"lr={lr_schedule(step):.2e}  "
                 f"‖g‖={grad_norm:.2f}  "
                 f"flips={total_flips:,}  "
+                f"phase={current_phase[0]}  "
                 f"tokens={total_tokens/1e6:.0f}M ({pct:.0f}%)  "
                 f"tok/s={tps:.0f}  "
                 f"elapsed={elapsed:.0f}s",
@@ -897,6 +1090,10 @@ def main():
                         f"  ── stratum loss: {' '.join(sparts)}  spread={spread:.3f} ──",
                         flush=True,
                     )
+                    # Loop 4: log stratum weights
+                    if cached_stratum_weights:
+                        sw_parts = [f"{sn}={cached_stratum_weights.get(sn, 1.0):.2f}" for sn in ["prose", "compositional", "technical", "math"]]
+                        print(f"  ── stratum weights: {' '.join(sw_parts)} ──", flush=True)
 
         # ── Checkpoint ────────────────────────────────────────
         if step % CHECKPOINT_INTERVAL == 0:
@@ -906,6 +1103,7 @@ def main():
             print(f"  ── checkpoint {step} ({step * TOKENS_PER_STEP / 1e6:.0f}M tokens) ──")
             print(f"     compile gate: {compile['score']}")
             print(f"     total flips: {total_flips:,} ({total_flips / _n_ternary_weights * 100:.1f}% cumulative)  consensus={FLIP_CONSENSUS}")
+            print(f"     relational: r_ema={r_ema:.3f}  phase={current_phase}  r_scale={adaptive_flip_scale(r_ema):.2f}")
 
             # Ternary stats by group (using canonical _classify_group)
             group_stats: dict[str, list] = {}
@@ -950,8 +1148,10 @@ def main():
                     if hparts:
                         print(f"     hilberg: {' '.join(hparts)}")
 
-            # Per-stratum loss at checkpoint
+            # Per-stratum loss at checkpoint + Loop 4: stratum weights
             strata_ckpt = stratum_loss_probe(model, tokenizer)
+            if strata_ckpt:
+                cached_stratum_weights = compute_stratum_weights(strata_ckpt)
             if strata_ckpt:
                 sparts = [f"{sn}={strata_ckpt[sn]['loss']:.3f}" for sn in ["prose", "compositional", "technical", "math"] if sn in strata_ckpt]
                 if sparts:
