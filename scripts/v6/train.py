@@ -71,11 +71,11 @@ FLIP_INTERVAL = 25        # check for consensus flips every 25 steps
                           # between checks, so gradient signal reflects actual consequences
                           # of prior flips, not stale momentum.
 FLIP_PROBE_INTERVAL = 100 # re-run VSM probes for monitoring (expensive: 13 forward passes)
-FLIP_CONSENSUS = 40       # absolute threshold: net votes needed to flip (int8 accum units)
-                          # Accumulators persist across intervals — only reset on flip.
-                          # 40 net votes = strong directional consensus before committing.
-                          # At interval=25 (100 votes/interval), reachable in one interval:
-                          # clean signal, no carryover from stale history.
+FLIP_CONSENSUS = 50       # absolute threshold: net votes needed to flip (int8 accum units)
+                          # 100 votes/interval (25 steps × 4 micro-batches).
+                          # 50 net votes = 75% agreement (75 agree, 25 disagree).
+                          # Accumulators reset after each flip check — consensus is
+                          # earned fresh each interval, no stale carryover.
 FLIP_MAX_PCT = 0.00001    # cap: at most 0.001% of ternary weights flip per interval (~350 of 35M)
                           # Synaptic plasticity: flip a few routes, let continuous params
                           # adapt around them for many steps before flipping more.
