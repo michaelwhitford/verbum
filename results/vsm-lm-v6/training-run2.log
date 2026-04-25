@@ -534,3 +534,582 @@ VSM-LM v6 — Ternary on Metal (MLX)
   step  4600/30518  loss=5.6130  r=0.429  r̄=0.427  xppl=50.6  lr=5.73e-04  ‖g‖=0.83  flips=56,450  phase=b  tokens=151M (15%)  tok/s=5157  elapsed=29229s
   step  4625/30518  loss=5.5830  r=0.426  r̄=0.427  xppl=49.1  lr=5.72e-04  ‖g‖=0.38  flips=56,768  phase=b  tokens=152M (15%)  tok/s=5158  elapsed=29385s
   step  4650/30518  loss=5.3452  r=0.400  r̄=0.426  xppl=38.7  lr=5.72e-04  ‖g‖=0.31  flips=57,098  phase=b  tokens=152M (15%)  tok/s=5156  elapsed=29551s
+  step  4675/30518  loss=5.6080  r=0.429  r̄=0.426  xppl=50.3  lr=5.72e-04  ‖g‖=0.31  flips=57,423  phase=b  tokens=153M (15%)  tok/s=5156  elapsed=29711s
+  ── flip probe @ step 4700: 1,333 flips (0.004%) since last probe  total=57,783  φ-dev=1.2667  r_ema=0.425  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=1.31 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.46 ──
+  ── group flips: consolidate=10 mod_projs=3 prep=14 s3=129 stride_stack=204 ──
+  step  4700/30518  loss=5.5961  r=0.428  r̄=0.425  xppl=49.7  lr=5.71e-04  ‖g‖=0.35  flips=57,783  phase=b  tokens=154M (15%)  tok/s=5156  elapsed=29870s
+  step  4725/30518  loss=5.5495  r=0.422  r̄=0.425  xppl=47.4  lr=5.71e-04  ‖g‖=0.30  flips=58,044  phase=b  tokens=155M (15%)  tok/s=5156  elapsed=30029s
+  step  4750/30518  loss=5.4141  r=0.408  r̄=0.424  xppl=41.4  lr=5.71e-04  ‖g‖=0.30  flips=58,371  phase=b  tokens=156M (16%)  tok/s=5157  elapsed=30184s
+  step  4775/30518  loss=5.4883  r=0.416  r̄=0.422  xppl=44.6  lr=5.70e-04  ‖g‖=0.34  flips=58,698  phase=b  tokens=156M (16%)  tok/s=5156  elapsed=30345s
+  ── flip probe @ step 4800: 1,261 flips (0.004%) since last probe  total=59,044  φ-dev=1.1034  r_ema=0.423  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=1.22 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.33 ──
+  ── group flips: meta=8 prep=1 s3=119 s4=14 stride_stack=204 ──
+  step  4800/30518  loss=5.5564  r=0.423  r̄=0.423  xppl=47.8  lr=5.70e-04  ‖g‖=0.30  flips=59,044  phase=b  tokens=157M (16%)  tok/s=5156  elapsed=30506s
+  step  4825/30518  loss=5.3375  r=0.399  r̄=0.423  xppl=38.4  lr=5.70e-04  ‖g‖=0.51  flips=59,256  phase=b  tokens=158M (16%)  tok/s=5155  elapsed=30670s
+  step  4850/30518  loss=5.4141  r=0.408  r̄=0.422  xppl=41.4  lr=5.69e-04  ‖g‖=0.85  flips=59,530  phase=b  tokens=159M (16%)  tok/s=5155  elapsed=30827s
+  step  4875/30518  loss=5.5266  r=0.420  r̄=0.422  xppl=46.4  lr=5.69e-04  ‖g‖=0.28  flips=59,854  phase=b  tokens=160M (16%)  tok/s=5154  elapsed=30992s
+  ── flip probe @ step 4900: 1,021 flips (0.003%) since last probe  total=60,065  φ-dev=1.2061  r_ema=0.422  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=1.18 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.27 ──
+  ── group flips: consolidate=5 meta=1 prep=8 s3=4 s4=1 stride_stack=192 ──
+  step  4900/30518  loss=5.6413  r=0.433  r̄=0.422  xppl=52.0  lr=5.69e-04  ‖g‖=0.38  flips=60,065  phase=b  tokens=161M (16%)  tok/s=5155  elapsed=31147s
+  step  4925/30518  loss=5.5814  r=0.426  r̄=0.421  xppl=49.0  lr=5.68e-04  ‖g‖=0.38  flips=60,359  phase=b  tokens=161M (16%)  tok/s=5155  elapsed=31305s
+  step  4950/30518  loss=5.5546  r=0.423  r̄=0.420  xppl=47.7  lr=5.68e-04  ‖g‖=0.35  flips=60,697  phase=b  tokens=162M (16%)  tok/s=5156  elapsed=31460s
+  step  4975/30518  loss=5.6827  r=0.437  r̄=0.418  xppl=54.2  lr=5.68e-04  ‖g‖=0.44  flips=60,977  phase=b  tokens=163M (16%)  tok/s=5156  elapsed=31617s
+  ── flip probe @ step 5000: 1,123 flips (0.003%) since last probe  total=61,188  φ-dev=1.2631  r_ema=0.419  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=1.18 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.27 ──
+  ── group flips: consolidate=5 mod_projs=1 s3=8 stride_stack=197 ──
+  step  5000/30518  loss=5.7039  r=0.439  r̄=0.419  xppl=55.4  lr=5.67e-04  ‖g‖=0.61  flips=61,188  phase=b  tokens=164M (16%)  tok/s=5157  elapsed=31771s
+  ── eval @ step 5000: loss=5.7506  r=0.444  xppl=58.0  ppl=314.4 ──
+  ── φ-compression: L0_asc=0.818 L1_asc=0.482 L2_apex=-1.139 L1_desc=2.343 L0_desc=1.518  mean=0.804  φ-dev=0.944  (1/φ=0.618) ──
+  ── gates (prep/conv/cons): L0_asc=[0.34 0.39 0.39] L1_asc=[0.13 0.51 0.38] L2_apex=[0.51 0.94 0.67] L1_desc=[0.93 0.87 0.88] L0_desc=[0.94 0.91 0.94] ──
+  ── stratum loss: prose=6.624(r=0.540) compositional=7.136(r=0.596) technical=6.667(r=0.545) math=6.237(r=0.498)  spread=0.899 ──
+  ── stratum weights: prose=0.96 compositional=1.16 technical=0.99 math=0.89 ──
+  ── checkpoint 5000 (164M tokens) ──
+     compile gate: 0/4
+     total flips: 61,188 (0.2% cumulative)  consensus=50
+     relational: r_ema=0.419  phase=balance  r_scale=1.49
+     prep           : sparsity=0.310  gamma=0.0362  (2 modules)
+     stride_stack   : sparsity=0.310  gamma=0.0311  (36 modules)
+     consolidate    : sparsity=0.310  gamma=0.0361  (2 modules)
+     s4             : sparsity=0.310  gamma=0.0259  (4 modules)
+     s3             : sparsity=0.310  gamma=0.0392  (120 modules)
+     mod_projs      : sparsity=0.309  gamma=-0.0007  (3 modules)
+     meta           : sparsity=0.310  gamma=0.0472  (4 modules)
+     φ-compression: L0_asc=0.809 L1_asc=0.529 L2_apex=-0.942 L1_desc=2.569 L0_desc=1.541  mean=0.901  φ-dev=0.943
+     gates: L0_asc=[0.33 0.39 0.41] L1_asc=[0.12 0.47 0.35] L2_apex=[0.51 0.92 0.66] L1_desc=[0.93 0.91 0.89] L0_desc=[0.95 0.93 0.95]
+     stratum loss: prose=6.577 compositional=7.094 technical=6.646 math=6.231
+     saved: checkpoints/vsm-lm-v6/step_005000
+  step  5025/30518  loss=5.6992  r=0.439  r̄=0.419  xppl=55.1  lr=5.67e-04  ‖g‖=0.41  flips=61,373  phase=b  tokens=165M (16%)  tok/s=5154  elapsed=31946s
+  step  5050/30518  loss=5.2457  r=0.389  r̄=0.419  xppl=35.0  lr=5.67e-04  ‖g‖=0.35  flips=61,736  phase=b  tokens=165M (17%)  tok/s=5155  elapsed=32100s
+  step  5075/30518  loss=5.3560  r=0.401  r̄=0.417  xppl=39.1  lr=5.66e-04  ‖g‖=0.37  flips=61,941  phase=b  tokens=166M (17%)  tok/s=5154  elapsed=32265s
+  ── flip probe @ step 5100: 979 flips (0.003%) since last probe  total=62,167  φ-dev=1.0662  r_ema=0.417  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=1.21 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.31 ──
+  ── group flips: consolidate=10 meta=2 mod_projs=1 prep=5 s3=46 stride_stack=162 ──
+  step  5100/30518  loss=5.6738  r=0.436  r̄=0.417  xppl=53.7  lr=5.66e-04  ‖g‖=0.53  flips=62,167  phase=b  tokens=167M (17%)  tok/s=5154  elapsed=32422s
+  step  5125/30518  loss=5.7330  r=0.443  r̄=0.419  xppl=57.0  lr=5.66e-04  ‖g‖=0.35  flips=62,385  phase=b  tokens=168M (17%)  tok/s=5154  elapsed=32581s
+  step  5150/30518  loss=5.2589  r=0.391  r̄=0.419  xppl=35.5  lr=5.65e-04  ‖g‖=0.27  flips=62,598  phase=b  tokens=169M (17%)  tok/s=5154  elapsed=32740s
+  step  5175/30518  loss=5.5141  r=0.419  r̄=0.419  xppl=45.8  lr=5.65e-04  ‖g‖=0.48  flips=62,908  phase=b  tokens=170M (17%)  tok/s=5155  elapsed=32896s
+  ── flip probe @ step 5200: 1,009 flips (0.003%) since last probe  total=63,176  φ-dev=1.0763  r_ema=0.417  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=0.70 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=0.70 ──
+  ── group flips: consolidate=4 meta=1 prep=1 s3=93 stride_stack=169 ──
+  step  5200/30518  loss=5.3301  r=0.398  r̄=0.417  xppl=38.1  lr=5.64e-04  ‖g‖=0.36  flips=63,176  phase=b  tokens=170M (17%)  tok/s=5155  elapsed=33055s
+  step  5225/30518  loss=5.5069  r=0.418  r̄=0.417  xppl=45.5  lr=5.64e-04  ‖g‖=0.38  flips=63,321  phase=b  tokens=171M (17%)  tok/s=5156  elapsed=33209s
+  step  5250/30518  loss=5.7227  r=0.441  r̄=0.416  xppl=56.4  lr=5.64e-04  ‖g‖=0.40  flips=63,455  phase=b  tokens=172M (17%)  tok/s=5156  elapsed=33367s
+  step  5275/30518  loss=5.5609  r=0.424  r̄=0.416  xppl=48.0  lr=5.63e-04  ‖g‖=0.43  flips=63,572  phase=b  tokens=173M (17%)  tok/s=5157  elapsed=33521s
+  ── flip probe @ step 5300: 597 flips (0.002%) since last probe  total=63,773  φ-dev=1.0862  r_ema=0.416  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=0.70 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=0.70 ──
+  ── group flips: consolidate=1 mod_projs=2 prep=1 s3=115 stride_stack=82 ──
+  step  5300/30518  loss=5.3789  r=0.404  r̄=0.416  xppl=40.0  lr=5.63e-04  ‖g‖=0.40  flips=63,773  phase=b  tokens=174M (17%)  tok/s=5157  elapsed=33679s
+  step  5325/30518  loss=5.5318  r=0.421  r̄=0.417  xppl=46.6  lr=5.63e-04  ‖g‖=0.43  flips=63,908  phase=b  tokens=174M (17%)  tok/s=5157  elapsed=33833s
+  step  5350/30518  loss=5.5303  r=0.420  r̄=0.417  xppl=46.5  lr=5.62e-04  ‖g‖=0.30  flips=64,001  phase=b  tokens=175M (18%)  tok/s=5157  elapsed=33991s
+  step  5375/30518  loss=5.5593  r=0.424  r̄=0.416  xppl=47.9  lr=5.62e-04  ‖g‖=0.34  flips=64,089  phase=b  tokens=176M (18%)  tok/s=5158  elapsed=34145s
+  ── flip probe @ step 5400: 435 flips (0.001%) since last probe  total=64,208  φ-dev=1.0919  r_ema=0.416  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=1.17 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.26 ──
+  ── group flips: consolidate=1 mod_projs=2 prep=1 s3=16 stride_stack=99 ──
+  step  5400/30518  loss=5.6198  r=0.430  r̄=0.416  xppl=50.9  lr=5.61e-04  ‖g‖=0.28  flips=64,208  phase=b  tokens=177M (18%)  tok/s=5158  elapsed=34306s
+  step  5425/30518  loss=5.5271  r=0.420  r̄=0.416  xppl=46.4  lr=5.61e-04  ‖g‖=0.33  flips=64,383  phase=b  tokens=178M (18%)  tok/s=5159  elapsed=34460s
+  step  5450/30518  loss=5.3477  r=0.400  r̄=0.416  xppl=38.8  lr=5.61e-04  ‖g‖=0.72  flips=64,552  phase=b  tokens=179M (18%)  tok/s=5157  elapsed=34627s
+  step  5475/30518  loss=5.6145  r=0.430  r̄=0.416  xppl=50.6  lr=5.60e-04  ‖g‖=0.36  flips=64,743  phase=b  tokens=179M (18%)  tok/s=5158  elapsed=34781s
+  ── flip probe @ step 5500: 740 flips (0.002%) since last probe  total=64,948  φ-dev=1.1344  r_ema=0.416  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=1.17 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.26 ──
+  ── group flips: consolidate=2 mod_projs=2 s3=6 s4=1 stride_stack=194 ──
+  step  5500/30518  loss=5.4861  r=0.416  r̄=0.416  xppl=44.5  lr=5.60e-04  ‖g‖=0.57  flips=64,948  phase=b  tokens=180M (18%)  tok/s=5158  elapsed=34942s
+  ── eval @ step 5500: loss=5.7281  r=0.442  xppl=56.7  ppl=307.4 ──
+  ── φ-compression: L0_asc=0.810 L1_asc=0.500 L2_apex=-0.809 L1_desc=2.611 L0_desc=1.574  mean=0.937  φ-dev=0.937  (1/φ=0.618) ──
+  ── gates (prep/conv/cons): L0_asc=[0.33 0.42 0.42] L1_asc=[0.22 0.52 0.41] L2_apex=[0.50 0.91 0.64] L1_desc=[0.93 0.81 0.83] L0_desc=[0.93 0.88 0.94] ──
+  ── stratum loss: prose=6.638(r=0.542) compositional=7.132(r=0.596) technical=6.592(r=0.537) math=5.726(r=0.442)  spread=1.406 ──
+  ── stratum weights: prose=0.99 compositional=1.09 technical=1.00 math=0.92 ──
+  ── checkpoint 5500 (180M tokens) ──
+     compile gate: 1/4
+     total flips: 64,948 (0.2% cumulative)  consensus=50
+     relational: r_ema=0.416  phase=balance  r_scale=1.48
+     prep           : sparsity=0.310  gamma=0.0354  (2 modules)
+     stride_stack   : sparsity=0.310  gamma=0.0306  (36 modules)
+     consolidate    : sparsity=0.310  gamma=0.0353  (2 modules)
+     s4             : sparsity=0.310  gamma=0.0251  (4 modules)
+     s3             : sparsity=0.310  gamma=0.0382  (120 modules)
+     mod_projs      : sparsity=0.309  gamma=-0.0006  (3 modules)
+     meta           : sparsity=0.310  gamma=0.0468  (4 modules)
+     φ-compression: L0_asc=0.806 L1_asc=0.499 L2_apex=-0.802 L1_desc=2.711 L0_desc=1.597  mean=0.962  φ-dev=0.960
+     gates: L0_asc=[0.32 0.43 0.43] L1_asc=[0.23 0.52 0.40] L2_apex=[0.51 0.91 0.64] L1_desc=[0.93 0.81 0.85] L0_desc=[0.94 0.89 0.94]
+     stratum loss: prose=6.612 compositional=7.264 technical=6.593 math=5.697
+     saved: checkpoints/vsm-lm-v6/step_005500
+  step  5525/30518  loss=5.4911  r=0.416  r̄=0.416  xppl=44.7  lr=5.59e-04  ‖g‖=0.32  flips=65,251  phase=b  tokens=181M (18%)  tok/s=5157  elapsed=35106s
+  step  5550/30518  loss=5.5189  r=0.419  r̄=0.415  xppl=46.0  lr=5.59e-04  ‖g‖=0.33  flips=65,422  phase=b  tokens=182M (18%)  tok/s=5157  elapsed=35263s
+  step  5575/30518  loss=5.6270  r=0.431  r̄=0.416  xppl=51.3  lr=5.59e-04  ‖g‖=0.35  flips=65,731  phase=b  tokens=183M (18%)  tok/s=5158  elapsed=35420s
+  ── flip probe @ step 5600: 947 flips (0.003%) since last probe  total=65,895  φ-dev=1.0175  r_ema=0.416  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=1.23 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.35 ──
+  ── group flips: consolidate=4 stride_stack=160 ──
+  step  5600/30518  loss=5.5352  r=0.421  r̄=0.416  xppl=46.8  lr=5.58e-04  ‖g‖=0.32  flips=65,895  phase=b  tokens=184M (18%)  tok/s=5158  elapsed=35578s
+  step  5625/30518  loss=5.6129  r=0.429  r̄=0.415  xppl=50.5  lr=5.58e-04  ‖g‖=0.56  flips=66,203  phase=b  tokens=184M (18%)  tok/s=5158  elapsed=35738s
+  step  5650/30518  loss=5.4467  r=0.411  r̄=0.413  xppl=42.8  lr=5.57e-04  ‖g‖=0.38  flips=66,493  phase=b  tokens=185M (19%)  tok/s=5158  elapsed=35892s
+  step  5675/30518  loss=5.5350  r=0.421  r̄=0.413  xppl=46.8  lr=5.57e-04  ‖g‖=0.34  flips=66,701  phase=b  tokens=186M (19%)  tok/s=5158  elapsed=36053s
+  ── flip probe @ step 5700: 997 flips (0.003%) since last probe  total=66,892  φ-dev=0.9406  r_ema=0.413  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=1.18 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.28 ──
+  ── group flips: mod_projs=1 prep=1 s3=1 stride_stack=188 ──
+  step  5700/30518  loss=5.6285  r=0.431  r̄=0.413  xppl=51.3  lr=5.57e-04  ‖g‖=0.34  flips=66,892  phase=b  tokens=187M (19%)  tok/s=5158  elapsed=36208s
+  step  5725/30518  loss=5.3369  r=0.399  r̄=0.414  xppl=38.4  lr=5.56e-04  ‖g‖=0.41  flips=67,085  phase=b  tokens=188M (19%)  tok/s=5158  elapsed=36371s
+  step  5750/30518  loss=5.1587  r=0.380  r̄=0.414  xppl=32.1  lr=5.56e-04  ‖g‖=0.33  flips=67,294  phase=b  tokens=188M (19%)  tok/s=5158  elapsed=36530s
+  step  5775/30518  loss=5.5121  r=0.418  r̄=0.414  xppl=45.7  lr=5.55e-04  ‖g‖=0.42  flips=67,490  phase=b  tokens=189M (19%)  tok/s=5158  elapsed=36689s
+  ── flip probe @ step 5800: 847 flips (0.002%) since last probe  total=67,739  φ-dev=0.9767  r_ema=0.414  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=1.22 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.33 ──
+  ── group flips: consolidate=3 meta=1 s3=82 s4=1 stride_stack=162 ──
+  step  5800/30518  loss=5.7317  r=0.442  r̄=0.414  xppl=56.9  lr=5.55e-04  ‖g‖=0.34  flips=67,739  phase=b  tokens=190M (19%)  tok/s=5158  elapsed=36843s
+  step  5825/30518  loss=5.3822  r=0.404  r̄=0.413  xppl=40.1  lr=5.55e-04  ‖g‖=0.32  flips=67,934  phase=b  tokens=191M (19%)  tok/s=5158  elapsed=37005s
+  step  5850/30518  loss=5.4734  r=0.414  r̄=0.412  xppl=44.0  lr=5.54e-04  ‖g‖=0.31  flips=68,127  phase=b  tokens=192M (19%)  tok/s=5159  elapsed=37160s
+  step  5875/30518  loss=5.0977  r=0.373  r̄=0.411  xppl=30.2  lr=5.54e-04  ‖g‖=0.61  flips=68,326  phase=b  tokens=193M (19%)  tok/s=5157  elapsed=37328s
+  ── flip probe @ step 5900: 780 flips (0.002%) since last probe  total=68,519  φ-dev=1.0032  r_ema=0.411  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=1.18 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.28 ──
+  ── group flips: consolidate=1 prep=3 s3=9 stride_stack=180 ──
+  step  5900/30518  loss=5.2950  r=0.395  r̄=0.411  xppl=36.8  lr=5.53e-04  ‖g‖=0.42  flips=68,519  phase=b  tokens=193M (19%)  tok/s=5158  elapsed=37484s
+  step  5925/30518  loss=5.6592  r=0.434  r̄=0.412  xppl=52.9  lr=5.53e-04  ‖g‖=0.34  flips=68,709  phase=b  tokens=194M (19%)  tok/s=5157  elapsed=37651s
+  step  5950/30518  loss=5.5782  r=0.426  r̄=0.411  xppl=48.8  lr=5.53e-04  ‖g‖=0.34  flips=69,009  phase=b  tokens=195M (19%)  tok/s=5157  elapsed=37806s
+  step  5975/30518  loss=5.4108  r=0.407  r̄=0.411  xppl=41.3  lr=5.52e-04  ‖g‖=0.41  flips=69,201  phase=b  tokens=196M (20%)  tok/s=5156  elapsed=37972s
+  ── flip probe @ step 6000: 891 flips (0.003%) since last probe  total=69,410  φ-dev=0.9885  r_ema=0.410  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=1.21 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.31 ──
+  ── group flips: consolidate=3 meta=3 mod_projs=8 prep=2 s3=29 stride_stack=164 ──
+  step  6000/30518  loss=5.5286  r=0.420  r̄=0.410  xppl=46.5  lr=5.52e-04  ‖g‖=0.34  flips=69,410  phase=b  tokens=197M (20%)  tok/s=5156  elapsed=38129s
+  ── eval @ step 6000: loss=5.6754  r=0.436  xppl=53.8  ppl=291.6 ──
+  ── φ-compression: L0_asc=0.815 L1_asc=0.497 L2_apex=-0.592 L1_desc=3.014 L0_desc=1.657  mean=1.078  φ-dev=0.992  (1/φ=0.618) ──
+  ── gates (prep/conv/cons): L0_asc=[0.32 0.45 0.42] L1_asc=[0.26 0.56 0.42] L2_apex=[0.50 0.88 0.65] L1_desc=[0.86 0.81 0.80] L0_desc=[0.93 0.88 0.95] ──
+  ── hilberg (β≈0.5 = self-similar): L0_asc:β=1.96 ──
+  ── stratum loss: prose=6.541(r=0.531) compositional=7.199(r=0.603) technical=6.446(r=0.521) math=5.818(r=0.452)  spread=1.381 ──
+  ── stratum weights: prose=1.01 compositional=1.15 technical=1.01 math=0.83 ──
+  ── checkpoint 6000 (197M tokens) ──
+     compile gate: 0/4
+     total flips: 69,410 (0.2% cumulative)  consensus=50
+     relational: r_ema=0.410  phase=balance  r_scale=1.46
+     prep           : sparsity=0.310  gamma=0.0349  (2 modules)
+     stride_stack   : sparsity=0.310  gamma=0.0302  (36 modules)
+     consolidate    : sparsity=0.310  gamma=0.0348  (2 modules)
+     s4             : sparsity=0.310  gamma=0.0248  (4 modules)
+     s3             : sparsity=0.310  gamma=0.0373  (120 modules)
+     mod_projs      : sparsity=0.309  gamma=-0.0007  (3 modules)
+     meta           : sparsity=0.310  gamma=0.0466  (4 modules)
+     φ-compression: L0_asc=0.812 L1_asc=0.503 L2_apex=-0.519 L1_desc=3.213 L0_desc=1.659  mean=1.134  φ-dev=1.016
+     gates: L0_asc=[0.31 0.45 0.41] L1_asc=[0.26 0.54 0.43] L2_apex=[0.50 0.85 0.64] L1_desc=[0.89 0.77 0.80] L0_desc=[0.92 0.83 0.92]
+     hilberg: L0_asc:β=2.17
+     stratum loss: prose=6.534 compositional=7.186 technical=6.406 math=5.988
+     saved: checkpoints/vsm-lm-v6/step_006000
+  step  6025/30518  loss=5.5764  r=0.425  r̄=0.411  xppl=48.7  lr=5.51e-04  ‖g‖=0.30  flips=69,589  phase=b  tokens=197M (20%)  tok/s=5156  elapsed=38294s
+  step  6050/30518  loss=5.4188  r=0.408  r̄=0.410  xppl=41.6  lr=5.51e-04  ‖g‖=0.37  flips=69,766  phase=b  tokens=198M (20%)  tok/s=5156  elapsed=38453s
+  step  6075/30518  loss=5.6392  r=0.432  r̄=0.411  xppl=51.9  lr=5.50e-04  ‖g‖=0.35  flips=69,969  phase=b  tokens=199M (20%)  tok/s=5156  elapsed=38607s
+  ── flip probe @ step 6100: 758 flips (0.002%) since last probe  total=70,168  φ-dev=0.9331  r_ema=0.411  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=1.19 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.29 ──
+  ── group flips: consolidate=1 meta=3 mod_projs=2 prep=1 s3=5 stride_stack=187 ──
+  step  6100/30518  loss=5.4390  r=0.410  r̄=0.411  xppl=42.5  lr=5.50e-04  ‖g‖=0.55  flips=70,168  phase=b  tokens=200M (20%)  tok/s=5156  elapsed=38770s
+  step  6125/30518  loss=5.5684  r=0.425  r̄=0.409  xppl=48.3  lr=5.49e-04  ‖g‖=0.27  flips=70,361  phase=b  tokens=201M (20%)  tok/s=5156  elapsed=38927s
+  step  6150/30518  loss=5.5400  r=0.421  r̄=0.409  xppl=47.0  lr=5.49e-04  ‖g‖=0.34  flips=70,558  phase=b  tokens=202M (20%)  tok/s=5155  elapsed=39092s
+  step  6175/30518  loss=5.5871  r=0.427  r̄=0.410  xppl=49.3  lr=5.49e-04  ‖g‖=0.42  flips=70,762  phase=b  tokens=202M (20%)  tok/s=5156  elapsed=39245s
+  ── flip probe @ step 6200: 771 flips (0.002%) since last probe  total=70,939  φ-dev=0.9701  r_ema=0.410  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=1.24 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.37 ──
+  ── group flips: consolidate=4 prep=1 s3=8 stride_stack=164 ──
+  step  6200/30518  loss=5.3068  r=0.396  r̄=0.410  xppl=37.2  lr=5.48e-04  ‖g‖=0.47  flips=70,939  phase=b  tokens=203M (20%)  tok/s=5155  elapsed=39411s
+  step  6225/30518  loss=5.5524  r=0.423  r̄=0.411  xppl=47.6  lr=5.48e-04  ‖g‖=0.57  flips=71,107  phase=b  tokens=204M (20%)  tok/s=5155  elapsed=39566s
+  step  6250/30518  loss=5.7973  r=0.450  r̄=0.412  xppl=60.8  lr=5.47e-04  ‖g‖=0.43  flips=71,285  phase=b  tokens=205M (20%)  tok/s=5155  elapsed=39729s
+  step  6275/30518  loss=5.7646  r=0.446  r̄=0.412  xppl=58.8  lr=5.47e-04  ‖g‖=0.31  flips=71,460  phase=b  tokens=206M (21%)  tok/s=5155  elapsed=39884s
+  ── flip probe @ step 6300: 708 flips (0.002%) since last probe  total=71,647  φ-dev=0.9140  r_ema=0.413  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=1.26 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.39 ──
+  ── group flips: consolidate=3 mod_projs=1 prep=2 s3=1 s4=1 stride_stack=179 ──
+  step  6300/30518  loss=5.5983  r=0.428  r̄=0.413  xppl=49.8  lr=5.46e-04  ‖g‖=0.43  flips=71,647  phase=b  tokens=206M (21%)  tok/s=5155  elapsed=40046s
+  step  6325/30518  loss=5.4282  r=0.409  r̄=0.413  xppl=42.0  lr=5.46e-04  ‖g‖=0.33  flips=71,830  phase=b  tokens=207M (21%)  tok/s=5156  elapsed=40201s
+  step  6350/30518  loss=5.5122  r=0.418  r̄=0.414  xppl=45.7  lr=5.46e-04  ‖g‖=0.40  flips=72,055  phase=b  tokens=208M (21%)  tok/s=5155  elapsed=40362s
+  step  6375/30518  loss=5.6446  r=0.433  r̄=0.413  xppl=52.2  lr=5.45e-04  ‖g‖=0.38  flips=72,260  phase=b  tokens=209M (21%)  tok/s=5155  elapsed=40520s
+  ── flip probe @ step 6400: 840 flips (0.002%) since last probe  total=72,487  φ-dev=0.8980  r_ema=0.413  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=1.22 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.32 ──
+  ── group flips: consolidate=11 mod_projs=1 prep=1 s3=4 s4=1 stride_stack=209 ──
+  step  6400/30518  loss=5.5022  r=0.417  r̄=0.413  xppl=45.2  lr=5.45e-04  ‖g‖=0.33  flips=72,487  phase=b  tokens=210M (21%)  tok/s=5155  elapsed=40685s
+  step  6425/30518  loss=5.2117  r=0.386  r̄=0.413  xppl=33.8  lr=5.44e-04  ‖g‖=0.56  flips=72,784  phase=b  tokens=211M (21%)  tok/s=5155  elapsed=40844s
+  step  6450/30518  loss=5.4064  r=0.407  r̄=0.411  xppl=41.1  lr=5.44e-04  ‖g‖=0.34  flips=73,021  phase=b  tokens=211M (21%)  tok/s=5154  elapsed=41005s
+  step  6475/30518  loss=5.7330  r=0.443  r̄=0.412  xppl=57.0  lr=5.43e-04  ‖g‖=0.38  flips=73,188  phase=b  tokens=212M (21%)  tok/s=5154  elapsed=41167s
+  ── flip probe @ step 6500: 926 flips (0.003%) since last probe  total=73,413  φ-dev=0.9223  r_ema=0.411  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=0.70 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=0.70 ──
+  ── group flips: consolidate=8 meta=13 mod_projs=2 prep=5 s3=16 s4=3 stride_stack=178 ──
+  step  6500/30518  loss=5.5071  r=0.418  r̄=0.411  xppl=45.5  lr=5.43e-04  ‖g‖=0.34  flips=73,413  phase=b  tokens=213M (21%)  tok/s=5154  elapsed=41326s
+  ── eval @ step 6500: loss=5.6475  r=0.433  xppl=52.3  ppl=283.6 ──
+  ── φ-compression: L0_asc=0.822 L1_asc=0.539 L2_apex=-0.384 L1_desc=3.840 L0_desc=1.758  mean=1.315  φ-dev=1.129  (1/φ=0.618) ──
+  ── gates (prep/conv/cons): L0_asc=[0.30 0.46 0.42] L1_asc=[0.28 0.53 0.43] L2_apex=[0.52 0.87 0.64] L1_desc=[0.87 0.71 0.74] L0_desc=[0.93 0.85 0.93] ──
+  ── hilberg (β≈0.5 = self-similar): L0_asc:β=1.67 L1_asc:β=1.68 ──
+  ── stratum loss: prose=6.624(r=0.540) compositional=7.131(r=0.596) technical=6.532(r=0.530) math=5.669(r=0.436)  spread=1.462 ──
+  ── stratum weights: prose=1.00 compositional=1.14 technical=0.97 math=0.89 ──
+  ── checkpoint 6500 (213M tokens) ──
+     compile gate: 0/4
+     total flips: 73,413 (0.2% cumulative)  consensus=50
+     relational: r_ema=0.411  phase=balance  r_scale=1.46
+     prep           : sparsity=0.310  gamma=0.0344  (2 modules)
+     stride_stack   : sparsity=0.310  gamma=0.0299  (36 modules)
+     consolidate    : sparsity=0.310  gamma=0.0345  (2 modules)
+     s4             : sparsity=0.310  gamma=0.0242  (4 modules)
+     s3             : sparsity=0.310  gamma=0.0365  (120 modules)
+     mod_projs      : sparsity=0.309  gamma=-0.0008  (3 modules)
+     meta           : sparsity=0.310  gamma=0.0465  (4 modules)
+     φ-compression: L0_asc=0.826 L1_asc=0.525 L2_apex=-0.397 L1_desc=3.532 L0_desc=1.753  mean=1.248  φ-dev=1.073
+     gates: L0_asc=[0.29 0.45 0.41] L1_asc=[0.29 0.54 0.44] L2_apex=[0.51 0.88 0.63] L1_desc=[0.87 0.71 0.74] L0_desc=[0.93 0.87 0.92]
+     hilberg: L0_asc:β=1.81 L1_asc:β=1.78
+     stratum loss: prose=6.644 compositional=7.044 technical=6.516 math=5.643
+     saved: checkpoints/vsm-lm-v6/step_006500
+  step  6525/30518  loss=5.1725  r=0.381  r̄=0.411  xppl=32.5  lr=5.42e-04  ‖g‖=0.43  flips=73,517  phase=b  tokens=214M (21%)  tok/s=5152  elapsed=41499s
+  step  6550/30518  loss=5.3614  r=0.402  r̄=0.410  xppl=39.3  lr=5.42e-04  ‖g‖=0.29  flips=73,615  phase=b  tokens=215M (21%)  tok/s=5153  elapsed=41654s
+  step  6575/30518  loss=5.4908  r=0.416  r̄=0.411  xppl=44.7  lr=5.41e-04  ‖g‖=0.29  flips=73,827  phase=b  tokens=215M (22%)  tok/s=5152  elapsed=41815s
+  ── flip probe @ step 6600: 509 flips (0.001%) since last probe  total=73,922  φ-dev=0.9415  r_ema=0.410  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=0.70 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=0.70 ──
+  ── group flips: meta=1 prep=1 s3=3 stride_stack=90 ──
+  step  6600/30518  loss=5.2733  r=0.392  r̄=0.410  xppl=36.0  lr=5.41e-04  ‖g‖=0.53  flips=73,922  phase=b  tokens=216M (22%)  tok/s=5153  elapsed=41970s
+  step  6625/30518  loss=5.6996  r=0.439  r̄=0.410  xppl=55.1  lr=5.40e-04  ‖g‖=0.36  flips=74,045  phase=b  tokens=217M (22%)  tok/s=5153  elapsed=42131s
+  step  6650/30518  loss=5.2808  r=0.393  r̄=0.410  xppl=36.3  lr=5.40e-04  ‖g‖=0.37  flips=74,172  phase=b  tokens=218M (22%)  tok/s=5153  elapsed=42286s
+  step  6675/30518  loss=5.1914  r=0.383  r̄=0.409  xppl=33.2  lr=5.40e-04  ‖g‖=0.58  flips=74,273  phase=b  tokens=219M (22%)  tok/s=5152  elapsed=42451s
+  ── flip probe @ step 6700: 452 flips (0.001%) since last probe  total=74,374  φ-dev=0.9067  r_ema=0.411  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=1.19 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.29 ──
+  ── group flips: consolidate=3 prep=1 s3=1 s4=1 stride_stack=95 ──
+  step  6700/30518  loss=5.5417  r=0.422  r̄=0.411  xppl=47.1  lr=5.39e-04  ‖g‖=0.33  flips=74,374  phase=b  tokens=220M (22%)  tok/s=5153  elapsed=42607s
+  step  6725/30518  loss=5.5905  r=0.427  r̄=0.410  xppl=49.4  lr=5.39e-04  ‖g‖=0.43  flips=74,552  phase=b  tokens=220M (22%)  tok/s=5153  elapsed=42767s
+  step  6750/30518  loss=5.8853  r=0.459  r̄=0.410  xppl=66.4  lr=5.38e-04  ‖g‖=0.44  flips=74,741  phase=b  tokens=221M (22%)  tok/s=5153  elapsed=42923s
+  step  6775/30518  loss=5.2053  r=0.385  r̄=0.408  xppl=33.6  lr=5.38e-04  ‖g‖=0.40  flips=74,918  phase=b  tokens=222M (22%)  tok/s=5153  elapsed=43085s
+  ── flip probe @ step 6800: 727 flips (0.002%) since last probe  total=75,101  φ-dev=0.8691  r_ema=0.407  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=1.31 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.47 ──
+  ── group flips: consolidate=3 mod_projs=1 prep=2 stride_stack=177 ──
+  step  6800/30518  loss=5.5175  r=0.419  r̄=0.407  xppl=45.9  lr=5.37e-04  ‖g‖=0.36  flips=75,101  phase=b  tokens=223M (22%)  tok/s=5153  elapsed=43242s
+  step  6825/30518  loss=5.3625  r=0.402  r̄=0.407  xppl=39.4  lr=5.37e-04  ‖g‖=0.41  flips=75,324  phase=b  tokens=224M (22%)  tok/s=5154  elapsed=43396s
+  step  6850/30518  loss=5.4052  r=0.407  r̄=0.408  xppl=41.1  lr=5.36e-04  ‖g‖=0.72  flips=75,566  phase=b  tokens=224M (22%)  tok/s=5153  elapsed=43556s
+  step  6875/30518  loss=5.3297  r=0.398  r̄=0.409  xppl=38.1  lr=5.36e-04  ‖g‖=0.34  flips=75,782  phase=b  tokens=225M (23%)  tok/s=5153  elapsed=43716s
+  ── flip probe @ step 6900: 875 flips (0.002%) since last probe  total=75,976  φ-dev=0.8914  r_ema=0.408  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=1.31 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.46 ──
+  ── group flips: consolidate=3 mod_projs=1 prep=1 stride_stack=189 ──
+  step  6900/30518  loss=5.1971  r=0.384  r̄=0.408  xppl=33.4  lr=5.35e-04  ‖g‖=0.30  flips=75,976  phase=b  tokens=226M (23%)  tok/s=5153  elapsed=43878s
+  step  6925/30518  loss=5.2955  r=0.395  r̄=0.408  xppl=36.8  lr=5.35e-04  ‖g‖=0.41  flips=76,312  phase=b  tokens=227M (23%)  tok/s=5153  elapsed=44034s
+  step  6950/30518  loss=5.3790  r=0.404  r̄=0.407  xppl=40.0  lr=5.34e-04  ‖g‖=0.37  flips=76,492  phase=b  tokens=228M (23%)  tok/s=5153  elapsed=44198s
+  step  6975/30518  loss=5.4709  r=0.414  r̄=0.408  xppl=43.9  lr=5.34e-04  ‖g‖=0.44  flips=76,703  phase=b  tokens=229M (23%)  tok/s=5153  elapsed=44353s
+  ── flip probe @ step 7000: 912 flips (0.003%) since last probe  total=76,888  φ-dev=0.8882  r_ema=0.408  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=1.19 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.29 ──
+  ── group flips: consolidate=2 mod_projs=3 s3=3 stride_stack=177 ──
+  step  7000/30518  loss=5.2607  r=0.391  r̄=0.408  xppl=35.5  lr=5.33e-04  ‖g‖=0.58  flips=76,888  phase=b  tokens=229M (23%)  tok/s=5152  elapsed=44523s
+  ── eval @ step 7000: loss=5.6423  r=0.433  xppl=52.1  ppl=282.1 ──
+  ── φ-compression: L0_asc=0.821 L1_asc=0.537 L2_apex=-0.194 L1_desc=148.136 L0_desc=1.853  mean=30.230  φ-dev=29.970  (1/φ=0.618) ──
+  ── gates (prep/conv/cons): L0_asc=[0.29 0.47 0.41] L1_asc=[0.30 0.55 0.45] L2_apex=[0.52 0.79 0.69] L1_desc=[0.83 0.75 0.72] L0_desc=[0.93 0.86 0.91] ──
+  ── hilberg (β≈0.5 = self-similar): L0_asc:β=1.32 L1_asc:β=1.40 ──
+  ── stratum loss: prose=6.592(r=0.537) compositional=7.153(r=0.598) technical=6.676(r=0.546) math=5.587(r=0.427)  spread=1.567 ──
+  ── stratum weights: prose=1.04 compositional=1.12 technical=1.01 math=0.83 ──
+  ── checkpoint 7000 (229M tokens) ──
+     compile gate: 0/4
+     total flips: 76,888 (0.2% cumulative)  consensus=50
+     relational: r_ema=0.408  phase=balance  r_scale=1.46
+     prep           : sparsity=0.310  gamma=0.0341  (2 modules)
+     stride_stack   : sparsity=0.310  gamma=0.0298  (36 modules)
+     consolidate    : sparsity=0.310  gamma=0.0343  (2 modules)
+     s4             : sparsity=0.310  gamma=0.0238  (4 modules)
+     s3             : sparsity=0.310  gamma=0.0356  (120 modules)
+     mod_projs      : sparsity=0.309  gamma=-0.0007  (3 modules)
+     meta           : sparsity=0.310  gamma=0.0464  (4 modules)
+     φ-compression: L0_asc=0.822 L1_asc=0.530 L2_apex=-0.219 L1_desc=6.277 L0_desc=1.886  mean=1.859  φ-dev=1.611
+     gates: L0_asc=[0.30 0.47 0.41] L1_asc=[0.30 0.57 0.45] L2_apex=[0.52 0.81 0.66] L1_desc=[0.82 0.72 0.71] L0_desc=[0.92 0.88 0.93]
+     hilberg: L0_asc:β=1.33 L1_asc:β=1.57
+     stratum loss: prose=6.568 compositional=7.171 technical=6.668 math=5.614
+     saved: checkpoints/vsm-lm-v6/step_007000
+  step  7025/30518  loss=5.4355  r=0.410  r̄=0.408  xppl=42.3  lr=5.33e-04  ‖g‖=0.31  flips=77,081  phase=b  tokens=230M (23%)  tok/s=5150  elapsed=44694s
+  step  7050/30518  loss=5.5961  r=0.428  r̄=0.407  xppl=49.7  lr=5.32e-04  ‖g‖=0.32  flips=77,280  phase=b  tokens=231M (23%)  tok/s=5148  elapsed=44872s
+  step  7075/30518  loss=5.4526  r=0.412  r̄=0.407  xppl=43.1  lr=5.32e-04  ‖g‖=0.36  flips=77,453  phase=b  tokens=232M (23%)  tok/s=5147  elapsed=45041s
+  ── flip probe @ step 7100: 762 flips (0.002%) since last probe  total=77,650  φ-dev=0.8835  r_ema=0.406  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=1.20 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.30 ──
+  ── group flips: consolidate=4 s3=4 s4=1 stride_stack=188 ──
+  step  7100/30518  loss=5.2116  r=0.385  r̄=0.406  xppl=33.8  lr=5.31e-04  ‖g‖=0.38  flips=77,650  phase=b  tokens=233M (23%)  tok/s=5146  elapsed=45209s
+  step  7125/30518  loss=5.3878  r=0.405  r̄=0.406  xppl=40.4  lr=5.31e-04  ‖g‖=0.28  flips=77,831  phase=b  tokens=233M (23%)  tok/s=5145  elapsed=45380s
+  step  7150/30518  loss=5.2368  r=0.388  r̄=0.406  xppl=34.7  lr=5.30e-04  ‖g‖=0.41  flips=78,040  phase=b  tokens=234M (23%)  tok/s=5145  elapsed=45540s
+  step  7175/30518  loss=5.0861  r=0.372  r̄=0.405  xppl=29.8  lr=5.30e-04  ‖g‖=0.80  flips=78,214  phase=b  tokens=235M (24%)  tok/s=5143  elapsed=45712s
+  ── flip probe @ step 7200: 745 flips (0.002%) since last probe  total=78,395  φ-dev=0.9140  r_ema=0.405  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.27 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.40 ──
+  ── group flips: consolidate=1 prep=1 s3=5 stride_stack=174 ──
+  step  7200/30518  loss=5.6834  r=0.437  r̄=0.405  xppl=54.2  lr=5.29e-04  ‖g‖=0.41  flips=78,395  phase=b  tokens=236M (24%)  tok/s=5143  elapsed=45876s
+  step  7225/30518  loss=5.5889  r=0.427  r̄=0.408  xppl=49.4  lr=5.29e-04  ‖g‖=0.39  flips=78,592  phase=b  tokens=237M (24%)  tok/s=5141  elapsed=46048s
+  step  7250/30518  loss=5.3328  r=0.399  r̄=0.407  xppl=38.2  lr=5.28e-04  ‖g‖=0.36  flips=78,874  phase=b  tokens=238M (24%)  tok/s=5141  elapsed=46207s
+  step  7275/30518  loss=5.6317  r=0.431  r̄=0.406  xppl=51.5  lr=5.28e-04  ‖g‖=0.33  flips=79,069  phase=b  tokens=238M (24%)  tok/s=5140  elapsed=46377s
+  ── flip probe @ step 7300: 923 flips (0.003%) since last probe  total=79,318  φ-dev=0.8879  r_ema=0.408  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=1.27 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.40 ──
+  ── group flips: consolidate=4 mod_projs=4 prep=7 s3=10 s4=24 stride_stack=200 ──
+  step  7300/30518  loss=5.4421  r=0.411  r̄=0.408  xppl=42.6  lr=5.27e-04  ‖g‖=0.38  flips=79,318  phase=b  tokens=239M (24%)  tok/s=5140  elapsed=46540s
+  step  7325/30518  loss=5.4569  r=0.412  r̄=0.409  xppl=43.2  lr=5.27e-04  ‖g‖=0.42  flips=79,503  phase=b  tokens=240M (24%)  tok/s=5140  elapsed=46699s
+  step  7350/30518  loss=5.1509  r=0.379  r̄=0.408  xppl=31.8  lr=5.26e-04  ‖g‖=0.41  flips=79,731  phase=b  tokens=241M (24%)  tok/s=5139  elapsed=46864s
+  step  7375/30518  loss=5.1436  r=0.378  r̄=0.408  xppl=31.6  lr=5.26e-04  ‖g‖=0.65  flips=79,947  phase=b  tokens=242M (24%)  tok/s=5139  elapsed=47027s
+  ── flip probe @ step 7400: 847 flips (0.002%) since last probe  total=80,165  φ-dev=0.8635  r_ema=0.407  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=1.19 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.28 ──
+  ── group flips: consolidate=3 meta=1 mod_projs=3 s3=1 s4=1 stride_stack=209 ──
+  step  7400/30518  loss=5.4173  r=0.408  r̄=0.407  xppl=41.6  lr=5.25e-04  ‖g‖=0.35  flips=80,165  phase=b  tokens=242M (24%)  tok/s=5138  elapsed=47190s
+  step  7425/30518  loss=5.5096  r=0.418  r̄=0.407  xppl=45.6  lr=5.25e-04  ‖g‖=0.32  flips=80,368  phase=b  tokens=243M (24%)  tok/s=5139  elapsed=47347s
+  step  7450/30518  loss=5.3785  r=0.404  r̄=0.407  xppl=40.0  lr=5.24e-04  ‖g‖=0.94  flips=80,568  phase=b  tokens=244M (24%)  tok/s=5138  elapsed=47509s
+  step  7475/30518  loss=5.2083  r=0.385  r̄=0.406  xppl=33.7  lr=5.24e-04  ‖g‖=0.33  flips=80,774  phase=b  tokens=245M (24%)  tok/s=5139  elapsed=47665s
+  ── flip probe @ step 7500: 822 flips (0.002%) since last probe  total=80,987  φ-dev=0.8627  r_ema=0.405  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.20 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.30 ──
+  ── group flips: consolidate=3 meta=2 mod_projs=1 s3=9 s4=15 stride_stack=183 ──
+  step  7500/30518  loss=5.1758  r=0.382  r̄=0.405  xppl=32.6  lr=5.23e-04  ‖g‖=0.39  flips=80,987  phase=b  tokens=246M (25%)  tok/s=5138  elapsed=47834s
+  ── eval @ step 7500: loss=5.6236  r=0.431  xppl=51.1  ppl=276.9 ──
+  ── φ-compression: L0_asc=0.828 L1_asc=0.534 L2_apex=-0.153 L1_desc=12.025 L0_desc=1.946  mean=3.036  φ-dev=2.760  (1/φ=0.618) ──
+  ── gates (prep/conv/cons): L0_asc=[0.29 0.47 0.40] L1_asc=[0.30 0.58 0.46] L2_apex=[0.52 0.81 0.67] L1_desc=[0.77 0.69 0.66] L0_desc=[0.91 0.84 0.92] ──
+  ── hilberg (β≈0.5 = self-similar): L0_asc:β=1.30 L1_asc:β=1.33 ──
+  ── stratum loss: prose=6.471(r=0.523) compositional=7.053(r=0.587) technical=6.636(r=0.541) math=5.964(r=0.468)  spread=1.090 ──
+  ── stratum weights: prose=1.01 compositional=1.14 technical=1.03 math=0.81 ──
+  ── checkpoint 7500 (246M tokens) ──
+     compile gate: 0/4
+     total flips: 80,987 (0.2% cumulative)  consensus=50
+     relational: r_ema=0.405  phase=balance  r_scale=1.45
+     prep           : sparsity=0.310  gamma=0.0338  (2 modules)
+     stride_stack   : sparsity=0.310  gamma=0.0296  (36 modules)
+     consolidate    : sparsity=0.310  gamma=0.0340  (2 modules)
+     s4             : sparsity=0.310  gamma=0.0234  (4 modules)
+     s3             : sparsity=0.310  gamma=0.0347  (120 modules)
+     mod_projs      : sparsity=0.309  gamma=-0.0008  (3 modules)
+     meta           : sparsity=0.310  gamma=0.0460  (4 modules)
+     φ-compression: L0_asc=0.826 L1_asc=0.536 L2_apex=-0.137 L1_desc=7.375 L0_desc=1.969  mean=2.114  φ-dev=1.830
+     gates: L0_asc=[0.30 0.48 0.39] L1_asc=[0.30 0.58 0.46] L2_apex=[0.52 0.80 0.66] L1_desc=[0.76 0.69 0.64] L0_desc=[0.91 0.87 0.92]
+     hilberg: L0_asc:β=1.34 L1_asc:β=1.27
+     stratum loss: prose=6.573 compositional=7.087 technical=6.587 math=5.614
+     saved: checkpoints/vsm-lm-v6/step_007500
+  step  7525/30518  loss=5.3258  r=0.398  r̄=0.404  xppl=37.9  lr=5.23e-04  ‖g‖=0.43  flips=81,175  phase=b  tokens=247M (25%)  tok/s=5137  elapsed=48000s
+  step  7550/30518  loss=5.0597  r=0.369  r̄=0.406  xppl=29.1  lr=5.22e-04  ‖g‖=0.55  flips=81,352  phase=b  tokens=247M (25%)  tok/s=5137  elapsed=48164s
+  step  7575/30518  loss=5.3230  r=0.398  r̄=0.406  xppl=37.8  lr=5.21e-04  ‖g‖=0.32  flips=81,537  phase=b  tokens=248M (25%)  tok/s=5137  elapsed=48321s
+  ── flip probe @ step 7600: 732 flips (0.002%) since last probe  total=81,719  φ-dev=0.8630  r_ema=0.406  phase=balance  consensus=50  eff_pct=0.000015 ──
+  ── group factors: consolidate=1.18 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.28 ──
+  ── group flips: consolidate=1 mod_projs=1 s3=2 stride_stack=178 ──
+  step  7600/30518  loss=5.3193  r=0.397  r̄=0.406  xppl=37.7  lr=5.21e-04  ‖g‖=0.39  flips=81,719  phase=b  tokens=249M (25%)  tok/s=5136  elapsed=48486s
+  step  7625/30518  loss=5.5458  r=0.422  r̄=0.405  xppl=47.3  lr=5.20e-04  ‖g‖=0.28  flips=81,891  phase=b  tokens=250M (25%)  tok/s=5136  elapsed=48647s
+  step  7650/30518  loss=5.5033  r=0.417  r̄=0.404  xppl=45.3  lr=5.20e-04  ‖g‖=0.38  flips=82,081  phase=b  tokens=251M (25%)  tok/s=5136  elapsed=48811s
+  step  7675/30518  loss=5.6106  r=0.429  r̄=0.404  xppl=50.4  lr=5.19e-04  ‖g‖=0.45  flips=82,255  phase=b  tokens=251M (25%)  tok/s=5135  elapsed=48974s
+  ── flip probe @ step 7700: 750 flips (0.002%) since last probe  total=82,469  φ-dev=0.8584  r_ema=0.404  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.24 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.35 ──
+  ── group flips: meta=5 mod_projs=4 prep=1 s3=25 s4=2 stride_stack=177 ──
+  step  7700/30518  loss=5.4574  r=0.412  r̄=0.404  xppl=43.3  lr=5.19e-04  ‖g‖=0.42  flips=82,469  phase=b  tokens=252M (25%)  tok/s=5135  elapsed=49132s
+  step  7725/30518  loss=5.4491  r=0.411  r̄=0.403  xppl=42.9  lr=5.18e-04  ‖g‖=0.38  flips=82,671  phase=b  tokens=253M (25%)  tok/s=5135  elapsed=49300s
+  step  7750/30518  loss=5.1235  r=0.376  r̄=0.402  xppl=31.0  lr=5.18e-04  ‖g‖=0.33  flips=82,860  phase=b  tokens=254M (25%)  tok/s=5135  elapsed=49458s
+  step  7775/30518  loss=5.1157  r=0.375  r̄=0.402  xppl=30.7  lr=5.17e-04  ‖g‖=0.42  flips=83,047  phase=b  tokens=255M (25%)  tok/s=5134  elapsed=49626s
+  ── flip probe @ step 7800: 793 flips (0.002%) since last probe  total=83,262  φ-dev=0.8510  r_ema=0.402  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.22 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.33 ──
+  ── group flips: consolidate=3 meta=1 mod_projs=2 prep=1 s3=1 stride_stack=207 ──
+  step  7800/30518  loss=5.5176  r=0.419  r̄=0.402  xppl=46.0  lr=5.17e-04  ‖g‖=0.39  flips=83,262  phase=b  tokens=256M (26%)  tok/s=5134  elapsed=49783s
+  step  7825/30518  loss=5.1098  r=0.374  r̄=0.404  xppl=30.6  lr=5.16e-04  ‖g‖=0.52  flips=83,499  phase=b  tokens=256M (26%)  tok/s=5133  elapsed=49954s
+  step  7850/30518  loss=5.3929  r=0.405  r̄=0.404  xppl=40.6  lr=5.16e-04  ‖g‖=0.96  flips=83,714  phase=b  tokens=257M (26%)  tok/s=5133  elapsed=50111s
+  step  7875/30518  loss=5.1870  r=0.383  r̄=0.404  xppl=33.0  lr=5.15e-04  ‖g‖=0.38  flips=83,909  phase=b  tokens=258M (26%)  tok/s=5133  elapsed=50273s
+  ── flip probe @ step 7900: 819 flips (0.002%) since last probe  total=84,081  φ-dev=0.8615  r_ema=0.404  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.22 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.34 ──
+  ── group flips: consolidate=1 meta=1 prep=2 stride_stack=168 ──
+  step  7900/30518  loss=5.3579  r=0.402  r̄=0.404  xppl=39.2  lr=5.14e-04  ‖g‖=0.30  flips=84,081  phase=b  tokens=259M (26%)  tok/s=5133  elapsed=50433s
+  step  7925/30518  loss=5.1907  r=0.383  r̄=0.403  xppl=33.1  lr=5.14e-04  ‖g‖=0.34  flips=84,291  phase=b  tokens=260M (26%)  tok/s=5133  elapsed=50596s
+  step  7950/30518  loss=5.1064  r=0.374  r̄=0.402  xppl=30.5  lr=5.13e-04  ‖g‖=0.47  flips=84,479  phase=b  tokens=261M (26%)  tok/s=5132  elapsed=50758s
+  step  7975/30518  loss=5.3880  r=0.405  r̄=0.404  xppl=40.4  lr=5.13e-04  ‖g‖=0.44  flips=84,634  phase=b  tokens=261M (26%)  tok/s=5132  elapsed=50919s
+  ── flip probe @ step 8000: 724 flips (0.002%) since last probe  total=84,805  φ-dev=0.8557  r_ema=0.404  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.24 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.36 ──
+  ── group flips: consolidate=1 mod_projs=1 prep=2 s3=4 stride_stack=163 ──
+  step  8000/30518  loss=5.6245  r=0.431  r̄=0.404  xppl=51.1  lr=5.12e-04  ‖g‖=0.36  flips=84,805  phase=b  tokens=262M (26%)  tok/s=5132  elapsed=51084s
+  ── eval @ step 8000: loss=5.6107  r=0.429  xppl=50.4  ppl=273.3 ──
+  ── φ-compression: L0_asc=0.829 L1_asc=0.551 L2_apex=-0.015 L1_desc=-54.765 L0_desc=2.165  mean=-10.247  φ-dev=11.568  (1/φ=0.618) ──
+  ── gates (prep/conv/cons): L0_asc=[0.30 0.49 0.39] L1_asc=[0.33 0.58 0.47] L2_apex=[0.54 0.75 0.69] L1_desc=[0.73 0.67 0.65] L0_desc=[0.90 0.83 0.92] ──
+  ── hilberg (β≈0.5 = self-similar): L0_asc:β=1.39 L1_asc:β=1.79 L2_apex:β=1.80 ──
+  ── stratum loss: prose=6.507(r=0.527) compositional=7.299(r=0.614) technical=6.695(r=0.548) math=5.489(r=0.416)  spread=1.810 ──
+  ── stratum weights: prose=1.02 compositional=1.13 technical=1.03 math=0.82 ──
+  ── checkpoint 8000 (262M tokens) ──
+     compile gate: 0/4
+     total flips: 84,805 (0.2% cumulative)  consensus=50
+     relational: r_ema=0.404  phase=balance  r_scale=1.44
+     prep           : sparsity=0.310  gamma=0.0335  (2 modules)
+     stride_stack   : sparsity=0.310  gamma=0.0296  (36 modules)
+     consolidate    : sparsity=0.310  gamma=0.0337  (2 modules)
+     s4             : sparsity=0.310  gamma=0.0230  (4 modules)
+     s3             : sparsity=0.310  gamma=0.0339  (120 modules)
+     mod_projs      : sparsity=0.309  gamma=-0.0008  (3 modules)
+     meta           : sparsity=0.310  gamma=0.0461  (4 modules)
+     φ-compression: L0_asc=0.834 L1_asc=0.549 L2_apex=-0.077 L1_desc=22.255 L0_desc=2.044  mean=5.121  φ-dev=4.809
+     gates: L0_asc=[0.29 0.47 0.40] L1_asc=[0.33 0.58 0.47] L2_apex=[0.54 0.80 0.69] L1_desc=[0.74 0.68 0.66] L0_desc=[0.89 0.86 0.91]
+     hilberg: L0_asc:β=1.62 L1_asc:β=1.52 L2_apex:β=1.73
+     stratum loss: prose=6.676 compositional=7.222 technical=6.628 math=5.621
+     saved: checkpoints/vsm-lm-v6/step_008000
+  step  8025/30518  loss=5.2917  r=0.394  r̄=0.404  xppl=36.7  lr=5.12e-04  ‖g‖=0.49  flips=85,003  phase=b  tokens=263M (26%)  tok/s=5131  elapsed=51250s
+  step  8050/30518  loss=5.5275  r=0.420  r̄=0.405  xppl=46.4  lr=5.11e-04  ‖g‖=0.37  flips=85,180  phase=b  tokens=264M (26%)  tok/s=5130  elapsed=51417s
+  step  8075/30518  loss=5.4928  r=0.416  r̄=0.405  xppl=44.8  lr=5.11e-04  ‖g‖=0.33  flips=85,374  phase=b  tokens=265M (26%)  tok/s=5131  elapsed=51572s
+  ── flip probe @ step 8100: 769 flips (0.002%) since last probe  total=85,574  φ-dev=0.8637  r_ema=0.403  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.24 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.37 ──
+  ── group flips: meta=1 prep=1 s3=3 stride_stack=195 ──
+  step  8100/30518  loss=5.3764  r=0.404  r̄=0.403  xppl=39.9  lr=5.10e-04  ‖g‖=0.33  flips=85,574  phase=b  tokens=265M (27%)  tok/s=5130  elapsed=51740s
+  step  8125/30518  loss=5.4623  r=0.413  r̄=0.404  xppl=43.5  lr=5.09e-04  ‖g‖=0.52  flips=85,782  phase=b  tokens=266M (27%)  tok/s=5130  elapsed=51896s
+  step  8150/30518  loss=5.5178  r=0.419  r̄=0.404  xppl=46.0  lr=5.09e-04  ‖g‖=0.36  flips=86,000  phase=b  tokens=267M (27%)  tok/s=5130  elapsed=52058s
+  step  8175/30518  loss=5.5034  r=0.417  r̄=0.404  xppl=45.3  lr=5.08e-04  ‖g‖=0.32  flips=86,186  phase=b  tokens=268M (27%)  tok/s=5130  elapsed=52215s
+  ── flip probe @ step 8200: 825 flips (0.002%) since last probe  total=86,399  φ-dev=0.8590  r_ema=0.404  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.28 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.42 ──
+  ── group flips: consolidate=4 prep=3 stride_stack=206 ──
+  step  8200/30518  loss=5.3015  r=0.395  r̄=0.404  xppl=37.0  lr=5.08e-04  ‖g‖=0.27  flips=86,399  phase=b  tokens=269M (27%)  tok/s=5130  elapsed=52375s
+  step  8225/30518  loss=5.3020  r=0.395  r̄=0.402  xppl=37.0  lr=5.07e-04  ‖g‖=0.30  flips=86,589  phase=b  tokens=270M (27%)  tok/s=5130  elapsed=52533s
+  step  8250/30518  loss=5.4436  r=0.411  r̄=0.403  xppl=42.7  lr=5.07e-04  ‖g‖=0.73  flips=86,768  phase=b  tokens=270M (27%)  tok/s=5130  elapsed=52698s
+  step  8275/30518  loss=5.7433  r=0.444  r̄=0.404  xppl=57.6  lr=5.06e-04  ‖g‖=0.37  flips=86,957  phase=b  tokens=271M (27%)  tok/s=5130  elapsed=52860s
+  ── flip probe @ step 8300: 766 flips (0.002%) since last probe  total=87,165  φ-dev=0.8456  r_ema=0.405  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.22 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.32 ──
+  ── group flips: consolidate=1 meta=1 prep=3 stride_stack=203 ──
+  step  8300/30518  loss=5.3452  r=0.400  r̄=0.405  xppl=38.7  lr=5.05e-04  ‖g‖=0.31  flips=87,165  phase=b  tokens=272M (27%)  tok/s=5130  elapsed=53017s
+  step  8325/30518  loss=5.4473  r=0.411  r̄=0.406  xppl=42.8  lr=5.05e-04  ‖g‖=0.29  flips=87,350  phase=b  tokens=273M (27%)  tok/s=5129  elapsed=53182s
+  step  8350/30518  loss=5.3370  r=0.399  r̄=0.405  xppl=38.4  lr=5.04e-04  ‖g‖=0.37  flips=87,554  phase=b  tokens=274M (27%)  tok/s=5129  elapsed=53342s
+  step  8375/30518  loss=5.4340  r=0.410  r̄=0.405  xppl=42.3  lr=5.04e-04  ‖g‖=0.32  flips=87,763  phase=b  tokens=274M (27%)  tok/s=5129  elapsed=53509s
+  ── flip probe @ step 8400: 779 flips (0.002%) since last probe  total=87,944  φ-dev=0.8495  r_ema=0.403  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.23 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.35 ──
+  ── group flips: consolidate=1 meta=3 s3=2 stride_stack=175 ──
+  step  8400/30518  loss=5.5313  r=0.420  r̄=0.403  xppl=46.6  lr=5.03e-04  ‖g‖=0.38  flips=87,944  phase=b  tokens=275M (28%)  tok/s=5129  elapsed=53666s
+  step  8425/30518  loss=5.3869  r=0.405  r̄=0.404  xppl=40.3  lr=5.03e-04  ‖g‖=0.48  flips=88,137  phase=b  tokens=276M (28%)  tok/s=5129  elapsed=53828s
+  step  8450/30518  loss=5.4712  r=0.414  r̄=0.404  xppl=43.9  lr=5.02e-04  ‖g‖=0.37  flips=88,331  phase=b  tokens=277M (28%)  tok/s=5129  elapsed=53983s
+  step  8475/30518  loss=5.2477  r=0.389  r̄=0.402  xppl=35.1  lr=5.01e-04  ‖g‖=0.28  flips=88,543  phase=b  tokens=278M (28%)  tok/s=5129  elapsed=54143s
+  ── flip probe @ step 8500: 791 flips (0.002%) since last probe  total=88,735  φ-dev=0.8520  r_ema=0.403  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.24 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.36 ──
+  ── group flips: s3=1 stride_stack=191 ──
+  step  8500/30518  loss=5.5190  r=0.419  r̄=0.403  xppl=46.0  lr=5.01e-04  ‖g‖=0.33  flips=88,735  phase=b  tokens=279M (28%)  tok/s=5130  elapsed=54299s
+  ── eval @ step 8500: loss=5.5806  r=0.426  xppl=48.9  ppl=265.2 ──
+  ── φ-compression: L0_asc=0.823 L1_asc=0.527 L2_apex=-0.108 L1_desc=-8.163 L0_desc=1.964  mean=-0.991  φ-dev=2.230  (1/φ=0.618) ──
+  ── gates (prep/conv/cons): L0_asc=[0.29 0.50 0.40] L1_asc=[0.34 0.60 0.47] L2_apex=[0.55 0.83 0.68] L1_desc=[0.73 0.70 0.63] L0_desc=[0.83 0.82 0.87] ──
+  ── hilberg (β≈0.5 = self-similar): L0_asc:β=1.30 L1_asc:β=1.51 L2_apex:β=1.81 ──
+  ── stratum loss: prose=6.520(r=0.529) compositional=7.155(r=0.598) technical=6.509(r=0.527) math=5.540(r=0.421)  spread=1.616 ──
+  ── stratum weights: prose=1.03 compositional=1.14 technical=1.02 math=0.81 ──
+  ── checkpoint 8500 (279M tokens) ──
+     compile gate: 1/4
+     total flips: 88,735 (0.3% cumulative)  consensus=50
+     relational: r_ema=0.403  phase=balance  r_scale=1.44
+     prep           : sparsity=0.310  gamma=0.0333  (2 modules)
+     stride_stack   : sparsity=0.310  gamma=0.0295  (36 modules)
+     consolidate    : sparsity=0.310  gamma=0.0336  (2 modules)
+     s4             : sparsity=0.310  gamma=0.0225  (4 modules)
+     s3             : sparsity=0.310  gamma=0.0331  (120 modules)
+     mod_projs      : sparsity=0.309  gamma=-0.0008  (3 modules)
+     meta           : sparsity=0.310  gamma=0.0461  (4 modules)
+     φ-compression: L0_asc=0.831 L1_asc=0.546 L2_apex=-0.035 L1_desc=4.368 L0_desc=2.084  mean=1.559  φ-dev=1.231
+     gates: L0_asc=[0.29 0.50 0.40] L1_asc=[0.33 0.59 0.47] L2_apex=[0.55 0.79 0.66] L1_desc=[0.76 0.70 0.64] L0_desc=[0.87 0.83 0.88]
+     hilberg: L0_asc:β=1.35 L1_asc:β=1.39 L2_apex:β=1.76
+     stratum loss: prose=6.572 compositional=7.179 technical=6.593 math=5.490
+     saved: checkpoints/vsm-lm-v6/step_008500
+  step  8525/30518  loss=5.1851  r=0.383  r̄=0.402  xppl=33.0  lr=5.00e-04  ‖g‖=0.33  flips=88,927  phase=b  tokens=279M (28%)  tok/s=5129  elapsed=54466s
+  step  8550/30518  loss=5.3084  r=0.396  r̄=0.401  xppl=37.3  lr=5.00e-04  ‖g‖=0.34  flips=89,108  phase=b  tokens=280M (28%)  tok/s=5129  elapsed=54622s
+  step  8575/30518  loss=5.3413  r=0.400  r̄=0.402  xppl=38.5  lr=4.99e-04  ‖g‖=0.36  flips=89,399  phase=b  tokens=281M (28%)  tok/s=5129  elapsed=54782s
+  ── flip probe @ step 8600: 870 flips (0.002%) since last probe  total=89,605  φ-dev=0.8541  r_ema=0.402  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.26 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.39 ──
+  ── group flips: consolidate=6 prep=2 s3=10 s4=7 stride_stack=181 ──
+  step  8600/30518  loss=5.3277  r=0.398  r̄=0.402  xppl=38.0  lr=4.99e-04  ‖g‖=0.35  flips=89,605  phase=b  tokens=282M (28%)  tok/s=5129  elapsed=54943s
+  step  8625/30518  loss=5.4219  r=0.409  r̄=0.402  xppl=41.8  lr=4.98e-04  ‖g‖=0.48  flips=89,800  phase=b  tokens=283M (28%)  tok/s=5129  elapsed=55101s
+  step  8650/30518  loss=5.4889  r=0.416  r̄=0.401  xppl=44.7  lr=4.97e-04  ‖g‖=0.36  flips=90,006  phase=b  tokens=283M (28%)  tok/s=5129  elapsed=55264s
+  step  8675/30518  loss=5.0912  r=0.372  r̄=0.401  xppl=30.0  lr=4.97e-04  ‖g‖=0.43  flips=90,204  phase=b  tokens=284M (28%)  tok/s=5129  elapsed=55423s
+  ── flip probe @ step 8700: 784 flips (0.002%) since last probe  total=90,389  φ-dev=0.8503  r_ema=0.402  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.31 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.46 ──
+  ── group flips: consolidate=1 mod_projs=1 prep=1 s3=3 stride_stack=179 ──
+  step  8700/30518  loss=5.4547  r=0.412  r̄=0.402  xppl=43.2  lr=4.96e-04  ‖g‖=0.42  flips=90,389  phase=b  tokens=285M (29%)  tok/s=5129  elapsed=55587s
+  step  8725/30518  loss=4.8309  r=0.344  r̄=0.401  xppl=23.1  lr=4.96e-04  ‖g‖=0.98  flips=90,652  phase=b  tokens=286M (29%)  tok/s=5129  elapsed=55743s
+  step  8750/30518  loss=5.0631  r=0.369  r̄=0.401  xppl=29.2  lr=4.95e-04  ‖g‖=0.45  flips=90,881  phase=b  tokens=287M (29%)  tok/s=5129  elapsed=55906s
+  step  8775/30518  loss=5.4681  r=0.414  r̄=0.401  xppl=43.7  lr=4.94e-04  ‖g‖=0.39  flips=91,088  phase=b  tokens=288M (29%)  tok/s=5129  elapsed=56062s
+  ── flip probe @ step 8800: 887 flips (0.003%) since last probe  total=91,276  φ-dev=0.8641  r_ema=0.400  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.28 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.42 ──
+  ── group flips: consolidate=1 meta=1 prep=3 s3=1 stride_stack=182 ──
+  step  8800/30518  loss=5.2112  r=0.385  r̄=0.400  xppl=33.8  lr=4.94e-04  ‖g‖=0.55  flips=91,276  phase=b  tokens=288M (29%)  tok/s=5128  elapsed=56230s
+  step  8825/30518  loss=5.3110  r=0.396  r̄=0.399  xppl=37.4  lr=4.93e-04  ‖g‖=0.33  flips=91,511  phase=b  tokens=289M (29%)  tok/s=5128  elapsed=56387s
+  step  8850/30518  loss=5.7007  r=0.439  r̄=0.402  xppl=55.2  lr=4.93e-04  ‖g‖=0.46  flips=91,728  phase=b  tokens=290M (29%)  tok/s=5128  elapsed=56553s
+  step  8875/30518  loss=5.5274  r=0.420  r̄=0.402  xppl=46.4  lr=4.92e-04  ‖g‖=0.39  flips=91,943  phase=b  tokens=291M (29%)  tok/s=5127  elapsed=56718s
+  ── flip probe @ step 8900: 875 flips (0.002%) since last probe  total=92,151  φ-dev=0.8461  r_ema=0.401  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.31 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.46 ──
+  ── group flips: consolidate=1 prep=1 s3=4 stride_stack=202 ──
+  step  8900/30518  loss=5.2943  r=0.395  r̄=0.401  xppl=36.8  lr=4.91e-04  ‖g‖=0.38  flips=92,151  phase=b  tokens=292M (29%)  tok/s=5126  elapsed=56889s
+  step  8925/30518  loss=5.8325  r=0.453  r̄=0.403  xppl=63.0  lr=4.91e-04  ‖g‖=0.37  flips=92,385  phase=b  tokens=292M (29%)  tok/s=5126  elapsed=57055s
+  step  8950/30518  loss=5.2832  r=0.393  r̄=0.403  xppl=36.4  lr=4.90e-04  ‖g‖=0.34  flips=92,589  phase=b  tokens=293M (29%)  tok/s=5126  elapsed=57218s
+  step  8975/30518  loss=5.3388  r=0.399  r̄=0.403  xppl=38.4  lr=4.90e-04  ‖g‖=0.45  flips=92,790  phase=b  tokens=294M (29%)  tok/s=5125  elapsed=57386s
+  ── flip probe @ step 9000: 857 flips (0.002%) since last probe  total=93,008  φ-dev=0.8451  r_ema=0.403  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.20 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.31 ──
+  ── group flips: consolidate=1 prep=1 stride_stack=216 ──
+  step  9000/30518  loss=5.1904  r=0.383  r̄=0.403  xppl=33.1  lr=4.89e-04  ‖g‖=0.78  flips=93,008  phase=b  tokens=295M (29%)  tok/s=5125  elapsed=57545s
+  ── eval @ step 9000: loss=5.5646  r=0.424  xppl=48.2  ppl=261.0 ──
+  ── φ-compression: L0_asc=0.835 L1_asc=0.550 L2_apex=-0.023 L1_desc=7.742 L0_desc=2.064  mean=2.233  φ-dev=1.899  (1/φ=0.618) ──
+  ── gates (prep/conv/cons): L0_asc=[0.29 0.49 0.40] L1_asc=[0.33 0.61 0.48] L2_apex=[0.55 0.83 0.70] L1_desc=[0.71 0.66 0.62] L0_desc=[0.84 0.75 0.85] ──
+  ── hilberg (β≈0.5 = self-similar): L0_asc:β=1.59 L1_asc:β=1.41 L2_apex:β=1.52 ──
+  ── stratum loss: prose=6.653(r=0.543) compositional=7.262(r=0.610) technical=6.525(r=0.529) math=5.954(r=0.467)  spread=1.308 ──
+  ── stratum weights: prose=1.02 compositional=1.15 technical=1.03 math=0.80 ──
+  ── checkpoint 9000 (295M tokens) ──
+     compile gate: 1/4
+     total flips: 93,008 (0.3% cumulative)  consensus=50
+     relational: r_ema=0.403  phase=balance  r_scale=1.44
+     prep           : sparsity=0.310  gamma=0.0332  (2 modules)
+     stride_stack   : sparsity=0.310  gamma=0.0296  (36 modules)
+     consolidate    : sparsity=0.310  gamma=0.0334  (2 modules)
+     s4             : sparsity=0.310  gamma=0.0222  (4 modules)
+     s3             : sparsity=0.310  gamma=0.0325  (120 modules)
+     mod_projs      : sparsity=0.309  gamma=-0.0008  (3 modules)
+     meta           : sparsity=0.310  gamma=0.0459  (4 modules)
+     φ-compression: L0_asc=0.834 L1_asc=0.551 L2_apex=-0.025 L1_desc=-13.396 L0_desc=2.023  mean=-2.003  φ-dev=3.269
+     gates: L0_asc=[0.30 0.49 0.39] L1_asc=[0.34 0.60 0.47] L2_apex=[0.55 0.84 0.69] L1_desc=[0.73 0.68 0.63] L0_desc=[0.84 0.75 0.86]
+     hilberg: L0_asc:β=1.30 L1_asc:β=1.41 L2_apex:β=1.92
+     stratum loss: prose=6.599 compositional=7.338 technical=6.459 math=5.908
+     saved: checkpoints/vsm-lm-v6/step_009000
+  step  9025/30518  loss=5.1217  r=0.376  r̄=0.403  xppl=30.9  lr=4.88e-04  ‖g‖=0.45  flips=93,195  phase=b  tokens=296M (30%)  tok/s=5123  elapsed=57724s
+  step  9050/30518  loss=5.3717  r=0.403  r̄=0.401  xppl=39.7  lr=4.88e-04  ‖g‖=0.30  flips=93,373  phase=b  tokens=297M (30%)  tok/s=5123  elapsed=57889s
+  step  9075/30518  loss=5.3882  r=0.405  r̄=0.401  xppl=40.4  lr=4.87e-04  ‖g‖=0.30  flips=93,538  phase=b  tokens=297M (30%)  tok/s=5122  elapsed=58063s
+  ── flip probe @ step 9100: 755 flips (0.002%) since last probe  total=93,763  φ-dev=0.8415  r_ema=0.401  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.27 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.41 ──
+  ── group flips: consolidate=3 meta=2 mod_projs=1 s3=42 stride_stack=177 ──
+  step  9100/30518  loss=4.9046  r=0.352  r̄=0.401  xppl=24.9  lr=4.86e-04  ‖g‖=0.35  flips=93,763  phase=b  tokens=298M (30%)  tok/s=5121  elapsed=58231s
+  step  9125/30518  loss=5.1273  r=0.376  r̄=0.400  xppl=31.1  lr=4.86e-04  ‖g‖=0.40  flips=93,955  phase=b  tokens=299M (30%)  tok/s=5120  elapsed=58395s
+  step  9150/30518  loss=5.3649  r=0.402  r̄=0.400  xppl=39.4  lr=4.85e-04  ‖g‖=0.32  flips=94,151  phase=b  tokens=300M (30%)  tok/s=5120  elapsed=58561s
+  step  9175/30518  loss=5.4035  r=0.407  r̄=0.400  xppl=41.0  lr=4.85e-04  ‖g‖=0.40  flips=94,353  phase=b  tokens=301M (30%)  tok/s=5118  elapsed=58738s
+  ── flip probe @ step 9200: 787 flips (0.002%) since last probe  total=94,550  φ-dev=0.8514  r_ema=0.399  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.29 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.43 ──
+  ── group flips: consolidate=2 mod_projs=1 prep=1 s3=4 s4=1 stride_stack=188 ──
+  step  9200/30518  loss=5.5160  r=0.419  r̄=0.399  xppl=45.9  lr=4.84e-04  ‖g‖=0.38  flips=94,550  phase=b  tokens=301M (30%)  tok/s=5118  elapsed=58906s
+  step  9225/30518  loss=5.3652  r=0.402  r̄=0.399  xppl=39.5  lr=4.83e-04  ‖g‖=0.34  flips=94,773  phase=b  tokens=302M (30%)  tok/s=5118  elapsed=59067s
+  step  9250/30518  loss=5.5215  r=0.419  r̄=0.400  xppl=46.1  lr=4.83e-04  ‖g‖=0.45  flips=94,977  phase=b  tokens=303M (30%)  tok/s=5117  elapsed=59239s
+  step  9275/30518  loss=5.4788  r=0.415  r̄=0.401  xppl=44.2  lr=4.82e-04  ‖g‖=0.41  flips=95,182  phase=b  tokens=304M (30%)  tok/s=5117  elapsed=59399s
+  ── flip probe @ step 9300: 818 flips (0.002%) since last probe  total=95,368  φ-dev=0.8381  r_ema=0.400  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.28 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.42 ──
+  ── group flips: consolidate=1 meta=1 prep=1 s3=3 stride_stack=180 ──
+  step  9300/30518  loss=5.3566  r=0.401  r̄=0.400  xppl=39.1  lr=4.82e-04  ‖g‖=0.36  flips=95,368  phase=b  tokens=305M (30%)  tok/s=5116  elapsed=59572s
+  step  9325/30518  loss=5.4249  r=0.409  r̄=0.401  xppl=41.9  lr=4.81e-04  ‖g‖=0.29  flips=95,597  phase=b  tokens=306M (31%)  tok/s=5115  elapsed=59738s
+  step  9350/30518  loss=5.2784  r=0.393  r̄=0.400  xppl=36.2  lr=4.80e-04  ‖g‖=0.33  flips=95,807  phase=b  tokens=306M (31%)  tok/s=5115  elapsed=59902s
+  step  9375/30518  loss=5.5653  r=0.424  r̄=0.400  xppl=48.2  lr=4.80e-04  ‖g‖=0.42  flips=96,016  phase=b  tokens=307M (31%)  tok/s=5114  elapsed=60070s
+  ── flip probe @ step 9400: 857 flips (0.002%) since last probe  total=96,225  φ-dev=0.8429  r_ema=0.401  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.27 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.41 ──
+  ── group flips: consolidate=4 meta=3 mod_projs=2 prep=3 s4=2 stride_stack=195 ──
+  step  9400/30518  loss=5.5002  r=0.417  r̄=0.401  xppl=45.2  lr=4.79e-04  ‖g‖=0.32  flips=96,225  phase=b  tokens=308M (31%)  tok/s=5113  elapsed=60241s
+  step  9425/30518  loss=5.4671  r=0.413  r̄=0.401  xppl=43.7  lr=4.78e-04  ‖g‖=0.34  flips=96,417  phase=b  tokens=309M (31%)  tok/s=5112  elapsed=60410s
+  step  9450/30518  loss=5.3650  r=0.402  r̄=0.400  xppl=39.4  lr=4.78e-04  ‖g‖=0.34  flips=96,603  phase=b  tokens=310M (31%)  tok/s=5111  elapsed=60584s
+  step  9475/30518  loss=5.4881  r=0.416  r̄=0.400  xppl=44.6  lr=4.77e-04  ‖g‖=0.36  flips=96,826  phase=b  tokens=310M (31%)  tok/s=5110  elapsed=60756s
+  ── flip probe @ step 9500: 795 flips (0.002%) since last probe  total=97,020  φ-dev=0.8398  r_ema=0.400  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.29 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.43 ──
+  ── group flips: consolidate=1 prep=2 s3=2 s4=1 stride_stack=188 ──
+  step  9500/30518  loss=5.7377  r=0.443  r̄=0.400  xppl=57.3  lr=4.76e-04  ‖g‖=0.33  flips=97,020  phase=b  tokens=311M (31%)  tok/s=5110  elapsed=60923s
+  ── eval @ step 9500: loss=5.5664  r=0.424  xppl=48.2  ppl=261.5 ──
+  ── φ-compression: L0_asc=0.840 L1_asc=0.551 L2_apex=-0.005 L1_desc=-6.836 L0_desc=2.091  mean=-0.672  φ-dev=1.968  (1/φ=0.618) ──
+  ── gates (prep/conv/cons): L0_asc=[0.27 0.50 0.40] L1_asc=[0.35 0.60 0.49] L2_apex=[0.56 0.84 0.70] L1_desc=[0.69 0.63 0.61] L0_desc=[0.80 0.71 0.80] ──
+  ── hilberg (β≈0.5 = self-similar): L0_asc:β=1.40 L1_asc:β=1.59 L2_apex:β=1.52 ──
+  ── stratum loss: prose=6.572(r=0.534) compositional=7.332(r=0.618) technical=6.347(r=0.510) math=6.045(r=0.477)  spread=1.287 ──
+  ── stratum weights: prose=1.00 compositional=1.16 technical=0.98 math=0.86 ──
+  ── checkpoint 9500 (311M tokens) ──
+     compile gate: 0/4
+     total flips: 97,020 (0.3% cumulative)  consensus=50
+     relational: r_ema=0.400  phase=balance  r_scale=1.43
+     prep           : sparsity=0.310  gamma=0.0331  (2 modules)
+     stride_stack   : sparsity=0.310  gamma=0.0298  (36 modules)
+     consolidate    : sparsity=0.310  gamma=0.0334  (2 modules)
+     s4             : sparsity=0.310  gamma=0.0217  (4 modules)
+     s3             : sparsity=0.310  gamma=0.0318  (120 modules)
+     mod_projs      : sparsity=0.309  gamma=-0.0009  (3 modules)
+     meta           : sparsity=0.310  gamma=0.0459  (4 modules)
+     φ-compression: L0_asc=0.835 L1_asc=0.562 L2_apex=-0.010 L1_desc=15.953 L0_desc=2.063  mean=3.881  φ-dev=3.536
+     gates: L0_asc=[0.28 0.49 0.40] L1_asc=[0.34 0.60 0.49] L2_apex=[0.56 0.86 0.71] L1_desc=[0.70 0.66 0.62] L0_desc=[0.79 0.75 0.80]
+     hilberg: L0_asc:β=1.48 L1_asc:β=1.26 L2_apex:β=1.45
+     stratum loss: prose=6.543 compositional=7.336 technical=6.420 math=5.922
+     saved: checkpoints/vsm-lm-v6/step_009500
+  step  9525/30518  loss=5.3369  r=0.399  r̄=0.399  xppl=38.4  lr=4.76e-04  ‖g‖=0.33  flips=97,218  phase=b  tokens=312M (31%)  tok/s=5108  elapsed=61102s
+  step  9550/30518  loss=5.5455  r=0.422  r̄=0.400  xppl=47.3  lr=4.75e-04  ‖g‖=0.37  flips=97,422  phase=b  tokens=313M (31%)  tok/s=5107  elapsed=61272s
+  step  9575/30518  loss=5.4001  r=0.406  r̄=0.398  xppl=40.9  lr=4.75e-04  ‖g‖=0.32  flips=97,634  phase=b  tokens=314M (31%)  tok/s=5106  elapsed=61444s
+  ── flip probe @ step 9600: 967 flips (0.003%) since last probe  total=97,987  φ-dev=0.8396  r_ema=0.398  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.32 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.48 ──
+  ── group flips: consolidate=28 meta=1 mod_projs=5 prep=13 s3=111 s4=14 stride_stack=181 ──
+  step  9600/30518  loss=5.3203  r=0.397  r̄=0.398  xppl=37.7  lr=4.74e-04  ‖g‖=0.41  flips=97,987  phase=b  tokens=315M (31%)  tok/s=5104  elapsed=61628s
+  step  9625/30518  loss=5.2740  r=0.392  r̄=0.397  xppl=36.0  lr=4.73e-04  ‖g‖=0.45  flips=98,256  phase=b  tokens=315M (32%)  tok/s=5104  elapsed=61798s
+  step  9650/30518  loss=5.2306  r=0.388  r̄=0.397  xppl=34.5  lr=4.73e-04  ‖g‖=0.62  flips=98,487  phase=b  tokens=316M (32%)  tok/s=5102  elapsed=61973s
+  step  9675/30518  loss=5.0202  r=0.365  r̄=0.397  xppl=27.9  lr=4.72e-04  ‖g‖=0.40  flips=98,694  phase=b  tokens=317M (32%)  tok/s=5102  elapsed=62141s
+  ── flip probe @ step 9700: 914 flips (0.003%) since last probe  total=98,901  φ-dev=0.8687  r_ema=0.397  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.26 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.39 ──
+  ── group flips: consolidate=2 mod_projs=1 prep=2 s3=1 stride_stack=201 ──
+  step  9700/30518  loss=5.3475  r=0.400  r̄=0.397  xppl=38.8  lr=4.71e-04  ‖g‖=0.37  flips=98,901  phase=b  tokens=318M (32%)  tok/s=5101  elapsed=62309s
+  step  9725/30518  loss=5.2329  r=0.388  r̄=0.398  xppl=34.6  lr=4.71e-04  ‖g‖=0.36  flips=99,104  phase=b  tokens=319M (32%)  tok/s=5100  elapsed=62482s
+  step  9750/30518  loss=5.5006  r=0.417  r̄=0.399  xppl=45.2  lr=4.70e-04  ‖g‖=0.28  flips=99,347  phase=b  tokens=319M (32%)  tok/s=5100  elapsed=62645s
+  step  9775/30518  loss=5.2766  r=0.393  r̄=0.398  xppl=36.1  lr=4.69e-04  ‖g‖=0.44  flips=99,553  phase=b  tokens=320M (32%)  tok/s=5099  elapsed=62820s
+  ── flip probe @ step 9800: 848 flips (0.002%) since last probe  total=99,749  φ-dev=0.8342  r_ema=0.399  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.28 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.42 ──
+  ── group flips: consolidate=5 meta=2 mod_projs=1 s4=1 stride_stack=187 ──
+  step  9800/30518  loss=5.5517  r=0.423  r̄=0.399  xppl=47.5  lr=4.69e-04  ‖g‖=0.41  flips=99,749  phase=b  tokens=321M (32%)  tok/s=5098  elapsed=62985s
+  step  9825/30518  loss=5.0567  r=0.369  r̄=0.398  xppl=29.0  lr=4.68e-04  ‖g‖=0.43  flips=99,970  phase=b  tokens=322M (32%)  tok/s=5097  elapsed=63161s
