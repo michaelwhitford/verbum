@@ -34,6 +34,7 @@ from verbum.v6.ternary import (
     _classify_group,
     accumulate_flips,
     apply_flips,
+    apply_flips_per_group,
     normalize_shared_grads,
     restore_ternary,
     zero_ternary_grads,
@@ -1111,12 +1112,23 @@ def main():
             #
             # r modulates the CAP (how many flip), not the THRESHOLD (how
             # strong the evidence). 75% consensus is the bar in all phases.
+            #
+            # Loop 3 closed: per-group factors from stratum gaps scale the
+            # cap per VSM group. stride_stack gets more flips when compositional
+            # lags, prep gets more when abstraction lags, control is always
+            # conservative. Factors are cached from the last probe interval.
             pcfg = PHASE_CONFIG[current_phase]
             r_scale = adaptive_flip_scale(r_ema)
             effective_max_pct = FLIP_MAX_PCT * pcfg["flip_max_scale"] * r_scale
             effective_max_pct = max(0.000001, min(0.001, effective_max_pct))
 
-            n_flipped = apply_flips(model, threshold=FLIP_CONSENSUS, max_flip_pct=effective_max_pct)
+            group_flipped = apply_flips_per_group(
+                model,
+                threshold=FLIP_CONSENSUS,
+                base_max_pct=effective_max_pct,
+                group_factors=cached_group_factors,
+            )
+            n_flipped = sum(group_flipped.values())
             total_flips += n_flipped
             flips_since_last_probe += n_flipped
 
@@ -1157,6 +1169,10 @@ def main():
                 if cached_group_factors:
                     gf_parts = [f"{g}={f:.2f}" for g, f in sorted(cached_group_factors.items())]
                     print(f"  ── group factors: {' '.join(gf_parts)} ──", flush=True)
+                if group_flipped:
+                    gfl_parts = [f"{g}={n}" for g, n in sorted(group_flipped.items()) if n > 0]
+                    if gfl_parts:
+                        print(f"  ── group flips: {' '.join(gfl_parts)} ──", flush=True)
 
                 flips_since_last_probe = 0
 

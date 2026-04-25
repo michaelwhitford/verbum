@@ -656,22 +656,29 @@ def _classify_group(path: str) -> str:
 
 def apply_flips_per_group(
     model: nn.Module,
-    group_targets: dict[str, float],
+    threshold: int = 50,
+    base_max_pct: float = 0.00001,
+    group_factors: dict[str, float] | None = None,
 ) -> dict[str, int]:
-    """Apply flips with per-group adaptive thresholds.
+    """Apply flips with per-group caps modulated by stratum-derived factors.
 
-    Instead of one global threshold, each VSM group gets its own
-    flip target percentage. The threshold is computed per-group
-    from the accumulator distribution within that group.
+    Same consensus threshold for all groups (75% agreement is the bar
+    everywhere). Per-group factors scale the max_pct cap: groups serving
+    lagging strata get more flips, well-performing groups are protected.
 
     Args:
         model: the model containing TernaryLinear modules
-        group_targets: {group_name: target_pct} from VSM signal modulation
+        threshold: minimum |accumulator| to trigger a flip (all groups)
+        base_max_pct: base cap before group factor scaling
+        group_factors: {group_name: factor} where factor multiplies base_max_pct
+                       e.g. {"stride_stack": 1.8, "s3": 0.5, "meta": 0.3}
+                       If None, all groups use base_max_pct (equivalent to apply_flips).
 
     Returns:
         {group_name: n_flipped} — number of weights flipped per group
     """
-    import numpy as np
+    if group_factors is None:
+        group_factors = {}
 
     # Step 1: collect modules by group
     groups: dict[str, list[tuple[str, TernaryLinear]]] = {}
@@ -679,38 +686,42 @@ def apply_flips_per_group(
         group = _classify_group(path)
         groups.setdefault(group, []).append((path, module))
 
-    # Step 2: compute per-group thresholds and apply
+    # Step 2: apply per-group with consensus threshold + scaled cap
     group_flipped: dict[str, int] = {}
     mutated = []
 
     for group, modules in groups.items():
-        target_pct = group_targets.get(group, 0.005)
+        factor = group_factors.get(group, 1.0)
+        group_max_pct = base_max_pct * factor
 
-        # Collect accumulators for this group (int8 — no NaN possible)
-        chunks = []
+        # Count total ternary weights in this group
+        group_ternary = sum(m.out_features * m.in_features for _, m in modules)
+        max_flips = int(group_ternary * group_max_pct)
+
+        # Collect qualifying weights (above consensus threshold)
+        candidates = []
         for _, mod in modules:
             mx.eval(mod._flip_accum)
-            chunks.append(mx.abs(mod._flip_accum.astype(mx.int16)).reshape(-1))
+            accum_abs = mx.abs(mod._flip_accum.astype(mx.int16))
+            candidates.append((mod, accum_abs))
 
-        if not chunks:
-            group_flipped[group] = 0
-            continue
+        n_qualifying = sum((a >= threshold).sum().item() for _, a in candidates)
 
-        # Compute group-specific threshold
-        all_abs = mx.concatenate(chunks)
-        all_np = np.array(all_abs)
-        pct = 100.0 * (1.0 - target_pct)
-        threshold = float(np.percentile(all_np, pct))
+        # Subsample if more qualify than the group cap allows
+        subsample = n_qualifying > max_flips and max_flips > 0
+        keep_prob = max_flips / n_qualifying if subsample else 1.0
 
-        # Apply flips for this group
         n_flipped = 0
-        for _, mod in modules:
-            accum_abs = mx.abs(mod._flip_accum.astype(mx.int16)).astype(mx.int8)
-            mask = accum_abs >= int(threshold)
+        for mod, accum_abs in candidates:
+            mask = accum_abs >= threshold
+
+            if subsample:
+                rand_mask = mx.random.uniform(shape=mask.shape) < keep_prob
+                mask = mask & rand_mask
+
             n = mask.sum().item()
             if n > 0:
                 direction = mx.sign(mod._flip_accum.astype(mx.int16)).astype(mx.int8)
-                # Unpack → flip on unpacked int8 → repack
                 w_int8 = unpack_ternary(mod.ternary_weight, mod.in_features)
                 current = w_int8.astype(mx.int16)
                 new_vals = mx.clip(current + direction.astype(mx.int16), -1, 1).astype(mx.int8)
@@ -720,7 +731,7 @@ def apply_flips_per_group(
                 n_flipped += int(n)
 
         # Reset all accumulators in this group (same reasoning as apply_flips)
-        for _, mod in modules:
+        for mod, _ in candidates:
             mod._flip_accum = mx.zeros_like(mod._flip_accum)
             mutated.append(mod._flip_accum)
 
