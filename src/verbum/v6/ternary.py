@@ -262,12 +262,18 @@ def zero_ternary_grads(model: nn.Module, grads: dict) -> dict:
     continuous parameter updates: a single large ternary gradient
     dominates the total norm, clipping continuous params to near-zero.
 
+    The VJP produces dense [N, K] gradients for the flip accumulator,
+    but the packed parameter is [N, K/4]. The optimizer requires
+    gradient and parameter shapes to match. So we return zeros with
+    the PACKED parameter shape, not the dense gradient shape.
+
     Call this AFTER accumulate_flips and BEFORE clip_grad_norm.
     """
-    # Collect paths to ternary weight parameters
-    ternary_paths: set[str] = set()
+    # Collect paths and packed shapes of ternary weight parameters
+    ternary_info: dict[str, tuple] = {}  # path → packed shape
     for path, module in _walk_ternary_modules(model):
-        ternary_paths.add(f"{path}.ternary_weight" if path else "ternary_weight")
+        key = f"{path}.ternary_weight" if path else "ternary_weight"
+        ternary_info[key] = module.ternary_weight.shape
 
     def _zero(path_prefix: str, tree):
         if isinstance(tree, dict):
@@ -280,8 +286,11 @@ def zero_ternary_grads(model: nn.Module, grads: dict) -> dict:
                 _zero(f"{path_prefix}.{i}" if path_prefix else str(i), v)
                 for i, v in enumerate(tree)
             ]
-        elif isinstance(tree, mx.array) and path_prefix in ternary_paths:
-            return mx.zeros_like(tree)
+        elif isinstance(tree, mx.array) and path_prefix in ternary_info:
+            # Return zeros matching the PACKED parameter shape [N, K/4],
+            # not the dense gradient shape [N, K] from the VJP.
+            packed_shape = ternary_info[path_prefix]
+            return mx.zeros(packed_shape, dtype=tree.dtype)
         return tree
 
     return _zero("", grads)
