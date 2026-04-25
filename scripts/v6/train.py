@@ -1025,8 +1025,12 @@ def main():
             mx.eval(loss, grads)
             step_loss += loss.item() / GRAD_ACCUM
 
-            # Route ternary grads to flip accumulator (per micro-batch)
-            accumulate_flips(model, grads)
+            # Route ternary grads to flip accumulator (per micro-batch).
+            # Skip during warmup — gradient signs reflect initialization
+            # noise, not learned structure. Accumulating would saturate
+            # all accumulators at ±127 before the first flip check.
+            if step >= WARMUP_STEPS:
+                accumulate_flips(model, grads)
 
             # Accumulate gradients across micro-batches
             if accum_grads is None:
