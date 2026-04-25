@@ -1,0 +1,715 @@
+{
+  "timestamp": "2026-04-25T19:46:38.867927+00:00",
+  "model": "EleutherAI/pythia-160m-deduped",
+  "n_layers": 12,
+  "n_params": 162322944,
+  "device": "mps",
+  "elapsed_s": 9.22,
+  "phi_target": 0.6180339887498948,
+  "overall": {
+    "layers": [
+      {
+        "layer": 0,
+        "mean_h_in": -7.370112,
+        "mean_h_out": -2.332197,
+        "mean_ratio": 0.316398,
+        "std_ratio": 0.030301,
+        "phi_dev": 0.301636,
+        "direction": "compressing"
+      },
+      {
+        "layer": 1,
+        "mean_h_in": -2.332197,
+        "mean_h_out": -1.239725,
+        "mean_ratio": 0.519291,
+        "std_ratio": 0.167805,
+        "phi_dev": 0.098743,
+        "direction": "compressing"
+      },
+      {
+        "layer": 2,
+        "mean_h_in": -1.239725,
+        "mean_h_out": -0.01991,
+        "mean_ratio": -0.201252,
+        "std_ratio": 0.514679,
+        "phi_dev": 0.819286,
+        "direction": "compressing"
+      },
+      {
+        "layer": 3,
+        "mean_h_in": -0.01991,
+        "mean_h_out": 2.174953,
+        "mean_ratio": 4.94736,
+        "std_ratio": 3.096138,
+        "phi_dev": 4.329326,
+        "direction": "expanding"
+      },
+      {
+        "layer": 4,
+        "mean_h_in": 2.174953,
+        "mean_h_out": 2.214743,
+        "mean_ratio": 1.020286,
+        "std_ratio": 0.008093,
+        "phi_dev": 0.402252,
+        "direction": "expanding"
+      },
+      {
+        "layer": 5,
+        "mean_h_in": 2.214743,
+        "mean_h_out": 2.224503,
+        "mean_ratio": 1.004126,
+        "std_ratio": 0.002645,
+        "phi_dev": 0.386092,
+        "direction": "expanding"
+      },
+      {
+        "layer": 6,
+        "mean_h_in": 2.224503,
+        "mean_h_out": 2.216126,
+        "mean_ratio": 0.996421,
+        "std_ratio": 0.003209,
+        "phi_dev": 0.378387,
+        "direction": "compressing"
+      },
+      {
+        "layer": 7,
+        "mean_h_in": 2.216126,
+        "mean_h_out": 2.141264,
+        "mean_ratio": 0.960018,
+        "std_ratio": 0.025714,
+        "phi_dev": 0.341984,
+        "direction": "compressing"
+      },
+      {
+        "layer": 8,
+        "mean_h_in": 2.141264,
+        "mean_h_out": 2.054461,
+        "mean_ratio": 0.951413,
+        "std_ratio": 0.032427,
+        "phi_dev": 0.333379,
+        "direction": "compressing"
+      },
+      {
+        "layer": 9,
+        "mean_h_in": 2.054461,
+        "mean_h_out": 1.812794,
+        "mean_ratio": 0.85363,
+        "std_ratio": 0.108307,
+        "phi_dev": 0.235596,
+        "direction": "compressing"
+      },
+      {
+        "layer": 10,
+        "mean_h_in": 1.812794,
+        "mean_h_out": 0.995103,
+        "mean_ratio": 0.386048,
+        "std_ratio": 0.529083,
+        "phi_dev": 0.231986,
+        "direction": "compressing"
+      },
+      {
+        "layer": 11,
+        "mean_h_in": 0.995103,
+        "mean_h_out": 0.038404,
+        "mean_ratio": -0.464342,
+        "std_ratio": 1.065186,
+        "phi_dev": 1.082376,
+        "direction": "compressing"
+      }
+    ],
+    "aggregate": {
+      "mean_ratio": 0.940783,
+      "std_ratio": 1.298333,
+      "mean_phi_dev": 0.745087,
+      "min_phi_dev": 0.098743,
+      "closest_layer": 1,
+      "target": 0.6180339887498948
+    },
+    "loss": {
+      "mean_loss": 4.0504,
+      "ppl": 57.42
+    }
+  },
+  "strata": {
+    "prose": {
+      "layers": [
+        {
+          "layer": 0,
+          "mean_h_in": -7.382492,
+          "mean_h_out": -2.157304,
+          "mean_ratio": 0.292264,
+          "std_ratio": 0.010095,
+          "phi_dev": 0.32577,
+          "direction": "compressing"
+        },
+        {
+          "layer": 1,
+          "mean_h_in": -2.157304,
+          "mean_h_out": -1.055761,
+          "mean_ratio": 0.489628,
+          "std_ratio": 0.029717,
+          "phi_dev": 0.128406,
+          "direction": "compressing"
+        },
+        {
+          "layer": 2,
+          "mean_h_in": -1.055761,
+          "mean_h_out": 0.306207,
+          "mean_ratio": -0.294994,
+          "std_ratio": 0.084976,
+          "phi_dev": 0.913028,
+          "direction": "compressing"
+        },
+        {
+          "layer": 3,
+          "mean_h_in": 0.306207,
+          "mean_h_out": 2.335598,
+          "mean_ratio": 8.041769,
+          "std_ratio": 1.819858,
+          "phi_dev": 7.423735,
+          "direction": "expanding"
+        },
+        {
+          "layer": 4,
+          "mean_h_in": 2.335598,
+          "mean_h_out": 2.377877,
+          "mean_ratio": 1.018121,
+          "std_ratio": 0.000915,
+          "phi_dev": 0.400088,
+          "direction": "expanding"
+        },
+        {
+          "layer": 5,
+          "mean_h_in": 2.377877,
+          "mean_h_out": 2.390252,
+          "mean_ratio": 1.005201,
+          "std_ratio": 0.000624,
+          "phi_dev": 0.387167,
+          "direction": "expanding"
+        },
+        {
+          "layer": 6,
+          "mean_h_in": 2.390252,
+          "mean_h_out": 2.379816,
+          "mean_ratio": 0.995659,
+          "std_ratio": 0.001234,
+          "phi_dev": 0.377625,
+          "direction": "compressing"
+        },
+        {
+          "layer": 7,
+          "mean_h_in": 2.379816,
+          "mean_h_out": 2.310329,
+          "mean_ratio": 0.970801,
+          "std_ratio": 0.000416,
+          "phi_dev": 0.352767,
+          "direction": "compressing"
+        },
+        {
+          "layer": 8,
+          "mean_h_in": 2.310329,
+          "mean_h_out": 2.227099,
+          "mean_ratio": 0.963968,
+          "std_ratio": 0.000466,
+          "phi_dev": 0.345935,
+          "direction": "compressing"
+        },
+        {
+          "layer": 9,
+          "mean_h_in": 2.227099,
+          "mean_h_out": 1.996353,
+          "mean_ratio": 0.896388,
+          "std_ratio": 0.00066,
+          "phi_dev": 0.278354,
+          "direction": "compressing"
+        },
+        {
+          "layer": 10,
+          "mean_h_in": 1.996353,
+          "mean_h_out": 1.185321,
+          "mean_ratio": 0.593676,
+          "std_ratio": 0.005028,
+          "phi_dev": 0.024357,
+          "direction": "compressing"
+        },
+        {
+          "layer": 11,
+          "mean_h_in": 1.185321,
+          "mean_h_out": -0.113765,
+          "mean_ratio": -0.095936,
+          "std_ratio": 0.067536,
+          "phi_dev": 0.713969,
+          "direction": "compressing"
+        }
+      ],
+      "aggregate": {
+        "mean_ratio": 1.239712,
+        "std_ratio": 2.095924,
+        "mean_phi_dev": 0.9726,
+        "min_phi_dev": 0.024357,
+        "closest_layer": 10,
+        "target": 0.6180339887498948
+      },
+      "loss": {
+        "mean_loss": 3.5749,
+        "ppl": 35.69
+      }
+    },
+    "compositional": {
+      "layers": [
+        {
+          "layer": 0,
+          "mean_h_in": -7.360902,
+          "mean_h_out": -2.222805,
+          "mean_ratio": 0.301972,
+          "std_ratio": 0.007742,
+          "phi_dev": 0.316062,
+          "direction": "compressing"
+        },
+        {
+          "layer": 1,
+          "mean_h_in": -2.222805,
+          "mean_h_out": -0.905377,
+          "mean_ratio": 0.407202,
+          "std_ratio": 0.019552,
+          "phi_dev": 0.210832,
+          "direction": "compressing"
+        },
+        {
+          "layer": 2,
+          "mean_h_in": -0.905377,
+          "mean_h_out": 0.53073,
+          "mean_ratio": -0.590541,
+          "std_ratio": 0.072838,
+          "phi_dev": 1.208574,
+          "direction": "compressing"
+        },
+        {
+          "layer": 3,
+          "mean_h_in": 0.53073,
+          "mean_h_out": 2.548024,
+          "mean_ratio": 4.8226,
+          "std_ratio": 0.30998,
+          "phi_dev": 4.204566,
+          "direction": "expanding"
+        },
+        {
+          "layer": 4,
+          "mean_h_in": 2.548024,
+          "mean_h_out": 2.589555,
+          "mean_ratio": 1.016304,
+          "std_ratio": 0.000327,
+          "phi_dev": 0.39827,
+          "direction": "expanding"
+        },
+        {
+          "layer": 5,
+          "mean_h_in": 2.589555,
+          "mean_h_out": 2.600538,
+          "mean_ratio": 1.004232,
+          "std_ratio": 0.000577,
+          "phi_dev": 0.386198,
+          "direction": "expanding"
+        },
+        {
+          "layer": 6,
+          "mean_h_in": 2.600538,
+          "mean_h_out": 2.58999,
+          "mean_ratio": 0.995945,
+          "std_ratio": 0.000418,
+          "phi_dev": 0.377911,
+          "direction": "compressing"
+        },
+        {
+          "layer": 7,
+          "mean_h_in": 2.58999,
+          "mean_h_out": 2.519476,
+          "mean_ratio": 0.972773,
+          "std_ratio": 0.00066,
+          "phi_dev": 0.35474,
+          "direction": "compressing"
+        },
+        {
+          "layer": 8,
+          "mean_h_in": 2.519476,
+          "mean_h_out": 2.429153,
+          "mean_ratio": 0.964129,
+          "std_ratio": 0.001535,
+          "phi_dev": 0.346095,
+          "direction": "compressing"
+        },
+        {
+          "layer": 9,
+          "mean_h_in": 2.429153,
+          "mean_h_out": 2.190652,
+          "mean_ratio": 0.901786,
+          "std_ratio": 0.00201,
+          "phi_dev": 0.283752,
+          "direction": "compressing"
+        },
+        {
+          "layer": 10,
+          "mean_h_in": 2.190652,
+          "mean_h_out": 1.351375,
+          "mean_ratio": 0.616748,
+          "std_ratio": 0.006685,
+          "phi_dev": 0.001286,
+          "direction": "compressing"
+        },
+        {
+          "layer": 11,
+          "mean_h_in": 1.351375,
+          "mean_h_out": -0.241584,
+          "mean_ratio": -0.180842,
+          "std_ratio": 0.07393,
+          "phi_dev": 0.798876,
+          "direction": "compressing"
+        }
+      ],
+      "aggregate": {
+        "mean_ratio": 0.936026,
+        "std_ratio": 1.27426,
+        "mean_phi_dev": 0.740597,
+        "min_phi_dev": 0.001286,
+        "closest_layer": 10,
+        "target": 0.6180339887498948
+      },
+      "loss": {
+        "mean_loss": 4.8783,
+        "ppl": 131.41
+      }
+    },
+    "technical": {
+      "layers": [
+        {
+          "layer": 0,
+          "mean_h_in": -7.342863,
+          "mean_h_out": -2.263315,
+          "mean_ratio": 0.308359,
+          "std_ratio": 0.01227,
+          "phi_dev": 0.309675,
+          "direction": "compressing"
+        },
+        {
+          "layer": 1,
+          "mean_h_in": -2.263315,
+          "mean_h_out": -0.997781,
+          "mean_ratio": 0.441436,
+          "std_ratio": 0.025136,
+          "phi_dev": 0.176598,
+          "direction": "compressing"
+        },
+        {
+          "layer": 2,
+          "mean_h_in": -0.997781,
+          "mean_h_out": 0.39182,
+          "mean_ratio": -0.395696,
+          "std_ratio": 0.077318,
+          "phi_dev": 1.013729,
+          "direction": "compressing"
+        },
+        {
+          "layer": 3,
+          "mean_h_in": 0.39182,
+          "mean_h_out": 2.386625,
+          "mean_ratio": 6.24065,
+          "std_ratio": 0.955135,
+          "phi_dev": 5.622616,
+          "direction": "expanding"
+        },
+        {
+          "layer": 4,
+          "mean_h_in": 2.386625,
+          "mean_h_out": 2.425245,
+          "mean_ratio": 1.016226,
+          "std_ratio": 0.001419,
+          "phi_dev": 0.398192,
+          "direction": "expanding"
+        },
+        {
+          "layer": 5,
+          "mean_h_in": 2.425245,
+          "mean_h_out": 2.436813,
+          "mean_ratio": 1.004764,
+          "std_ratio": 0.000199,
+          "phi_dev": 0.38673,
+          "direction": "expanding"
+        },
+        {
+          "layer": 6,
+          "mean_h_in": 2.436813,
+          "mean_h_out": 2.425462,
+          "mean_ratio": 0.995334,
+          "std_ratio": 0.000376,
+          "phi_dev": 0.3773,
+          "direction": "compressing"
+        },
+        {
+          "layer": 7,
+          "mean_h_in": 2.425462,
+          "mean_h_out": 2.352422,
+          "mean_ratio": 0.969851,
+          "std_ratio": 0.001093,
+          "phi_dev": 0.351817,
+          "direction": "compressing"
+        },
+        {
+          "layer": 8,
+          "mean_h_in": 2.352422,
+          "mean_h_out": 2.26887,
+          "mean_ratio": 0.964406,
+          "std_ratio": 0.002304,
+          "phi_dev": 0.346372,
+          "direction": "compressing"
+        },
+        {
+          "layer": 9,
+          "mean_h_in": 2.26887,
+          "mean_h_out": 2.038267,
+          "mean_ratio": 0.898164,
+          "std_ratio": 0.005772,
+          "phi_dev": 0.28013,
+          "direction": "compressing"
+        },
+        {
+          "layer": 10,
+          "mean_h_in": 2.038267,
+          "mean_h_out": 1.214025,
+          "mean_ratio": 0.594904,
+          "std_ratio": 0.016873,
+          "phi_dev": 0.02313,
+          "direction": "compressing"
+        },
+        {
+          "layer": 11,
+          "mean_h_in": 1.214025,
+          "mean_h_out": -0.025781,
+          "mean_ratio": -0.025866,
+          "std_ratio": 0.068634,
+          "phi_dev": 0.643899,
+          "direction": "compressing"
+        }
+      ],
+      "aggregate": {
+        "mean_ratio": 1.084378,
+        "std_ratio": 1.616237,
+        "mean_phi_dev": 0.827516,
+        "min_phi_dev": 0.02313,
+        "closest_layer": 10,
+        "target": 0.6180339887498948
+      },
+      "loss": {
+        "mean_loss": 4.5536,
+        "ppl": 94.97
+      }
+    },
+    "math": {
+      "layers": [
+        {
+          "layer": 0,
+          "mean_h_in": -7.39419,
+          "mean_h_out": -2.685364,
+          "mean_ratio": 0.362995,
+          "std_ratio": 0.018267,
+          "phi_dev": 0.255039,
+          "direction": "compressing"
+        },
+        {
+          "layer": 1,
+          "mean_h_in": -2.685364,
+          "mean_h_out": -1.99998,
+          "mean_ratio": 0.738897,
+          "std_ratio": 0.207376,
+          "phi_dev": 0.120864,
+          "direction": "compressing"
+        },
+        {
+          "layer": 2,
+          "mean_h_in": -1.99998,
+          "mean_h_out": -1.308395,
+          "mean_ratio": 0.476222,
+          "std_ratio": 0.619646,
+          "phi_dev": 0.141812,
+          "direction": "compressing"
+        },
+        {
+          "layer": 3,
+          "mean_h_in": -1.308395,
+          "mean_h_out": 1.429565,
+          "mean_ratio": 0.684419,
+          "std_ratio": 2.141921,
+          "phi_dev": 0.066386,
+          "direction": "compressing"
+        },
+        {
+          "layer": 4,
+          "mean_h_in": 1.429565,
+          "mean_h_out": 1.466293,
+          "mean_ratio": 1.030492,
+          "std_ratio": 0.010855,
+          "phi_dev": 0.412458,
+          "direction": "expanding"
+        },
+        {
+          "layer": 5,
+          "mean_h_in": 1.466293,
+          "mean_h_out": 1.470409,
+          "mean_ratio": 1.002308,
+          "std_ratio": 0.004727,
+          "phi_dev": 0.384274,
+          "direction": "expanding"
+        },
+        {
+          "layer": 6,
+          "mean_h_in": 1.470409,
+          "mean_h_out": 1.469237,
+          "mean_ratio": 0.998746,
+          "std_ratio": 0.005653,
+          "phi_dev": 0.380712,
+          "direction": "compressing"
+        },
+        {
+          "layer": 7,
+          "mean_h_in": 1.469237,
+          "mean_h_out": 1.382827,
+          "mean_ratio": 0.926645,
+          "std_ratio": 0.033965,
+          "phi_dev": 0.308611,
+          "direction": "compressing"
+        },
+        {
+          "layer": 8,
+          "mean_h_in": 1.382827,
+          "mean_h_out": 1.292724,
+          "mean_ratio": 0.913148,
+          "std_ratio": 0.047391,
+          "phi_dev": 0.295114,
+          "direction": "compressing"
+        },
+        {
+          "layer": 9,
+          "mean_h_in": 1.292724,
+          "mean_h_out": 1.025905,
+          "mean_ratio": 0.718183,
+          "std_ratio": 0.149691,
+          "phi_dev": 0.100149,
+          "direction": "compressing"
+        },
+        {
+          "layer": 10,
+          "mean_h_in": 1.025905,
+          "mean_h_out": 0.22969,
+          "mean_ratio": -0.261136,
+          "std_ratio": 0.748706,
+          "phi_dev": 0.87917,
+          "direction": "compressing"
+        },
+        {
+          "layer": 11,
+          "mean_h_in": 0.22969,
+          "mean_h_out": 0.534746,
+          "mean_ratio": -1.554725,
+          "std_ratio": 1.710688,
+          "phi_dev": 2.172759,
+          "direction": "compressing"
+        }
+      ],
+      "aggregate": {
+        "mean_ratio": 0.503016,
+        "std_ratio": 0.712644,
+        "mean_phi_dev": 0.459779,
+        "min_phi_dev": 0.066386,
+        "closest_layer": 3,
+        "target": 0.6180339887498948
+      },
+      "loss": {
+        "mean_loss": 3.1949,
+        "ppl": 24.41
+      }
+    }
+  },
+  "layer_groups": {
+    "groups": {
+      "early (L0-L3)": {
+        "mean_ratio": 1.395449,
+        "cumulative_compression": -0.163591,
+        "phi_dev": 0.777415,
+        "layers": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "middle (L4-L7)": {
+        "mean_ratio": 0.995213,
+        "cumulative_compression": 0.980014,
+        "phi_dev": 0.377179,
+        "layers": [
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "late (L8-L11)": {
+        "mean_ratio": 0.431687,
+        "cumulative_compression": -0.145585,
+        "phi_dev": 0.186347,
+        "layers": [
+          8,
+          9,
+          10,
+          11
+        ]
+      }
+    },
+    "total_compression": 0.02334,
+    "expected_phi_total": 0.00310562,
+    "total_phi_dev": 0.020235
+  },
+  "layer_pairs": [
+    {
+      "layers": "L0-L1",
+      "ratio_1": 0.316398,
+      "ratio_2": 0.519291,
+      "combined_ratio": 0.164303,
+      "phi_dev": 0.453731
+    },
+    {
+      "layers": "L2-L3",
+      "ratio_1": -0.201252,
+      "ratio_2": 4.94736,
+      "combined_ratio": -0.995666,
+      "phi_dev": 1.6137
+    },
+    {
+      "layers": "L4-L5",
+      "ratio_1": 1.020286,
+      "ratio_2": 1.004126,
+      "combined_ratio": 1.024496,
+      "phi_dev": 0.406462
+    },
+    {
+      "layers": "L6-L7",
+      "ratio_1": 0.996421,
+      "ratio_2": 0.960018,
+      "combined_ratio": 0.956582,
+      "phi_dev": 0.338548
+    },
+    {
+      "layers": "L8-L9",
+      "ratio_1": 0.951413,
+      "ratio_2": 0.85363,
+      "combined_ratio": 0.812155,
+      "phi_dev": 0.194121
+    },
+    {
+      "layers": "L10-L11",
+      "ratio_1": 0.386048,
+      "ratio_2": -0.464342,
+      "combined_ratio": -0.179258,
+      "phi_dev": 0.797292
+    }
+  ]
+}

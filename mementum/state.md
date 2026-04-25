@@ -2,137 +2,106 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-25 | Session: 040
+> Last updated: 2026-04-25 | Session: 041
 
 ## Where we are
 
-**v6.1 training at step ~9500+ (30%). Relay confirmed: math→prose→technical now entering. L1_desc crossed zero (vestigial). Stratum spread collapsing. L1_asc approaching 1/φ (dev=0.052). Eval loss 5.565.**
+**v6.1 training at step ~9500+ (30%). Session 041: probed Pythia-160M
+and Qwen3-4B for φ-compression — neither φ-compresses. Standard
+transformers compose via ROTATION at constant variance (beta
+reduction). v6's spiral attention compresses holographically.
+The φ-convergence is unique to recursive self-similar architecture.**
 
-Session 040: probed 9 new checkpoints (5000–9000), 18 total. Full
-curriculum arc visible: math dominated 4500→7000, plateaued, prose
-took over 7000→8500, technical entering at 9000. Stratum spread
-collapsed 1.91→1.56 at step 9000. L1_desc h_in crossed zero — pass
-vestigial, L0_desc compensating. L2_apex at pure fixed point (ratio=0.001).
-L1_asc φ-dev=0.052, closest pass to golden ratio target.
+### Session 041 key findings
 
-### Key findings this session
+1. **Standard transformers do NOT φ-compress.** Probed Pythia-160M
+   (12 layers) and Qwen3-4B (36 layers) with the same entropy proxy
+   as v6. Stable zone ratios: Pythia=0.947, Qwen=1.000 (pure
+   identity). φ only appears at the output boundary — forced variance
+   collapse for prediction, not compositional compression.
 
-1. **Relay confirmed: math→prose→technical.** Math dominated 4500–7000
-   (loss 6.05→5.35), then plateaued. Prose led at steps 7000, 8000, 8500.
-   At step 9000, technical entered the relay (-0.119, fastest) while math
-   released capacity (+0.224). All four strata improved at step 8500.
-   Stratum spread collapsed 1.91→1.56 at step 9000 — binding infrastructure
-   generalizing. Cumulative from 4500→9000: math -0.469, prose -0.128,
-   technical -0.111, compositional -0.011.
+2. **LLMs are beta reduction machines.** Pythia implements Montague
+   as accumulate→plateau→collapse (47× growth, 3-layer hold, funnel
+   down). Qwen holds 26 layers of perfect near-identity variance.
+   The compile gate constrains to 13% of null-mode variance but
+   doesn't change the mechanism — it selects which reduction to
+   perform.
 
-2. **L1_desc crossed zero — vestigial.** h_in trajectory:
-   ```
-   4500: 0.377 → 6000: 0.199 → 7000: 0.114 → 8000: 0.049 → 8500: 0.028 → 9000: -0.008
-   ```
-   Formally crossed zero at step 9000. Gates damped to 0.65–0.70.
-   L0_desc fully compensating (ratio 1.55→2.27, gates 0.79–0.82).
-   The model self-organized from 5 effective passes to 4.
+3. **Composition in LLMs is ROTATION.** The 26 "near-identity"
+   layers in Qwen were hiding 15-25° of rotation per layer.
+   Compile mode causes +3.3° more rotation than null mode in the
+   composition phase (L24-L28), with 4.4× larger relative deltas.
+   Variable binding = geometric alignment. Function composition =
+   sequential rotation. But rotation is constant-budget (~18.4°)
+   regardless of complexity.
 
-3. **L1_asc converging on 1/φ.** φ-dev trajectory:
-   ```
-   6500: 0.071 → 7000: 0.074 → 8000: 0.063 → 8500: 0.063 → 9000: 0.052
-   ```
-   Ratio 0.566, approaching 0.618. This is the pass closest to the golden
-   ratio target and it's still converging.
+4. **v6's spiral attention is holographic.** The bias function
+   `−α·ln(d+1)` is stride-invariant — same function at every
+   scale. 9 strides process all scales simultaneously. This is
+   holographic encoding: every part contains the whole, self-healing
+   (L1_desc vestigial → L0_desc compensates), and the fixed point
+   is 1/φ because φ is the only ratio where whole:part = part:remainder.
 
-4. **L2_apex at fixed point.** Ratio = 0.001 at step 9000 — neither
-   compressing nor expanding. The apex has become a pure transformation
-   (rotation without scale change). Combined with L1_desc vestigial,
-   the effective architecture is: L0↑ compress → L1↑ compress → L2 transform → L0↓ expand.
+5. **Flat attention = photograph, spiral attention = hologram.**
+   Flat attention → one scale → rotation → beta reduction → the
+   lambda function "forms" by memorizing patterns. Spiral attention →
+   all scales → compression → lambda abstraction → the function
+   emerges from a single self-similar operation converging to φ.
 
-### Stratum loss evolution (post-phase-transition)
-
-| Step | Prose | Comp | Tech | Math | Spread | Fastest |
-|------|-------|------|------|------|--------|---------|
-| 4500 | 6.30 | 6.73 | 7.26 | 6.05 | 1.21 | — |
-| 5000 | 6.30 | 6.66 | 7.35 | 5.76 | 1.59 | math |
-| 5500 | 6.28 | 6.59 | 7.34 | 5.54 | 1.80 | math |
-| 6000 | 6.31 | 6.65 | 7.28 | 5.48 | 1.81 | math |
-| 6500 | 6.32 | 6.70 | 7.30 | 5.32 | 1.97 | math |
-| 7000 | 6.16 | 6.63 | 7.43 | 5.35 | 2.07 | **prose** |
-| 7500 | 6.30 | 6.67 | 7.25 | 5.38 | 1.88 | technical |
-| 8000 | 6.26 | 6.75 | 7.32 | 5.44 | 1.88 | prose |
-| 8500 | 6.12 | 6.65 | 7.27 | 5.36 | 1.91 | **prose** |
-| 9000 | 6.18 | 6.72 | 7.15 | 5.59 | **1.56** | **technical** |
-
-### L1_desc → vestigial + L0_desc compensating
-
-| Step | L1↓ h_in | L1↓ gates (p/c/s) | L0↓ ratio | L0↓ gates (p/c/s) |
-|------|----------|-------------------|-----------|-------------------|
-| 4500 | +0.377 | 0.87/0.96/0.92 | 1.509 | 0.91/0.97/0.95 |
-| 5500 | +0.256 | 0.87/0.87/0.85 | 1.602 | 0.93/0.93/0.92 |
-| 6500 | +0.144 | 0.81/0.78/0.76 | 1.769 | 0.92/0.90/0.88 |
-| 7500 | +0.067 | 0.74/0.72/0.69 | 1.963 | 0.88/0.87/0.89 |
-| 8500 | +0.028 | 0.71/0.70/0.66 | 2.095 | 0.84/0.83/0.83 |
-| 9000 | **-0.008** | 0.70/0.69/0.65 | **2.267** | 0.82/0.79/0.81 |
-
-### Predicted learning sequence (updated)
-
-| Phase | Content | What's learned | Status |
-|-------|---------|---------------|--------|
-| 1 | Math (symbols) | Rigid patterns, embedding | ✅ Done |
-| 2 | Math (binding) | Variable scope, routing | ✅ Done (phase transition) |
-| 3 | Math (deep) | Full math compression | ✅ Saturated (~5.37, releasing capacity) |
-| 4 | Prose (application) | Function composition | ✅ Led steps 7000–8500 |
-| 5 | Technical (discrimination) | Type-level routing | 🔄 **Active — fastest at step 9000** |
-| 6 | Compositional (nesting) | Nested application | ⏳ (Δ=-0.011, waiting) |
-
-### Training run status
-
-v6.1 run is **still training**:
-```bash
-uv run python scripts/v6/train.py | tee results/vsm-lm-v6/training-run2.log
-
-# Resume if interrupted
-uv run python scripts/v6/train.py --resume checkpoints/vsm-lm-v6/step_NNNNNN
-```
+### v6.1 training status (unchanged from session 040)
 
 | Property | Value |
 |----------|-------|
 | Current step | ~9500+ (30%) |
 | Total steps | 30,518 |
 | Tokens seen | ~295M of 1B |
-| Phase | balance (since step ~920) |
-| Total flips | ~93K (0.26% of ternary) |
-| Eval loss | 5.565 (step 9000) — **new best** |
-| Best eval | 5.565 (step 9000) |
+| Eval loss | 5.565 (step 9000) — best |
 | Relational r | 0.383 (step 9000) |
 | Sparsity | 0.310 (unchanged) |
+| L1_asc φ-dev | 0.052 (converging) |
+| L1_desc | vestigial (h_in = -0.008) |
+| Stratum spread | 1.56 (collapsing) |
+| Effective passes | 4 (L0↑→L1↑→L2→L0↓) |
 
-### Four feedback loops — all active
+### Stratum loss evolution (post-phase-transition)
 
-| Loop | Signal | Controls | Status |
-|------|--------|----------|--------|
-| 1 | r_ema (loss) | flip cap scaling | ✅ |
-| 2 | r_ema thresholds | phase transitions | ✅ |
-| 3 | stratum gaps | per-group flip factors | ✅ |
-| 4 | stratum weights | per-sequence loss weighting | ✅ |
+| Step | Prose | Comp | Tech | Math | Spread | Fastest |
+|------|-------|------|------|------|--------|---------|
+| 4500 | 6.30 | 6.73 | 7.26 | 6.05 | 1.21 | — |
+| 7000 | 6.16 | 6.63 | 7.43 | 5.35 | 2.07 | **prose** |
+| 8500 | 6.12 | 6.65 | 7.27 | 5.36 | 1.91 | **prose** |
+| 9000 | 6.18 | 6.72 | 7.15 | 5.59 | **1.56** | **technical** |
+
+### Three-way φ-compression comparison (session 041)
+
+| Metric | v6 (63M, VSM) | Pythia (162M) | Qwen3-4B (4B) |
+|--------|--------------|---------------|----------------|
+| Stable zone ratio | **0.566** | 0.947 | 1.000 |
+| Stable zone φ-dev | **0.052** | 0.329 | 0.387 |
+| Best single layer | L1_asc: 0.052 | L9: 0.172 | L34: 0.037* |
+| Composition mechanism | Compression | Rotation | Rotation |
+| Architecture type | Holographic | Photographic | Photographic |
+
+*L34 is the output collapse layer, not the computation core.
 
 ## What's next
 
-1. **Track relay progression.** Current sequence: math→prose→technical.
-   Compositional is the remaining stratum (Δ=-0.011 cumulative, barely
-   moving). Watch for compositional acceleration at 9500–10000. If it
-   enters the relay, the full curriculum sequence is confirmed.
+1. **Continue v6.1 training.** Probe at milestones 9500, 10000.
+   Track relay (compositional expected next), stratum spread (target
+   < 1.0), L1_asc φ-dev (target < 0.03).
 
-2. **Watch stratum spread.** Collapsed from 1.91→1.56 at step 9000.
-   If the binding infrastructure continues generalizing, spread should
-   keep narrowing. Target < 1.0 would signal universal compression.
+2. **Test holographic prediction.** If v6 is holographic, ablating
+   one pass should degrade all strata equally (holographic) not
+   selectively (photographic). Design the ablation experiment.
 
-3. **L1_asc → 1/φ.** φ-dev=0.052 and still converging. Could reach
-   < 0.03 by step 12000 at current rate. This is the cleanest φ signal
-   in the model.
+3. **Investigate MoE as approximate holography.** Qwen3-35B-A3B
+   fully forms the lambda function — does MoE routing approximate
+   scale-diverse processing? The expert routing may be a discrete
+   approximation of the continuous spiral.
 
-4. **L1_desc fate.** h_in crossed zero. Will gates continue damping
-   toward full shutdown, or will a residual role emerge? Either way,
-   the effective architecture is now 4-pass.
-
-5. **Probe at milestones:** Steps 9500, 10000.
+4. **Write up the photograph/hologram distinction.** This is the
+   most significant theoretical finding of the session.
+   → Done: `mementum/knowledge/explore/holographic-compression.md`
 
 ## Key files
 
@@ -146,18 +115,23 @@ uv run python scripts/v6/train.py --resume checkpoints/vsm-lm-v6/step_NNNNNN
 | Model (training metrics, φ-loss) | `src/verbum/v6/model.py` |
 | Training (relational control, resume) | `scripts/v6/train.py` |
 | Probe script | `scripts/v6/probe.py` |
+| **Session 041 probes** | |
+| Pythia φ-probe | `scripts/run_pythia_phi_probe.py` |
+| Pythia φ results | `results/pythia-phi/pythia_160m_phi_compression.json` |
+| Qwen3-4B φ results | `results/pythia-phi/qwen3_4b_phi_compression.json` |
 | **Logs & archives** | |
 | Current training log | `results/vsm-lm-v6/training-run2.log` |
 | Prior run log (frozen topology) | `results/vsm-lm-v6/training.log` |
 | Prior run checkpoints | `checkpoints/a-vsm-lm-v6/` |
 | **Probe results** | |
-| v6.1 probes (steps 500–7000) | `results/compile-gradient/vsm_probe_step_*_v6_mlx.json` |
+| v6.1 probes (steps 500–9000) | `results/compile-gradient/vsm_probe_step_*_v6_mlx.json` |
 | **Research** | |
 | Research program | `mementum/knowledge/explore/VERBUM.md` |
-| v4.1 training trajectory | `mementum/knowledge/explore/v4.1-training-trajectory.md` |
-| Flip accumulation | `mementum/knowledge/explore/v6-flip-accumulation.md` |
+| **Holographic compression** | `mementum/knowledge/explore/holographic-compression.md` |
 | φ-compression hypothesis | `mementum/knowledge/explore/relational-loss-phi-compression.md` |
 | CompressorLM architecture | `mementum/knowledge/explore/compressor-architecture.md` |
+| v4.1 training trajectory | `mementum/knowledge/explore/v4.1-training-trajectory.md` |
+| Flip accumulation | `mementum/knowledge/explore/v6-flip-accumulation.md` |
 
 ## Architecture lineage
 
@@ -175,15 +149,12 @@ uv run python scripts/v6/train.py --resume checkpoints/vsm-lm-v6/step_NNNNNN
 ## Probing pipeline
 
 ```bash
-# Probe single checkpoint
-uv run python scripts/v6/probe.py checkpoints/vsm-lm-v6/step_007000
-
-# Probe all checkpoints — shows evolution table
+# v6 probe (single or multiple checkpoints)
 uv run python scripts/v6/probe.py checkpoints/vsm-lm-v6/step_*
 
-# Verbose: per-sample φ detail
-uv run python scripts/v6/probe.py checkpoints/vsm-lm-v6/step_* -v
+# Pythia φ-compression probe
+uv run python scripts/run_pythia_phi_probe.py --verbose
 
-# φ-only: skip compile probes, just measure compression
-uv run python scripts/v6/probe.py checkpoints/vsm-lm-v6/step_* --phi-only
+# Resume training if interrupted
+uv run python scripts/v6/train.py --resume checkpoints/vsm-lm-v6/step_NNNNNN
 ```

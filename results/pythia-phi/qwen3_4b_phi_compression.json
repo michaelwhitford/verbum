@@ -1,0 +1,1087 @@
+{
+  "timestamp": "2026-04-25T19:56:03.265046+00:00",
+  "model": "Qwen/Qwen3-4B",
+  "n_layers": 36,
+  "n_params": 4022468096,
+  "elapsed_s": 25.75,
+  "phi_target": 0.6180339887498948,
+  "overall": {
+    "layers": [
+      {
+        "layer": 0,
+        "pre_var": 0.000389,
+        "post_var": 0.022135,
+        "var_ratio": 56.852421,
+        "delta_ratio": 55.852421,
+        "phi_dev_var": 56.234387,
+        "phi_dev_delta": 55.234387
+      },
+      {
+        "layer": 1,
+        "pre_var": 0.022135,
+        "post_var": 0.217234,
+        "var_ratio": 9.813827,
+        "delta_ratio": 8.813827,
+        "phi_dev_var": 9.195793,
+        "phi_dev_delta": 8.195793
+      },
+      {
+        "layer": 2,
+        "pre_var": 0.217234,
+        "post_var": 0.301614,
+        "var_ratio": 1.388431,
+        "delta_ratio": 0.388431,
+        "phi_dev_var": 0.770397,
+        "phi_dev_delta": 0.229603
+      },
+      {
+        "layer": 3,
+        "pre_var": 0.301614,
+        "post_var": 0.331345,
+        "var_ratio": 1.098573,
+        "delta_ratio": 0.098573,
+        "phi_dev_var": 0.480539,
+        "phi_dev_delta": 0.519461
+      },
+      {
+        "layer": 4,
+        "pre_var": 0.331345,
+        "post_var": 0.364076,
+        "var_ratio": 1.098783,
+        "delta_ratio": 0.098783,
+        "phi_dev_var": 0.480749,
+        "phi_dev_delta": 0.519251
+      },
+      {
+        "layer": 5,
+        "pre_var": 0.364076,
+        "post_var": 0.359091,
+        "var_ratio": 0.986308,
+        "delta_ratio": 0.013692,
+        "phi_dev_var": 0.368274,
+        "phi_dev_delta": 0.604342
+      },
+      {
+        "layer": 6,
+        "pre_var": 0.359091,
+        "post_var": 1388.549561,
+        "var_ratio": 3866.842051,
+        "delta_ratio": 3865.842051,
+        "phi_dev_var": 3866.224017,
+        "phi_dev_delta": 3865.224017
+      },
+      {
+        "layer": 7,
+        "pre_var": 1388.549561,
+        "post_var": 1388.495996,
+        "var_ratio": 0.999961,
+        "delta_ratio": 3.9e-05,
+        "phi_dev_var": 0.381927,
+        "phi_dev_delta": 0.617995
+      },
+      {
+        "layer": 8,
+        "pre_var": 1388.495996,
+        "post_var": 1388.408171,
+        "var_ratio": 0.999937,
+        "delta_ratio": 6.3e-05,
+        "phi_dev_var": 0.381903,
+        "phi_dev_delta": 0.617971
+      },
+      {
+        "layer": 9,
+        "pre_var": 1388.408171,
+        "post_var": 1388.694494,
+        "var_ratio": 1.000206,
+        "delta_ratio": 0.000206,
+        "phi_dev_var": 0.382172,
+        "phi_dev_delta": 0.617828
+      },
+      {
+        "layer": 10,
+        "pre_var": 1388.694494,
+        "post_var": 1388.149931,
+        "var_ratio": 0.999608,
+        "delta_ratio": 0.000392,
+        "phi_dev_var": 0.381574,
+        "phi_dev_delta": 0.617642
+      },
+      {
+        "layer": 11,
+        "pre_var": 1388.149931,
+        "post_var": 1387.619057,
+        "var_ratio": 0.999618,
+        "delta_ratio": 0.000382,
+        "phi_dev_var": 0.381584,
+        "phi_dev_delta": 0.617652
+      },
+      {
+        "layer": 12,
+        "pre_var": 1387.619057,
+        "post_var": 1387.19676,
+        "var_ratio": 0.999696,
+        "delta_ratio": 0.000304,
+        "phi_dev_var": 0.381662,
+        "phi_dev_delta": 0.61773
+      },
+      {
+        "layer": 13,
+        "pre_var": 1387.19676,
+        "post_var": 1388.121304,
+        "var_ratio": 1.000666,
+        "delta_ratio": 0.000666,
+        "phi_dev_var": 0.382632,
+        "phi_dev_delta": 0.617368
+      },
+      {
+        "layer": 14,
+        "pre_var": 1388.121304,
+        "post_var": 1387.830727,
+        "var_ratio": 0.999791,
+        "delta_ratio": 0.000209,
+        "phi_dev_var": 0.381757,
+        "phi_dev_delta": 0.617825
+      },
+      {
+        "layer": 15,
+        "pre_var": 1387.830727,
+        "post_var": 1388.542747,
+        "var_ratio": 1.000513,
+        "delta_ratio": 0.000513,
+        "phi_dev_var": 0.382479,
+        "phi_dev_delta": 0.617521
+      },
+      {
+        "layer": 16,
+        "pre_var": 1388.542747,
+        "post_var": 1473.323389,
+        "var_ratio": 1.061057,
+        "delta_ratio": 0.061057,
+        "phi_dev_var": 0.443023,
+        "phi_dev_delta": 0.556977
+      },
+      {
+        "layer": 17,
+        "pre_var": 1473.323389,
+        "post_var": 1472.689878,
+        "var_ratio": 0.99957,
+        "delta_ratio": 0.00043,
+        "phi_dev_var": 0.381536,
+        "phi_dev_delta": 0.617604
+      },
+      {
+        "layer": 18,
+        "pre_var": 1472.689878,
+        "post_var": 1472.320351,
+        "var_ratio": 0.999749,
+        "delta_ratio": 0.000251,
+        "phi_dev_var": 0.381715,
+        "phi_dev_delta": 0.617783
+      },
+      {
+        "layer": 19,
+        "pre_var": 1472.320351,
+        "post_var": 1470.486238,
+        "var_ratio": 0.998754,
+        "delta_ratio": 0.001246,
+        "phi_dev_var": 0.38072,
+        "phi_dev_delta": 0.616788
+      },
+      {
+        "layer": 20,
+        "pre_var": 1470.486238,
+        "post_var": 1469.885939,
+        "var_ratio": 0.999592,
+        "delta_ratio": 0.000408,
+        "phi_dev_var": 0.381558,
+        "phi_dev_delta": 0.617626
+      },
+      {
+        "layer": 21,
+        "pre_var": 1469.885939,
+        "post_var": 1469.091152,
+        "var_ratio": 0.999459,
+        "delta_ratio": 0.000541,
+        "phi_dev_var": 0.381425,
+        "phi_dev_delta": 0.617493
+      },
+      {
+        "layer": 22,
+        "pre_var": 1469.091152,
+        "post_var": 1467.802402,
+        "var_ratio": 0.999123,
+        "delta_ratio": 0.000877,
+        "phi_dev_var": 0.381089,
+        "phi_dev_delta": 0.617157
+      },
+      {
+        "layer": 23,
+        "pre_var": 1467.802402,
+        "post_var": 1464.525686,
+        "var_ratio": 0.997768,
+        "delta_ratio": 0.002232,
+        "phi_dev_var": 0.379734,
+        "phi_dev_delta": 0.615802
+      },
+      {
+        "layer": 24,
+        "pre_var": 1464.525686,
+        "post_var": 1461.008148,
+        "var_ratio": 0.997598,
+        "delta_ratio": 0.002402,
+        "phi_dev_var": 0.379564,
+        "phi_dev_delta": 0.615632
+      },
+      {
+        "layer": 25,
+        "pre_var": 1461.008148,
+        "post_var": 1459.391642,
+        "var_ratio": 0.998894,
+        "delta_ratio": 0.001106,
+        "phi_dev_var": 0.38086,
+        "phi_dev_delta": 0.616928
+      },
+      {
+        "layer": 26,
+        "pre_var": 1459.391642,
+        "post_var": 1457.02066,
+        "var_ratio": 0.998375,
+        "delta_ratio": 0.001625,
+        "phi_dev_var": 0.380341,
+        "phi_dev_delta": 0.616409
+      },
+      {
+        "layer": 27,
+        "pre_var": 1457.02066,
+        "post_var": 1454.980791,
+        "var_ratio": 0.9986,
+        "delta_ratio": 0.0014,
+        "phi_dev_var": 0.380566,
+        "phi_dev_delta": 0.616634
+      },
+      {
+        "layer": 28,
+        "pre_var": 1454.980791,
+        "post_var": 1452.393684,
+        "var_ratio": 0.998222,
+        "delta_ratio": 0.001778,
+        "phi_dev_var": 0.380188,
+        "phi_dev_delta": 0.616256
+      },
+      {
+        "layer": 29,
+        "pre_var": 1452.393684,
+        "post_var": 1447.936489,
+        "var_ratio": 0.996931,
+        "delta_ratio": 0.003069,
+        "phi_dev_var": 0.378897,
+        "phi_dev_delta": 0.614965
+      },
+      {
+        "layer": 30,
+        "pre_var": 1447.936489,
+        "post_var": 1441.030548,
+        "var_ratio": 0.99523,
+        "delta_ratio": 0.00477,
+        "phi_dev_var": 0.377197,
+        "phi_dev_delta": 0.613264
+      },
+      {
+        "layer": 31,
+        "pre_var": 1441.030548,
+        "post_var": 1433.926556,
+        "var_ratio": 0.99507,
+        "delta_ratio": 0.00493,
+        "phi_dev_var": 0.377036,
+        "phi_dev_delta": 0.613104
+      },
+      {
+        "layer": 32,
+        "pre_var": 1433.926556,
+        "post_var": 1429.589453,
+        "var_ratio": 0.996975,
+        "delta_ratio": 0.003025,
+        "phi_dev_var": 0.378941,
+        "phi_dev_delta": 0.615009
+      },
+      {
+        "layer": 33,
+        "pre_var": 1429.589453,
+        "post_var": 1417.157862,
+        "var_ratio": 0.991304,
+        "delta_ratio": 0.008696,
+        "phi_dev_var": 0.37327,
+        "phi_dev_delta": 0.609338
+      },
+      {
+        "layer": 34,
+        "pre_var": 1417.157862,
+        "post_var": 823.240187,
+        "var_ratio": 0.580909,
+        "delta_ratio": 0.419091,
+        "phi_dev_var": 0.037125,
+        "phi_dev_delta": 0.198943
+      },
+      {
+        "layer": 35,
+        "pre_var": 823.240187,
+        "post_var": 154.44897,
+        "var_ratio": 0.187611,
+        "delta_ratio": 0.812389,
+        "phi_dev_var": 0.430423,
+        "phi_dev_delta": 0.194355
+      }
+    ],
+    "best_var_layer": 34,
+    "best_var_phi_dev": 0.037125,
+    "stable_zone_ratio": 1.004645,
+    "stable_zone_phi_dev": 0.386611,
+    "stratum_spread": 154.112275
+  },
+  "strata": {
+    "prose": {
+      "layers": [
+        {
+          "layer": 0,
+          "var_ratio": 67.574739,
+          "phi_dev": 66.956705
+        },
+        {
+          "layer": 1,
+          "var_ratio": 10.091776,
+          "phi_dev": 9.473742
+        },
+        {
+          "layer": 2,
+          "var_ratio": 1.383042,
+          "phi_dev": 0.765008
+        },
+        {
+          "layer": 3,
+          "var_ratio": 1.091374,
+          "phi_dev": 0.47334
+        },
+        {
+          "layer": 4,
+          "var_ratio": 1.059095,
+          "phi_dev": 0.441061
+        },
+        {
+          "layer": 5,
+          "var_ratio": 0.992872,
+          "phi_dev": 0.374838
+        },
+        {
+          "layer": 6,
+          "var_ratio": 2072.584681,
+          "phi_dev": 2071.966647
+        },
+        {
+          "layer": 7,
+          "var_ratio": 1.000035,
+          "phi_dev": 0.382001
+        },
+        {
+          "layer": 8,
+          "var_ratio": 1.00004,
+          "phi_dev": 0.382006
+        },
+        {
+          "layer": 9,
+          "var_ratio": 1.000238,
+          "phi_dev": 0.382204
+        },
+        {
+          "layer": 10,
+          "var_ratio": 0.999525,
+          "phi_dev": 0.381491
+        },
+        {
+          "layer": 11,
+          "var_ratio": 0.999539,
+          "phi_dev": 0.381505
+        },
+        {
+          "layer": 12,
+          "var_ratio": 0.999791,
+          "phi_dev": 0.381757
+        },
+        {
+          "layer": 13,
+          "var_ratio": 1.000808,
+          "phi_dev": 0.382774
+        },
+        {
+          "layer": 14,
+          "var_ratio": 0.999947,
+          "phi_dev": 0.381913
+        },
+        {
+          "layer": 15,
+          "var_ratio": 1.000552,
+          "phi_dev": 0.382518
+        },
+        {
+          "layer": 16,
+          "var_ratio": 1.074147,
+          "phi_dev": 0.456113
+        },
+        {
+          "layer": 17,
+          "var_ratio": 0.999354,
+          "phi_dev": 0.381321
+        },
+        {
+          "layer": 18,
+          "var_ratio": 0.999652,
+          "phi_dev": 0.381618
+        },
+        {
+          "layer": 19,
+          "var_ratio": 0.998535,
+          "phi_dev": 0.380501
+        },
+        {
+          "layer": 20,
+          "var_ratio": 0.999556,
+          "phi_dev": 0.381522
+        },
+        {
+          "layer": 21,
+          "var_ratio": 0.999336,
+          "phi_dev": 0.381302
+        },
+        {
+          "layer": 22,
+          "var_ratio": 0.998727,
+          "phi_dev": 0.380693
+        },
+        {
+          "layer": 23,
+          "var_ratio": 0.997175,
+          "phi_dev": 0.379141
+        },
+        {
+          "layer": 24,
+          "var_ratio": 0.997277,
+          "phi_dev": 0.379243
+        },
+        {
+          "layer": 25,
+          "var_ratio": 0.99874,
+          "phi_dev": 0.380706
+        },
+        {
+          "layer": 26,
+          "var_ratio": 0.998223,
+          "phi_dev": 0.380189
+        },
+        {
+          "layer": 27,
+          "var_ratio": 0.998745,
+          "phi_dev": 0.380711
+        },
+        {
+          "layer": 28,
+          "var_ratio": 0.999149,
+          "phi_dev": 0.381115
+        },
+        {
+          "layer": 29,
+          "var_ratio": 0.996791,
+          "phi_dev": 0.378758
+        },
+        {
+          "layer": 30,
+          "var_ratio": 0.995007,
+          "phi_dev": 0.376973
+        },
+        {
+          "layer": 31,
+          "var_ratio": 0.995334,
+          "phi_dev": 0.3773
+        },
+        {
+          "layer": 32,
+          "var_ratio": 0.99727,
+          "phi_dev": 0.379236
+        },
+        {
+          "layer": 33,
+          "var_ratio": 0.990934,
+          "phi_dev": 0.3729
+        },
+        {
+          "layer": 34,
+          "var_ratio": 0.541467,
+          "phi_dev": 0.076567
+        },
+        {
+          "layer": 35,
+          "var_ratio": 0.232293,
+          "phi_dev": 0.385741
+        }
+      ],
+      "mean_loss": 2.887,
+      "ppl": 17.94
+    },
+    "compositional": {
+      "layers": [
+        {
+          "layer": 0,
+          "var_ratio": 61.770074,
+          "phi_dev": 61.15204
+        },
+        {
+          "layer": 1,
+          "var_ratio": 8.735633,
+          "phi_dev": 8.117599
+        },
+        {
+          "layer": 2,
+          "var_ratio": 1.392821,
+          "phi_dev": 0.774787
+        },
+        {
+          "layer": 3,
+          "var_ratio": 1.071307,
+          "phi_dev": 0.453273
+        },
+        {
+          "layer": 4,
+          "var_ratio": 1.072331,
+          "phi_dev": 0.454297
+        },
+        {
+          "layer": 5,
+          "var_ratio": 0.967771,
+          "phi_dev": 0.349737
+        },
+        {
+          "layer": 6,
+          "var_ratio": 3941.231087,
+          "phi_dev": 3940.613053
+        },
+        {
+          "layer": 7,
+          "var_ratio": 0.999954,
+          "phi_dev": 0.38192
+        },
+        {
+          "layer": 8,
+          "var_ratio": 0.999946,
+          "phi_dev": 0.381912
+        },
+        {
+          "layer": 9,
+          "var_ratio": 1.000254,
+          "phi_dev": 0.38222
+        },
+        {
+          "layer": 10,
+          "var_ratio": 0.999557,
+          "phi_dev": 0.381523
+        },
+        {
+          "layer": 11,
+          "var_ratio": 0.999618,
+          "phi_dev": 0.381584
+        },
+        {
+          "layer": 12,
+          "var_ratio": 0.999654,
+          "phi_dev": 0.38162
+        },
+        {
+          "layer": 13,
+          "var_ratio": 1.000823,
+          "phi_dev": 0.382789
+        },
+        {
+          "layer": 14,
+          "var_ratio": 0.999844,
+          "phi_dev": 0.38181
+        },
+        {
+          "layer": 15,
+          "var_ratio": 1.000689,
+          "phi_dev": 0.382655
+        },
+        {
+          "layer": 16,
+          "var_ratio": 1.067307,
+          "phi_dev": 0.449274
+        },
+        {
+          "layer": 17,
+          "var_ratio": 0.999615,
+          "phi_dev": 0.381581
+        },
+        {
+          "layer": 18,
+          "var_ratio": 0.999676,
+          "phi_dev": 0.381642
+        },
+        {
+          "layer": 19,
+          "var_ratio": 0.998786,
+          "phi_dev": 0.380752
+        },
+        {
+          "layer": 20,
+          "var_ratio": 0.999652,
+          "phi_dev": 0.381618
+        },
+        {
+          "layer": 21,
+          "var_ratio": 0.999494,
+          "phi_dev": 0.38146
+        },
+        {
+          "layer": 22,
+          "var_ratio": 0.998911,
+          "phi_dev": 0.380877
+        },
+        {
+          "layer": 23,
+          "var_ratio": 0.997274,
+          "phi_dev": 0.37924
+        },
+        {
+          "layer": 24,
+          "var_ratio": 0.99681,
+          "phi_dev": 0.378776
+        },
+        {
+          "layer": 25,
+          "var_ratio": 0.998616,
+          "phi_dev": 0.380582
+        },
+        {
+          "layer": 26,
+          "var_ratio": 0.998075,
+          "phi_dev": 0.380041
+        },
+        {
+          "layer": 27,
+          "var_ratio": 0.998021,
+          "phi_dev": 0.379987
+        },
+        {
+          "layer": 28,
+          "var_ratio": 0.998058,
+          "phi_dev": 0.380024
+        },
+        {
+          "layer": 29,
+          "var_ratio": 0.995857,
+          "phi_dev": 0.377823
+        },
+        {
+          "layer": 30,
+          "var_ratio": 0.993066,
+          "phi_dev": 0.375032
+        },
+        {
+          "layer": 31,
+          "var_ratio": 0.993218,
+          "phi_dev": 0.375184
+        },
+        {
+          "layer": 32,
+          "var_ratio": 0.995334,
+          "phi_dev": 0.3773
+        },
+        {
+          "layer": 33,
+          "var_ratio": 0.989464,
+          "phi_dev": 0.37143
+        },
+        {
+          "layer": 34,
+          "var_ratio": 0.5521,
+          "phi_dev": 0.065934
+        },
+        {
+          "layer": 35,
+          "var_ratio": 0.188621,
+          "phi_dev": 0.429413
+        }
+      ],
+      "mean_loss": 4.676,
+      "ppl": 107.34
+    },
+    "technical": {
+      "layers": [
+        {
+          "layer": 0,
+          "var_ratio": 62.72075,
+          "phi_dev": 62.102716
+        },
+        {
+          "layer": 1,
+          "var_ratio": 9.540394,
+          "phi_dev": 8.92236
+        },
+        {
+          "layer": 2,
+          "var_ratio": 1.353762,
+          "phi_dev": 0.735728
+        },
+        {
+          "layer": 3,
+          "var_ratio": 1.11228,
+          "phi_dev": 0.494246
+        },
+        {
+          "layer": 4,
+          "var_ratio": 1.125818,
+          "phi_dev": 0.507784
+        },
+        {
+          "layer": 5,
+          "var_ratio": 0.97729,
+          "phi_dev": 0.359256
+        },
+        {
+          "layer": 6,
+          "var_ratio": 3286.656363,
+          "phi_dev": 3286.038329
+        },
+        {
+          "layer": 7,
+          "var_ratio": 0.999928,
+          "phi_dev": 0.381894
+        },
+        {
+          "layer": 8,
+          "var_ratio": 0.9999,
+          "phi_dev": 0.381866
+        },
+        {
+          "layer": 9,
+          "var_ratio": 1.000197,
+          "phi_dev": 0.382163
+        },
+        {
+          "layer": 10,
+          "var_ratio": 0.999545,
+          "phi_dev": 0.381511
+        },
+        {
+          "layer": 11,
+          "var_ratio": 0.999606,
+          "phi_dev": 0.381572
+        },
+        {
+          "layer": 12,
+          "var_ratio": 0.999725,
+          "phi_dev": 0.381691
+        },
+        {
+          "layer": 13,
+          "var_ratio": 1.000623,
+          "phi_dev": 0.382589
+        },
+        {
+          "layer": 14,
+          "var_ratio": 0.999816,
+          "phi_dev": 0.381782
+        },
+        {
+          "layer": 15,
+          "var_ratio": 1.000428,
+          "phi_dev": 0.382394
+        },
+        {
+          "layer": 16,
+          "var_ratio": 1.060998,
+          "phi_dev": 0.442964
+        },
+        {
+          "layer": 17,
+          "var_ratio": 0.999632,
+          "phi_dev": 0.381598
+        },
+        {
+          "layer": 18,
+          "var_ratio": 0.999719,
+          "phi_dev": 0.381685
+        },
+        {
+          "layer": 19,
+          "var_ratio": 0.998651,
+          "phi_dev": 0.380617
+        },
+        {
+          "layer": 20,
+          "var_ratio": 0.9996,
+          "phi_dev": 0.381566
+        },
+        {
+          "layer": 21,
+          "var_ratio": 0.99947,
+          "phi_dev": 0.381436
+        },
+        {
+          "layer": 22,
+          "var_ratio": 0.999175,
+          "phi_dev": 0.381141
+        },
+        {
+          "layer": 23,
+          "var_ratio": 0.997941,
+          "phi_dev": 0.379907
+        },
+        {
+          "layer": 24,
+          "var_ratio": 0.997572,
+          "phi_dev": 0.379538
+        },
+        {
+          "layer": 25,
+          "var_ratio": 0.998913,
+          "phi_dev": 0.380879
+        },
+        {
+          "layer": 26,
+          "var_ratio": 0.998172,
+          "phi_dev": 0.380138
+        },
+        {
+          "layer": 27,
+          "var_ratio": 0.998854,
+          "phi_dev": 0.38082
+        },
+        {
+          "layer": 28,
+          "var_ratio": 0.998828,
+          "phi_dev": 0.380794
+        },
+        {
+          "layer": 29,
+          "var_ratio": 0.997959,
+          "phi_dev": 0.379925
+        },
+        {
+          "layer": 30,
+          "var_ratio": 0.996786,
+          "phi_dev": 0.378752
+        },
+        {
+          "layer": 31,
+          "var_ratio": 0.995899,
+          "phi_dev": 0.377865
+        },
+        {
+          "layer": 32,
+          "var_ratio": 0.997484,
+          "phi_dev": 0.37945
+        },
+        {
+          "layer": 33,
+          "var_ratio": 0.991647,
+          "phi_dev": 0.373613
+        },
+        {
+          "layer": 34,
+          "var_ratio": 0.587796,
+          "phi_dev": 0.030238
+        },
+        {
+          "layer": 35,
+          "var_ratio": 0.186522,
+          "phi_dev": 0.431512
+        }
+      ],
+      "mean_loss": 2.731,
+      "ppl": 15.35
+    },
+    "math": {
+      "layers": [
+        {
+          "layer": 0,
+          "var_ratio": 31.631206,
+          "phi_dev": 31.013172
+        },
+        {
+          "layer": 1,
+          "var_ratio": 12.251227,
+          "phi_dev": 11.633193
+        },
+        {
+          "layer": 2,
+          "var_ratio": 1.456631,
+          "phi_dev": 0.838597
+        },
+        {
+          "layer": 3,
+          "var_ratio": 1.131406,
+          "phi_dev": 0.513372
+        },
+        {
+          "layer": 4,
+          "var_ratio": 1.165931,
+          "phi_dev": 0.547897
+        },
+        {
+          "layer": 5,
+          "var_ratio": 1.015215,
+          "phi_dev": 0.397181
+        },
+        {
+          "layer": 6,
+          "var_ratio": 7654.176159,
+          "phi_dev": 7653.558125
+        },
+        {
+          "layer": 7,
+          "var_ratio": 0.999956,
+          "phi_dev": 0.381922
+        },
+        {
+          "layer": 8,
+          "var_ratio": 0.999909,
+          "phi_dev": 0.381875
+        },
+        {
+          "layer": 9,
+          "var_ratio": 1.000166,
+          "phi_dev": 0.382132
+        },
+        {
+          "layer": 10,
+          "var_ratio": 0.999722,
+          "phi_dev": 0.381688
+        },
+        {
+          "layer": 11,
+          "var_ratio": 0.99966,
+          "phi_dev": 0.381626
+        },
+        {
+          "layer": 12,
+          "var_ratio": 0.999661,
+          "phi_dev": 0.381627
+        },
+        {
+          "layer": 13,
+          "var_ratio": 1.000528,
+          "phi_dev": 0.382494
+        },
+        {
+          "layer": 14,
+          "var_ratio": 0.999668,
+          "phi_dev": 0.381634
+        },
+        {
+          "layer": 15,
+          "var_ratio": 1.000436,
+          "phi_dev": 0.382402
+        },
+        {
+          "layer": 16,
+          "var_ratio": 1.051052,
+          "phi_dev": 0.433018
+        },
+        {
+          "layer": 17,
+          "var_ratio": 0.999596,
+          "phi_dev": 0.381562
+        },
+        {
+          "layer": 18,
+          "var_ratio": 0.999864,
+          "phi_dev": 0.38183
+        },
+        {
+          "layer": 19,
+          "var_ratio": 0.998904,
+          "phi_dev": 0.38087
+        },
+        {
+          "layer": 20,
+          "var_ratio": 0.999562,
+          "phi_dev": 0.381528
+        },
+        {
+          "layer": 21,
+          "var_ratio": 0.999485,
+          "phi_dev": 0.381451
+        },
+        {
+          "layer": 22,
+          "var_ratio": 0.999412,
+          "phi_dev": 0.381378
+        },
+        {
+          "layer": 23,
+          "var_ratio": 0.998255,
+          "phi_dev": 0.380221
+        },
+        {
+          "layer": 24,
+          "var_ratio": 0.998297,
+          "phi_dev": 0.380263
+        },
+        {
+          "layer": 25,
+          "var_ratio": 0.999138,
+          "phi_dev": 0.381104
+        },
+        {
+          "layer": 26,
+          "var_ratio": 0.998787,
+          "phi_dev": 0.380753
+        },
+        {
+          "layer": 27,
+          "var_ratio": 0.998752,
+          "phi_dev": 0.380718
+        },
+        {
+          "layer": 28,
+          "var_ratio": 0.997496,
+          "phi_dev": 0.379462
+        },
+        {
+          "layer": 29,
+          "var_ratio": 0.997018,
+          "phi_dev": 0.378984
+        },
+        {
+          "layer": 30,
+          "var_ratio": 0.995729,
+          "phi_dev": 0.377695
+        },
+        {
+          "layer": 31,
+          "var_ratio": 0.995629,
+          "phi_dev": 0.377595
+        },
+        {
+          "layer": 32,
+          "var_ratio": 0.997595,
+          "phi_dev": 0.379561
+        },
+        {
+          "layer": 33,
+          "var_ratio": 0.992471,
+          "phi_dev": 0.374437
+        },
+        {
+          "layer": 34,
+          "var_ratio": 0.613396,
+          "phi_dev": 0.004638
+        },
+        {
+          "layer": 35,
+          "var_ratio": 0.169759,
+          "phi_dev": 0.448275
+        }
+      ],
+      "mean_loss": 1.8489,
+      "ppl": 6.35
+    }
+  }
+}
