@@ -623,6 +623,9 @@ class VSMLMV6(nn.Module):
 
     def count_parameters(self) -> dict[str, int]:
         # MLX parameters() returns nested dict; flatten to count
+        # NOTE: ternary_weight is now packed uint8 [N, K//4].
+        # tree.size returns N*(K//4) (packed), not N*K (logical).
+        # We use module.in_features * module.out_features for the logical count.
         def _count_leaves(tree):
             if isinstance(tree, mx.array):
                 return tree.size
@@ -632,15 +635,27 @@ class VSMLMV6(nn.Module):
                 return sum(_count_leaves(v) for v in tree)
             return 0
 
-        total = _count_leaves(self.parameters())
-        total_ternary = 0
+        # Packed parameter count from the pytree (ternary_weight counts as N*K//4)
+        total_packed = _count_leaves(self.parameters())
+
+        # Logical ternary weight count and gamma count
+        total_ternary = 0   # logical: out_features * in_features
         total_gamma = 0
+        total_packed_ternary = 0  # physical bytes in pytree
         for path, module in self.named_modules():
             if isinstance(module, TernaryLinear):
-                total_ternary += module.ternary_weight.size
+                logical = module.out_features * module.in_features
+                total_ternary += logical
                 total_gamma += module.gamma.size
+                total_packed_ternary += module.ternary_weight.size  # = logical // 4
 
-        total_continuous = total - total_ternary
+        # Continuous parameter count = total pytree size minus packed ternary bytes
+        # (packed ternary bytes appear in the pytree but represent logical/4 params)
+        total_continuous = total_packed - total_packed_ternary
+
+        # Effective total for reporting: logical ternary + continuous
+        total = total_ternary + total_continuous
+
         total_bits = total_ternary * 2 + total_continuous * 16
         effective_bits = total_bits / max(total, 1)
 

@@ -27,7 +27,54 @@ from typing import Any
 import mlx.core as mx
 import mlx.nn as nn
 
-from verbum.v6.kernels import ternary_matmul, ternary_matmul_t
+from verbum.v6.kernels import (
+    ternary_matmul,
+    ternary_matmul_t,
+    ternary_matmul_packed,
+    ternary_matmul_t_packed,
+)
+
+
+# ══════════════════════════════════════════════════════════════════════
+# Pack / unpack utilities
+# ══════════════════════════════════════════════════════════════════════
+
+
+def pack_ternary(w: mx.array) -> mx.array:
+    """Pack int8 {-1, 0, +1} weights [N, K] → uint8 [N, K//4].
+
+    Encoding:  -1 → 0b00, 0 → 0b01, +1 → 0b10   (0b11 unused)
+    Positions: bits {7:6, 5:4, 3:2, 1:0} for columns {4k, 4k+1, 4k+2, 4k+3}
+    Decode:    ((packed >> shift) & 0x3) - 1
+
+    K must be divisible by 4.
+    """
+    assert w.shape[-1] % 4 == 0, f"K={w.shape[-1]} must be divisible by 4"
+    # Shift from {-1,0,+1} to {0,1,2} then cast to uint8
+    w_shifted = (w.astype(mx.int16) + 1).astype(mx.uint8)
+    packed = (
+        (w_shifted[:, 0::4] << 6) |
+        (w_shifted[:, 1::4] << 4) |
+        (w_shifted[:, 2::4] << 2) |
+        w_shifted[:, 3::4]
+    )
+    return packed.astype(mx.uint8)
+
+
+def unpack_ternary(packed: mx.array, K: int) -> mx.array:
+    """Unpack uint8 [N, K//4] → int8 {-1, 0, +1} [N, K].
+
+    Inverse of pack_ternary. K is the logical (unpacked) weight dimension.
+    """
+    # Extract each of the 4 sub-columns and decode: ((bits >> shift) & 0x3) - 1
+    w0 = ((packed >> 6) & 0x3).astype(mx.int16) - 1  # column 4k
+    w1 = ((packed >> 4) & 0x3).astype(mx.int16) - 1  # column 4k+1
+    w2 = ((packed >> 2) & 0x3).astype(mx.int16) - 1  # column 4k+2
+    w3 = (packed & 0x3).astype(mx.int16) - 1          # column 4k+3
+    # Stack along a new trailing axis → [N, K//4, 4] then reshape → [N, K]
+    N = packed.shape[0]
+    stacked = mx.stack([w0, w1, w2, w3], axis=-1)  # [N, K//4, 4]
+    return stacked.reshape(N, K).astype(mx.int8)
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -36,12 +83,13 @@ from verbum.v6.kernels import ternary_matmul, ternary_matmul_t
 
 
 def _ternary_init(out_features: int, in_features: int) -> tuple[mx.array, mx.array]:
-    """Initialize ternary weights from Kaiming normal → quantize.
+    """Initialize ternary weights from Kaiming normal → quantize → pack.
 
     Returns:
-        w_q:   (out_features, in_features) int8 ternary {-1, 0, +1}
-        gamma: (out_features,) float32 per-channel scale
+        w_packed: (out_features, in_features//4) uint8 packed ternary weights
+        gamma:    (out_features,) float32 per-channel scale
     """
+    assert in_features % 4 == 0, f"in_features={in_features} must be divisible by 4 for packing"
     # Kaiming normal: std = sqrt(2 / in_features)
     std = math.sqrt(2.0 / in_features)
     w_init = mx.random.normal((out_features, in_features)) * std
@@ -51,7 +99,10 @@ def _ternary_init(out_features: int, in_features: int) -> tuple[mx.array, mx.arr
     w_scaled = w_init / (mx.expand_dims(gamma, axis=-1) + 1e-8)
     w_q = mx.clip(mx.round(w_scaled), -1, 1).astype(mx.int8)
 
-    return w_q, gamma
+    # Pack 4 weights per byte: int8 [N, K] → uint8 [N, K//4]
+    w_packed = pack_ternary(w_q)
+
+    return w_packed, gamma
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -60,41 +111,49 @@ def _ternary_init(out_features: int, in_features: int) -> tuple[mx.array, mx.arr
 
 
 @mx.custom_function
-def _ternary_linear_fwd(x: mx.array, w: mx.array, gamma: mx.array) -> mx.array:
-    """Forward: y = ternary_matmul(x, w) * gamma
+def _ternary_linear_fwd(x: mx.array, w_packed: mx.array, gamma: mx.array) -> mx.array:
+    """Forward: y = ternary_matmul_packed(x, w_packed, K) * gamma
 
-    Custom Metal kernel does add/sub only — no fp32 multiplies
-    in the matmul. Gamma scaling is a cheap pointwise multiply.
+    Packed Metal kernel unpacks 4 weights per byte on-the-fly, doing
+    add/sub only — no fp32 multiplies in the matmul. Gamma scaling is
+    a cheap pointwise multiply.
+
+    w_packed shape: [N, K//4] uint8. K recovered as w_packed.shape[1] * 4.
     """
-    y_pre = ternary_matmul(x, w)
+    K = w_packed.shape[1] * 4
+    y_pre = ternary_matmul_packed(x, w_packed, K)
     return y_pre * gamma
 
 
 @_ternary_linear_fwd.vjp
 def _ternary_linear_vjp(primals, cotangent, output):
-    """Backward: STE for ternary weights, ternary matmul for grad_x.
+    """Backward: STE for ternary weights, packed ternary matmul for grad_x.
 
-    ∂L/∂x:     ternary_matmul_t(grad_out * gamma, w)  — also add/sub on Metal
-    ∂L/∂w:     (grad_out * gamma).T @ x                — dense matmul → flip accumulator
-    ∂L/∂gamma: sum(grad_out * y_pre, reduce_dims)      — per-channel
+    ∂L/∂x:     ternary_matmul_t_packed(grad_out * gamma, w_packed, K)  — packed Metal kernel
+    ∂L/∂w:     (grad_out * gamma).T @ x  — dense matmul → flip accumulator (unchanged)
+    ∂L/∂gamma: sum(grad_out * y_pre, reduce_dims)  — per-channel (recomputed)
+
+    NOTE: grad_w is still dense float32 [N, K] — the flip accumulator is
+    not packed. Only ternary_weight itself is stored packed.
     """
-    x, w, gamma = primals
+    x, w_packed, gamma = primals
     grad_out = cotangent
+    K = w_packed.shape[1] * 4
 
     # Scale grad_out by gamma once (used for both grad_x and grad_w)
     grad_scaled = grad_out * gamma
 
-    # ∂L/∂x — ternary matmul backward (also add/sub on Metal)
-    grad_x = ternary_matmul_t(grad_scaled, w)
+    # ∂L/∂x — packed ternary matmul backward (add/sub on Metal)
+    grad_x = ternary_matmul_t_packed(grad_scaled, w_packed, K)
 
-    # ∂L/∂w — dense matmul for flip accumulator
+    # ∂L/∂w — dense matmul for flip accumulator (does NOT use w at all)
     # Reshape to 2D for matmul: (*, N) x (*, K) → (N, K)
     gs_2d = grad_scaled.reshape(-1, grad_scaled.shape[-1])
     x_2d = x.reshape(-1, x.shape[-1])
     grad_w = gs_2d.T @ x_2d
 
-    # ∂L/∂gamma — per-channel: recompute y_pre (cheaper than saving)
-    y_pre = ternary_matmul(x, w)
+    # ∂L/∂gamma — per-channel: recompute y_pre with packed kernel
+    y_pre = ternary_matmul_packed(x, w_packed, K)
     # Sum over all dims except last (output features)
     reduce_axes = tuple(range(grad_out.ndim - 1))
     grad_gamma = (grad_out * y_pre).sum(axis=reduce_axes)
@@ -132,18 +191,19 @@ class TernaryLinear(nn.Module):
         if pre_norm:
             self.norm = nn.RMSNorm(in_features)
 
-        # Initialize: Kaiming → quantize → int8 weight + gamma
-        w_q, gamma = _ternary_init(out_features, in_features)
-        self.ternary_weight = w_q
+        # Initialize: Kaiming → quantize → pack into uint8
+        # ternary_weight: [out_features, in_features//4] uint8  (4× memory reduction)
+        w_packed, gamma = _ternary_init(out_features, in_features)
+        self.ternary_weight = w_packed
         self.gamma = gamma
 
-        # Flip accumulator — tracks gradient pressure per weight
+        # Flip accumulator — tracks gradient pressure per weight.
+        # Stays unpacked int8 [out_features, in_features]: per-weight vote counter.
         # Not a parameter (not trained by optimizer), but needs to persist.
         # Int8 with saturation at ±127: each micro-batch votes ±1, so
         # |accum| ≤ N_votes. Saturating at 127 means 127+ consecutive
-        # votes in one direction = overwhelming consensus. Cuts training
-        # memory from 5 bytes/weight (int8 + fp32) to 2 bytes/weight.
-        self._flip_accum = mx.zeros(w_q.shape, dtype=mx.int8)
+        # votes in one direction = overwhelming consensus.
+        self._flip_accum = mx.zeros((out_features, in_features), dtype=mx.int8)
 
     def __call__(self, x: mx.array) -> mx.array:
         if self.pre_norm:
@@ -151,9 +211,12 @@ class TernaryLinear(nn.Module):
         return _ternary_linear_fwd(x, self.ternary_weight, self.gamma)
 
     def ternary_stats(self) -> dict[str, float]:
-        """Report ternary weight and gamma statistics."""
-        w = self.ternary_weight
-        total = w.size
+        """Report ternary weight and gamma statistics.
+
+        Unpacks the packed uint8 weights before computing per-weight stats.
+        """
+        w = unpack_ternary(self.ternary_weight, self.in_features)
+        total = w.size  # = out_features * in_features (logical size)
         return {
             "sparsity": (w == 0).sum().item() / total,
             "pos_frac": (w == 1).sum().item() / total,
@@ -225,18 +288,27 @@ def zero_ternary_grads(model: nn.Module, grads: dict) -> dict:
 
 
 def restore_ternary(model: nn.Module) -> None:
-    """Re-cast any ternary weights back to int8 after optimizer update.
+    """Re-cast any ternary weights back to uint8 after optimizer update.
 
-    The optimizer may cast int8 weights to float during its update step.
-    This restores them to int8 (rounding to nearest integer, clamping to
-    {-1, 0, +1}). Call after every optimizer.update().
+    The optimizer may cast uint8 packed weights to float during its update
+    step. Since the packed weights should never be touched by the optimizer
+    (they are uint8 and the gradient is zeroed), this is a safety net.
+
+    If the optimizer somehow updated a packed weight (float cast), we
+    re-pack from the accumulator direction as a safe default by simply
+    clamping to valid uint8 range and casting back.  In practice,
+    zero_ternary_grads() prevents this from ever happening.
+
+    Call after every optimizer.update().
     """
     def _walk(mod):
         if isinstance(mod, TernaryLinear):
-            if mod.ternary_weight.dtype != mx.int8:
+            if mod.ternary_weight.dtype != mx.uint8:
+                # Optimizer touched the packed weight — re-clamp and recast.
+                # Values in [0, 255] map directly to valid uint8 bytes.
                 mod.ternary_weight = mx.clip(
-                    mx.round(mod.ternary_weight), -1, 1
-                ).astype(mx.int8)
+                    mx.round(mod.ternary_weight), 0, 255
+                ).astype(mx.uint8)
         if isinstance(mod, nn.Module):
             for name, child in mod.children().items():
                 if isinstance(child, nn.Module):
@@ -464,7 +536,8 @@ def apply_flips(model: nn.Module, threshold: int = 50, max_flip_pct: float = 0.0
     candidates = []  # [(module, accum_abs_flat)]
     total_ternary = 0
     for _, module in _walk_ternary_modules(model):
-        total_ternary += module.ternary_weight.size
+        # Use logical weight count (in_features × out_features), not packed size
+        total_ternary += module.out_features * module.in_features
         accum_abs = mx.abs(module._flip_accum.astype(mx.int16))
         candidates.append((module, accum_abs))
 
@@ -503,10 +576,14 @@ def apply_flips(model: nn.Module, threshold: int = 50, max_flip_pct: float = 0.0
 
         if n_flipped > 0:
             direction = mx.sign(module._flip_accum.astype(mx.int16)).astype(mx.int8)
-            current = module.ternary_weight.astype(mx.int16)
-            new_vals = mx.clip(current + direction.astype(mx.int16), -1, 1).astype(mx.int8)
 
-            module.ternary_weight = mx.where(mask, new_vals, module.ternary_weight)
+            # Unpack → flip on unpacked int8 → repack
+            w_int8 = unpack_ternary(module.ternary_weight, module.in_features)
+            current = w_int8.astype(mx.int16)
+            new_vals = mx.clip(current + direction.astype(mx.int16), -1, 1).astype(mx.int8)
+            updated = mx.where(mask, new_vals, w_int8)
+
+            module.ternary_weight = pack_ternary(updated)
             module._flip_accum = mx.where(mask, mx.zeros_like(module._flip_accum), module._flip_accum)
 
             mutated.extend([module.ternary_weight, module._flip_accum])
@@ -594,9 +671,12 @@ def apply_flips_per_group(
             n = mask.sum().item()
             if n > 0:
                 direction = mx.sign(mod._flip_accum.astype(mx.int16)).astype(mx.int8)
-                current = mod.ternary_weight.astype(mx.int16)
+                # Unpack → flip on unpacked int8 → repack
+                w_int8 = unpack_ternary(mod.ternary_weight, mod.in_features)
+                current = w_int8.astype(mx.int16)
                 new_vals = mx.clip(current + direction.astype(mx.int16), -1, 1).astype(mx.int8)
-                mod.ternary_weight = mx.where(mask, new_vals, mod.ternary_weight)
+                updated = mx.where(mask, new_vals, w_int8)
+                mod.ternary_weight = pack_ternary(updated)
                 mod._flip_accum = mx.where(mask, mx.zeros_like(mod._flip_accum), mod._flip_accum)
                 mutated.extend([mod.ternary_weight, mod._flip_accum])
                 n_flipped += int(n)
