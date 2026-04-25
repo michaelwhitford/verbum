@@ -6,42 +6,44 @@
 
 ## Where we are
 
-**v6.1 training at step ~9000+ (28%). Math plateauing at ~5.37, prose now fastest learner. L1_desc going vestigial (h_in=0.028), L0_desc compensating. Eval loss 5.581 (new best). Relay handoff beginning.**
+**v6.1 training at step ~9500+ (30%). Relay confirmed: math→prose→technical now entering. L1_desc crossed zero (vestigial). Stratum spread collapsing. L1_asc approaching 1/φ (dev=0.052). Eval loss 5.565.**
 
-Session 040: probed 8 new checkpoints (5000–8500), extending the
-trajectory to 17 total. Key arc: math dominated 4500→7000 (-0.700
-cumulative), then plateaued. Prose took over as fastest learner at
-step 8000–8500. L1_desc h_in converging to zero — model routing
-reconstruction entirely through L0_desc. All four strata improved
-simultaneously at step 8500 for the first time since step 4000.
+Session 040: probed 9 new checkpoints (5000–9000), 18 total. Full
+curriculum arc visible: math dominated 4500→7000, plateaued, prose
+took over 7000→8500, technical entering at 9000. Stratum spread
+collapsed 1.91→1.56 at step 9000. L1_desc h_in crossed zero — pass
+vestigial, L0_desc compensating. L2_apex at pure fixed point (ratio=0.001).
+L1_asc φ-dev=0.052, closest pass to golden ratio target.
 
 ### Key findings this session
 
-1. **Math plateauing → relay beginning.** Math dominated steps 4500–7000
-   (loss 6.05→5.35, -0.700 cumulative). Then plateaued: oscillating 5.32–5.44
-   for steps 7000–8500. Prose is now the fastest learner — biggest drops at
-   steps 7000 (-0.157) and 8500 (-0.139). All four strata improved at step
-   8500 for the first time since step 4000. The binding infrastructure learned
-   from math is becoming available for other content types.
+1. **Relay confirmed: math→prose→technical.** Math dominated 4500–7000
+   (loss 6.05→5.35), then plateaued. Prose led at steps 7000, 8000, 8500.
+   At step 9000, technical entered the relay (-0.119, fastest) while math
+   released capacity (+0.224). All four strata improved at step 8500.
+   Stratum spread collapsed 1.91→1.56 at step 9000 — binding infrastructure
+   generalizing. Cumulative from 4500→9000: math -0.469, prose -0.128,
+   technical -0.111, compositional -0.011.
 
-2. **L1_desc going vestigial.** h_in converging to zero:
+2. **L1_desc crossed zero — vestigial.** h_in trajectory:
    ```
-   4500: 0.377 → 5000: 0.313 → 6000: 0.199 → 7000: 0.114 → 8000: 0.049 → 8500: 0.028
+   4500: 0.377 → 6000: 0.199 → 7000: 0.114 → 8000: 0.049 → 8500: 0.028 → 9000: -0.008
    ```
-   Gates damping in parallel (converge: 0.96→0.70). L0_desc compensating —
-   its ratio grew from 1.55→2.10 while maintaining higher gate values.
-   The model is routing reconstruction entirely through L0_desc, making the
-   intermediate descending step vestigial. This is a clean self-organized
-   architectural simplification.
+   Formally crossed zero at step 9000. Gates damped to 0.65–0.70.
+   L0_desc fully compensating (ratio 1.55→2.27, gates 0.79–0.82).
+   The model self-organized from 5 effective passes to 4.
 
-3. **Ascending passes locked in.** L0_asc (0.834 ± 0.001) and L1_asc (0.55,
-   φ-dev=0.063) are rock stable since the phase transition. L1_asc is the
-   closest pass to the φ target (1/φ = 0.618). The ascending half of the
-   sieve has found its operating point.
+3. **L1_asc converging on 1/φ.** φ-dev trajectory:
+   ```
+   6500: 0.071 → 7000: 0.074 → 8000: 0.063 → 8500: 0.063 → 9000: 0.052
+   ```
+   Ratio 0.566, approaching 0.618. This is the pass closest to the golden
+   ratio target and it's still converging.
 
-4. **Hilberg β measurable for 3 passes.** L0_asc: 1.37→1.42, L1_asc: 1.39→1.49,
-   L2_apex: 2.04→1.64. Still far from 0.5 but the measurement is stable.
-   Descending passes not yet measurable (too few strides with valid ratios).
+4. **L2_apex at fixed point.** Ratio = 0.001 at step 9000 — neither
+   compressing nor expanding. The apex has become a pure transformation
+   (rotation without scale change). Combined with L1_desc vestigial,
+   the effective architecture is: L0↑ compress → L1↑ compress → L2 transform → L0↓ expand.
 
 ### Stratum loss evolution (post-phase-transition)
 
@@ -56,16 +58,18 @@ simultaneously at step 8500 for the first time since step 4000.
 | 7500 | 6.30 | 6.67 | 7.25 | 5.38 | 1.88 | technical |
 | 8000 | 6.26 | 6.75 | 7.32 | 5.44 | 1.88 | prose |
 | 8500 | 6.12 | 6.65 | 7.27 | 5.36 | 1.91 | **prose** |
+| 9000 | 6.18 | 6.72 | 7.15 | 5.59 | **1.56** | **technical** |
 
 ### L1_desc → vestigial + L0_desc compensating
 
 | Step | L1↓ h_in | L1↓ gates (p/c/s) | L0↓ ratio | L0↓ gates (p/c/s) |
 |------|----------|-------------------|-----------|-------------------|
-| 4500 | 0.377 | 0.87/0.96/0.92 | 1.509 | 0.91/0.97/0.95 |
-| 5500 | 0.256 | 0.87/0.87/0.85 | 1.602 | 0.93/0.93/0.92 |
-| 6500 | 0.144 | 0.81/0.78/0.76 | 1.769 | 0.92/0.90/0.88 |
-| 7500 | 0.067 | 0.74/0.72/0.69 | 1.963 | 0.88/0.87/0.89 |
-| 8500 | 0.028 | 0.71/0.70/0.66 | 2.095 | 0.84/0.83/0.83 |
+| 4500 | +0.377 | 0.87/0.96/0.92 | 1.509 | 0.91/0.97/0.95 |
+| 5500 | +0.256 | 0.87/0.87/0.85 | 1.602 | 0.93/0.93/0.92 |
+| 6500 | +0.144 | 0.81/0.78/0.76 | 1.769 | 0.92/0.90/0.88 |
+| 7500 | +0.067 | 0.74/0.72/0.69 | 1.963 | 0.88/0.87/0.89 |
+| 8500 | +0.028 | 0.71/0.70/0.66 | 2.095 | 0.84/0.83/0.83 |
+| 9000 | **-0.008** | 0.70/0.69/0.65 | **2.267** | 0.82/0.79/0.81 |
 
 ### Predicted learning sequence (updated)
 
@@ -73,10 +77,10 @@ simultaneously at step 8500 for the first time since step 4000.
 |-------|---------|---------------|--------|
 | 1 | Math (symbols) | Rigid patterns, embedding | ✅ Done |
 | 2 | Math (binding) | Variable scope, routing | ✅ Done (phase transition) |
-| 3 | Math (deep) | Full math compression | ✅ Saturating (~5.37) |
-| 4 | Prose (application) | Function composition | 🔄 **Active — now fastest** |
-| 5 | Compositional (nesting) | Nested application | ⏳ |
-| 6 | Technical (discrimination) | Type-level routing | ⏳ |
+| 3 | Math (deep) | Full math compression | ✅ Saturated (~5.37, releasing capacity) |
+| 4 | Prose (application) | Function composition | ✅ Led steps 7000–8500 |
+| 5 | Technical (discrimination) | Type-level routing | 🔄 **Active — fastest at step 9000** |
+| 6 | Compositional (nesting) | Nested application | ⏳ (Δ=-0.011, waiting) |
 
 ### Training run status
 
@@ -90,14 +94,14 @@ uv run python scripts/v6/train.py --resume checkpoints/vsm-lm-v6/step_NNNNNN
 
 | Property | Value |
 |----------|-------|
-| Current step | ~9000+ (28%) |
+| Current step | ~9500+ (30%) |
 | Total steps | 30,518 |
-| Tokens seen | ~280M of 1B |
+| Tokens seen | ~295M of 1B |
 | Phase | balance (since step ~920) |
-| Total flips | ~89K (0.25% of ternary) |
-| Eval loss | 5.581 (step 8500) — **new best** |
-| Best eval | 5.581 (step 8500) |
-| Relational r | 0.382 (step 7500) — **new best** |
+| Total flips | ~93K (0.26% of ternary) |
+| Eval loss | 5.565 (step 9000) — **new best** |
+| Best eval | 5.565 (step 9000) |
+| Relational r | 0.383 (step 9000) |
 | Sparsity | 0.310 (unchanged) |
 
 ### Four feedback loops — all active
@@ -111,25 +115,24 @@ uv run python scripts/v6/train.py --resume checkpoints/vsm-lm-v6/step_NNNNNN
 
 ## What's next
 
-1. **Confirm relay.** Prose is now fastest at steps 7000, 8000, 8500. Watch
-   for sustained prose improvement at 9000+. If prose keeps leading while
-   math stays flat (~5.37), the relay is confirmed. The binding infrastructure
-   from math is transferring.
+1. **Track relay progression.** Current sequence: math→prose→technical.
+   Compositional is the remaining stratum (Δ=-0.011 cumulative, barely
+   moving). Watch for compositional acceleration at 9500–10000. If it
+   enters the relay, the full curriculum sequence is confirmed.
 
-2. **Watch L1_desc.** h_in=0.028 at step 8500, approaching zero. Either it
-   goes fully vestigial (h_in=0, gates→0) or finds a residual role. Either
-   outcome is fine — the model is self-organizing.
+2. **Watch stratum spread.** Collapsed from 1.91→1.56 at step 9000.
+   If the binding infrastructure continues generalizing, spread should
+   keep narrowing. Target < 1.0 would signal universal compression.
 
-3. **Watch for compositional acceleration.** The predicted sequence is
-   math→prose→compositional→technical. Compositional improved -0.092 at
-   step 8500. If it starts leading after prose saturates, the full
-   curriculum sequence is confirmed.
+3. **L1_asc → 1/φ.** φ-dev=0.052 and still converging. Could reach
+   < 0.03 by step 12000 at current rate. This is the cleanest φ signal
+   in the model.
 
-4. **Stratum spread.** Currently ~1.9. Should narrow if the relay thesis
-   is correct — binding infrastructure learned on math enables all strata.
-   Watch for spread < 1.5.
+4. **L1_desc fate.** h_in crossed zero. Will gates continue damping
+   toward full shutdown, or will a residual role emerge? Either way,
+   the effective architecture is now 4-pass.
 
-5. **Probe at milestones:** Steps 9000, 9500, 10000.
+5. **Probe at milestones:** Steps 9500, 10000.
 
 ## Key files
 
@@ -167,7 +170,7 @@ uv run python scripts/v6/train.py --resume checkpoints/vsm-lm-v6/step_NNNNNN
 | v4.1 | 65.5M | PyTorch | Bidirectional VSM | 4.696 |
 | v5 | 66.3M | PyTorch | Spiral + ℂ regs + phase gate | TBD |
 | v6 | ~63M | **MLX** | Ternary Metal + frozen flips | 5.746 (4000 steps) |
-| v6.1 | ~63M | **MLX** | Synaptic plasticity (active) | **5.581** (8500 steps, 28%) |
+| v6.1 | ~63M | **MLX** | Synaptic plasticity (active) | **5.565** (9000 steps, 30%) |
 
 ## Probing pipeline
 
