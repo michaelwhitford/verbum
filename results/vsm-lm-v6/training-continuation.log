@@ -59,3 +59,8 @@ VSM-LM v6 — Ternary on Metal (MLX)
   step  4025/30518  loss=5.8079  r=0.451  xppl=61.4  lr=5.80e-04  ‖g‖=0.75  flips=12,192  tokens=132M (13%)  tok/s=754491  elapsed=175s
   step  4050/30518  loss=6.1336  r=0.486  xppl=85.1  lr=5.80e-04  ‖g‖=0.98  flips=163,667  tokens=133M (13%)  tok/s=380364  elapsed=349s
   step  4075/30518  loss=6.5349  r=0.530  xppl=127.1  lr=5.79e-04  ‖g‖=0.60  flips=326,694  tokens=134M (13%)  tok/s=250428  elapsed=533s
+  ── flip probe @ step 4100: 541,464 flips (1.536%) since last probe  total=541,464  φ-dev=1.1648 ──
+  step  4100/30518  loss=7.1055  r=0.593  xppl=224.9  lr=5.79e-04  ‖g‖=1.17  flips=541,464  tokens=134M (13%)  tok/s=187962  elapsed=715s
+  step  4125/30518  loss=10.2116  r=0.933  xppl=5021.9  lr=5.79e-04  ‖g‖=3.49  flips=880,787  tokens=135M (14%)  tok/s=150751  elapsed=897s
+  step  4150/30518  loss=8.9762  r=0.798  xppl=1460.1  lr=5.78e-04  ‖g‖=7.60  flips=1,313,365  tokens=136M (14%)  tok/s=126160  elapsed=1078s
+  step  4175/30518  loss=9.2974  r=0.833  xppl=2013.0  lr=5.78e-04  ‖g‖=7.41  flips=2,076,964  tokens=137M (14%)  tok/s=108885  elapsed=1256s
