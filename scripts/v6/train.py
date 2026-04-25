@@ -655,9 +655,9 @@ PHASE_BALANCE = "balance"
 PHASE_REFINE = "refine"
 
 PHASE_CONFIG = {
-    PHASE_EXPLORE: {"phi_lambda": 0.0, "flip_max_scale": 2.0, "consensus_scale": 0.5},
-    PHASE_BALANCE: {"phi_lambda": 0.01, "flip_max_scale": 1.0, "consensus_scale": 1.0},
-    PHASE_REFINE: {"phi_lambda": 0.1, "flip_max_scale": 0.3, "consensus_scale": 2.0},
+    PHASE_EXPLORE: {"phi_lambda": 0.0, "flip_max_scale": 2.0},
+    PHASE_BALANCE: {"phi_lambda": 0.01, "flip_max_scale": 1.0},
+    PHASE_REFINE: {"phi_lambda": 0.1, "flip_max_scale": 0.3},
 }
 
 PHASE_HYSTERESIS = 100  # steps below/above threshold before transition
@@ -1099,21 +1099,24 @@ def main():
                 f"\n  ══ PHASE TRANSITION → {current_phase.upper()} "
                 f"(r_ema={r_ema:.3f}, φ-λ={pcfg['phi_lambda']}, "
                 f"flip_scale={pcfg['flip_max_scale']}, "
-                f"consensus_scale={pcfg['consensus_scale']}) ══\n",
+                f"consensus=fixed@{FLIP_CONSENSUS}) ══\n",
                 flush=True,
             )
 
         # ── Flip execution with relational modulation ──
-        if step % FLIP_INTERVAL == 0:
-            # Compose: phase base × r_scale
+        if step % FLIP_INTERVAL == 0 and step >= WARMUP_STEPS:
+            # No flips during LR warmup — Adam needs stable moments before
+            # topology changes are meaningful. Gradient signs during warmup
+            # reflect initialization noise, not learned structure.
+            #
+            # r modulates the CAP (how many flip), not the THRESHOLD (how
+            # strong the evidence). 75% consensus is the bar in all phases.
             pcfg = PHASE_CONFIG[current_phase]
             r_scale = adaptive_flip_scale(r_ema)
             effective_max_pct = FLIP_MAX_PCT * pcfg["flip_max_scale"] * r_scale
-            effective_consensus = FLIP_CONSENSUS * pcfg["consensus_scale"] / r_scale
-            effective_consensus = int(max(10, min(127, effective_consensus)))
             effective_max_pct = max(0.000001, min(0.001, effective_max_pct))
 
-            n_flipped = apply_flips(model, threshold=effective_consensus, max_flip_pct=effective_max_pct)
+            n_flipped = apply_flips(model, threshold=FLIP_CONSENSUS, max_flip_pct=effective_max_pct)
             total_flips += n_flipped
             flips_since_last_probe += n_flipped
 
@@ -1148,7 +1151,7 @@ def main():
                     f"({pct_flipped:.3f}%) since last probe  "
                     f"total={total_flips:,}  {phi_msg}  "
                     f"r_ema={r_ema:.3f}  phase={current_phase}  "
-                    f"eff_con={effective_consensus}  eff_pct={effective_max_pct:.4f} ──",
+                    f"consensus={FLIP_CONSENSUS}  eff_pct={effective_max_pct:.6f} ──",
                     flush=True,
                 )
                 if cached_group_factors:
