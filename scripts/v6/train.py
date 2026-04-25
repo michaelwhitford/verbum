@@ -179,12 +179,112 @@ class ShardedDataLoader:
 # ══════════════════════════════════════════════════════════════════════
 
 
-def loss_fn(model, x, y):
-    """Compute combined loss. Used with nn.value_and_grad.
+# ── Per-sequence stratum weighting (Loop 4 application) ──────────
+# Module-level state for stratum-weighted loss. Set by the training
+# loop before each micro-batch. loss_fn reads it as a non-differentiable
+# routing signal — only the loss scaling flows through the gradient.
+_batch_seq_weights: mx.array | None = None
 
-    Returns ce_loss + PHI_LAMBDA * phi_loss (when phi_lambda > 0).
+
+def classify_sequence(text: str) -> str:
+    """Heuristic stratum classifier for a text sequence.
+
+    Classifies based on character/pattern presence:
+      math:          λ, ∀, ∈, ∃, →, ≥, ², P(, ∫, Σ, or heavy digit density
+      technical:     gradient, softmax, attention, layer, backprop, embedding, etc.
+      compositional: relative clauses (who/which/that + verb patterns),
+                     nested subordination, center-embedding markers
+      prose:         default (most natural language)
+
+    Noisy but cheap. Called once per sequence (B=2), negligible vs forward pass.
     """
-    _, ce_loss, phi_loss = model(x, y)
+    # Math: symbolic density
+    math_chars = set("λ∀∈∃→≥≤²³∫Σ∏∂∇⊗⊕∧∨¬↔⇒∞ℝℤℕℂ×÷±≈≠")
+    math_hits = sum(1 for c in text if c in math_chars)
+    digit_frac = sum(1 for c in text if c.isdigit()) / max(len(text), 1)
+    if math_hits > 3 or digit_frac > 0.15:
+        return "math"
+
+    text_lower = text.lower()
+
+    # Technical: ML/CS terminology
+    tech_terms = [
+        "gradient", "softmax", "attention", "embedding", "backprop",
+        "layer norm", "learning rate", "optimizer", "batch size",
+        "loss function", "neural network", "transformer", "convolution",
+        "activation", "dropout", "weight decay", "fine-tun",
+        "tokeniz", "logit", "cross entropy", "perplexity",
+    ]
+    tech_hits = sum(1 for t in tech_terms if t in text_lower)
+    if tech_hits >= 2:
+        return "technical"
+
+    # Compositional: syntactic complexity markers
+    comp_markers = [
+        " who ", " whom ", " which ", " that ",
+        " whether ", " although ", " whereas ",
+        " the man who ", " the dog that ", " the cat which ",
+        " if every ", " no one who ", " everyone who ",
+    ]
+    comp_hits = sum(1 for m in comp_markers if m in text_lower)
+    if comp_hits >= 2:
+        return "compositional"
+
+    return "prose"
+
+
+def weight_batch_sequences(
+    x: mx.array,
+    tokenizer,
+    stratum_weights: dict[str, float],
+) -> mx.array:
+    """Classify each sequence in batch and return per-sequence weights.
+
+    Args:
+        x: (B, L) int32 token IDs
+        tokenizer: for decoding token IDs to text
+        stratum_weights: {stratum_name: weight} from compute_stratum_weights
+
+    Returns:
+        (B,) float32 array of per-sequence weights, normalized so mean=1.
+    """
+    B = x.shape[0]
+    weights = []
+    for i in range(B):
+        text = tokenizer.decode(x[i].tolist())
+        stratum = classify_sequence(text)
+        w = stratum_weights.get(stratum, 1.0)
+        weights.append(w)
+
+    w_arr = mx.array(weights, dtype=mx.float32)
+    # Normalize so mean=1 (preserves loss scale)
+    w_arr = w_arr / (w_arr.mean() + 1e-8)
+    return w_arr
+
+
+def loss_fn(model, x, y):
+    """Compute combined loss with optional per-sequence stratum weighting.
+
+    When _batch_seq_weights is set (by the training loop), computes
+    per-sequence CE loss weighted by stratum importance. Lagging strata
+    get higher weight → more gradient signal → faster catch-up.
+
+    When _batch_seq_weights is None, falls back to uniform mean.
+    """
+    logits, _, phi_loss = model(x, y)
+
+    B, L, V = logits.shape
+    ce_per_token = nn.losses.cross_entropy(
+        logits.reshape(-1, V), y.reshape(-1),
+    )  # (B*L,)
+
+    if _batch_seq_weights is not None:
+        # Per-sequence weighted loss
+        ce_per_seq = ce_per_token.reshape(B, L).mean(axis=1)  # (B,)
+        ce_loss = (ce_per_seq * _batch_seq_weights).mean()
+    else:
+        ce_loss = ce_per_token.mean()
+
     if phi_loss is not None and model.phi_lambda > 0:
         return ce_loss + model.phi_lambda * phi_loss
     return ce_loss
@@ -860,6 +960,15 @@ def main():
 
         for accum_idx in range(GRAD_ACCUM):
             x, y = train_loader.next_batch()
+
+            # Loop 4: set per-sequence stratum weights for loss_fn
+            global _batch_seq_weights
+            if cached_stratum_weights is not None:
+                _batch_seq_weights = weight_batch_sequences(x, tokenizer, cached_stratum_weights)
+                mx.eval(_batch_seq_weights)
+            else:
+                _batch_seq_weights = None
+
             loss, grads = loss_and_grad_fn(model, x, y)
 
             # CRITICAL: evaluate both loss AND grads to materialize tensors
