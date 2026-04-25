@@ -2,84 +2,94 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-24 | Session: 037
+> Last updated: 2026-04-25 | Session: 038
 
 ## Where we are
 
-**v6 fully rebuilt: packed ternary weights, relational training control, stratum-weighted loss. Ready to start training from scratch.**
+**Flip system rebuilt from scratch. Five bugs/design flaws fixed. Ready to train v6.1 with proper synaptic plasticity.**
 
-Session 037 was a major engineering session. Started by probing steps
-3000–3500, discovered a flip bug that prevented all topology adaptation
-for 4000 steps. Fixed it, attempted resume (cascading instability),
-then rebuilt the training infrastructure with four interlocking feedback
-loops and optimized the model's memory footprint.
+Session 038: discovered the v6.1 training run had 6M+ flips by step 50
+despite a 0.1% cap. Traced through five interlocking issues in the flip
+accumulation system and fixed them all. Also closed feedback Loop 3
+(stratum-based per-group flip factors were computed but never wired to
+actual flips).
 
-### Changes this session (11 commits)
+### Changes this session (7 commits)
 
-1. **Flip bug fix** — `>` → `>=` in `apply_flips` (int8 max=127, `>127` always false)
-2. **Resume support** — `--resume` flag, loads weights/accum/optimizer, zeros accumulators
-3. **Flip policy tuning** — consensus=40, cap=0.1%, interval=4 (was 20/1%/10)
-4. **Packed ternary weights** — 2-bit encoding, 4 weights/byte, 4× memory reduction
-   - New Metal kernels: `ternary_matmul_packed`, `ternary_matmul_t_packed`
-   - 35.3MB → 8.8MB, ~4× bandwidth on Apple Silicon
-5. **Relational training control** — four feedback loops:
-   - Loop 1: r_ema → adaptive flip scaling (continuous)
-   - Loop 2: phase transitions explore→balance→refine (discrete, 100-step hysteresis)
-   - Loop 3: stratum gaps → per-group flip factors (stride_stack from compositional_gap)
-   - Loop 4: stratum-weighted loss (upweight lagging strata)
-6. **Model exposes training metrics** — compression ratios, meta gates, phase gates
-   via `capture_training_metrics` flag, stop_gradient, stored on `self._training_metrics`
-7. **Tensor stratum classification** — precomputed token-level lookup arrays,
-   0.83ms/batch (was text decode + string match)
-8. **Gradient shape fix** — `zero_ternary_grads` returns packed [N,K/4] zeros,
-   not dense [N,K] (VJP produces dense grads for flip accumulator)
+1. **Cap bypass fix** — `apply_flips` binary search over `[threshold, 127]`
+   can't exceed int8 max. When weights saturate at 127, all flip uncapped.
+   Fix: random subsample with `keep_prob = max_flips / n_qualifying`.
 
-### Key lesson: topology must co-evolve with continuous params
+2. **Rate reduction 100×** — `FLIP_MAX_PCT` 0.001 → 0.00001 (0.1% → 0.001%).
+   Explore: ~1400 flips/interval = ~8/module. Balance: ~500. Refine: ~90.
+   Full 30K run explores ~11% of topology → 1.7% with interval=25.
 
-Attempted resume from step 4000 (frozen topology → live flips). Loss
-spiked 5.18 → 7.11 in 100 steps even with tightened policy. Continuous
-params were tuned to specific random topology — any change disrupts the
-adapted parameters. Flips must co-evolve from the start.
+3. **Interval 4 → 25** — 25 steps = 3.5 Adam β1 half-lives between checks.
+   Gradient signal now reflects consequences of prior flips, not stale momentum.
+   100 votes per interval (25 × 4 micro-batches). Clean consensus signal.
+
+4. **Accumulator reset** — previously only flipped weights reset, creating an
+   infinite backlog. Millions of weights saturate at ±127 and block reversals.
+   Fix: reset ALL accumulators after each flip check. Each interval is a fresh
+   question: "which weights want to flip NOW?"
+
+5. **Consensus 40 → 50** — 75% agreement required (50 net votes out of 100).
+   Higher bar → fewer flips, stronger evidence before committing.
+
+6. **Flip warmup** — no flips before step 500 (LR warmup). Adam needs stable
+   moments before topology changes are meaningful. Also removed consensus
+   scaling — 75% is the bar in all phases. r modulates only the cap.
+
+7. **Loop 3 closed** — `apply_flips_per_group` now uses `cached_group_factors`
+   from stratum gap analysis. stride_stack gets more flips when compositional
+   lags prose, prep gets more when abstraction lags.
+
+### Design principles crystallized
+
+The flip system now embodies **synaptic plasticity**: flip a few routes,
+let continuous params adapt around them for many steps, then flip a few
+more based on what the gradient says *now*.
+
+| Property | Value | Why |
+|----------|-------|-----|
+| First flip | Step 500 | After LR warmup, Adam moments initialized |
+| Interval | 25 steps | 3.5 Adam β1 half-lives between checks |
+| Votes | 100/interval | 25 steps × 4 micro-batches |
+| Consensus | 75% fixed | 50 net votes, all phases |
+| Cap | 0.001% base | r × phase scales only the cap |
+| Accum reset | Every check | No backlog, flips reversible |
+
+### Four feedback loops — all wired
+
+| Loop | Signal | Controls | Status |
+|------|--------|----------|--------|
+| 1 | r_ema (loss) | flip cap scaling | ✅ |
+| 2 | r_ema thresholds | phase transitions (explore→balance→refine) | ✅ |
+| 3 | stratum gaps | per-group flip factors | ✅ now closed |
+| 4 | stratum weights | per-sequence loss weighting | ✅ |
 
 ### Prior run analysis (archived as a-vsm-lm-v6)
 
 4000 steps, frozen topology (zero flips due to bug):
 - Eval: 6.829 → 5.746 (7 consecutive drops, decelerating)
-- s1 dominance: 11% → 21% share (long strides weak)
 - Stratum rotation: math/prose/technical take turns, compositional stuck
-- φ-compression: L0_asc found 1/φ, drifted; L2_apex oscillating
+- φ-compression: L0_asc found 1/φ, drifted; L2_apex oscillating wildly
 - Sieve shape correct despite frozen topology
-
-### Training config
-
-| Parameter | Value | Rationale |
-|-----------|-------|-----------|
-| FLIP_INTERVAL | 4 | Frequent small checks |
-| FLIP_CONSENSUS | 40 | Strong directional evidence |
-| FLIP_MAX_PCT | 0.001 (0.1%) | ~35K max flips per interval |
-| PHI_LAMBDA | 0.0 (explore) | Managed by phase transitions |
-| Packed weights | uint8 [N, K/4] | 4× memory/bandwidth |
-
-### Relational control composition
-
-```
-every_step:       r_ema = 0.99 * r_ema + 0.01 * r
-every_4_steps:    effective_rate = phase_base × r_scale × group_factor
-every_100_steps:  group_factors from stratum gaps (training metrics)
-every_500_steps:  stratum_weights for loss weighting
-phase_transitions: explore(r>0.5) → balance(0.25-0.5) → refine(r<0.25)
-```
+- Stratum spread widening: 0.57 → 1.51 (compositional can't route through
+  frozen ternary — strongest demand signal for flips)
 
 ## What's next
 
-1. **Start training:**
+1. **Start training v6.1:**
    ```bash
-   uv run python scripts/v6/train.py | tee results/vsm-lm-v6/training-run2.log
+   uv run python scripts/v6/train.py | tee results/vsm-lm-v6/training-run3.log
    ```
-2. **Watch for:** first flips (when?), which groups flip first,
-   phase transition timing, stratum spread evolution
-3. **Compare with prior run** at same token counts
-4. **Probe at each checkpoint** — full stride/stratum analysis
+2. **Watch for:** first flips at step 500+, which groups flip first,
+   whether compositional loss starts improving with active topology,
+   stratum spread narrowing, phase transition timing
+3. **Compare with prior run** — does active topology beat frozen?
+4. **Key question:** does the stratum rotation pattern change once
+   flips are active? Compositional has never led improvement.
 
 ## Key files
 
@@ -95,7 +105,6 @@ phase_transitions: explore(r>0.5) → balance(0.25-0.5) → refine(r<0.25)
 | Probe script | `scripts/v6/probe.py` |
 | **Logs & archives** | |
 | Prior run log (frozen topology) | `results/vsm-lm-v6/training.log` |
-| Failed resume log | `results/vsm-lm-v6/training-continuation.log` |
 | Prior run checkpoints | `checkpoints/a-vsm-lm-v6/` |
 | Prior run probes | `results/compile-gradient/vsm_probe_step_*_v6_mlx.json` |
 | **Research** | |
@@ -116,13 +125,13 @@ phase_transitions: explore(r>0.5) → balance(0.25-0.5) → refine(r<0.25)
 | v4.1 | 65.5M | PyTorch | Bidirectional VSM | 4.696 |
 | v5 | 66.3M | PyTorch | Spiral + ℂ regs + phase gate | TBD |
 | v6 | ~63M | **MLX** | Ternary Metal + frozen flips | 5.746 (4000 steps) |
-| v6.1 | ~63M | **MLX** | Packed weights + relational control | ready to train |
+| v6.1 | ~63M | **MLX** | Synaptic plasticity (rebuilt) | ready to train |
 
 ## Probing pipeline
 
 ```bash
-# Train v6.1 (from scratch, packed weights + relational control)
-uv run python scripts/v6/train.py | tee results/vsm-lm-v6/training-run2.log
+# Train v6.1 (from scratch, rebuilt flip system)
+uv run python scripts/v6/train.py | tee results/vsm-lm-v6/training-run3.log
 
 # Resume from checkpoint
 uv run python scripts/v6/train.py --resume checkpoints/vsm-lm-v6/step_NNNNNN
