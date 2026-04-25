@@ -186,75 +186,105 @@ class ShardedDataLoader:
 _batch_seq_weights: mx.array | None = None
 
 
-def classify_sequence(text: str) -> str:
-    """Heuristic stratum classifier for a text sequence.
+def build_stratum_token_sets(tokenizer) -> dict[str, set[int]]:
+    """Precompute token-level stratum membership from vocabulary.
 
-    Classifies based on character/pattern presence:
-      math:          λ, ∀, ∈, ∃, →, ≥, ², P(, ∫, Σ, or heavy digit density
-      technical:     gradient, softmax, attention, layer, backprop, embedding, etc.
-      compositional: relative clauses (who/which/that + verb patterns),
-                     nested subordination, center-embedding markers
-      prose:         default (most natural language)
-
-    Noisy but cheap. Called once per sequence (B=2), negligible vs forward pass.
+    Scans the tokenizer vocabulary once at init. Returns sets of token IDs
+    for each stratum. Classification becomes a pure integer set-membership
+    count — no tokenizer.decode() calls during training.
     """
-    # Math: symbolic density
     math_chars = set("λ∀∈∃→≥≤²³∫Σ∏∂∇⊗⊕∧∨¬↔⇒∞ℝℤℕℂ×÷±≈≠")
-    math_hits = sum(1 for c in text if c in math_chars)
-    digit_frac = sum(1 for c in text if c.isdigit()) / max(len(text), 1)
-    if math_hits > 3 or digit_frac > 0.15:
-        return "math"
-
-    text_lower = text.lower()
-
-    # Technical: ML/CS terminology
     tech_terms = [
         "gradient", "softmax", "attention", "embedding", "backprop",
-        "layer norm", "learning rate", "optimizer", "batch size",
-        "loss function", "neural network", "transformer", "convolution",
-        "activation", "dropout", "weight decay", "fine-tun",
-        "tokeniz", "logit", "cross entropy", "perplexity",
+        "layer", "norm", "optimizer", "batch", "loss", "neural",
+        "transformer", "convolution", "activation", "dropout",
+        "weight", "tokeniz", "logit", "entropy", "perplexity",
+        "parameter", "tensor", "kernel", "epoch",
     ]
-    tech_hits = sum(1 for t in tech_terms if t in text_lower)
-    if tech_hits >= 2:
-        return "technical"
-
-    # Compositional: syntactic complexity markers
-    comp_markers = [
-        " who ", " whom ", " which ", " that ",
-        " whether ", " although ", " whereas ",
-        " the man who ", " the dog that ", " the cat which ",
-        " if every ", " no one who ", " everyone who ",
+    comp_terms = [
+        " who ", " whom ", " which ", " whose ",
+        " whether ", " although ", " whereas ", " whenever ",
+        " wherever ", " whoever ",
     ]
-    comp_hits = sum(1 for m in comp_markers if m in text_lower)
-    if comp_hits >= 2:
-        return "compositional"
 
-    return "prose"
+    vocab = tokenizer.get_vocab()  # {token_str: id}
+    math_ids: set[int] = set()
+    tech_ids: set[int] = set()
+    comp_ids: set[int] = set()
+
+    for token_str, token_id in vocab.items():
+        # Math: contains math symbols or is a digit token
+        if any(c in math_chars for c in token_str):
+            math_ids.add(token_id)
+        elif token_str.strip().replace(".", "").replace("-", "").isdigit() and len(token_str.strip()) > 0:
+            math_ids.add(token_id)
+
+        # Technical: contains ML/CS terms
+        tok_lower = token_str.lower()
+        if any(t in tok_lower for t in tech_terms):
+            tech_ids.add(token_id)
+
+        # Compositional: relative clause markers
+        if any(t.strip() in tok_lower for t in comp_terms):
+            comp_ids.add(token_id)
+
+    return {"math": math_ids, "technical": tech_ids, "compositional": comp_ids}
 
 
-def weight_batch_sequences(
+def build_stratum_lookup(token_sets: dict[str, set[int]], vocab_size: int) -> dict[str, mx.array]:
+    """Build boolean lookup arrays from token sets for fast tensor classification.
+
+    Returns {stratum: (vocab_size,) bool array} for index-based lookup.
+    """
+    lookups = {}
+    for sname, ids in token_sets.items():
+        arr = np.zeros(vocab_size, dtype=np.bool_)
+        for tid in ids:
+            if tid < vocab_size:
+                arr[tid] = True
+        lookups[sname] = mx.array(arr)
+    return lookups
+
+
+def classify_batch_tokens(
     x: mx.array,
-    tokenizer,
+    stratum_lookups: dict[str, mx.array],
     stratum_weights: dict[str, float],
 ) -> mx.array:
-    """Classify each sequence in batch and return per-sequence weights.
+    """Classify each sequence by token composition, return per-sequence weights.
+
+    Pure tensor ops — no decoding, no string matching. Each sequence is
+    classified by which stratum has the highest token density.
 
     Args:
         x: (B, L) int32 token IDs
-        tokenizer: for decoding token IDs to text
-        stratum_weights: {stratum_name: weight} from compute_stratum_weights
+        stratum_lookups: {stratum: (vocab_size,) bool} from build_stratum_lookup
+        stratum_weights: {stratum: weight} from compute_stratum_weights
 
     Returns:
-        (B,) float32 array of per-sequence weights, normalized so mean=1.
+        (B,) float32 per-sequence weights, normalized so mean=1.
     """
     B = x.shape[0]
+    # Count stratum token hits per sequence: index into lookup array
+    counts = {}
+    for sname, lookup in stratum_lookups.items():
+        hits = lookup[x]  # (B, L) bool
+        counts[sname] = hits.sum(axis=1)  # (B,)
+
+    # Classify each sequence by highest hit density
+    strata_names = list(counts.keys())
+    hit_matrix = mx.stack([counts[s].astype(mx.float32) for s in strata_names], axis=1)  # (B, n_strata)
+    mx.eval(hit_matrix)
+
     weights = []
     for i in range(B):
-        text = tokenizer.decode(x[i].tolist())
-        stratum = classify_sequence(text)
-        w = stratum_weights.get(stratum, 1.0)
-        weights.append(w)
+        hits_i = [hit_matrix[i, j].item() for j in range(len(strata_names))]
+        max_idx = max(range(len(hits_i)), key=lambda j: hits_i[j])
+        if hits_i[max_idx] > 0:
+            stratum = strata_names[max_idx]
+        else:
+            stratum = "prose"
+        weights.append(stratum_weights.get(stratum, 1.0))
 
     w_arr = mx.array(weights, dtype=mx.float32)
     # Normalize so mean=1 (preserves loss scale)
@@ -271,7 +301,7 @@ def loss_fn(model, x, y):
 
     When _batch_seq_weights is None, falls back to uniform mean.
     """
-    logits, _, phi_loss = model(x, y)
+    logits, _, phi_loss, _ = model(x, y)
 
     B, L, V = logits.shape
     ce_per_token = nn.losses.cross_entropy(
@@ -329,7 +359,7 @@ def estimate_loss(model, eval_loader, n_batches=10):
     total = 0
     for _ in range(n_batches):
         x, y = eval_loader.next_batch()
-        _, ce_loss, _ = model(x, y)
+        _, ce_loss, _, _ = model(x, y)
         mx.eval(ce_loss)
         total += ce_loss.item()
     return total / n_batches
@@ -745,7 +775,7 @@ def stratum_loss_probe(model, tokenizer):
             if ids.shape[1] > model.max_len:
                 ids = ids[:, -model.max_len:]
             targets = mx.concatenate([ids[:, 1:], mx.zeros((1, 1), dtype=mx.int32)], axis=1)
-            _, ce_loss, _ = model(ids, targets)
+            _, ce_loss, _, _ = model(ids, targets)
             mx.eval(ce_loss)
             if ce_loss is not None:
                 losses.append(ce_loss.item())
@@ -829,6 +859,16 @@ def main():
 
     # Compute ternary weight count from model (not hardcoded)
     _n_ternary_weights = model.count_parameters()["total_ternary"]
+
+    # Enable training metrics capture (lightweight, stop_gradient)
+    model.capture_training_metrics = True
+
+    # Precompute token-level stratum classification (once, at init)
+    _stratum_token_sets = build_stratum_token_sets(tokenizer)
+    _stratum_lookups = build_stratum_lookup(_stratum_token_sets, VOCAB_SIZE)
+    print(f"  Stratum tokens: math={len(_stratum_token_sets['math'])} "
+          f"tech={len(_stratum_token_sets['technical'])} "
+          f"comp={len(_stratum_token_sets['compositional'])}", flush=True)
 
     ternary_stats_init = model.ternary_stats()
     n_ternary_modules = len(ternary_stats_init)
@@ -962,9 +1002,10 @@ def main():
             x, y = train_loader.next_batch()
 
             # Loop 4: set per-sequence stratum weights for loss_fn
+            # Pure tensor ops — no decoding, uses precomputed lookup arrays
             global _batch_seq_weights
             if cached_stratum_weights is not None:
-                _batch_seq_weights = weight_batch_sequences(x, tokenizer, cached_stratum_weights)
+                _batch_seq_weights = classify_batch_tokens(x, _stratum_lookups, cached_stratum_weights)
                 mx.eval(_batch_seq_weights)
             else:
                 _batch_seq_weights = None
@@ -1070,19 +1111,31 @@ def main():
             total_flips += n_flipped
             flips_since_last_probe += n_flipped
 
-            # ── Probe step: VSM diagnostics + stratum-based group factors ──
+            # ── Probe step: use training-pass metrics (no extra forward pass) ──
             if step % FLIP_PROBE_INTERVAL == 0:
                 pct_flipped = flips_since_last_probe / _n_ternary_weights * 100
 
-                signals_before, vec_before = vsm_probe(model, tokenizer)
-                phi_dev = signals_before.get("phi_deviation")
+                # Read metrics captured during the training forward pass
+                tm = getattr(model, "_training_metrics", None)
+                phi_msg = ""
+                if tm and tm.get("compression_ratios"):
+                    crs = [cr.item() for cr in tm["compression_ratios"]]
+                    mean_phi_dev = sum(abs(cr - INV_PHI) for cr in crs) / len(crs)
+                    phi_msg = f"φ-dev={mean_phi_dev:.4f}"
 
-                # Loop 3: update stratum-based group factors
+                    # Log meta gates
+                    mg = [g.item() for g in tm["meta_gates"]]
+                    mg_parts = [f"{p}={g:.2f}" for p, g in zip(PASS_NAMES, mg)]
+                    # Log compression ratios
+                    cr_parts = [f"{p}={cr:.3f}" for p, cr in zip(PASS_NAMES, crs)]
+                else:
+                    phi_msg = "φ-dev=N/A"
+
+                # Loop 3: update stratum-based group factors (still uses probe
+                # for stratum loss — this runs on fixed samples, not training batch)
                 strata_probe = stratum_loss_probe(model, tokenizer)
                 if strata_probe:
                     cached_group_factors = stratum_group_factors(strata_probe)
-
-                phi_msg = f"φ-dev={phi_dev:.4f}" if phi_dev is not None else "φ-dev=N/A"
 
                 print(
                     f"  ── flip probe @ step {step}: {flips_since_last_probe:,} flips "

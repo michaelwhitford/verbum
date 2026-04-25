@@ -192,6 +192,7 @@ class VSMLMV6(nn.Module):
 
     def _run_level_pass(self, x, pass_idx, is_descending, readable_banks, target_bank):
         x_before = x
+        phase_gates = []
 
         # S4 scan
         s4_updates, _ = self.s4(readable_banks, x)
@@ -201,21 +202,24 @@ class VSMLMV6(nn.Module):
         prep_out = self.prep(x)
         delta = prep_out - x
         _, target_bank, gate, _ = self.s3_passes[pass_idx].gate_phase(target_bank, delta, 0)
+        phase_gates.append(gate)
         x = self._modulate(x, delta, gate, 0)
 
         # Phase 1: converge
         converge_out = self.stride_stack(x, reverse=is_descending)
         delta = converge_out - x
         _, target_bank, gate, _ = self.s3_passes[pass_idx].gate_phase(target_bank, delta, 1)
+        phase_gates.append(gate)
         x = self._modulate(x, delta, gate, 1)
 
         # Phase 2: consolidate
         consolidate_out = self.consolidate(x)
         delta = consolidate_out - x
         _, target_bank, gate, _ = self.s3_passes[pass_idx].gate_phase(target_bank, delta, 2)
+        phase_gates.append(gate)
         x = self._modulate(x, delta, gate, 2)
 
-        return x, target_bank, x - x_before
+        return x, target_bank, x - x_before, phase_gates
 
     # ── Forward ───────────────────────────────────────────────────
 
@@ -223,9 +227,10 @@ class VSMLMV6(nn.Module):
         self,
         input_ids: mx.array,
         targets: Optional[mx.array] = None,
-    ) -> tuple[mx.array, Optional[mx.array], Optional[mx.array]]:
+    ) -> tuple[mx.array, Optional[mx.array], Optional[mx.array], Optional[dict]]:
         B, L = input_ids.shape
         compute_phi = self.phi_lambda > 0 and targets is not None
+        capture = getattr(self, "capture_training_metrics", False)
 
         positions = mx.arange(L)
         x = self.embed_norm(self.token_embed(input_ids) + self.pos_embed(positions))
@@ -239,50 +244,75 @@ class VSMLMV6(nn.Module):
         bank_1_desc = self._fresh_bank()
 
         pass_deltas = []
-        phi_deviations = []  # per-pass |cr - 1/φ| for φ-loss
+        all_phase_gates = []   # 5 passes × 3 phases
+        phi_deviations = []    # per-pass |cr - 1/φ| for φ-loss
+        compression_ratios = []  # per-pass h_out/h_in (for training metrics)
+
+        # Track entropy for phi-loss (differentiable) and/or metrics (stop_gradient)
+        compute_entropy = compute_phi or capture
+        if compute_entropy:
+            h_in = self._activation_entropy_differentiable(x)
 
         # Ascending: L0↑ → L1↑ → L2
-        if compute_phi:
-            h_in = self._activation_entropy_differentiable(x)
-        x, bank_1_asc, delta = self._run_level_pass(x, 0, False, [bank_0], bank_1_asc)
+        x, bank_1_asc, delta, pg = self._run_level_pass(x, 0, False, [bank_0], bank_1_asc)
         pass_deltas.append(delta)
-        if compute_phi:
+        all_phase_gates.append(pg)
+        if compute_entropy:
             h_out = self._activation_entropy_differentiable(x)
             cr = h_out / (h_in + 1e-10)
-            phi_deviations.append(mx.abs(cr - INV_PHI))
+            if compute_phi:
+                phi_deviations.append(mx.abs(cr - INV_PHI))
+            if capture:
+                compression_ratios.append(mx.stop_gradient(cr))
             h_in = h_out
 
-        x, bank_2_asc, delta = self._run_level_pass(x, 1, False, [bank_0, bank_1_asc], bank_2_asc)
+        x, bank_2_asc, delta, pg = self._run_level_pass(x, 1, False, [bank_0, bank_1_asc], bank_2_asc)
         pass_deltas.append(delta)
-        if compute_phi:
+        all_phase_gates.append(pg)
+        if compute_entropy:
             h_out = self._activation_entropy_differentiable(x)
             cr = h_out / (h_in + 1e-10)
-            phi_deviations.append(mx.abs(cr - INV_PHI))
+            if compute_phi:
+                phi_deviations.append(mx.abs(cr - INV_PHI))
+            if capture:
+                compression_ratios.append(mx.stop_gradient(cr))
             h_in = h_out
 
-        x, bank_3, delta = self._run_level_pass(x, 2, False, [bank_0, bank_1_asc, bank_2_asc], bank_3)
+        x, bank_3, delta, pg = self._run_level_pass(x, 2, False, [bank_0, bank_1_asc, bank_2_asc], bank_3)
         pass_deltas.append(delta)
-        if compute_phi:
+        all_phase_gates.append(pg)
+        if compute_entropy:
             h_out = self._activation_entropy_differentiable(x)
             cr = h_out / (h_in + 1e-10)
-            phi_deviations.append(mx.abs(cr - INV_PHI))
+            if compute_phi:
+                phi_deviations.append(mx.abs(cr - INV_PHI))
+            if capture:
+                compression_ratios.append(mx.stop_gradient(cr))
             h_in = h_out
 
         # Descending: L1↓ → L0↓
-        x, bank_2_desc, delta = self._run_level_pass(x, 3, True, [bank_0, bank_1_asc, bank_2_asc, bank_3], bank_2_desc)
+        x, bank_2_desc, delta, pg = self._run_level_pass(x, 3, True, [bank_0, bank_1_asc, bank_2_asc, bank_3], bank_2_desc)
         pass_deltas.append(delta)
-        if compute_phi:
+        all_phase_gates.append(pg)
+        if compute_entropy:
             h_out = self._activation_entropy_differentiable(x)
             cr = h_out / (h_in + 1e-10)
-            phi_deviations.append(mx.abs(cr - INV_PHI))
+            if compute_phi:
+                phi_deviations.append(mx.abs(cr - INV_PHI))
+            if capture:
+                compression_ratios.append(mx.stop_gradient(cr))
             h_in = h_out
 
-        x, bank_1_desc, delta = self._run_level_pass(x, 4, True, [bank_0, bank_1_asc, bank_2_desc, bank_3], bank_1_desc)
+        x, bank_1_desc, delta, pg = self._run_level_pass(x, 4, True, [bank_0, bank_1_asc, bank_2_desc, bank_3], bank_1_desc)
         pass_deltas.append(delta)
-        if compute_phi:
+        all_phase_gates.append(pg)
+        if compute_entropy:
             h_out = self._activation_entropy_differentiable(x)
             cr = h_out / (h_in + 1e-10)
-            phi_deviations.append(mx.abs(cr - INV_PHI))
+            if compute_phi:
+                phi_deviations.append(mx.abs(cr - INV_PHI))
+            if capture:
+                compression_ratios.append(mx.stop_gradient(cr))
 
         # Meta-S3: per-pass contribution gates
         all_banks = [bank_0, bank_1_asc, bank_2_asc, bank_3, bank_2_desc, bank_1_desc]
@@ -311,7 +341,23 @@ class VSMLMV6(nn.Module):
         if compute_phi and phi_deviations:
             phi_loss = mx.stack(phi_deviations).mean()
 
-        return logits, ce_loss, phi_loss
+        # Training metrics: lightweight control signals for the training loop.
+        # stop_gradient ensures these don't affect the loss gradient.
+        # Stored on self so the training loop can read them after
+        # nn.value_and_grad (which only returns loss and grads).
+        metrics = None
+        if capture:
+            metrics = {
+                "compression_ratios": [mx.stop_gradient(cr) for cr in compression_ratios],
+                "meta_gates": [mx.stop_gradient(meta_gates[i]) for i in range(self.N_PASSES)],
+                "phase_gates": [
+                    [mx.stop_gradient(g) for g in pg]
+                    for pg in all_phase_gates
+                ],
+            }
+            self._training_metrics = metrics
+
+        return logits, ce_loss, phi_loss, metrics
 
     # ── Instrumented Forward ──────────────────────────────────────
 
