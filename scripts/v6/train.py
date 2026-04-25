@@ -66,13 +66,16 @@ N_STEPS = TARGET_TOKENS // TOKENS_PER_STEP + 1  # 30,518
 WARMUP_STEPS = 500
 SEED = 42
 
-FLIP_INTERVAL = 4         # check for consensus flips every 4 steps (cheap: just threshold + mx.where)
+FLIP_INTERVAL = 25        # check for consensus flips every 25 steps
+                          # 25 steps ≈ 3.5 Adam β1 half-lives — first moment fully adapted
+                          # between checks, so gradient signal reflects actual consequences
+                          # of prior flips, not stale momentum.
 FLIP_PROBE_INTERVAL = 100 # re-run VSM probes for monitoring (expensive: 13 forward passes)
 FLIP_CONSENSUS = 40       # absolute threshold: net votes needed to flip (int8 accum units)
                           # Accumulators persist across intervals — only reset on flip.
                           # 40 net votes = strong directional consensus before committing.
-                          # At interval=4 (16 votes/interval), needs ~3 intervals to flip:
-                          # prevents single-interval cascade while staying responsive.
+                          # At interval=25 (100 votes/interval), reachable in one interval:
+                          # clean signal, no carryover from stale history.
 FLIP_MAX_PCT = 0.00001    # cap: at most 0.001% of ternary weights flip per interval (~350 of 35M)
                           # Synaptic plasticity: flip a few routes, let continuous params
                           # adapt around them for many steps before flipping more.
