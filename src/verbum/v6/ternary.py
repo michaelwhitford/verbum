@@ -576,11 +576,29 @@ def apply_flips(model: nn.Module, threshold: int = 50, max_flip_pct: float = 0.0
         effective_threshold = lo
 
     # Step 3: apply flips with effective threshold
+    # Re-count after binary search — when weights tie at the int8 ceiling
+    # (127), the binary search can't raise the threshold further, so
+    # more weights may qualify than max_flips allows. In that case,
+    # randomly subsample to enforce the cap strictly.
+    n_qualifying_final = _count_at_or_above(effective_threshold)
+    subsample = n_qualifying_final > max_flips and max_flips > 0
+    if subsample:
+        # Keep each qualifying weight with probability max_flips/n_qualifying.
+        # In expectation this gives max_flips total flips across all modules.
+        keep_prob = max_flips / n_qualifying_final
+
     total_flipped = 0
     mutated = []
 
     for module, accum_abs in candidates:
         mask = accum_abs >= int(effective_threshold)
+
+        if subsample:
+            # Random mask: keep each qualifying weight independently with keep_prob.
+            # This is unbiased across modules — each weight has equal chance.
+            rand_mask = mx.random.uniform(shape=mask.shape) < keep_prob
+            mask = mask & rand_mask
+
         n_flipped = mask.sum().item()
 
         if n_flipped > 0:
