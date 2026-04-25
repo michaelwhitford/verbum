@@ -73,12 +73,15 @@ FLIP_CONSENSUS = 40       # absolute threshold: net votes needed to flip (int8 a
                           # 40 net votes = strong directional consensus before committing.
                           # At interval=4 (16 votes/interval), needs ~3 intervals to flip:
                           # prevents single-interval cascade while staying responsive.
-FLIP_MAX_PCT = 0.001      # cap: at most 0.1% of ternary weights flip per interval (~35K of 35M)
-                          # Small blast radius lets Adam's running statistics (m_t, v_t)
-                          # stay approximately valid across topology changes. Evolution not
-                          # revolution — continuous params can compensate within a few steps.
-                          # Previous: 1% (350K) caused cascading instability on resume from
-                          # frozen topology (loss 5.18 → 11.59 in 125 steps).
+FLIP_MAX_PCT = 0.00001    # cap: at most 0.001% of ternary weights flip per interval (~350 of 35M)
+                          # Synaptic plasticity: flip a few routes, let continuous params
+                          # adapt around them for many steps before flipping more.
+                          # With r-scaling in explore phase (4×): ~1400/interval = ~8/module.
+                          # In balance: ~500/interval = ~3/module. In refine: ~90/interval.
+                          # Full 30K run explores ~11% of topology — enough to find good
+                          # routes without destabilizing Adam's running statistics.
+                          # Previous values: 0.1% (too aggressive, 6M flips by step 50),
+                          # 0.001 with cap bypass bug caused topology cascade.
 # No gradient clipping — Adam handles per-parameter scale adaptation.
 # Shared-weight gradients are normalized by 1/N_PASSES instead (see normalize_shared_grads).
 # MAX_GRAD_NORM removed: clipping at any fixed threshold creates unstable
@@ -609,9 +612,9 @@ def compute_per_group_flip_targets(
     elif hilberg_beta_dev > 0.2:
         targets["stride_stack"] *= 1.2
 
-    # Clamp all to [FLIP_PCT_MIN, FLIP_PCT_MAX]
+    # Clamp all to [floor, ceiling] consistent with global cap
     for k in targets:
-        targets[k] = max(FLIP_PCT_MIN, min(FLIP_PCT_MAX, targets[k]))
+        targets[k] = max(0.000001, min(0.001, targets[k]))
 
     return targets
 
@@ -823,7 +826,7 @@ def main():
     print(f"  Strides: {STRIDES}")
     print(f"  Ternary: all projections (Metal add/sub kernel)")
     print(f"  Continuous: embeddings, gamma, norms, gates (AdamW)")
-    print(f"  Flip policy: consensus={FLIP_CONSENSUS}, cap={FLIP_MAX_PCT*100:.1f}%, every {FLIP_INTERVAL} steps, probe every {FLIP_PROBE_INTERVAL}")
+    print(f"  Flip policy: consensus={FLIP_CONSENSUS}, cap={FLIP_MAX_PCT*100:.4f}%, every {FLIP_INTERVAL} steps, probe every {FLIP_PROBE_INTERVAL}")
     print(f"  Flip mechanism: strongest consensus first, capped to prevent mass mutation")
     print(f"  φ-lambda: {PHI_LAMBDA} ({'Phase 1: observe only' if PHI_LAMBDA == 0 else f'active: CE + {PHI_LAMBDA}×φ_dev'})")
     print(f"  Embed norm: RMSNorm (constrains embedding scale)")
@@ -1105,7 +1108,7 @@ def main():
             effective_max_pct = FLIP_MAX_PCT * pcfg["flip_max_scale"] * r_scale
             effective_consensus = FLIP_CONSENSUS * pcfg["consensus_scale"] / r_scale
             effective_consensus = int(max(10, min(127, effective_consensus)))
-            effective_max_pct = max(0.0001, min(0.01, effective_max_pct))
+            effective_max_pct = max(0.000001, min(0.001, effective_max_pct))
 
             n_flipped = apply_flips(model, threshold=effective_consensus, max_flip_pct=effective_max_pct)
             total_flips += n_flipped
