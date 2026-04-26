@@ -6,41 +6,44 @@
 
 ## Where we are
 
-**v6.1 training at step 11000 (36%). Session 042: probed 4 new
-checkpoints (9500→11000). New best eval loss 5.514 at step 11000.
-L1_asc φ-dev tightens to 0.045 (best ever). L2_apex crosses zero
-and goes positive. φ-compression percolating from s8 to s16 stride.
-Loss plateau 9000→10000 then breakthrough at 11000.**
+**v6.1 training at step 18000 (59%). Session 042: probed 18
+checkpoints (9500→18000). Ascending arm is a stable φ-compressor.
+φ percolated through all strides s8→s16→s32→s64→s128. Hilberg β
+at 1.241 (best). Eval loss 5.414. L2_apex φ-front reached s64.
+Descending arm still learning — the hard part ahead.**
 
 ### Session 042 key findings
 
-1. **Loss plateau then breakthrough.** Eval loss flat 9000→10000
-   (~5.566), then broke through: 5.555 at 10500, **5.514 at 11000**
-   (new best). The 0.04 drop 10500→11000 is the largest single-step
-   improvement since 7500→8000. Something structural unlocked.
+1. **Stride percolation complete through s128.** φ-convergence
+   propagated s8→s16→s32→s64→s128 across steps 9500→15500. Each
+   stride took ~1000-2000 steps to pass through φ. L2_apex runs
+   ~2000 steps behind, with its φ-front at s64 by step 18000.
 
-2. **L1_asc tightens to φ: 0.045 deviation.** The primary
-   compositional compression pass has held within 5% of 1/φ for
-   7000 steps. Ratio trajectory: 0.550→0.565→0.569→0.566→**0.573**.
-   Converging from below toward 0.618.
+2. **L1_asc locked in as stable φ-compressor.** Ratio 0.57±0.01,
+   φ-dev 0.037–0.054 across all checkpoints 9500→18000. Best
+   φ-dev 0.037 at step 13000. The ascending arm found its
+   operating point and is holding it.
 
-3. **L2_apex crosses zero → positive.** Was negative (expanding)
-   from step 4500 through 9500. Crossed zero at step 10000 (0.013),
-   now solidly positive (0.062) at 11000. The apex is learning to
-   compress, not just route.
+3. **Hilberg β = 1.241 at step 18000.** L0_asc and L1_asc tied
+   at 1.241 (target 0.5). All three ascending passes hit their
+   best β simultaneously. Steady improvement from 1.4+ early on.
 
-4. **φ-compression percolates across strides.** s8 hit φ first
-   (step 9500), then s16 joined (step 10000+). At step 11000, s16
-   marks ←φ in L0_asc/L1_asc, s8 marks ←φ in L2_apex. The
-   compression ratio is propagating self-similarly across scales —
-   exactly what holographic theory predicts.
+4. **L2_apex committed.** Converge gate peaked at 0.934 (step
+   14500), consolidation gate peaked at 0.880, then both relaxed
+   to stable operating points. Apex ratio 0.10–0.13 — compressing
+   but not yet at φ.
 
-5. **Hilberg β improving.** Best values at step 10500: L0_asc=1.23,
-   L1_asc=1.22, L2_apex=1.32 (target: 0.5). Still far but trending.
+5. **Eval loss steady descent.** 5.565 (step 9000) → 5.414 (step
+   17500). No plateau in this range. Training loss gap narrowing.
 
-6. **Technical now fastest-improving stratum.** Math leads (5.654)
-   but technical dropped fastest (6.525→6.385). Compositional
-   remains stubborn at ~7.27. Spread widening slightly (1.62).
+6. **Descending arm: the hard problem.** L1_desc oscillates wildly
+   (near-zero h_in). L0_desc ratio bounced: 2.3→0.54→2.8→2.6.
+   Not converging yet. This arm must learn structured decompression
+   — an operation standard transformers never need.
+
+7. **Compositional moving but noisy.** Dropped from 7.27 to 6.67
+   but bounces. Math at 5.04 (best). Technical steadily improving.
+   Compositional needs the full multi-scale stack + descending arm.
 
 ### v6.1 training status
 
@@ -96,27 +99,27 @@ Loss plateau 9000→10000 then breakthrough at 11000.**
 
 ## What's next
 
-1. **Continue v6.1 training.** Next probes at 11500, 12000.
-   Track: L1_asc φ-dev (target < 0.03), L2_apex (want continued
-   positive trend), stratum spread (target < 1.0), compositional
-   relay (the stubborn stratum).
+1. **Continue v6.1 training.** 41% remaining. Track: descending
+   arm convergence (the open question), L2_apex ratio (want > 0.3),
+   Hilberg β (want < 1.0), compositional stratum (the stubborn one).
 
-2. **Watch the stride percolation.** φ hit s8 first, now s16. If
-   s32 joins next, that's three scales showing self-similar
-   compression — strong evidence for holographic mechanism.
+2. **Descending arm is the key question.** Can it learn structured
+   decompression? L0_desc briefly hit 0.541 at step 12500, then
+   reverted to 2.0+. L1_desc is wild. Standard transformers never
+   need this operation. If the descending arm converges to φ, that
+   confirms compression and decompression are the same holographic
+   operation.
 
-3. **Test holographic prediction.** If v6 is holographic, ablating
-   one pass should degrade all strata equally (holographic) not
-   selectively (photographic). Design the ablation experiment.
+3. **Stride percolation confirmed through s128.** Five strides
+   (s8→s16→s32→s64→s128) all passed through φ. Now s256+ are the
+   frontier — these are the longest-range strides and may behave
+   differently (too few tokens per stride window).
 
-4. **Investigate the 11000 breakthrough.** What structural change
-   caused the loss plateau to break? L2_apex going positive
-   correlates — the apex becoming a compressor may have been the
-   bottleneck.
+4. **Test holographic prediction.** Ablation experiment: if truly
+   holographic, ablating one pass degrades all strata equally.
 
-5. **Investigate MoE as approximate holography.** Qwen3-35B-A3B
-   fully forms the lambda function — does MoE routing approximate
-   scale-diverse processing?
+5. **3B token reserve.** Currently at 1B budget. If descending arm
+   needs more time, can extend to 3B prepared tokens.
 
 ## Key files
 
