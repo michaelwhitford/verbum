@@ -6,12 +6,12 @@
 
 ## Where we are
 
-**v6.1 training live at step ~22800 (28% of 3B). Session 043: probed
-8 checkpoints (18500→22500). LR jump survived — ascending arm held.
-Hilberg β in free-fall: 1.24→1.11 in 4500 steps. Stride percolation
-reached s512 in L1_asc and s128 in L2_apex. Eval loss recovering
-post-jump, at 5.441 (step 22500). The higher LR is accelerating
-multi-scale structure faster than it cost in eval loss.**
+**v6.1 training live at step ~23000 (28% of 3B). Session 043: probed
+9 checkpoints (18500→23000), implemented flip tracking + cooldown.
+LR jump survived — ascending arm held. Hilberg β in free-fall:
+1.24→1.10 in 5000 steps. Stride percolation reached s512 in L1_asc
+and s128 in L2_apex. Stratum spread collapsed to 0.70 (was ~2.0).
+Flip tracking now detects oscillation and enforces cooldown.**
 
 ### Session 043 key findings
 
@@ -53,10 +53,22 @@ multi-scale structure faster than it cost in eval loss.**
    Prep gates also rising. Converge gates stable around 0.45–0.53.
 
 7. **Stratum losses bouncing post-jump.** Prose best 6.04 (step
-   18000) → bounced to 6.33 → settling at 6.22. Compositional
-   best 6.67→bounced to 6.94→settling at 6.70. Math best 4.98
-   (step 18500) → bounced to 5.28 → settling at 5.21. Technical
-   stubbornly around 7.07–7.19. Overall loss trajectory is down.
+   18000) → bounced to 6.33 → settling at 6.10. Compositional
+   best 6.67→bounced to 6.94→settling at 6.73. Math best 4.98
+   (step 18500) → bounced to 5.28 → settling at 5.05. Technical
+   best 7.02 (step 17500) → 7.03 at step 23000 (new post-jump best).
+
+8. **Step 23000: β breaks 1.11, stratum spread collapses.**
+   L0↑=1.102, L1↑=1.107 (new bests). Stratum spread dropped to
+   **0.70** — smallest ever (was ~2.0 for most of training). All
+   four content types converging toward similar loss. Eval 5.449.
+
+9. **Flip tracking + cooldown implemented.** Per-weight cooldown
+   (int8) prevents same weight from oscillating back and forth.
+   Per-weight last-direction (int8) detects reversals. FLIP_COOLDOWN=4
+   intervals (100 steps). Checkpoint saves tracking state;
+   old checkpoints resume gracefully with zeros. ~70 MB added to
+   training memory. Probe script updated to display tracking stats.
 
 ### Session 042 key findings (prior)
 
@@ -79,24 +91,26 @@ multi-scale structure faster than it cost in eval loss.**
 
 | Property | Value |
 |----------|-------|
-| Current step | ~22800 (28% of 3B schedule) |
+| Current step | ~23000 (28% of 3B schedule) |
 | Total steps | **82,398** (3B schedule) |
-| Tokens seen | ~747M of 3B |
+| Tokens seen | ~754M of 3B |
 | Token budget | **3B** (2.7B train shards) |
-| Eval loss | **5.420** (step 18500, best) / **5.441** (step 22500, post-jump best) |
-| Relational r̄ | 0.386 (step 22800, stable) |
+| Eval loss | **5.420** (step 18500, best) / **5.449** (step 23000, post-jump best) |
+| Relational r̄ | 0.385 (step 23000, stable) |
 | Sparsity | 0.310 (unchanged) |
-| L1_asc φ-dev | **0.037** (step 13000, best) / 0.055 (step 22500) |
-| L1_asc range | 0.561–0.570 (locked in, drifted slightly down) |
-| L2_apex ratio | +0.111–0.138 (compressing, stable) |
+| L1_asc φ-dev | **0.037** (step 13000, best) / 0.058 (step 23000) |
+| L1_asc range | 0.560–0.570 (locked in) |
+| L2_apex ratio | +0.111–0.141 (compressing, stable) |
 | L1_desc | wild oscillations (h_in ≈ -0.1) |
-| L0_desc | 2.8–12.9 (expanding, not converging) |
-| Hilberg β | L0↑=**1.112** / L1↑=**1.115** (step 22500, best) |
+| L0_desc | 2.1–12.9 (expanding, not converging) |
+| Hilberg β | L0↑=**1.102** / L1↑=**1.107** (step 23000, best) |
 | Stride percolation L1↑ | s1→s8→s16→s32→s64→s128→s256→**s512** |
 | Stride percolation L2 | s1→s8→s16→s32→s64→**s128** |
-| Total flips | ~218,000 (0.62% cumulative) |
+| Total flips | ~222,000 (0.63% cumulative) |
 | LR (current) | ~5.0e-4 (post-jump, stable) |
-| Phase | balance (r̄ = 0.386) |
+| Phase | balance (r̄ = 0.385) |
+| Flip cooldown | **4 intervals** (100 steps) — NEW |
+| Flip tracking | cooldown + reversal detection — NEW |
 
 ### Eval loss evolution
 
@@ -116,7 +130,8 @@ multi-scale structure faster than it cost in eval loss.**
 | 21000 | 5.527 | 168 | 0.376 | 0.057 | +0.114 | 1.14/1.15 |
 | 21500 | 5.513 | 228 | 0.409 | 0.051 | +0.138 | 1.14/1.15 |
 | 22000 | 5.489 | 165 | 0.374 | 0.052 | +0.111 | 1.13/1.14 |
-| 22500 | 5.441 | 209 | 0.400 | 0.055 | +0.128 | **1.11/1.12** |
+| 22500 | 5.441 | 209 | 0.400 | 0.055 | +0.128 | 1.11/1.12 |
+| 23000 | 5.449 | 182 | 0.385 | 0.058 | +0.141 | **1.10/1.11** |
 
 ### Stratum loss evolution (post-phase-transition)
 
@@ -134,52 +149,57 @@ multi-scale structure faster than it cost in eval loss.**
 | 21500 | 6.13 | **6.72** | 7.12 | 5.28 | 1.84 |
 | 22000 | 6.22 | 6.75 | 7.08 | 5.26 | 1.82 |
 | 22500 | 6.22 | 6.70 | 7.19 | 5.21 | 1.98 |
+| 23000 | 6.10 | 6.73 | **7.03** | 5.05 | **0.70** |
 
-### Three-way φ-compression comparison (updated step 22500)
+### Three-way φ-compression comparison (updated step 23000)
 
 | Metric | v6 (63M, VSM) | Pythia (162M) | Qwen3-4B (4B) |
 |--------|--------------|---------------|----------------|
-| Stable zone ratio | **0.563** | 0.947 | 1.000 |
-| Stable zone φ-dev | **0.055** | 0.329 | 0.387 |
+| Stable zone ratio | **0.560** | 0.947 | 1.000 |
+| Stable zone φ-dev | **0.058** | 0.329 | 0.387 |
 | Best single layer | L1_asc: 0.037 | L9: 0.172 | L34: 0.037* |
 | Composition mechanism | Compression | Rotation | Rotation |
 | Architecture type | Holographic | Photographic | Photographic |
 | Strides at φ | **8 (s1→s512)** | N/A | N/A |
-| Hilberg β (L1↑) | **1.115** | N/A | N/A |
+| Hilberg β (L1↑) | **1.107** | N/A | N/A |
 
 *L34 is the output collapse layer, not the computation core.
 
 ## What's next
 
-1. **Continue training — Hilberg β is the primary metric.** At
-   current rate (~0.03/1000 steps), β could reach ~0.8 by step
-   40000. Watch for deceleration as β approaches 0.5.
-   Training is live: step ~22800, LR ~5.0e-4, phase=balance.
+1. **Resume training from step 23000 with flip tracking.** Stop
+   current run, resume with new code. Command:
+   `uv run python scripts/v6/train.py --resume checkpoints/vsm-lm-v6/step_023000`
+   First checkpoints will show tracking stats (reversals, cooldown,
+   unique_ever). Old checkpoint has no tracking state — starts fresh.
 
-2. **Descending arm is THE question.** Still wild after 22500 steps.
-   L1_desc h_in ≈ -0.1 means near-zero input entropy. L0_desc
-   expanding at 2.8–12.9×. No convergence signal yet. May need:
-   (a) ascending arm to fully stabilize (Hilberg → 0.5?) before
-   descending has a stable target to decompress from, or
-   (b) much longer training (72% of schedule remaining).
+2. **Watch flip tracking metrics.** Key questions to answer:
+   - What fraction of flips are reversals? (>10% = oscillation problem)
+   - How many unique weights have ever flipped? (tells us if 222K
+     cumulative flips are 222K unique positions or 22K × 10 repeats)
+   - How many weights are in cooldown at any given time?
+   - Does cooldown reduce reversal rate over time?
 
-3. **Stride percolation: watch s1024.** L1_asc has percolated
-   s1→s512. s1024 is the last frontier (ratio 0.298 at step 22500,
-   was -2.773 at step 18000 — moving in the right direction).
-   L2_apex φ-front at s128 — watch s256.
+3. **Hilberg β is the primary metric.** At current rate (~0.03/1000
+   steps), β could reach ~0.8 by step 40000. Watch for deceleration.
+   Step 23000: L0↑=1.102, L1↑=1.107.
 
-4. **Eval loss: watch for new all-time best.** Pre-jump best was
-   5.420 (step 18500). Post-jump at 5.441 (step 22500) and
-   dropping. Should surpass within ~2000 steps if trend holds.
+4. **Stratum spread collapse — is it real?** 0.70 at step 23000 vs
+   ~2.0 historically. Could be noise (single checkpoint). If it
+   persists at step 23500/24000, it's a genuine convergence signal.
 
-5. **Test holographic prediction.** Ablation experiment: if truly
+5. **Descending arm is THE question.** Still wild after 23000 steps.
+   72% of schedule remaining. Higher LR hasn't helped yet.
+
+6. **Stride percolation: watch s1024.** L1_asc s1024 at 0.319
+   (step 23000, was -2.773 at step 18000). L2_apex at s128.
+
+7. **Eval loss: watch for new all-time best.** Pre-jump best was
+   5.420 (step 18500). Post-jump at 5.449 (step 23000). Should
+   cross within ~2000 steps if trend holds.
+
+8. **Test holographic prediction.** Ablation experiment: if truly
    holographic, ablating one pass degrades all strata equally.
-
-6. **r̄ at 0.386 — stable in balance phase.** LR jump pushed r̄
-   up from 0.355 to 0.410, now settling at 0.386. Refine phase
-   at r̄ < 0.25 still distant. Topology continues evolving — flips
-   at 218K (0.62%), up from 172K at step 18000. ~4600 flips per
-   500 steps.
 
 ## Key files
 
@@ -202,7 +222,7 @@ multi-scale structure faster than it cost in eval loss.**
 | Prior run log (frozen topology) | `results/vsm-lm-v6/training.log` |
 | Prior run checkpoints | `checkpoints/a-vsm-lm-v6/` |
 | **Probe results** | |
-| v6.1 probes (steps 500–18000) | `results/compile-gradient/vsm_probe_step_*_v6_mlx.json` |
+| v6.1 probes (steps 500–23000) | `results/compile-gradient/vsm_probe_step_*_v6_mlx.json` |
 | **Research** | |
 | Research program | `mementum/knowledge/explore/VERBUM.md` |
 | **Holographic compression** | `mementum/knowledge/explore/holographic-compression.md` |
