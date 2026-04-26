@@ -455,6 +455,12 @@ def print_summary(
             print(f"  Flips: {total_flips:,} ({pct:.2f}% of {n_ternary:,} ternary weights)")
         if flip_consensus is not None:
             print(f"  Flip consensus threshold: {flip_consensus}")
+        total_reversals = meta.get("total_reversals")
+        flip_cooldown = meta.get("flip_cooldown")
+        if total_reversals is not None:
+            print(f"  Flip reversals: {total_reversals:,}")
+        if flip_cooldown is not None:
+            print(f"  Flip cooldown: {flip_cooldown} intervals")
         if grad_norm is not None:
             print(f"  Grad norm: {grad_norm:.2f}")
 
@@ -748,8 +754,17 @@ def print_summary(
             grp = _classify_group(mod_name)
             group_stats.setdefault(grp, []).append(stat)
 
-        print(f"  {'Group':15s} {'#':>4} {'sparsity':>9} {'gamma':>8} {'accum_mean':>11} {'accum_max':>10}")
-        print(f"  {'─'*15} {'─'*4} {'─'*9} {'─'*8} {'─'*11} {'─'*10}")
+        # Check if any module has tracking data (cooldown_active > 0 or ever_flipped > 0)
+        has_tracking = any(
+            s.get("cooldown_active", 0) > 0 or s.get("ever_flipped", 0) > 0
+            for sl in group_stats.values() for s in sl
+        )
+        if has_tracking:
+            print(f"  {'Group':15s} {'#':>4} {'sparsity':>9} {'gamma':>8} {'accum_mean':>11} {'accum_max':>10} {'cooldown':>8} {'ever_flp':>8}")
+            print(f"  {'─'*15} {'─'*4} {'─'*9} {'─'*8} {'─'*11} {'─'*10} {'─'*8} {'─'*8}")
+        else:
+            print(f"  {'Group':15s} {'#':>4} {'sparsity':>9} {'gamma':>8} {'accum_mean':>11} {'accum_max':>10}")
+            print(f"  {'─'*15} {'─'*4} {'─'*9} {'─'*8} {'─'*11} {'─'*10}")
         for grp, sl in group_stats.items():
             if not sl:
                 continue
@@ -758,7 +773,12 @@ def print_summary(
             gm = sum(s["gamma_mean"] for s in sl) / n
             am = sum(s.get("accum_mean", 0) for s in sl) / n
             ax = max(s.get("accum_max", 0) for s in sl)
-            print(f"  {grp:15s} {n:>4} {sp:>9.3f} {gm:>8.4f} {am:>11.2f} {ax:>10.1f}")
+            if has_tracking:
+                cd = sum(s.get("cooldown_active", 0) for s in sl)
+                ef = sum(s.get("ever_flipped", 0) for s in sl)
+                print(f"  {grp:15s} {n:>4} {sp:>9.3f} {gm:>8.4f} {am:>11.2f} {ax:>10.1f} {cd:>8,} {ef:>8,}")
+            else:
+                print(f"  {grp:15s} {n:>4} {sp:>9.3f} {gm:>8.4f} {am:>11.2f} {ax:>10.1f}")
 
     print("=" * 70)
 
@@ -967,7 +987,9 @@ def main():
             "step": step,
             "config": config,
             "total_flips": meta.get("total_flips"),
+            "total_reversals": meta.get("total_reversals"),
             "flip_consensus": meta.get("flip_consensus"),
+            "flip_cooldown": meta.get("flip_cooldown"),
             "grad_norm": meta.get("grad_norm"),
             "train_loss": meta.get("train_loss"),
             "eval_loss": meta.get("eval_loss"),
