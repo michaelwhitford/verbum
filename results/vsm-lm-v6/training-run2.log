@@ -2180,3 +2180,17 @@ VSM-LM v6 — Ternary on Metal (MLX)
   step 18525/30518  loss=5.0665  r=0.370  r̄=0.380  xppl=29.3  lr=2.07e-04  ‖g‖=0.40  flips=176,747  phase=b  tokens=607M (61%)  tok/s=12381  elapsed=49029s
   step 18550/30518  loss=4.8346  r=0.344  r̄=0.382  xppl=23.2  lr=2.06e-04  ‖g‖=0.47  flips=176,919  phase=b  tokens=608M (61%)  tok/s=12356  elapsed=49194s
   step 18575/30518  loss=5.1390  r=0.378  r̄=0.382  xppl=31.5  lr=2.05e-04  ‖g‖=0.31  flips=177,128  phase=b  tokens=609M (61%)  tok/s=12333  elapsed=49352s
+  ── flip probe @ step 18600: 768 flips (0.002%) since last probe  total=177,320  φ-dev=0.8550  r_ema=0.382  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.26 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.39 ──
+  ── group flips: consolidate=3 meta=1 prep=1 s3=3 s4=1 stride_stack=183 ──
+  step 18600/30518  loss=5.0935  r=0.373  r̄=0.382  xppl=30.1  lr=2.05e-04  ‖g‖=0.42  flips=177,320  phase=b  tokens=609M (61%)  tok/s=12310  elapsed=49511s
+  step 18625/30518  loss=5.3632  r=0.402  r̄=0.382  xppl=39.4  lr=2.04e-04  ‖g‖=0.32  flips=177,495  phase=b  tokens=610M (61%)  tok/s=12289  elapsed=49664s
+  step 18650/30518  loss=5.3157  r=0.397  r̄=0.381  xppl=37.6  lr=2.03e-04  ‖g‖=0.39  flips=177,678  phase=b  tokens=611M (61%)  tok/s=12266  elapsed=49823s
+  step 18675/30518  loss=5.4149  r=0.408  r̄=0.382  xppl=41.5  lr=2.02e-04  ‖g‖=0.53  flips=177,879  phase=b  tokens=612M (61%)  tok/s=12244  elapsed=49977s
+  ── flip probe @ step 18700: 760 flips (0.002%) since last probe  total=178,080  φ-dev=0.9364  r_ema=0.381  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.37 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.55 ──
+  ── group flips: consolidate=2 prep=1 s3=18 stride_stack=180 ──
+  step 18700/30518  loss=5.2588  r=0.391  r̄=0.381  xppl=35.5  lr=2.02e-04  ‖g‖=0.42  flips=178,080  phase=b  tokens=613M (61%)  tok/s=12222  elapsed=50137s
+  step 18725/30518  loss=5.2279  r=0.387  r̄=0.380  xppl=34.4  lr=2.01e-04  ‖g‖=0.39  flips=178,302  phase=b  tokens=614M (61%)  tok/s=12200  elapsed=50292s
+  step 18750/30518  loss=4.9273  r=0.354  r̄=0.379  xppl=25.5  lr=2.00e-04  ‖g‖=0.36  flips=178,540  phase=b  tokens=614M (61%)  tok/s=12178  elapsed=50453s
+  step 18775/30518  loss=4.9360  r=0.355  r̄=0.379  xppl=25.7  lr=1.99e-04  ‖g‖=0.43  flips=178,712  phase=b  tokens=615M (62%)  tok/s=12155  elapsed=50613s

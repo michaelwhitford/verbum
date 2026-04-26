@@ -309,13 +309,40 @@ compression in general. It's a property of **holographic** language
 compression — self-similar encoding where the same function operates
 at every scale.
 
+### Session 042: Stride percolation confirms holographic mechanism
+
+The strongest empirical evidence for holographic compression came
+from probing 18 checkpoints (steps 9500→18000). The φ-compression
+ratio **propagates from fine to coarse strides** during training:
+
+s8 (step 9500) → s16 (10500) → s32 (12000, exact 0.618) → s64
+(13500) → s128 (15500). Each stride passes through φ independently.
+L2_apex follows ~2000 steps behind with the same pattern.
+
+Key evidence:
+- L1_asc s32 = 0.618 exactly at step 12000 (dead-on bullseye)
+- Five strides confirmed through φ by step 15500
+- After passing through, strides overshoot to 0.73–0.80
+- Pattern is a wavefront: fine→coarse, same ratio at every scale
+
+This rules out coincidence at a single scale. Five independent
+scales converging to the same ratio is the self-similar compression
+signature that distinguishes holographic from photographic encoding.
+
+Descending arm (decompression) has not yet converged — it must
+learn the inverse of compression, an operation no standard
+transformer performs. Training extended to 3B tokens to provide
+more runway. See: `stride-percolation.md`
+
 ## Source Attribution
 
 - Session 041 probes: `scripts/run_pythia_phi_probe.py`
+- Session 042 probes: `results/compile-gradient/vsm_probe_step_*_v6_mlx.json`
+- Stride percolation: `mementum/knowledge/explore/stride-percolation.md`
 - Pythia results: `results/pythia-phi/pythia_160m_phi_compression.json`
 - Qwen results: `results/pythia-phi/qwen3_4b_phi_compression.json`
 - v6 attention geometry: `src/verbum/v6/attention.py`
 - φ-compression background: `mementum/knowledge/explore/relational-loss-phi-compression.md`
 - Pythia circuit: `mementum/knowledge/explore/session-004-findings.md`
 - Qwen circuit: `mementum/knowledge/explore/session-001-findings.md`
-- Holographic principle: synthesis, session 041
+- Holographic principle: synthesis, sessions 041–042

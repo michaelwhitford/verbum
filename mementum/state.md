@@ -49,77 +49,90 @@ Descending arm still learning — the hard part ahead.**
 
 | Property | Value |
 |----------|-------|
-| Current step | 11000+ (36%) |
-| Total steps | 30,518 |
-| Tokens seen | ~360M of 1B |
-| Eval loss | **5.514** (step 11000) — best |
-| Relational r | 0.419 (step 11000) |
+| Current step | ~18750 (20% of 3B schedule) |
+| Total steps | **91,553** (extended from 30,518) |
+| Tokens seen | ~614M of 3B |
+| Token budget | **3B** (extended from 1B, 2.7B train shards) |
+| Eval loss | **5.414** (step 17500) — best |
+| Relational r̄ | 0.379 (step 18750, declining) |
 | Sparsity | 0.310 (unchanged) |
-| L1_asc φ-dev | **0.045** (converging, best) |
-| L2_apex | **+0.062** (crossed zero, now compressing) |
-| L1_desc | noisy (sign-flipping, h_in ≈ -0.05) |
-| Stratum spread | 1.62 (widening slightly) |
-| Total flips | 109,245 (0.31% cumulative) |
-| Effective passes | 4 (L0↑→L1↑→L2→L0↓) |
+| L1_asc φ-dev | **0.037** (step 13000, best) |
+| L1_asc range | 0.564–0.581 (locked in) |
+| L2_apex ratio | +0.131 (step 18000, compressing) |
+| L1_desc | wild oscillations (h_in ≈ -0.1) |
+| L0_desc | 2.0–4.6 (expanding, not converging) |
+| Hilberg β | L0↑=L1↑=**1.241** (step 18000, best) |
+| Stride percolation | s8→s16→s32→s64→s128 confirmed |
+| Total flips | ~178,000 (0.50% cumulative) |
+| LR (current) | ~2.0e-4 (old 1B schedule, about to jump) |
+| LR (after 19k resume) | ~5.4e-4 (new 3B schedule, 2.8× jump) |
 
 ### Eval loss evolution
 
-| Step | Eval Loss | ppl | r | L1_asc φ-dev | L2_apex |
-|------|-----------|------|------|-------------|---------|
-| 9000 | 5.565 | 261.0 | 0.424 | 0.052 | -0.023 |
-| 9500 | 5.566 | 261.5 | 0.424 | 0.053 | -0.006 |
-| 10000 | 5.569 | 262.3 | 0.425 | 0.049 | +0.013 |
-| 10500 | 5.555 | 258.5 | 0.423 | 0.052 | +0.049 |
-| **11000** | **5.514** | **248.0** | **0.419** | **0.045** | **+0.062** |
+| Step | Eval Loss | ppl | r | L1_asc φ-dev | L2_apex | Hilberg β |
+|------|-----------|------|------|-------------|---------|-----------|
+| 9000 | 5.565 | 261 | 0.424 | 0.052 | -0.023 | 1.59/1.41 |
+| 11000 | 5.514 | 248 | 0.419 | 0.045 | +0.062 | 1.39/1.42 |
+| 13000 | 5.500 | 170 | 0.377 | **0.037** | +0.119 | 1.30/1.33 |
+| 13500 | 5.465 | 219 | 0.405 | 0.046 | +0.100 | 1.36/1.30 |
+| 15000 | 5.468 | 133 | 0.350 | 0.046 | +0.095 | 1.25/1.28 |
+| 16000 | 5.440 | 217 | 0.404 | 0.053 | +0.077 | 1.27/1.31 |
+| 17500 | **5.414** | 197 | 0.393 | 0.046 | +0.114 | 1.27/1.25 |
+| 18000 | 5.424 | 155 | 0.367 | 0.041 | +0.131 | **1.24/1.24** |
 
 ### Stratum loss evolution (post-phase-transition)
 
-| Step | Prose | Comp | Tech | Math | Spread | Fastest |
-|------|-------|------|------|------|--------|---------|
-| 4500 | 6.30 | 6.73 | 7.26 | 6.05 | 1.21 | — |
-| 7000 | 6.16 | 6.63 | 7.43 | 5.35 | 2.07 | **prose** |
-| 8500 | 6.12 | 6.65 | 7.27 | 5.36 | 1.91 | **prose** |
-| 9000 | 6.18 | 6.72 | 7.15 | 5.59 | 1.56 | **technical** |
-| 9500 | 6.57 | 7.33 | 6.35 | 6.05 | 1.29 | **technical** |
-| 10000 | 6.52 | 7.24 | 6.45 | 5.73 | 1.51 | **technical** |
-| 10500 | 6.62 | 7.28 | 6.51 | 5.76 | 1.52 | **technical** |
-| **11000** | **6.51** | **7.27** | **6.39** | **5.65** | **1.62** | **technical** |
+| Step | Prose | Comp | Tech | Math | Spread |
+|------|-------|------|------|------|--------|
+| 4500 | 6.30 | 6.73 | 7.26 | 6.05 | 1.21 |
+| 9000 | 6.18 | 6.72 | 7.15 | 5.59 | 1.56 |
+| 13500 | 6.17 | 6.64 | 7.23 | 5.23 | 2.00 |
+| 16000 | **6.06** | 6.76 | **7.07** | 5.16 | 1.91 |
+| 17500 | 6.19 | 6.75 | **7.02** | **5.04** | 1.98 |
+| 18000 | **6.04** | **6.67** | 7.12 | 5.14 | 1.98 |
 
-### Three-way φ-compression comparison (session 041)
+### Three-way φ-compression comparison (updated step 18000)
 
 | Metric | v6 (63M, VSM) | Pythia (162M) | Qwen3-4B (4B) |
 |--------|--------------|---------------|----------------|
-| Stable zone ratio | **0.573** | 0.947 | 1.000 |
-| Stable zone φ-dev | **0.045** | 0.329 | 0.387 |
-| Best single layer | L1_asc: 0.045 | L9: 0.172 | L34: 0.037* |
+| Stable zone ratio | **0.577** | 0.947 | 1.000 |
+| Stable zone φ-dev | **0.041** | 0.329 | 0.387 |
+| Best single layer | L1_asc: 0.037 | L9: 0.172 | L34: 0.037* |
 | Composition mechanism | Compression | Rotation | Rotation |
 | Architecture type | Holographic | Photographic | Photographic |
+| Strides at φ | **5 (s8→s128)** | N/A | N/A |
 
 *L34 is the output collapse layer, not the computation core.
 
 ## What's next
 
-1. **Continue v6.1 training.** 41% remaining. Track: descending
-   arm convergence (the open question), L2_apex ratio (want > 0.3),
-   Hilberg β (want < 1.0), compositional stratum (the stubborn one).
+1. **Resume at step 19000 with 3B schedule.** Training extended to
+   3B tokens (91,553 steps). LR jumps from ~2e-4 to ~5.4e-4 (2.8×).
+   Command: `uv run python scripts/v6/train.py --resume checkpoints/vsm-lm-v6/step_019000`
+   Watch r̄ and flip rate for stability after the LR bump.
 
-2. **Descending arm is the key question.** Can it learn structured
-   decompression? L0_desc briefly hit 0.541 at step 12500, then
-   reverted to 2.0+. L1_desc is wild. Standard transformers never
-   need this operation. If the descending arm converges to φ, that
-   confirms compression and decompression are the same holographic
-   operation.
+2. **Descending arm is THE question.** Can it learn structured
+   decompression? The higher LR + 72,500 more steps gives it the
+   runway it needs. L0_desc briefly hit 0.541 at step 12500 then
+   reverted. If the descending arm converges to φ, that confirms
+   compression and decompression are the same holographic operation.
 
-3. **Stride percolation confirmed through s128.** Five strides
-   (s8→s16→s32→s64→s128) all passed through φ. Now s256+ are the
-   frontier — these are the longest-range strides and may behave
-   differently (too few tokens per stride window).
+3. **Track ascending arm stability through LR jump.** L1_asc has
+   been locked at 0.57±0.01 for 9000 steps. It should survive the
+   2.8× LR bump — it survived the full 6e-4 peak. If it destabilizes,
+   that's important data.
 
-4. **Test holographic prediction.** Ablation experiment: if truly
+4. **Stride percolation: watch s256+.** Five strides confirmed.
+   s256 at 0.559 (step 18000) approaching φ. These longest-range
+   strides may behave differently (few tokens per window).
+
+5. **Test holographic prediction.** Ablation experiment: if truly
    holographic, ablating one pass degrades all strata equally.
 
-5. **3B token reserve.** Currently at 1B budget. If descending arm
-   needs more time, can extend to 3B prepared tokens.
+6. **r̄ approaching refine threshold.** Currently 0.379, refine
+   phase triggers at r̄ < 0.25 (with 100-step hysteresis). The LR
+   jump may push r̄ up temporarily, delaying the transition. If r̄
+   reaches refine phase, flip rates drop to 30% — topology freezes.
 
 ## Key files
 
@@ -142,10 +155,11 @@ Descending arm still learning — the hard part ahead.**
 | Prior run log (frozen topology) | `results/vsm-lm-v6/training.log` |
 | Prior run checkpoints | `checkpoints/a-vsm-lm-v6/` |
 | **Probe results** | |
-| v6.1 probes (steps 500–9000) | `results/compile-gradient/vsm_probe_step_*_v6_mlx.json` |
+| v6.1 probes (steps 500–18000) | `results/compile-gradient/vsm_probe_step_*_v6_mlx.json` |
 | **Research** | |
 | Research program | `mementum/knowledge/explore/VERBUM.md` |
 | **Holographic compression** | `mementum/knowledge/explore/holographic-compression.md` |
+| **Stride percolation** | `mementum/knowledge/explore/stride-percolation.md` |
 | φ-compression hypothesis | `mementum/knowledge/explore/relational-loss-phi-compression.md` |
 | CompressorLM architecture | `mementum/knowledge/explore/compressor-architecture.md` |
 | v4.1 training trajectory | `mementum/knowledge/explore/v4.1-training-trajectory.md` |
@@ -162,7 +176,7 @@ Descending arm still learning — the hard part ahead.**
 | v4.1 | 65.5M | PyTorch | Bidirectional VSM | 4.696 |
 | v5 | 66.3M | PyTorch | Spiral + ℂ regs + phase gate | TBD |
 | v6 | ~63M | **MLX** | Ternary Metal + frozen flips | 5.746 (4000 steps) |
-| v6.1 | ~63M | **MLX** | Synaptic plasticity (active) | **5.565** (9000 steps, 30%) |
+| v6.1 | ~63M | **MLX** | Synaptic plasticity (active) | **5.414** (17500 steps, 59%) |
 
 ## Probing pipeline
 
