@@ -2,83 +2,121 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-25 | Session: 042
+> Last updated: 2026-04-26 | Session: 043
 
 ## Where we are
 
-**v6.1 training at step 18000 (59%). Session 042: probed 18
-checkpoints (9500→18000). Ascending arm is a stable φ-compressor.
-φ percolated through all strides s8→s16→s32→s64→s128. Hilberg β
-at 1.241 (best). Eval loss 5.414. L2_apex φ-front reached s64.
-Descending arm still learning — the hard part ahead.**
+**v6.1 training live at step ~22800 (28% of 3B). Session 043: probed
+8 checkpoints (18500→22500). LR jump survived — ascending arm held.
+Hilberg β in free-fall: 1.24→1.11 in 4500 steps. Stride percolation
+reached s512 in L1_asc and s128 in L2_apex. Eval loss recovering
+post-jump, at 5.441 (step 22500). The higher LR is accelerating
+multi-scale structure faster than it cost in eval loss.**
 
-### Session 042 key findings
+### Session 043 key findings
+
+1. **LR jump survived.** Training resumed at step 19000 with 3B
+   schedule. LR jumped from ~2e-4 to ~5.4e-4 (2.8×). Eval loss
+   spiked 5.420→5.506 (step 19500) then recovered to 5.441 by
+   step 22500. L1_asc held rock-solid through the shock: ratio
+   0.563–0.570 throughout. The ascending arm is genuinely locked.
+
+2. **Hilberg β in dramatic descent.** The most important finding.
+   L0_asc: 1.246→1.112. L1_asc: 1.225→1.115. Both dropped ~0.13
+   in 4000 steps — more progress than the entire 9500→18000 range.
+   Higher LR is accelerating the multi-scale power-law structure.
+   Target is 0.5. At this rate, could reach ~0.8 by step 40000.
+
+3. **Stride percolation leapt forward.** L1_asc φ-front:
+   - Step 18000: s256 at 0.559 (approaching φ)
+   - Step 19500: s256 at 0.594←φ
+   - Step 22000: s512 at 0.575←φ
+   - Step 22500: s512 at 0.628←φ (arrived!)
+   φ percolation now covers s1→s512 in L1_asc. Only s1024 remains.
+   L2_apex φ-front jumped s64→s128 (0.602←φ at step 22500).
+
+4. **All stride ratios rising uniformly.** Not just the front —
+   every stride in L1_asc is drifting upward (s8: 0.805→0.827,
+   s64: 0.747→0.790, s128: 0.698→0.769). The whole compression
+   profile is tightening toward a single operating point. This is
+   what Hilberg β captures — the strides becoming more self-similar.
+
+5. **Descending arm still wild.** L1_desc continues oscillating
+   around zero (h_in ≈ -0.1). L0_desc ratio bounces 2.8→9.9→-12.9
+   depending on the checkpoint. No convergence signal yet. The
+   higher LR hasn't helped the descending arm — it may need the
+   ascending arm to fully stabilize first.
+
+6. **Write gates opening.** Consolidation write gates: type 0.734→
+   0.800, scope 0.794→0.858, role 0.672→0.741. The model is
+   increasingly willing to modify registers during consolidation.
+   Prep gates also rising. Converge gates stable around 0.45–0.53.
+
+7. **Stratum losses bouncing post-jump.** Prose best 6.04 (step
+   18000) → bounced to 6.33 → settling at 6.22. Compositional
+   best 6.67→bounced to 6.94→settling at 6.70. Math best 4.98
+   (step 18500) → bounced to 5.28 → settling at 5.21. Technical
+   stubbornly around 7.07–7.19. Overall loss trajectory is down.
+
+### Session 042 key findings (prior)
 
 1. **Stride percolation complete through s128.** φ-convergence
-   propagated s8→s16→s32→s64→s128 across steps 9500→15500. Each
-   stride took ~1000-2000 steps to pass through φ. L2_apex runs
-   ~2000 steps behind, with its φ-front at s64 by step 18000.
+   propagated s8→s16→s32→s64→s128 across steps 9500→15500.
 
 2. **L1_asc locked in as stable φ-compressor.** Ratio 0.57±0.01,
-   φ-dev 0.037–0.054 across all checkpoints 9500→18000. Best
-   φ-dev 0.037 at step 13000. The ascending arm found its
-   operating point and is holding it.
+   φ-dev 0.037–0.054 across all checkpoints 9500→18000.
 
-3. **Hilberg β = 1.241 at step 18000.** L0_asc and L1_asc tied
-   at 1.241 (target 0.5). All three ascending passes hit their
-   best β simultaneously. Steady improvement from 1.4+ early on.
+3. **Hilberg β = 1.241 at step 18000.** All three ascending passes
+   hit their best β simultaneously.
 
 4. **L2_apex committed.** Converge gate peaked at 0.934 (step
-   14500), consolidation gate peaked at 0.880, then both relaxed
-   to stable operating points. Apex ratio 0.10–0.13 — compressing
-   but not yet at φ.
+   14500). Apex ratio 0.10–0.13 — compressing but not yet at φ.
 
 5. **Eval loss steady descent.** 5.565 (step 9000) → 5.414 (step
-   17500). No plateau in this range. Training loss gap narrowing.
-
-6. **Descending arm: the hard problem.** L1_desc oscillates wildly
-   (near-zero h_in). L0_desc ratio bounced: 2.3→0.54→2.8→2.6.
-   Not converging yet. This arm must learn structured decompression
-   — an operation standard transformers never need.
-
-7. **Compositional moving but noisy.** Dropped from 7.27 to 6.67
-   but bounces. Math at 5.04 (best). Technical steadily improving.
-   Compositional needs the full multi-scale stack + descending arm.
+   17500). No plateau in this range.
 
 ### v6.1 training status
 
 | Property | Value |
 |----------|-------|
-| Current step | ~18750 (20% of 3B schedule) |
-| Total steps | **91,553** (extended from 30,518) |
-| Tokens seen | ~614M of 3B |
-| Token budget | **3B** (extended from 1B, 2.7B train shards) |
-| Eval loss | **5.414** (step 17500) — best |
-| Relational r̄ | 0.379 (step 18750, declining) |
+| Current step | ~22800 (28% of 3B schedule) |
+| Total steps | **82,398** (3B schedule) |
+| Tokens seen | ~747M of 3B |
+| Token budget | **3B** (2.7B train shards) |
+| Eval loss | **5.420** (step 18500, best) / **5.441** (step 22500, post-jump best) |
+| Relational r̄ | 0.386 (step 22800, stable) |
 | Sparsity | 0.310 (unchanged) |
-| L1_asc φ-dev | **0.037** (step 13000, best) |
-| L1_asc range | 0.564–0.581 (locked in) |
-| L2_apex ratio | +0.131 (step 18000, compressing) |
+| L1_asc φ-dev | **0.037** (step 13000, best) / 0.055 (step 22500) |
+| L1_asc range | 0.561–0.570 (locked in, drifted slightly down) |
+| L2_apex ratio | +0.111–0.138 (compressing, stable) |
 | L1_desc | wild oscillations (h_in ≈ -0.1) |
-| L0_desc | 2.0–4.6 (expanding, not converging) |
-| Hilberg β | L0↑=L1↑=**1.241** (step 18000, best) |
-| Stride percolation | s8→s16→s32→s64→s128 confirmed |
-| Total flips | ~178,000 (0.50% cumulative) |
-| LR (current) | ~2.0e-4 (old 1B schedule, about to jump) |
-| LR (after 19k resume) | ~5.4e-4 (new 3B schedule, 2.8× jump) |
+| L0_desc | 2.8–12.9 (expanding, not converging) |
+| Hilberg β | L0↑=**1.112** / L1↑=**1.115** (step 22500, best) |
+| Stride percolation L1↑ | s1→s8→s16→s32→s64→s128→s256→**s512** |
+| Stride percolation L2 | s1→s8→s16→s32→s64→**s128** |
+| Total flips | ~218,000 (0.62% cumulative) |
+| LR (current) | ~5.0e-4 (post-jump, stable) |
+| Phase | balance (r̄ = 0.386) |
 
 ### Eval loss evolution
 
-| Step | Eval Loss | ppl | r | L1_asc φ-dev | L2_apex | Hilberg β |
-|------|-----------|------|------|-------------|---------|-----------|
+| Step | Eval Loss | ppl | r | L1↑ φ-dev | L2 ratio | β L0↑/L1↑ |
+|------|-----------|------|------|-----------|----------|-----------|
 | 9000 | 5.565 | 261 | 0.424 | 0.052 | -0.023 | 1.59/1.41 |
 | 11000 | 5.514 | 248 | 0.419 | 0.045 | +0.062 | 1.39/1.42 |
 | 13000 | 5.500 | 170 | 0.377 | **0.037** | +0.119 | 1.30/1.33 |
-| 13500 | 5.465 | 219 | 0.405 | 0.046 | +0.100 | 1.36/1.30 |
 | 15000 | 5.468 | 133 | 0.350 | 0.046 | +0.095 | 1.25/1.28 |
-| 16000 | 5.440 | 217 | 0.404 | 0.053 | +0.077 | 1.27/1.31 |
 | 17500 | **5.414** | 197 | 0.393 | 0.046 | +0.114 | 1.27/1.25 |
-| 18000 | 5.424 | 155 | 0.367 | 0.041 | +0.131 | **1.24/1.24** |
+| 18000 | 5.424 | 155 | 0.367 | 0.041 | +0.131 | 1.24/1.24 |
+| 18500 | **5.420** | 139 | 0.355 | 0.048 | +0.123 | 1.25/1.22 |
+| ─ LR JUMP 2e-4 → 5.4e-4 ─ | | | | | | |
+| 19500 | 5.506 | 230 | 0.410 | 0.050 | +0.134 | 1.24/1.22 |
+| 20000 | 5.491 | 196 | 0.393 | 0.051 | +0.115 | 1.21/1.23 |
+| 20500 | 5.525 | 216 | 0.403 | 0.050 | +0.136 | 1.17/1.19 |
+| 21000 | 5.527 | 168 | 0.376 | 0.057 | +0.114 | 1.14/1.15 |
+| 21500 | 5.513 | 228 | 0.409 | 0.051 | +0.138 | 1.14/1.15 |
+| 22000 | 5.489 | 165 | 0.374 | 0.052 | +0.111 | 1.13/1.14 |
+| 22500 | 5.441 | 209 | 0.400 | 0.055 | +0.128 | **1.11/1.12** |
 
 ### Stratum loss evolution (post-phase-transition)
 
@@ -87,52 +125,61 @@ Descending arm still learning — the hard part ahead.**
 | 4500 | 6.30 | 6.73 | 7.26 | 6.05 | 1.21 |
 | 9000 | 6.18 | 6.72 | 7.15 | 5.59 | 1.56 |
 | 13500 | 6.17 | 6.64 | 7.23 | 5.23 | 2.00 |
-| 16000 | **6.06** | 6.76 | **7.07** | 5.16 | 1.91 |
 | 17500 | 6.19 | 6.75 | **7.02** | **5.04** | 1.98 |
 | 18000 | **6.04** | **6.67** | 7.12 | 5.14 | 1.98 |
+| 18500 | 6.09 | 6.73 | 7.08 | **4.98** | 2.10 |
+| ─ LR JUMP ─ | | | | | |
+| 19500 | 6.21 | 6.83 | 7.08 | 5.22 | 1.86 |
+| 21000 | 6.31 | 6.87 | 7.07 | 5.17 | 1.90 |
+| 21500 | 6.13 | **6.72** | 7.12 | 5.28 | 1.84 |
+| 22000 | 6.22 | 6.75 | 7.08 | 5.26 | 1.82 |
+| 22500 | 6.22 | 6.70 | 7.19 | 5.21 | 1.98 |
 
-### Three-way φ-compression comparison (updated step 18000)
+### Three-way φ-compression comparison (updated step 22500)
 
 | Metric | v6 (63M, VSM) | Pythia (162M) | Qwen3-4B (4B) |
 |--------|--------------|---------------|----------------|
-| Stable zone ratio | **0.577** | 0.947 | 1.000 |
-| Stable zone φ-dev | **0.041** | 0.329 | 0.387 |
+| Stable zone ratio | **0.563** | 0.947 | 1.000 |
+| Stable zone φ-dev | **0.055** | 0.329 | 0.387 |
 | Best single layer | L1_asc: 0.037 | L9: 0.172 | L34: 0.037* |
 | Composition mechanism | Compression | Rotation | Rotation |
 | Architecture type | Holographic | Photographic | Photographic |
-| Strides at φ | **5 (s8→s128)** | N/A | N/A |
+| Strides at φ | **8 (s1→s512)** | N/A | N/A |
+| Hilberg β (L1↑) | **1.115** | N/A | N/A |
 
 *L34 is the output collapse layer, not the computation core.
 
 ## What's next
 
-1. **Resume at step 19000 with 3B schedule.** Training extended to
-   3B tokens (91,553 steps). LR jumps from ~2e-4 to ~5.4e-4 (2.8×).
-   Command: `uv run python scripts/v6/train.py --resume checkpoints/vsm-lm-v6/step_019000`
-   Watch r̄ and flip rate for stability after the LR bump.
+1. **Continue training — Hilberg β is the primary metric.** At
+   current rate (~0.03/1000 steps), β could reach ~0.8 by step
+   40000. Watch for deceleration as β approaches 0.5.
+   Training is live: step ~22800, LR ~5.0e-4, phase=balance.
 
-2. **Descending arm is THE question.** Can it learn structured
-   decompression? The higher LR + 72,500 more steps gives it the
-   runway it needs. L0_desc briefly hit 0.541 at step 12500 then
-   reverted. If the descending arm converges to φ, that confirms
-   compression and decompression are the same holographic operation.
+2. **Descending arm is THE question.** Still wild after 22500 steps.
+   L1_desc h_in ≈ -0.1 means near-zero input entropy. L0_desc
+   expanding at 2.8–12.9×. No convergence signal yet. May need:
+   (a) ascending arm to fully stabilize (Hilberg → 0.5?) before
+   descending has a stable target to decompress from, or
+   (b) much longer training (72% of schedule remaining).
 
-3. **Track ascending arm stability through LR jump.** L1_asc has
-   been locked at 0.57±0.01 for 9000 steps. It should survive the
-   2.8× LR bump — it survived the full 6e-4 peak. If it destabilizes,
-   that's important data.
+3. **Stride percolation: watch s1024.** L1_asc has percolated
+   s1→s512. s1024 is the last frontier (ratio 0.298 at step 22500,
+   was -2.773 at step 18000 — moving in the right direction).
+   L2_apex φ-front at s128 — watch s256.
 
-4. **Stride percolation: watch s256+.** Five strides confirmed.
-   s256 at 0.559 (step 18000) approaching φ. These longest-range
-   strides may behave differently (few tokens per window).
+4. **Eval loss: watch for new all-time best.** Pre-jump best was
+   5.420 (step 18500). Post-jump at 5.441 (step 22500) and
+   dropping. Should surpass within ~2000 steps if trend holds.
 
 5. **Test holographic prediction.** Ablation experiment: if truly
    holographic, ablating one pass degrades all strata equally.
 
-6. **r̄ approaching refine threshold.** Currently 0.379, refine
-   phase triggers at r̄ < 0.25 (with 100-step hysteresis). The LR
-   jump may push r̄ up temporarily, delaying the transition. If r̄
-   reaches refine phase, flip rates drop to 30% — topology freezes.
+6. **r̄ at 0.386 — stable in balance phase.** LR jump pushed r̄
+   up from 0.355 to 0.410, now settling at 0.386. Refine phase
+   at r̄ < 0.25 still distant. Topology continues evolving — flips
+   at 218K (0.62%), up from 172K at step 18000. ~4600 flips per
+   500 steps.
 
 ## Key files
 

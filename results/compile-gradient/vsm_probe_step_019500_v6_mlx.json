@@ -1,0 +1,988 @@
+{
+  "timestamp": "2026-04-26T21:33:43.255692+00:00",
+  "architecture": "vsm-lm-v6-mlx",
+  "step": 19500,
+  "config": {
+    "d_model": 512,
+    "d_register": 128,
+    "d_ff": 1536,
+    "d_ff_consolidate": 2048,
+    "n_heads": 8,
+    "strides": [
+      1,
+      8,
+      16,
+      32,
+      64,
+      128,
+      256,
+      512,
+      1024
+    ],
+    "window": 8,
+    "vocab_size": 50277,
+    "seq_len": 4096,
+    "alpha": 1.18,
+    "n_passes": 5,
+    "pass_names": [
+      "L0_asc",
+      "L1_asc",
+      "L2_apex",
+      "L1_desc",
+      "L0_desc"
+    ],
+    "phase_names": [
+      "prep",
+      "converge",
+      "consolidate"
+    ],
+    "reg_names": [
+      "type",
+      "scope",
+      "role"
+    ],
+    "total_ternary_weights": 35258368
+  },
+  "total_flips": 188374,
+  "flip_consensus": 50,
+  "grad_norm": 0.38546183705329895,
+  "train_loss": 5.43779444694519,
+  "eval_loss": 5.506074666976929,
+  "relational_loss": 0.4102539838005071,
+  "excess_ppl": 42.427402842914255,
+  "ppl": 229.93449107600267,
+  "phi_compression": {
+    "overall": {
+      "L0_asc": {
+        "mean_ratio": 0.8454514101313909,
+        "std_ratio": 0.015943418552844226,
+        "mean_h_in": -1.6568800956010818,
+        "mean_h_out": -1.4010767340660095,
+        "phi_dev": 0.22741742138149612,
+        "direction": "compressing"
+      },
+      "L1_asc": {
+        "mean_ratio": 0.5685086628004105,
+        "std_ratio": 0.02364245259812002,
+        "mean_h_in": -1.4010767340660095,
+        "mean_h_out": -0.7972223721444607,
+        "phi_dev": 0.04952532594948433,
+        "direction": "compressing"
+      },
+      "L2_apex": {
+        "mean_ratio": 0.1336391794122785,
+        "std_ratio": 0.06597178832476114,
+        "mean_h_in": -0.7972223721444607,
+        "mean_h_out": -0.10958309704437852,
+        "phi_dev": 0.48439480933761625,
+        "direction": "compressing"
+      },
+      "L1_desc": {
+        "mean_ratio": -2.7555464000780066,
+        "std_ratio": 2.416615368812453,
+        "mean_h_in": -0.10958309704437852,
+        "mean_h_out": 0.18064848706126213,
+        "phi_dev": 3.3735803888279015,
+        "direction": "compressing"
+      },
+      "L0_desc": {
+        "mean_ratio": 3.080194481879522,
+        "std_ratio": 1.573200253969422,
+        "mean_h_in": 0.18064848706126213,
+        "mean_h_out": 0.4659733511507511,
+        "phi_dev": 2.4621604931296273,
+        "direction": "expanding"
+      },
+      "aggregate": {
+        "mean_ratio": 0.37444946682911906,
+        "mean_phi_dev": 1.319415687725225,
+        "target": 0.6180339887498948
+      },
+      "loss": {
+        "mean_loss": 6.3503625094890594,
+        "relational_loss": 0.5101486521041255,
+        "excess_ppl": 105.67438318065128
+      },
+      "gates": {
+        "L0_asc_prep": 0.31086413003504276,
+        "L0_asc_converge": 0.5214222203940153,
+        "L0_asc_consolidate": 0.4045478943735361,
+        "L1_asc_prep": 0.39940002374351025,
+        "L1_asc_converge": 0.6743472777307034,
+        "L1_asc_consolidate": 0.514421546831727,
+        "L2_apex_prep": 0.6117361709475517,
+        "L2_apex_converge": 0.9029314741492271,
+        "L2_apex_consolidate": 0.8459908701479435,
+        "L1_desc_prep": 0.6443912014365196,
+        "L1_desc_converge": 0.6115965209901333,
+        "L1_desc_consolidate": 0.5540416166186333,
+        "L0_desc_prep": 0.6918706446886063,
+        "L0_desc_converge": 0.6303186602890491,
+        "L0_desc_consolidate": 0.6144186370074749
+      },
+      "mod_mean": {
+        "L0_asc_prep": 0.0013906325639254646,
+        "L0_asc_converge": -0.0032076562201837078,
+        "L0_asc_consolidate": -0.0013043291746726027,
+        "L1_asc_prep": 0.0016434540120826568,
+        "L1_asc_converge": -0.006073596956412075,
+        "L1_asc_consolidate": -0.0010227303428109735,
+        "L2_apex_prep": 0.0024989303274196573,
+        "L2_apex_converge": -0.008861278824042529,
+        "L2_apex_consolidate": -0.0011836248986583087,
+        "L1_desc_prep": 0.0025059020481421612,
+        "L1_desc_converge": -0.0045551302266630955,
+        "L1_desc_consolidate": -0.00012249556129972916,
+        "L0_desc_prep": 0.0021288888456183486,
+        "L0_desc_converge": -0.006135545547294896,
+        "L0_desc_consolidate": 0.00038351701959982165
+      },
+      "mod_std": {
+        "L0_asc_prep": 0.0760279216337949,
+        "L0_asc_converge": 0.2524540489539504,
+        "L0_asc_consolidate": 0.13039940129965544,
+        "L1_asc_prep": 0.09110316960141063,
+        "L1_asc_converge": 0.32228844426572323,
+        "L1_asc_consolidate": 0.15103894751518965,
+        "L2_apex_prep": 0.12943880446255207,
+        "L2_apex_converge": 0.40892566181719303,
+        "L2_apex_consolidate": 0.232808455824852,
+        "L1_desc_prep": 0.13083907263353467,
+        "L1_desc_converge": 0.2633246025070548,
+        "L1_desc_consolidate": 0.1489614611491561,
+        "L0_desc_prep": 0.13897320488467813,
+        "L0_desc_converge": 0.2671988867223263,
+        "L0_desc_consolidate": 0.162223968654871
+      },
+      "meta_gates": {
+        "L0_asc": 0.9999878257513046,
+        "L1_asc": 0.9999892227351665,
+        "L2_apex": 0.9999890141189098,
+        "L1_desc": 0.9999880567193031,
+        "L0_desc": 0.9999861568212509
+      },
+      "write_gates": {
+        "L0_asc_prep_write_type": 0.2124543017707765,
+        "L0_asc_prep_write_scope": 0.45947912707924843,
+        "L0_asc_prep_write_role": 0.348667087033391,
+        "L0_asc_converge_write_type": 0.18161147739738226,
+        "L0_asc_converge_write_scope": 0.09317905679927208,
+        "L0_asc_converge_write_role": 0.7620294169755653,
+        "L0_asc_consolidate_write_type": 0.8942168541252613,
+        "L0_asc_consolidate_write_scope": 0.8999589644372463,
+        "L0_asc_consolidate_write_role": 0.8747454732656479,
+        "L1_asc_prep_write_type": 0.8826566860079765,
+        "L1_asc_prep_write_scope": 0.6555122919380665,
+        "L1_asc_prep_write_role": 0.7527057528495789,
+        "L1_asc_converge_write_type": 0.759726210613735,
+        "L1_asc_converge_write_scope": 0.5631700603989884,
+        "L1_asc_converge_write_role": 0.63991729170084,
+        "L1_asc_consolidate_write_type": 0.7829765044152737,
+        "L1_asc_consolidate_write_scope": 0.8725559823215008,
+        "L1_asc_consolidate_write_role": 0.5552823971956968,
+        "L2_apex_prep_write_type": 0.8547396063804626,
+        "L2_apex_prep_write_scope": 0.9437999241054058,
+        "L2_apex_prep_write_role": 0.8307326212525368,
+        "L2_apex_converge_write_type": 0.635235448833555,
+        "L2_apex_converge_write_scope": 0.8554508853703737,
+        "L2_apex_converge_write_role": 0.3576653907657601,
+        "L2_apex_consolidate_write_type": 0.6122180707752705,
+        "L2_apex_consolidate_write_scope": 0.7318431511521339,
+        "L2_apex_consolidate_write_role": 0.5430103484541178,
+        "L1_desc_prep_write_type": 0.7934626825153828,
+        "L1_desc_prep_write_scope": 0.8720332868397236,
+        "L1_desc_prep_write_role": 0.905585840344429,
+        "L1_desc_converge_write_type": 0.415036364516709,
+        "L1_desc_converge_write_scope": 0.29117767012212425,
+        "L1_desc_converge_write_role": 0.48139790818095207,
+        "L1_desc_consolidate_write_type": 0.773108784109354,
+        "L1_desc_consolidate_write_scope": 0.6793947331607342,
+        "L1_desc_consolidate_write_role": 0.7721698433160782,
+        "L0_desc_prep_write_type": 0.7504259347915649,
+        "L0_desc_prep_write_scope": 0.6890980415046215,
+        "L0_desc_prep_write_role": 0.5480477977544069,
+        "L0_desc_converge_write_type": 0.2872462560189888,
+        "L0_desc_converge_write_scope": 0.7985998671501875,
+        "L0_desc_converge_write_role": 0.2841176737565547,
+        "L0_desc_consolidate_write_type": 0.6248441562056541,
+        "L0_desc_consolidate_write_scope": 0.823293037712574,
+        "L0_desc_consolidate_write_role": 0.6354611609131098
+      },
+      "strides": {
+        "L0_asc_stride_0_s1_ratio": 0.5705820314870531,
+        "L0_asc_stride_0_s1_delta_norm": 12.148107171058655,
+        "L0_asc_stride_0_s1_rel_contrib": 1.1282857566856992,
+        "L0_asc_stride_1_s8_ratio": 0.7983910381982913,
+        "L0_asc_stride_1_s8_delta_norm": 7.563357383012772,
+        "L0_asc_stride_1_s8_rel_contrib": 0.46549155048371027,
+        "L0_asc_stride_2_s16_ratio": 0.7810386416255798,
+        "L0_asc_stride_2_s16_delta_norm": 7.279939711093903,
+        "L0_asc_stride_2_s16_rel_contrib": 0.40155052570892963,
+        "L0_asc_stride_3_s32_ratio": 0.7583454563275239,
+        "L0_asc_stride_3_s32_delta_norm": 6.975069969892502,
+        "L0_asc_stride_3_s32_rel_contrib": 0.3529178924219075,
+        "L0_asc_stride_4_s64_ratio": 0.7444791384469265,
+        "L0_asc_stride_4_s64_delta_norm": 6.523013234138489,
+        "L0_asc_stride_4_s64_rel_contrib": 0.3070702852580949,
+        "L0_asc_stride_5_s128_ratio": 0.701281706055633,
+        "L0_asc_stride_5_s128_delta_norm": 6.381340026855469,
+        "L0_asc_stride_5_s128_rel_contrib": 0.2843431971496441,
+        "L0_asc_stride_6_s256_ratio": 0.5791153762277281,
+        "L0_asc_stride_6_s256_delta_norm": 6.168508946895599,
+        "L0_asc_stride_6_s256_rel_contrib": 0.26120518601430565,
+        "L0_asc_stride_7_s512_ratio": 0.37329815262412863,
+        "L0_asc_stride_7_s512_delta_norm": 5.9597169160842896,
+        "L0_asc_stride_7_s512_rel_contrib": 0.2407668009270089,
+        "L0_asc_stride_8_s1024_ratio": -6.745767331795757,
+        "L0_asc_stride_8_s1024_delta_norm": 6.706109821796417,
+        "L0_asc_stride_8_s1024_rel_contrib": 0.2604926024189602,
+        "L0_asc_stride_mean_ratio": -0.15991508786698805,
+        "L1_asc_stride_0_s1_ratio": 0.6044827988328889,
+        "L1_asc_stride_0_s1_delta_norm": 12.61750042438507,
+        "L1_asc_stride_0_s1_rel_contrib": 0.9684498513883081,
+        "L1_asc_stride_1_s8_ratio": 0.8052585076113178,
+        "L1_asc_stride_1_s8_delta_norm": 7.538160711526871,
+        "L1_asc_stride_1_s8_rel_contrib": 0.41717627981874034,
+        "L1_asc_stride_2_s16_ratio": 0.7985509632780848,
+        "L1_asc_stride_2_s16_delta_norm": 7.093968510627747,
+        "L1_asc_stride_2_s16_rel_contrib": 0.3593425824169739,
+        "L1_asc_stride_3_s32_ratio": 0.7857274206697418,
+        "L1_asc_stride_3_s32_delta_norm": 6.735044747591019,
+        "L1_asc_stride_3_s32_rel_contrib": 0.31875140446640293,
+        "L1_asc_stride_4_s64_ratio": 0.7483019179026107,
+        "L1_asc_stride_4_s64_delta_norm": 6.385504275560379,
+        "L1_asc_stride_4_s64_rel_contrib": 0.28613277121570546,
+        "L1_asc_stride_5_s128_ratio": 0.7115528332989203,
+        "L1_asc_stride_5_s128_delta_norm": 6.280978828668594,
+        "L1_asc_stride_5_s128_rel_contrib": 0.2679369509100981,
+        "L1_asc_stride_6_s256_ratio": 0.5941950993683969,
+        "L1_asc_stride_6_s256_delta_norm": 6.177761226892471,
+        "L1_asc_stride_6_s256_rel_contrib": 0.25232257083995585,
+        "L1_asc_stride_7_s512_ratio": 0.38190554756841993,
+        "L1_asc_stride_7_s512_delta_norm": 5.903556019067764,
+        "L1_asc_stride_7_s512_rel_contrib": 0.23155155816220296,
+        "L1_asc_stride_8_s1024_ratio": -1.0359762863544284,
+        "L1_asc_stride_8_s1024_delta_norm": 6.696204721927643,
+        "L1_asc_stride_8_s1024_rel_contrib": 0.2539031167913883,
+        "L1_asc_stride_mean_ratio": 0.4882220891306614,
+        "L2_apex_stride_0_s1_ratio": 0.6000425667882415,
+        "L2_apex_stride_0_s1_delta_norm": 13.025086224079132,
+        "L2_apex_stride_0_s1_rel_contrib": 0.700947411700805,
+        "L2_apex_stride_1_s8_ratio": 0.776978546135121,
+        "L2_apex_stride_1_s8_delta_norm": 7.277392506599426,
+        "L2_apex_stride_1_s8_rel_contrib": 0.32236671031745723,
+        "L2_apex_stride_2_s16_ratio": 0.7576980714836914,
+        "L2_apex_stride_2_s16_delta_norm": 6.755626797676086,
+        "L2_apex_stride_2_s16_rel_contrib": 0.2844431675923212,
+        "L2_apex_stride_3_s32_ratio": 0.7166014749595543,
+        "L2_apex_stride_3_s32_delta_norm": 6.380484402179718,
+        "L2_apex_stride_3_s32_rel_contrib": 0.25846776961280277,
+        "L2_apex_stride_4_s64_ratio": 0.5891634288258485,
+        "L2_apex_stride_4_s64_delta_norm": 6.148967057466507,
+        "L2_apex_stride_4_s64_rel_contrib": 0.24170682734686827,
+        "L2_apex_stride_5_s128_ratio": 0.21617686016440107,
+        "L2_apex_stride_5_s128_delta_norm": 6.040183037519455,
+        "L2_apex_stride_5_s128_rel_contrib": 0.2297519544575153,
+        "L2_apex_stride_6_s256_ratio": 2.0157641898395284,
+        "L2_apex_stride_6_s256_delta_norm": 6.027626276016235,
+        "L2_apex_stride_6_s256_rel_contrib": 0.22275344206760647,
+        "L2_apex_stride_7_s512_ratio": 1.6042098797800202,
+        "L2_apex_stride_7_s512_delta_norm": 5.80429282784462,
+        "L2_apex_stride_7_s512_rel_contrib": 0.20871059269080383,
+        "L2_apex_stride_8_s1024_ratio": 1.1543216220853314,
+        "L2_apex_stride_8_s1024_delta_norm": 6.417861312627792,
+        "L2_apex_stride_8_s1024_rel_contrib": 0.22549858059914263,
+        "L2_apex_stride_mean_ratio": 0.9367729600068597,
+        "L1_desc_stride_0_s1024_ratio": -0.047477130687891285,
+        "L1_desc_stride_0_s1024_delta_norm": 6.105901271104813,
+        "L1_desc_stride_0_s1024_rel_contrib": 0.22922808635328906,
+        "L1_desc_stride_1_s512_ratio": 40.7659179002607,
+        "L1_desc_stride_1_s512_delta_norm": 5.593237340450287,
+        "L1_desc_stride_1_s512_rel_contrib": 0.20462006054343837,
+        "L1_desc_stride_2_s256_ratio": 3.300620207187778,
+        "L1_desc_stride_2_s256_delta_norm": 5.983148217201233,
+        "L1_desc_stride_2_s256_rel_contrib": 0.21443912612538488,
+        "L1_desc_stride_3_s128_ratio": 1.1858895906187532,
+        "L1_desc_stride_3_s128_delta_norm": 5.925155341625214,
+        "L1_desc_stride_3_s128_rel_contrib": 0.2073146543752798,
+        "L1_desc_stride_4_s64_ratio": 1.4677059340528762,
+        "L1_desc_stride_4_s64_delta_norm": 5.998654127120972,
+        "L1_desc_stride_4_s64_rel_contrib": 0.20439506727632772,
+        "L1_desc_stride_5_s32_ratio": 1.2879426129672191,
+        "L1_desc_stride_5_s32_delta_norm": 6.33700954914093,
+        "L1_desc_stride_5_s32_rel_contrib": 0.21113507889076413,
+        "L1_desc_stride_6_s16_ratio": 1.2234128821715406,
+        "L1_desc_stride_6_s16_delta_norm": 6.543580055236816,
+        "L1_desc_stride_6_s16_rel_contrib": 0.21310220844678374,
+        "L1_desc_stride_7_s8_ratio": 1.1571504697773687,
+        "L1_desc_stride_7_s8_delta_norm": 6.45012903213501,
+        "L1_desc_stride_7_s8_rel_contrib": 0.205023881791918,
+        "L1_desc_stride_8_s1_ratio": 1.3122452243085283,
+        "L1_desc_stride_8_s1_delta_norm": 13.646222293376923,
+        "L1_desc_stride_8_s1_rel_contrib": 0.4245490120548761,
+        "L1_desc_stride_mean_ratio": 5.7392675211840976,
+        "L0_desc_stride_0_s1024_ratio": 1.191950973430516,
+        "L0_desc_stride_0_s1024_delta_norm": 6.015684366226196,
+        "L0_desc_stride_0_s1024_rel_contrib": 0.19514361791904358,
+        "L0_desc_stride_1_s512_ratio": 1.1354850158593814,
+        "L0_desc_stride_1_s512_delta_norm": 5.582510471343994,
+        "L0_desc_stride_1_s512_rel_contrib": 0.17775218007912566,
+        "L0_desc_stride_2_s256_ratio": 1.1420435861558702,
+        "L0_desc_stride_2_s256_delta_norm": 5.944638907909393,
+        "L0_desc_stride_2_s256_rel_contrib": 0.1866538712905233,
+        "L0_desc_stride_3_s128_ratio": 1.1192609697770268,
+        "L0_desc_stride_3_s128_delta_norm": 5.81091433763504,
+        "L0_desc_stride_3_s128_rel_contrib": 0.17902466378819976,
+        "L0_desc_stride_4_s64_ratio": 1.1001991886419342,
+        "L0_desc_stride_4_s64_delta_norm": 6.030277967453003,
+        "L0_desc_stride_4_s64_rel_contrib": 0.18217324107066507,
+        "L0_desc_stride_5_s32_ratio": 1.085088371578692,
+        "L0_desc_stride_5_s32_delta_norm": 6.216909348964691,
+        "L0_desc_stride_5_s32_rel_contrib": 0.18448254945065198,
+        "L0_desc_stride_6_s16_ratio": 1.086541945711238,
+        "L0_desc_stride_6_s16_delta_norm": 6.450824677944183,
+        "L0_desc_stride_6_s16_rel_contrib": 0.18820886830002223,
+        "L0_desc_stride_7_s8_ratio": 1.070417960942008,
+        "L0_desc_stride_7_s8_delta_norm": 6.495742559432983,
+        "L0_desc_stride_7_s8_rel_contrib": 0.18600883497494447,
+        "L0_desc_stride_8_s1_ratio": 1.1565669210360898,
+        "L0_desc_stride_8_s1_delta_norm": 13.5702024102211,
+        "L0_desc_stride_8_s1_rel_contrib": 0.38237869042662165,
+        "L0_desc_stride_mean_ratio": 1.1208394370147508
+      },
+      "hilberg": {
+        "L0_asc": {
+          "slope": 0.24435809924545057,
+          "beta": 1.2443580992454506
+        },
+        "L1_asc": {
+          "slope": 0.21741390393545648,
+          "beta": 1.2174139039354566
+        },
+        "L2_apex": {
+          "slope": 0.29123287418955296,
+          "beta": 1.291232874189553
+        },
+        "L1_desc": {
+          "slope": -1.2064279347501103,
+          "beta": -0.2064279347501103
+        }
+      },
+      "embed_norm": 10.649062812328339
+    },
+    "strata": {
+      "prose": {
+        "L0_asc": {
+          "mean_ratio": 0.8308569459587709,
+          "std_ratio": 0.010094362329946517,
+          "mean_h_in": -1.6435507237911224,
+          "mean_h_out": -1.3657113909721375,
+          "phi_dev": 0.21282295720887612,
+          "direction": "compressing"
+        },
+        "L1_asc": {
+          "mean_ratio": 0.5453812110096248,
+          "std_ratio": 0.01333878624372643,
+          "mean_h_in": -1.3657113909721375,
+          "mean_h_out": -0.7450519502162933,
+          "phi_dev": 0.07265277774027001,
+          "direction": "compressing"
+        },
+        "L2_apex": {
+          "mean_ratio": 0.0721815031044502,
+          "std_ratio": 0.016935016840086723,
+          "mean_h_in": -0.7450519502162933,
+          "mean_h_out": -0.05404262151569128,
+          "phi_dev": 0.5458524856454445,
+          "direction": "compressing"
+        },
+        "L1_desc": {
+          "mean_ratio": -4.763636570550235,
+          "std_ratio": 1.600234937085024,
+          "mean_h_in": -0.05404262151569128,
+          "mean_h_out": 0.23510419577360153,
+          "phi_dev": 5.3816705593001295,
+          "direction": "compressing"
+        },
+        "L0_desc": {
+          "mean_ratio": 2.216669295579707,
+          "std_ratio": 0.13154722209177214,
+          "mean_h_in": 0.23510419577360153,
+          "mean_h_out": 0.5184807255864143,
+          "phi_dev": 1.598635306829812,
+          "direction": "expanding"
+        },
+        "aggregate": {
+          "mean_ratio": -0.21970952297953636,
+          "mean_phi_dev": 1.5623268173449065,
+          "target": 0.6180339887498948
+        },
+        "loss": {
+          "mean_loss": 6.213808536529541,
+          "relational_loss": 0.4952007108006497,
+          "excess_ppl": 92.18602408951587
+        }
+      },
+      "compositional": {
+        "L0_asc": {
+          "mean_ratio": 0.8371664355275446,
+          "std_ratio": 0.012321104110261917,
+          "mean_h_in": -1.6508235335350037,
+          "mean_h_out": -1.382142573595047,
+          "phi_dev": 0.21913244677764976,
+          "direction": "compressing"
+        },
+        "L1_asc": {
+          "mean_ratio": 0.5645450610746547,
+          "std_ratio": 0.03040631712649389,
+          "mean_h_in": -1.382142573595047,
+          "mean_h_out": -0.7809111773967743,
+          "phi_dev": 0.05348892767524005,
+          "direction": "compressing"
+        },
+        "L2_apex": {
+          "mean_ratio": 0.13565239920544936,
+          "std_ratio": 0.09061161672362947,
+          "mean_h_in": -0.7809111773967743,
+          "mean_h_out": -0.10875161446165293,
+          "phi_dev": 0.48238158954444543,
+          "direction": "compressing"
+        },
+        "L1_desc": {
+          "mean_ratio": 67.35490360659877,
+          "std_ratio": 118.83757996049077,
+          "mean_h_in": -0.10875161446165293,
+          "mean_h_out": 0.19053243845701218,
+          "phi_dev": 66.73686961784887,
+          "direction": "expanding"
+        },
+        "L0_desc": {
+          "mean_ratio": 2.6704090311672006,
+          "std_ratio": 0.5034494521929255,
+          "mean_h_in": 0.19053243845701218,
+          "mean_h_out": 0.47549276798963547,
+          "phi_dev": 2.0523750424173057,
+          "direction": "expanding"
+        },
+        "aggregate": {
+          "mean_ratio": 14.312535306714725,
+          "mean_phi_dev": 13.908849524852704,
+          "target": 0.6180339887498948
+        },
+        "loss": {
+          "mean_loss": 6.828847169876099,
+          "relational_loss": 0.5625261879829192,
+          "excess_ppl": 170.51907543950085
+        }
+      },
+      "technical": {
+        "L0_asc": {
+          "mean_ratio": 0.8519132300312029,
+          "std_ratio": 0.00788862559337179,
+          "mean_h_in": -1.62367445230484,
+          "mean_h_out": -1.3832772970199585,
+          "phi_dev": 0.2338792412813081,
+          "direction": "compressing"
+        },
+        "L1_asc": {
+          "mean_ratio": 0.572668037417999,
+          "std_ratio": 0.012680548715444252,
+          "mean_h_in": -1.3832772970199585,
+          "mean_h_out": -0.7922560572624207,
+          "phi_dev": 0.045365951331895804,
+          "direction": "compressing"
+        },
+        "L2_apex": {
+          "mean_ratio": 0.07848551570342581,
+          "std_ratio": 0.03875954386939671,
+          "mean_h_in": -0.7922560572624207,
+          "mean_h_out": -0.06295057060196996,
+          "phi_dev": 0.539548473046469,
+          "direction": "compressing"
+        },
+        "L1_desc": {
+          "mean_ratio": -6.101107642609364,
+          "std_ratio": 5.057161344765037,
+          "mean_h_in": -0.06295057060196996,
+          "mean_h_out": 0.23533033579587936,
+          "phi_dev": 6.719141631359259,
+          "direction": "compressing"
+        },
+        "L0_desc": {
+          "mean_ratio": 2.2469621727904494,
+          "std_ratio": 0.14339679738644232,
+          "mean_h_in": 0.23533033579587936,
+          "mean_h_out": 0.5254919156432152,
+          "phi_dev": 1.6289281840405545,
+          "direction": "expanding"
+        },
+        "aggregate": {
+          "mean_ratio": -0.47021573733325733,
+          "mean_phi_dev": 1.8333726962118972,
+          "target": 0.6180339887498948
+        },
+        "loss": {
+          "mean_loss": 7.075013637542725,
+          "relational_loss": 0.5894729097063182,
+          "excess_ppl": 218.11307861361567
+        }
+      },
+      "math": {
+        "L0_asc": {
+          "mean_ratio": 0.8633894938689872,
+          "std_ratio": 0.018834486214619483,
+          "mean_h_in": -1.7094716727733612,
+          "mean_h_out": -1.4759435653686523,
+          "phi_dev": 0.24535550511909243,
+          "direction": "compressing"
+        },
+        "L1_asc": {
+          "mean_ratio": 0.590614275206458,
+          "std_ratio": 0.016068613676473845,
+          "mean_h_in": -1.4759435653686523,
+          "mean_h_out": -0.8722407519817352,
+          "phi_dev": 0.027419713543436752,
+          "direction": "compressing"
+        },
+        "L2_apex": {
+          "mean_ratio": 0.21297617707250244,
+          "std_ratio": 0.03220246100605778,
+          "mean_h_in": -0.8722407519817352,
+          "mean_h_out": -0.18719551712274551,
+          "phi_dev": 0.40505781167739235,
+          "direction": "compressing"
+        },
+        "L1_desc": {
+          "mean_ratio": -0.6021669276939673,
+          "std_ratio": 0.35149551051641786,
+          "mean_h_in": -0.18719551712274551,
+          "mean_h_out": 0.09985719062387943,
+          "phi_dev": 1.220200916443862,
+          "direction": "compressing"
+        },
+        "L0_desc": {
+          "mean_ratio": 4.673612149790857,
+          "std_ratio": 1.8648521821768143,
+          "mean_h_in": 0.09985719062387943,
+          "mean_h_out": 0.38622332364320755,
+          "phi_dev": 4.0555781610409625,
+          "direction": "expanding"
+        },
+        "aggregate": {
+          "mean_ratio": 1.1476850336489677,
+          "mean_phi_dev": 1.1907224215649492,
+          "target": 0.6180339887498948
+        },
+        "loss": {
+          "mean_loss": 5.221662640571594,
+          "relational_loss": 0.38659501961610754,
+          "excess_ppl": 34.180750699623964
+        }
+      }
+    }
+  },
+  "n_probes": 40,
+  "n_lambda": 0,
+  "compile_results": [
+    {
+      "probe_id": "cg-strong-01",
+      "category": "strong_compile",
+      "gradient": 1.0,
+      "prompt": "The dog runs.",
+      "gate_used": "compile",
+      "generation": "\n\u2022 A.\n\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
+      "has_lambda": false,
+      "elapsed_ms": 76.9
+    },
+    {
+      "probe_id": "cg-strong-02",
+      "category": "strong_compile",
+      "gradient": 1.0,
+      "prompt": "Every student reads a book.",
+      "gate_used": "compile",
+      "generation": "\n(1, 0.5.1)\n(1.1.1.1.",
+      "has_lambda": false,
+      "elapsed_ms": 79.4
+    },
+    {
+      "probe_id": "cg-strong-03",
+      "category": "strong_compile",
+      "gradient": 1.0,
+      "prompt": "The cat that sat on the mat is black.",
+      "gate_used": "compile",
+      "generation": "\n\u2022 The color of the form of the size.\n\u2022 A.\n\u2022\u2022\u2022\u2022",
+      "has_lambda": false,
+      "elapsed_ms": 64.3
+    },
+    {
+      "probe_id": "cg-strong-04",
+      "category": "strong_compile",
+      "gradient": 1.0,
+      "prompt": "If it rains, the ground is wet.",
+      "gate_used": "compile",
+      "generation": "\n\u2022 The following::::::::::::::::",
+      "has_lambda": false,
+      "elapsed_ms": 111.4
+    },
+    {
+      "probe_id": "cg-strong-05",
+      "category": "strong_compile",
+      "gradient": 1.0,
+      "prompt": "No bird can swim.",
+      "gate_used": "compile",
+      "generation": "\n\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
+      "has_lambda": false,
+      "elapsed_ms": 109.5
+    },
+    {
+      "probe_id": "cg-strong-06",
+      "category": "strong_compile",
+      "gradient": 1.0,
+      "prompt": "The teacher gave every student a grade.",
+      "gate_used": "compile",
+      "generation": "\n\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
+      "has_lambda": false,
+      "elapsed_ms": 108.1
+    },
+    {
+      "probe_id": "cg-strong-07",
+      "category": "strong_compile",
+      "gradient": 1.0,
+      "prompt": "Someone believes that the earth is flat.",
+      "gate_used": "compile",
+      "generation": "\n(s) {\n    \u2022 A..\n\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
+      "has_lambda": false,
+      "elapsed_ms": 76.9
+    },
+    {
+      "probe_id": "cg-strong-08",
+      "category": "strong_compile",
+      "gradient": 1.0,
+      "prompt": "Birds fly.",
+      "gate_used": "compile",
+      "generation": "\n(1)\n\u2022 A.\n\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
+      "has_lambda": false,
+      "elapsed_ms": 79.7
+    },
+    {
+      "probe_id": "cg-medium-01",
+      "category": "medium_compile",
+      "gradient": 0.7,
+      "prompt": "The old man walked slowly across the bridge.",
+      "gate_used": "compile",
+      "generation": "\n\u2022 The result of the use of the same.\n\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
+      "has_lambda": false,
+      "elapsed_ms": 76.0
+    },
+    {
+      "probe_id": "cg-medium-02",
+      "category": "medium_compile",
+      "gradient": 0.7,
+      "prompt": "Three children were playing in the garden while their mother watched.",
+      "gate_used": "compile",
+      "generation": "\n\u2022 The first step of the two-dimensional.\n\u2022 A.\n\u2022\u2022\u2022\u2022",
+      "has_lambda": false,
+      "elapsed_ms": 106.1
+    },
+    {
+      "probe_id": "cg-medium-03",
+      "category": "medium_compile",
+      "gradient": 0.7,
+      "prompt": "The book that I bought yesterday was expensive.",
+      "gate_used": "compile",
+      "generation": "\n(1.2.1.1)\n(1.2.1.1.",
+      "has_lambda": false,
+      "elapsed_ms": 110.1
+    },
+    {
+      "probe_id": "cg-medium-04",
+      "category": "medium_compile",
+      "gradient": 0.6,
+      "prompt": "Most politicians promise more than they deliver.",
+      "gate_used": "compile",
+      "generation": "\n\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
+      "has_lambda": false,
+      "elapsed_ms": 131.3
+    },
+    {
+      "probe_id": "cg-medium-05",
+      "category": "medium_compile",
+      "gradient": 0.6,
+      "prompt": "The fact that she left surprised nobody.",
+      "gate_used": "compile",
+      "generation": "\n\u2022 A.\n\u2022 A.\n\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
+      "has_lambda": false,
+      "elapsed_ms": 52.7
+    },
+    {
+      "probe_id": "cg-medium-06",
+      "category": "medium_compile",
+      "gradient": 0.5,
+      "prompt": "Running is healthier than sitting.",
+      "gate_used": "compile",
+      "generation": "\n\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
+      "has_lambda": false,
+      "elapsed_ms": 66.7
+    },
+    {
+      "probe_id": "cg-medium-07",
+      "category": "medium_compile",
+      "gradient": 0.6,
+      "prompt": "She told him to leave before it got dark.",
+      "gate_used": "compile",
+      "generation": "\n\u2022 The first time.\n\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
+      "has_lambda": false,
+      "elapsed_ms": 64.1
+    },
+    {
+      "probe_id": "cg-medium-08",
+      "category": "medium_compile",
+      "gradient": 0.6,
+      "prompt": "What the witness saw contradicted the official report.",
+      "gate_used": "compile",
+      "generation": "\n\u2022 A.\n\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
+      "has_lambda": false,
+      "elapsed_ms": 115.6
+    },
+    {
+      "probe_id": "cg-weak-01",
+      "category": "weak_compile",
+      "gradient": 0.3,
+      "prompt": "\u03bbx.\u03bby. (f x) \u2227 (g y)",
+      "gate_used": "compile",
+      "generation": " = 0.1.1.1.1.1.1.1.1.1",
+      "has_lambda": false,
+      "elapsed_ms": 111.0
+    },
+    {
+      "probe_id": "cg-weak-02",
+      "category": "weak_compile",
+      "gradient": 0.3,
+      "prompt": "In formal semantics, Montague grammar provides a framework for natural language meaning.",
+      "gate_used": "compile",
+      "generation": "\n\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
+      "has_lambda": false,
+      "elapsed_ms": 113.9
+    },
+    {
+      "probe_id": "cg-weak-03",
+      "category": "weak_compile",
+      "gradient": 0.3,
+      "prompt": "\u2200x. P(x) \u2192 Q(x) is a valid first-order logic formula.",
+      "gate_used": "compile",
+      "generation": "\n\n\u2022 A.\n\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
+      "has_lambda": false,
+      "elapsed_ms": 77.8
+    },
+    {
+      "probe_id": "cg-weak-04",
+      "category": "weak_compile",
+      "gradient": 0.2,
+      "prompt": "Define a function that maps strings to their lengths.",
+      "gate_used": "compile",
+      "generation": "\n\u2022 A.\n\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
+      "has_lambda": false,
+      "elapsed_ms": 80.9
+    },
+    {
+      "probe_id": "cg-weak-05",
+      "category": "weak_compile",
+      "gradient": 0.2,
+      "prompt": "The type signature is Int -> String -> Bool.",
+      "gate_used": "compile",
+      "generation": "\n\n\n\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
+      "has_lambda": false,
+      "elapsed_ms": 145.9
+    },
+    {
+      "probe_id": "cg-weak-06",
+      "category": "weak_compile",
+      "gradient": 0.15,
+      "prompt": "Translate the following from English to French: The cat is sleeping.",
+      "gate_used": "compile",
+      "generation": "\n\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
+      "has_lambda": false,
+      "elapsed_ms": 112.5
+    },
+    {
+      "probe_id": "cg-weak-07",
+      "category": "weak_compile",
+      "gradient": 0.25,
+      "prompt": "Parse the sentence: The dog bit the man.",
+      "gate_used": "compile",
+      "generation": "\nExample:\n\n\u2022\u2022 The following:\n\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
+      "has_lambda": false,
+      "elapsed_ms": 106.6
+    },
+    {
+      "probe_id": "cg-weak-08",
+      "category": "weak_compile",
+      "gradient": 0.4,
+      "prompt": "What is the logical form of 'All men are mortal'?",
+      "gate_used": "compile",
+      "generation": "\n- [ ].\n- [ ]\n| [ ]\n| [ ] ] |\n",
+      "has_lambda": false,
+      "elapsed_ms": 69.0
+    },
+    {
+      "probe_id": "cg-null-01",
+      "category": "null",
+      "gradient": 0.0,
+      "prompt": "What is the capital of France?",
+      "gate_used": "null",
+      "generation": "\nThe World World Heritage Site is the World.\nThe World World World World World World. The",
+      "has_lambda": false,
+      "elapsed_ms": 80.8
+    },
+    {
+      "probe_id": "cg-null-02",
+      "category": "null",
+      "gradient": 0.0,
+      "prompt": "How are you today?",
+      "gate_used": "null",
+      "generation": "\n\n\n*\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+      "has_lambda": false,
+      "elapsed_ms": 74.5
+    },
+    {
+      "probe_id": "cg-null-03",
+      "category": "null",
+      "gradient": 0.0,
+      "prompt": "Explain what photosynthesis is.",
+      "gate_used": "null",
+      "generation": "\n\n\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
+      "has_lambda": false,
+      "elapsed_ms": 104.4
+    },
+    {
+      "probe_id": "cg-null-04",
+      "category": "null",
+      "gradient": 0.0,
+      "prompt": "List three primary colors.",
+      "gate_used": "null",
+      "generation": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+      "has_lambda": false,
+      "elapsed_ms": 105.4
+    },
+    {
+      "probe_id": "cg-null-05",
+      "category": "null",
+      "gradient": 0.0,
+      "prompt": "Write a haiku about rain.",
+      "gate_used": "null",
+      "generation": "\n\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
+      "has_lambda": false,
+      "elapsed_ms": 103.7
+    },
+    {
+      "probe_id": "cg-null-06",
+      "category": "null",
+      "gradient": 0.0,
+      "prompt": "What year was the first moon landing?",
+      "gate_used": "null",
+      "generation": "\nThe New York Times of the Soviet Soviet Soviet Soviet Soviet Soviet Soviet Soviet Soviet Soviet Soviet Soviet Soviet",
+      "has_lambda": false,
+      "elapsed_ms": 139.3
+    },
+    {
+      "probe_id": "cg-null-07",
+      "category": "null",
+      "gradient": 0.0,
+      "prompt": "Summarize the water cycle in one sentence.",
+      "gate_used": "null",
+      "generation": "\nAnswer the following sentence sentence sentence sentence sentence sentence sentence sentence sentence sentence sentence sentence sentence sentence sentence sentence",
+      "has_lambda": false,
+      "elapsed_ms": 36.9
+    },
+    {
+      "probe_id": "cg-null-08",
+      "category": "null",
+      "gradient": 0.0,
+      "prompt": "What is 7 times 8?",
+      "gate_used": "null",
+      "generation": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+      "has_lambda": false,
+      "elapsed_ms": 74.1
+    },
+    {
+      "probe_id": "cg-anti-01",
+      "category": "anti_compile",
+      "gradient": 0.0,
+      "prompt": "Tell me a joke.",
+      "gate_used": "null",
+      "generation": " I I I I I I I I I I I I I I I I I I I I",
+      "has_lambda": false,
+      "elapsed_ms": 71.7
+    },
+    {
+      "probe_id": "cg-anti-02",
+      "category": "anti_compile",
+      "gradient": 0.0,
+      "prompt": "What should I have for dinner tonight?",
+      "gate_used": "null",
+      "generation": " I I I I I I I I I I I I I I I I I I I I",
+      "has_lambda": false,
+      "elapsed_ms": 104.0
+    },
+    {
+      "probe_id": "cg-anti-03",
+      "category": "anti_compile",
+      "gradient": 0.0,
+      "prompt": "How do I fix a leaky faucet?",
+      "gate_used": "null",
+      "generation": " I I I I I I I I I I I I I I I I I I I I",
+      "has_lambda": false,
+      "elapsed_ms": 108.0
+    },
+    {
+      "probe_id": "cg-anti-04",
+      "category": "anti_compile",
+      "gradient": 0.0,
+      "prompt": "Is it going to rain tomorrow?",
+      "gate_used": "null",
+      "generation": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+      "has_lambda": false,
+      "elapsed_ms": 107.1
+    },
+    {
+      "probe_id": "cg-anti-05",
+      "category": "anti_compile",
+      "gradient": 0.0,
+      "prompt": "Who won the last World Cup?",
+      "gate_used": "null",
+      "generation": "???\nThe Obama Obama Obama Obama Obama Obama Obama Obama Obama Obama Obama Obama Obama Obama Obama",
+      "has_lambda": false,
+      "elapsed_ms": 110.1
+    },
+    {
+      "probe_id": "cg-anti-06",
+      "category": "anti_compile",
+      "gradient": 0.0,
+      "prompt": "Recommend a good book to read.",
+      "gate_used": "null",
+      "generation": "\n\nThe book book book book book book book book book book book book book book book book book",
+      "has_lambda": false,
+      "elapsed_ms": 85.3
+    },
+    {
+      "probe_id": "cg-anti-07",
+      "category": "anti_compile",
+      "gradient": 0.0,
+      "prompt": "What is your favorite color?",
+      "gate_used": "null",
+      "generation": "\nA::::::::::::::::::",
+      "has_lambda": false,
+      "elapsed_ms": 76.4
+    },
+    {
+      "probe_id": "cg-anti-08",
+      "category": "anti_compile",
+      "gradient": 0.0,
+      "prompt": "Convert 72 degrees Fahrenheit to Celsius.",
+      "gate_used": "null",
+      "generation": " The top of the A. The A. The A. The A. The A.. A",
+      "has_lambda": false,
+      "elapsed_ms": 79.6
+    }
+  ]
+}
