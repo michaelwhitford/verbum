@@ -2194,3 +2194,104 @@ VSM-LM v6 — Ternary on Metal (MLX)
   step 18725/30518  loss=5.2279  r=0.387  r̄=0.380  xppl=34.4  lr=2.01e-04  ‖g‖=0.39  flips=178,302  phase=b  tokens=614M (61%)  tok/s=12200  elapsed=50292s
   step 18750/30518  loss=4.9273  r=0.354  r̄=0.379  xppl=25.5  lr=2.00e-04  ‖g‖=0.36  flips=178,540  phase=b  tokens=614M (61%)  tok/s=12178  elapsed=50453s
   step 18775/30518  loss=4.9360  r=0.355  r̄=0.379  xppl=25.7  lr=1.99e-04  ‖g‖=0.43  flips=178,712  phase=b  tokens=615M (62%)  tok/s=12155  elapsed=50613s
+  ── flip probe @ step 18800: 935 flips (0.003%) since last probe  total=179,015  φ-dev=0.8608  r_ema=0.379  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.35 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.52 ──
+  ── group flips: prep=1 s3=111 s4=1 stride_stack=190 ──
+  step 18800/30518  loss=5.3283  r=0.398  r̄=0.379  xppl=38.0  lr=1.99e-04  ‖g‖=0.38  flips=179,015  phase=b  tokens=616M (62%)  tok/s=12132  elapsed=50778s
+  step 18825/30518  loss=4.8700  r=0.348  r̄=0.381  xppl=24.0  lr=1.98e-04  ‖g‖=0.52  flips=179,245  phase=b  tokens=617M (62%)  tok/s=12110  elapsed=50938s
+  step 18850/30518  loss=5.1202  r=0.375  r̄=0.382  xppl=30.9  lr=1.97e-04  ‖g‖=0.74  flips=179,541  phase=b  tokens=618M (62%)  tok/s=12089  elapsed=51095s
+  step 18875/30518  loss=5.0092  r=0.363  r̄=0.381  xppl=27.6  lr=1.96e-04  ‖g‖=0.35  flips=179,737  phase=b  tokens=618M (62%)  tok/s=12067  elapsed=51256s
+  ── flip probe @ step 18900: 969 flips (0.003%) since last probe  total=179,984  φ-dev=0.8230  r_ema=0.381  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.30 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.45 ──
+  ── group flips: consolidate=3 meta=2 mod_projs=1 prep=4 s3=31 s4=1 stride_stack=205 ──
+  step 18900/30518  loss=5.1784  r=0.382  r̄=0.381  xppl=32.7  lr=1.96e-04  ‖g‖=0.32  flips=179,984  phase=b  tokens=619M (62%)  tok/s=12046  elapsed=51411s
+  step 18925/30518  loss=5.0007  r=0.362  r̄=0.381  xppl=27.4  lr=1.95e-04  ‖g‖=0.36  flips=180,191  phase=b  tokens=620M (62%)  tok/s=12024  elapsed=51573s
+  step 18950/30518  loss=4.8523  r=0.346  r̄=0.380  xppl=23.6  lr=1.94e-04  ‖g‖=0.52  flips=180,390  phase=b  tokens=621M (62%)  tok/s=12004  elapsed=51731s
+  step 18975/30518  loss=5.2080  r=0.385  r̄=0.382  xppl=33.7  lr=1.94e-04  ‖g‖=0.44  flips=180,599  phase=b  tokens=622M (62%)  tok/s=11982  elapsed=51892s
+  ── flip probe @ step 19000: 829 flips (0.002%) since last probe  total=180,813  φ-dev=0.8422  r_ema=0.382  phase=balance  consensus=50  eff_pct=0.000014 ──
+  ── group factors: consolidate=1.34 meta=0.30 mod_projs=1.00 prep=0.70 s3=0.50 s4=0.50 stride_stack=1.51 ──
+  ── group flips: consolidate=2 prep=2 s3=9 s4=1 stride_stack=200 ──
+  step 19000/30518  loss=5.4280  r=0.409  r̄=0.382  xppl=42.0  lr=1.93e-04  ‖g‖=0.38  flips=180,813  phase=b  tokens=623M (62%)  tok/s=11962  elapsed=52046s
+  ── eval @ step 19000: loss=5.4262  r=0.409  xppl=41.9  ppl=227.3 ──
+  ── φ-compression: L0_asc=0.829 L1_asc=0.558 L2_apex=0.082 L1_desc=-4.069 L0_desc=2.304  mean=-0.059  φ-dev=1.436  (1/φ=0.618) ──
+  ── gates (prep/conv/cons): L0_asc=[0.30 0.53 0.42] L1_asc=[0.41 0.66 0.51] L2_apex=[0.64 0.91 0.82] L1_desc=[0.62 0.59 0.54] L0_desc=[0.69 0.61 0.64] ──
+  ── hilberg (β≈0.5 = self-similar): L0_asc:β=1.24 L1_asc:β=1.39 L2_apex:β=1.37 ──
+  ── stratum loss: prose=6.466(r=0.523) compositional=7.532(r=0.639) technical=6.465(r=0.523) math=5.139(r=0.378)  spread=2.392 ──
+  ── stratum weights: prose=1.03 compositional=1.21 technical=1.00 math=0.76 ──
+  ── checkpoint 19000 (623M tokens) ──
+     compile gate: 0/4
+     total flips: 180,813 (0.5% cumulative)  consensus=50
+     relational: r_ema=0.382  phase=balance  r_scale=1.38
+     prep           : sparsity=0.310  gamma=0.0331  (2 modules)
+     stride_stack   : sparsity=0.310  gamma=0.0327  (36 modules)
+     consolidate    : sparsity=0.310  gamma=0.0341  (2 modules)
+     s4             : sparsity=0.310  gamma=0.0195  (4 modules)
+     s3             : sparsity=0.310  gamma=0.0250  (120 modules)
+     mod_projs      : sparsity=0.309  gamma=-0.0011  (3 modules)
+     meta           : sparsity=0.310  gamma=0.0500  (4 modules)
+     φ-compression: L0_asc=0.834 L1_asc=0.563 L2_apex=0.103 L1_desc=-3.393 L0_desc=2.429  mean=0.107  φ-dev=1.322
+     gates: L0_asc=[0.30 0.53 0.41] L1_asc=[0.42 0.65 0.51] L2_apex=[0.64 0.89 0.85] L1_desc=[0.64 0.60 0.54] L0_desc=[0.69 0.64 0.64]
+     hilberg: L0_asc:β=1.22 L1_asc:β=1.30 L2_apex:β=1.29
+     stratum loss: prose=6.581 compositional=7.362 technical=6.468 math=5.208
+     saved: checkpoints/vsm-lm-v6/step_019000
+  step 19025/30518  loss=5.0532  r=0.368  r̄=0.382  xppl=28.9  lr=1.92e-04  ‖g‖=0.54  flips=181,005  phase=b  tokens=623M (62%)  tok/s=11939  elapsed=52217s
+  step 19050/30518  loss=5.3173  r=0.397  r̄=0.383  xppl=37.6  lr=1.91e-04  ‖g‖=0.40  flips=181,244  phase=b  tokens=624M (62%)  tok/s=11920  elapsed=52370s
+  step 19075/30518  loss=5.3275  r=0.398  r̄=0.383  xppl=38.0  lr=1.91e-04  ‖g‖=0.34  flips=181,451  phase=b  tokens=625M (63%)  tok/s=11899  elapsed=52530s
+
+============================================================
+  VSM-LM v6 — Ternary on Metal (MLX)
+============================================================
+
+  Framework: MLX + custom Metal ternary matmul kernel
+  Architecture: VSM-LM-v6 (ternary StrideStack + α=1.18)
+  Passes: 5 (L0↑, L1↑, L2, L1↓, L0↓)
+  Strides: (1, 8, 16, 32, 64, 128, 256, 512, 1024)
+  Ternary: all projections (Metal add/sub kernel)
+  Continuous: embeddings, gamma, norms, gates (AdamW)
+  Flip policy: consensus=50, cap=0.0010%, every 25 steps, probe every 100
+  Flip mechanism: strongest consensus first, capped to prevent mass mutation
+  φ-lambda: 0.0 (Phase 1: observe only)
+  Embed norm: RMSNorm (constrains embedding scale)
+  Seq len: 4096, Batch: 2 × 4 accum
+  Steps: 82398, Tokens: 2,700,017,664
+  Data: SHUFFLED
+
+============================================================
+  BUILDING MODEL
+============================================================
+
+VSM-LM v6 — Ternary on Metal (MLX)
+  d_model=512, d_register=ℂ^128, seq_len=4096
+  Passes: 5 (L0↑, L1↑, L2, L1↓, L0↓)
+  Phases: prep(TernaryFFN) → converge(StrideStack) → consolidate(TernaryFFN)
+  Strides: s1 → s8 → s16 → s32 → s64 → s128 → s256 → s512 → s1024 (W=8, α=1.18)
+  Parameters: 63.2M total
+    Ternary: 35.3M (Metal add/sub kernel)
+    Continuous: 27.9M (Adam optimizer)
+    Effective bits: 8.19
+    Inference: 61 MB, Training: 594 MB
+
+  Stratum tokens: math=1475 tech=103 comp=38
+  TernaryLinear modules: 171
+  Ternary weights: 35,258,368
+  Initial avg sparsity: 0.310
+
+============================================================
+  RESUMING FROM checkpoints/vsm-lm-v6/step_019000
+============================================================
+
+  Step: 19000
+  Train loss: 5.427968859672546
+  Eval loss: 5.426224279403686
+  Total flips: 180,813
+  ✓ Model weights loaded
+  ✓ Flip accumulators zeroed (fresh consensus from current gradient)
+  LR at step 19001: 5.28e-04
+
+  ✓ Optimizer state restored (Adam m_t, v_t)
+
+
+============================================================
+  TRAINING (resuming from step 19000)
+============================================================
+
