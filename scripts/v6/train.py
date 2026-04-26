@@ -86,6 +86,12 @@ FLIP_MAX_PCT = 0.00001    # cap: at most 0.001% of ternary weights flip per inte
                           # routes without destabilizing Adam's running statistics.
                           # Previous values: 0.1% (too aggressive, 6M flips by step 50),
                           # 0.001 with cap bypass bug caused topology cascade.
+FLIP_COOLDOWN = 4         # after flipping, a weight must wait this many flip intervals
+                          # before it can flip again. 4 intervals × 25 steps = 100 steps.
+                          # Prevents oscillation: same weight can't flip back and forth.
+                          # Each interval = FLIP_INTERVAL steps of gradient evidence.
+                          # 100 steps ≈ 14 Adam β1 half-lives — plenty of time for the
+                          # continuous params to adapt around the new topology.
 # No gradient clipping — Adam handles per-parameter scale adaptation.
 # Shared-weight gradients are normalized by 1/N_PASSES instead (see normalize_shared_grads).
 # MAX_GRAD_NORM removed: clipping at any fixed threshold creates unstable
@@ -830,7 +836,7 @@ def main():
     print(f"  Strides: {STRIDES}")
     print(f"  Ternary: all projections (Metal add/sub kernel)")
     print(f"  Continuous: embeddings, gamma, norms, gates (AdamW)")
-    print(f"  Flip policy: consensus={FLIP_CONSENSUS}, cap={FLIP_MAX_PCT*100:.4f}%, every {FLIP_INTERVAL} steps, probe every {FLIP_PROBE_INTERVAL}")
+    print(f"  Flip policy: consensus={FLIP_CONSENSUS}, cap={FLIP_MAX_PCT*100:.4f}%, every {FLIP_INTERVAL} steps, probe every {FLIP_PROBE_INTERVAL}, cooldown={FLIP_COOLDOWN} intervals ({FLIP_COOLDOWN * FLIP_INTERVAL} steps)")
     print(f"  Flip mechanism: strongest consensus first, capped to prevent mass mutation")
     print(f"  φ-lambda: {PHI_LAMBDA} ({'Phase 1: observe only' if PHI_LAMBDA == 0 else f'active: CE + {PHI_LAMBDA}×φ_dev'})")
     print(f"  Embed norm: RMSNorm (constrains embedding scale)")
@@ -890,6 +896,7 @@ def main():
     # ── Resume from checkpoint ─────────────────────────────────────
     start_step = 0
     resumed_total_flips = 0
+    resumed_total_reversals = 0
 
     if args.resume:
         resume_path = Path(args.resume)
@@ -906,10 +913,12 @@ def main():
                 resume_meta = json.loads(f.read())
             start_step = resume_meta["step"]
             resumed_total_flips = resume_meta.get("total_flips", 0)
+            resumed_total_reversals = resume_meta.get("total_reversals", 0)
             print(f"  Step: {start_step}")
             print(f"  Train loss: {resume_meta.get('train_loss', 'N/A')}")
             print(f"  Eval loss: {resume_meta.get('eval_loss', 'N/A')}")
             print(f"  Total flips: {resumed_total_flips:,}")
+            print(f"  Total reversals: {resumed_total_reversals:,}")
         else:
             # Try to infer step from directory name
             try:
@@ -936,6 +945,34 @@ def main():
         # accumulators let the current gradient signal drive flips based on
         # what the model needs NOW, not what it needed 3000 steps ago.
         print(f"  ✓ Flip accumulators zeroed (fresh consensus from current gradient)")
+
+        # Load flip tracking state (cooldown + last_dir) if available.
+        # Old checkpoints won't have this file — graceful init to zeros.
+        tracking_path = resume_path / "flip_tracking.npz"
+        if tracking_path.exists():
+            tracking_data = dict(mx.load(str(tracking_path)))
+            n_restored = 0
+            for path, mod in _walk_ternary_modules(model):
+                cd_key = f"{path}.cooldown"
+                ld_key = f"{path}.last_dir"
+                if cd_key in tracking_data:
+                    mod._flip_cooldown = tracking_data[cd_key].astype(mx.int8)
+                    n_restored += 1
+                if ld_key in tracking_data:
+                    mod._flip_last_dir = tracking_data[ld_key].astype(mx.int8)
+            unique_ever = sum(
+                (mod._flip_last_dir != 0).sum().item()
+                for _, mod in _walk_ternary_modules(model)
+            )
+            cooldown_active = sum(
+                (mod._flip_cooldown > 0).sum().item()
+                for _, mod in _walk_ternary_modules(model)
+            )
+            print(f"  ✓ Flip tracking restored ({n_restored} modules, "
+                  f"unique_ever={unique_ever:,}, cooldown_active={cooldown_active:,})")
+        else:
+            print(f"  ⚠ No flip_tracking.npz — tracking starts fresh (zeros)")
+            print(f"    (cooldown and reversal detection begin from this checkpoint)")
 
         print(f"  LR at step {start_step + 1}: {lr_schedule(start_step + 1):.2e}")
         print(flush=True)
@@ -973,8 +1010,10 @@ def main():
     train_losses = []
     eval_losses = []
     total_flips = resumed_total_flips
+    total_reversals = resumed_total_reversals
     grad_norm = 0.0
     flips_since_last_probe = 0
+    reversals_since_last_probe = 0
 
     # ── Relational control state ──────────────────────────────
     r_ema = 1.0                          # start pessimistic (random)
@@ -1126,19 +1165,37 @@ def main():
             effective_max_pct = FLIP_MAX_PCT * pcfg["flip_max_scale"] * r_scale
             effective_max_pct = max(0.000001, min(0.001, effective_max_pct))
 
-            group_flipped = apply_flips_per_group(
+            group_result = apply_flips_per_group(
                 model,
                 threshold=FLIP_CONSENSUS,
                 base_max_pct=effective_max_pct,
                 group_factors=cached_group_factors,
+                cooldown_intervals=FLIP_COOLDOWN,
             )
-            n_flipped = sum(group_flipped.values())
+            # Extract per-group flip counts and tracking stats
+            # group_result: {group: {"flipped": n, "reversals": n, "cooled": n, "eligible": n}}
+            n_flipped = sum(gs["flipped"] for gs in group_result.values())
+            n_reversals = sum(gs["reversals"] for gs in group_result.values())
+            n_cooled = sum(gs["cooled"] for gs in group_result.values())
             total_flips += n_flipped
+            total_reversals += n_reversals
             flips_since_last_probe += n_flipped
+            reversals_since_last_probe += n_reversals
 
             # ── Probe step: use training-pass metrics (no extra forward pass) ──
             if step % FLIP_PROBE_INTERVAL == 0:
                 pct_flipped = flips_since_last_probe / _n_ternary_weights * 100
+
+                # Count unique weights ever flipped (sum of ever_flipped across modules)
+                unique_ever = sum(
+                    (mod._flip_last_dir != 0).sum().item()
+                    for _, mod in _walk_ternary_modules(model)
+                )
+                # Count weights currently in cooldown
+                cooldown_active = sum(
+                    (mod._flip_cooldown > 0).sum().item()
+                    for _, mod in _walk_ternary_modules(model)
+                )
 
                 # Read metrics captured during the training forward pass
                 tm = getattr(model, "_training_metrics", None)
@@ -1170,15 +1227,25 @@ def main():
                     f"consensus={FLIP_CONSENSUS}  eff_pct={effective_max_pct:.6f} ──",
                     flush=True,
                 )
+                # Flip tracking stats
+                print(
+                    f"  ── tracking: reversals={reversals_since_last_probe} "
+                    f"(total={total_reversals})  "
+                    f"cooled={n_cooled}  cooldown_active={cooldown_active:,}  "
+                    f"unique_ever={unique_ever:,} "
+                    f"({unique_ever / _n_ternary_weights * 100:.3f}%) ──",
+                    flush=True,
+                )
                 if cached_group_factors:
                     gf_parts = [f"{g}={f:.2f}" for g, f in sorted(cached_group_factors.items())]
                     print(f"  ── group factors: {' '.join(gf_parts)} ──", flush=True)
-                if group_flipped:
-                    gfl_parts = [f"{g}={n}" for g, n in sorted(group_flipped.items()) if n > 0]
+                if group_result:
+                    gfl_parts = [f"{g}={gs['flipped']}" for g, gs in sorted(group_result.items()) if gs["flipped"] > 0]
                     if gfl_parts:
                         print(f"  ── group flips: {' '.join(gfl_parts)} ──", flush=True)
 
                 flips_since_last_probe = 0
+                reversals_since_last_probe = 0
 
         # ── Logging ───────────────────────────────────────────
         if step % LOG_INTERVAL == 0:
@@ -1293,7 +1360,17 @@ def main():
 
             print(f"  ── checkpoint {step} ({step * TOKENS_PER_STEP / 1e6:.0f}M tokens) ──")
             print(f"     compile gate: {compile['score']}")
-            print(f"     total flips: {total_flips:,} ({total_flips / _n_ternary_weights * 100:.1f}% cumulative)  consensus={FLIP_CONSENSUS}")
+            # Tracking summary at checkpoint
+            unique_ever_ckpt = sum(
+                (mod._flip_last_dir != 0).sum().item()
+                for _, mod in _walk_ternary_modules(model)
+            )
+            cooldown_active_ckpt = sum(
+                (mod._flip_cooldown > 0).sum().item()
+                for _, mod in _walk_ternary_modules(model)
+            )
+            print(f"     total flips: {total_flips:,} ({total_flips / _n_ternary_weights * 100:.1f}% cumulative)  consensus={FLIP_CONSENSUS}  cooldown={FLIP_COOLDOWN}")
+            print(f"     tracking: reversals={total_reversals:,}  unique_ever={unique_ever_ckpt:,} ({unique_ever_ckpt / _n_ternary_weights * 100:.3f}%)  cooldown_active={cooldown_active_ckpt:,}")
             print(f"     relational: r_ema={r_ema:.3f}  phase={current_phase}  r_scale={adaptive_flip_scale(r_ema):.2f}")
 
             # Ternary stats by group (using canonical _classify_group)
@@ -1362,6 +1439,14 @@ def main():
             if accum_dict:
                 mx.savez(str(ckpt_path / "flip_accum.npz"), **accum_dict)
 
+            # Save flip tracking state (cooldown + last_dir per module)
+            tracking_dict = {}
+            for path, mod in _walk_ternary_modules(model):
+                tracking_dict[f"{path}.cooldown"] = mod._flip_cooldown
+                tracking_dict[f"{path}.last_dir"] = mod._flip_last_dir
+            if tracking_dict:
+                mx.savez(str(ckpt_path / "flip_tracking.npz"), **tracking_dict)
+
             # Save optimizer state (Adam m_t, v_t for warm resume)
             from mlx.utils import tree_flatten
             opt_flat = tree_flatten(optimizer.state)
@@ -1382,7 +1467,9 @@ def main():
                 "eval_loss": float(eval_losses[-1]["loss"]) if eval_losses else None,
                 "compile_gate": compile["score"],
                 "total_flips": int(total_flips),
+                "total_reversals": int(total_reversals),
                 "flip_consensus": FLIP_CONSENSUS,
+                "flip_cooldown": FLIP_COOLDOWN,
                 "grad_norm": _gn,
                 "architecture": "vsm-lm-v6-mlx",
                 "config": {
@@ -1424,6 +1511,7 @@ def main():
         "framework": "MLX",
         "target_tokens": TARGET_TOKENS,
         "total_flips": total_flips,
+        "total_reversals": total_reversals,
         "total_ternary_weights": _n_ternary_weights,
         "pct_weights_ever_flipped": total_flips / _n_ternary_weights * 100,
         "info_theoretic_constants": {

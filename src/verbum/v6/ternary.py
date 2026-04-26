@@ -204,6 +204,21 @@ class TernaryLinear(nn.Module):
         # Int8 with saturation at ±127. Each micro-batch votes ±1.
         self._flip_accum = mx.zeros((out_features, in_features), dtype=mx.int8)
 
+        # ── Flip tracking state ───────────────────────────────
+        # Cooldown: remaining flip intervals before this weight can flip
+        # again. Prevents oscillation where the same weight flips back
+        # and forth every interval. Decremented each flip check; weight
+        # is blocked from flipping while cooldown > 0.
+        # Int8: max 127 intervals = 3175 steps at interval=25.
+        self._flip_cooldown = mx.zeros((out_features, in_features), dtype=mx.int8)
+
+        # Last direction: direction of the most recent flip for this weight.
+        # +1 = last flip was upward (-1→0 or 0→+1)
+        # -1 = last flip was downward (+1→0 or 0→-1)
+        #  0 = never flipped (or reset from old checkpoint)
+        # Used to detect reversals: flip direction ≠ last_dir → reversal.
+        self._flip_last_dir = mx.zeros((out_features, in_features), dtype=mx.int8)
+
     def __call__(self, x: mx.array) -> mx.array:
         if self.pre_norm:
             x = self.norm(x)
@@ -224,6 +239,8 @@ class TernaryLinear(nn.Module):
             "gamma_std": mx.sqrt(mx.var(self.gamma)).item(),
             "accum_mean": mx.abs(self._flip_accum.astype(mx.float32)).mean().item(),
             "accum_max": mx.abs(self._flip_accum.astype(mx.float32)).max().item(),
+            "cooldown_active": int((self._flip_cooldown > 0).sum().item()),
+            "ever_flipped": int((self._flip_last_dir != 0).sum().item()),
         }
 
 
@@ -659,23 +676,37 @@ def apply_flips_per_group(
     threshold: int = 50,
     base_max_pct: float = 0.00001,
     group_factors: dict[str, float] | None = None,
-) -> dict[str, int]:
-    """Apply flips with per-group caps modulated by stratum-derived factors.
+    cooldown_intervals: int = 0,
+) -> dict[str, dict[str, int]]:
+    """Apply flips with per-group caps, cooldown tracking, and reversal detection.
 
     Same consensus threshold for all groups (75% agreement is the bar
     everywhere). Per-group factors scale the max_pct cap: groups serving
     lagging strata get more flips, well-performing groups are protected.
+
+    Cooldown: after a weight flips, it enters a cooldown period during
+    which it cannot flip again. This prevents oscillation where the same
+    weights flip back and forth. cooldown_intervals=4 means a weight must
+    wait 4 flip checks (100 steps at interval=25) before it can flip again.
+
+    Reversal detection: when a weight flips in the opposite direction to
+    its last flip, it's counted as a reversal. High reversal rates indicate
+    oscillation — the topology is churning rather than converging.
 
     Args:
         model: the model containing TernaryLinear modules
         threshold: minimum |accumulator| to trigger a flip (all groups)
         base_max_pct: base cap before group factor scaling
         group_factors: {group_name: factor} where factor multiplies base_max_pct
-                       e.g. {"stride_stack": 1.8, "s3": 0.5, "meta": 0.3}
-                       If None, all groups use base_max_pct (equivalent to apply_flips).
+        cooldown_intervals: number of flip intervals a weight must wait after
+                           flipping before it can flip again (0 = no cooldown)
 
     Returns:
-        {group_name: n_flipped} — number of weights flipped per group
+        {group_name: {"flipped": n, "reversals": n, "cooled": n, "eligible": n}}
+        - flipped: weights that actually flipped this interval
+        - reversals: of those, how many flipped opposite to their last direction
+        - cooled: weights blocked from flipping by cooldown
+        - eligible: weights that passed consensus threshold (before cooldown/cap)
     """
     if group_factors is None:
         group_factors = {}
@@ -686,8 +717,23 @@ def apply_flips_per_group(
         group = _classify_group(path)
         groups.setdefault(group, []).append((path, module))
 
+    # Step 1.5: Decrement cooldowns for ALL weights BEFORE processing flips.
+    # This way, newly-set cooldowns from THIS interval are NOT decremented
+    # until the NEXT interval. cooldown_intervals=4 means exactly 4 intervals
+    # of protection.
+    if cooldown_intervals > 0:
+        cd_arrays = []
+        for _, module in _walk_ternary_modules(model):
+            new_cd = mx.clip(
+                module._flip_cooldown.astype(mx.int16) - 1, 0, 127
+            ).astype(mx.int8)
+            module._flip_cooldown = new_cd
+            cd_arrays.append(new_cd)
+        if cd_arrays:
+            mx.eval(*cd_arrays)
+
     # Step 2: apply per-group with consensus threshold + scaled cap
-    group_flipped: dict[str, int] = {}
+    group_stats: dict[str, dict[str, int]] = {}
     mutated = []
 
     for group, modules in groups.items():
@@ -701,19 +747,41 @@ def apply_flips_per_group(
         # Collect qualifying weights (above consensus threshold)
         candidates = []
         for _, mod in modules:
-            mx.eval(mod._flip_accum)
+            mx.eval(mod._flip_accum, mod._flip_cooldown)
             accum_abs = mx.abs(mod._flip_accum.astype(mx.int16))
             candidates.append((mod, accum_abs))
 
-        n_qualifying = sum((a >= threshold).sum().item() for _, a in candidates)
+        # Consensus mask (before cooldown)
+        n_eligible = sum((a >= threshold).sum().item() for _, a in candidates)
+
+        # Count how many are blocked by cooldown
+        n_cooled = 0
+        if cooldown_intervals > 0:
+            n_cooled = sum(
+                ((a >= threshold) & (mod._flip_cooldown > 0)).sum().item()
+                for mod, a in candidates
+            )
+
+        # Apply cooldown mask: only allow flips where cooldown has expired
+        def _consensus_and_cooldown(mod, accum_abs):
+            mask = accum_abs >= threshold
+            if cooldown_intervals > 0:
+                mask = mask & (mod._flip_cooldown <= 0)
+            return mask
+
+        n_qualifying = sum(
+            _consensus_and_cooldown(mod, a).sum().item()
+            for mod, a in candidates
+        )
 
         # Subsample if more qualify than the group cap allows
         subsample = n_qualifying > max_flips and max_flips > 0
         keep_prob = max_flips / n_qualifying if subsample else 1.0
 
         n_flipped = 0
+        n_reversals = 0
         for mod, accum_abs in candidates:
-            mask = accum_abs >= threshold
+            mask = _consensus_and_cooldown(mod, accum_abs)
 
             if subsample:
                 rand_mask = mx.random.uniform(shape=mask.shape) < keep_prob
@@ -730,14 +798,34 @@ def apply_flips_per_group(
                 mutated.append(mod.ternary_weight)
                 n_flipped += int(n)
 
+                # Reversal detection: weight flipped opposite to last time
+                # Only count reversals for weights that HAVE a last direction
+                # (last_dir != 0) and where new direction differs.
+                has_history = mod._flip_last_dir != 0
+                is_reversal = mask & has_history & (direction != mod._flip_last_dir)
+                n_reversals += int(is_reversal.sum().item())
+
+                # Update tracking state for flipped weights
+                mod._flip_last_dir = mx.where(mask, direction, mod._flip_last_dir)
+                if cooldown_intervals > 0:
+                    cooldown_val = mx.full(mask.shape, cooldown_intervals, dtype=mx.int8)
+                    mod._flip_cooldown = mx.where(mask, cooldown_val, mod._flip_cooldown)
+                mutated.append(mod._flip_last_dir)
+                mutated.append(mod._flip_cooldown)
+
         # Reset all accumulators in this group (same reasoning as apply_flips)
         for mod, _ in candidates:
             mod._flip_accum = mx.zeros_like(mod._flip_accum)
             mutated.append(mod._flip_accum)
 
-        group_flipped[group] = n_flipped
+        group_stats[group] = {
+            "flipped": n_flipped,
+            "reversals": n_reversals,
+            "cooled": n_cooled,
+            "eligible": n_eligible,
+        }
 
     if mutated:
         mx.eval(*mutated)
 
-    return group_flipped
+    return group_stats
