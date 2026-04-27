@@ -20,9 +20,13 @@ Usage:
 import argparse
 import json
 import math
+import os
 import sys
 import time
 from pathlib import Path
+
+# Force unbuffered stdout — see output immediately
+os.environ["PYTHONUNBUFFERED"] = "1"
 
 import mlx.core as mx
 import mlx.nn as nn
@@ -593,7 +597,7 @@ def train(args):
 
     print(f"\nTraining config: lr={args.lr}, warmup={args.warmup}, steps={args.steps}")
     print(f"  Eval every {args.eval_interval} steps, checkpoint every {args.checkpoint_interval} steps")
-    print(f"\n{'='*70}\n")
+    print(f"\n{'='*70}\n", flush=True)
 
     step_time_start = time.time()
 
@@ -724,7 +728,7 @@ def train(args):
             # Per-stage r_ema and phase
             r_parts = [f"r{i+1}={sc.r_ema:.3f}" for i, sc in enumerate(stage_controllers)]
             d_parts = [f"δ{i+1}={sc.delta_ema:+.4f}" for i, sc in enumerate(stage_controllers[1:])]
-            print(f"         │ {' '.join(r_parts)}  │  {' '.join(d_parts)}")
+            print(f"         │ {' '.join(r_parts)}  │  {' '.join(d_parts)}", flush=True)
 
             # Ternary stats (on flip steps)
             if has_ternary and step % FLIP_INTERVAL == 0:
