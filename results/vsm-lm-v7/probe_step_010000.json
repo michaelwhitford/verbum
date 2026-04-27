@@ -1,0 +1,394 @@
+{
+  "timestamp": "2026-04-27T19:39:22.797104+00:00",
+  "architecture": "vsm-lm-v7",
+  "step": 10000,
+  "state_metrics": {
+    "train_loss": 5.139686942100525,
+    "relational": 0.3776215133716555,
+    "grad_norm": 4.895621004645611,
+    "lr": 0.0002977842165956086,
+    "stage1_h_norm": 10.990753173828125,
+    "stage2_h_norm": 12.416810035705566,
+    "stage3_h_norm": 12.155354499816895,
+    "stage4_h_norm": 12.064260482788086,
+    "ce_stage1": 6.804879188537598,
+    "ce_stage2": 6.603912830352783,
+    "ce_stage3": 5.40869140625,
+    "ce_stage4": 5.402065753936768
+  },
+  "stage_ce": {
+    "ce_stage1": 11.188129023117124,
+    "r_stage1": 1.0,
+    "ce_stage2": 9.48869580601367,
+    "r_stage2": 0.8536877003682174,
+    "ce_stage3": 10.845648707101171,
+    "r_stage3": 1.0,
+    "ce_stage4": 10.797100699267626,
+    "r_stage4": 0.9969128231651835,
+    "delta_2": 1.6994332171034543,
+    "delta_3": -1.3569529010875012,
+    "delta_4": 0.048548007833545626
+  },
+  "strata_ce": {
+    "prose": {
+      "ce_stage1": 11.223352710405985,
+      "r_stage1": 1.0,
+      "ce_stage2": 9.374658359421623,
+      "r_stage2": 0.8412045406247692,
+      "ce_stage3": 10.770090818405151,
+      "r_stage3": 0.9939561745595378,
+      "ce_stage4": 10.71891705195109,
+      "r_stage4": 0.9883544154846857,
+      "delta_2": 1.8486943509843616,
+      "delta_3": -1.395432458983528,
+      "delta_4": 0.051173766454061465
+    },
+    "compositional": {
+      "ce_stage1": 11.283046228545052,
+      "r_stage1": 1.0,
+      "ce_stage2": 10.112809181213379,
+      "r_stage2": 0.9220065481981891,
+      "ce_stage3": 11.550750953810555,
+      "r_stage3": 1.0,
+      "ce_stage4": 11.48806633268084,
+      "r_stage4": 1.0,
+      "delta_2": 1.170237047331673,
+      "delta_3": -1.437941772597176,
+      "delta_4": 0.06268462112971562
+    },
+    "technical": {
+      "ce_stage1": 11.202286019921303,
+      "r_stage1": 1.0,
+      "ce_stage2": 9.37448363006115,
+      "r_stage2": 0.8411854137977152,
+      "ce_stage3": 10.739115476608276,
+      "r_stage3": 0.9905654450113609,
+      "ce_stage4": 10.684463188052177,
+      "r_stage4": 0.984582907969547,
+      "delta_2": 1.8278023898601532,
+      "delta_3": -1.3646318465471268,
+      "delta_4": 0.05465228855609894
+    },
+    "math": {
+      "ce_stage1": 11.061208490012348,
+      "r_stage1": 1.0,
+      "ce_stage2": 9.207100536512291,
+      "r_stage2": 0.8228627491154926,
+      "ce_stage3": 10.451048256694406,
+      "r_stage3": 0.9590320388320731,
+      "ce_stage4": 10.422375305839207,
+      "r_stage4": 0.9558933415309846,
+      "delta_2": 1.8541079535000566,
+      "delta_3": -1.2439477201821152,
+      "delta_4": 0.028672950855199275
+    }
+  },
+  "ternary": {
+    "has_ternary": true,
+    "total_weights": 1572864,
+    "sparsity": 0.3121407826741536,
+    "pos_frac": 0.3442465464274089,
+    "neg_frac": 0.3436126708984375,
+    "cooldown_active": 0,
+    "ever_flipped": 0,
+    "ever_flipped_pct": 0.0,
+    "gamma_mean": 0.03696475798885027,
+    "accum_pressure": 0.0,
+    "per_module": [
+      {
+        "path": "feedbacks.0.cross_attn.o_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.3094635009765625,
+        "gamma_mean": 0.055381402373313904,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "feedbacks.0.cross_attn.v_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.309295654296875,
+        "gamma_mean": 0.05279684066772461,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "feedbacks.0.cross_attn.k_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.3225860595703125,
+        "gamma_mean": 0.0657360702753067,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "feedbacks.0.cross_attn.q_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.3158111572265625,
+        "gamma_mean": 0.0801578015089035,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.1.ffn.down_proj",
+        "shape": "256\u00d7512",
+        "sparsity": 0.31085968017578125,
+        "gamma_mean": 0.03433139994740486,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.1.ffn.up_proj",
+        "shape": "512\u00d7256",
+        "sparsity": 0.3078765869140625,
+        "gamma_mean": 0.04192114248871803,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.1.ffn.gate_proj",
+        "shape": "512\u00d7256",
+        "sparsity": 0.3104400634765625,
+        "gamma_mean": 0.04644225910305977,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.1.attn.o_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.309906005859375,
+        "gamma_mean": 0.03925297036767006,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.1.attn.v_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.3115234375,
+        "gamma_mean": 0.02683294005692005,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.1.attn.k_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.32855224609375,
+        "gamma_mean": 0.015358204953372478,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.1.attn.q_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.31768798828125,
+        "gamma_mean": 0.0057101137936115265,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.0.ffn.down_proj",
+        "shape": "256\u00d7512",
+        "sparsity": 0.308807373046875,
+        "gamma_mean": 0.04147499054670334,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.0.ffn.up_proj",
+        "shape": "512\u00d7256",
+        "sparsity": 0.31158447265625,
+        "gamma_mean": 0.05422141030430794,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.0.ffn.gate_proj",
+        "shape": "512\u00d7256",
+        "sparsity": 0.31104278564453125,
+        "gamma_mean": 0.05731460079550743,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.0.attn.o_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.308807373046875,
+        "gamma_mean": 0.012520330026745796,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.0.attn.v_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.310546875,
+        "gamma_mean": 0.008173941634595394,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.0.attn.k_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.3116302490234375,
+        "gamma_mean": 0.016834748908877373,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.0.attn.q_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.3143463134765625,
+        "gamma_mean": 0.010904476046562195,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      }
+    ]
+  },
+  "feedback_gates": [
+    {
+      "feedback": "Stage 2 \u2192 1",
+      "mean_gate": 0.6086680144071579,
+      "status": "active",
+      "is_ternary": true
+    },
+    {
+      "feedback": "Stage 3 \u2192 2",
+      "mean_gate": 0.47409631311893463,
+      "status": "partial",
+      "is_ternary": false
+    },
+    {
+      "feedback": "Stage 4 \u2192 3",
+      "mean_gate": 0.2357894442975521,
+      "status": "suppressed",
+      "is_ternary": false
+    }
+  ],
+  "representations": [
+    {
+      "stage": 1,
+      "name": "Surface",
+      "positions": 512,
+      "is_ternary": true,
+      "n_samples": 261,
+      "mean_norm": 10.982339859008789,
+      "effective_rank": 83.45681762695312,
+      "max_rank": 256,
+      "rank_utilization": 0.32600319385528564,
+      "anisotropy": 23446618.0,
+      "top5_energy": 0.4249879717826843,
+      "top10_energy": 0.5630990266799927
+    },
+    {
+      "stage": 2,
+      "name": "Structural",
+      "positions": 64,
+      "is_ternary": false,
+      "n_samples": 1024,
+      "mean_norm": 12.349563598632812,
+      "effective_rank": 42.56193923950195,
+      "max_rank": 256,
+      "rank_utilization": 0.1662575751543045,
+      "anisotropy": 1090.205810546875,
+      "top5_energy": 0.7159011960029602,
+      "top10_energy": 0.807138204574585
+    },
+    {
+      "stage": 3,
+      "name": "Semantic",
+      "positions": 8,
+      "is_ternary": false,
+      "n_samples": 128,
+      "mean_norm": 12.138301849365234,
+      "effective_rank": 12.57973861694336,
+      "max_rank": 128,
+      "rank_utilization": 0.09827920794487,
+      "anisotropy": 3084192.0,
+      "top5_energy": 0.8570883274078369,
+      "top10_energy": 0.9453315734863281
+    },
+    {
+      "stage": 4,
+      "name": "Reasoning",
+      "positions": 1,
+      "is_ternary": false,
+      "n_samples": 16,
+      "mean_norm": 12.064324378967285,
+      "effective_rank": 9.745113372802734,
+      "max_rank": 16,
+      "rank_utilization": 0.6090695858001709,
+      "anisotropy": 88124.2890625,
+      "top5_energy": 0.8333828449249268,
+      "top10_energy": 0.9662913680076599
+    }
+  ],
+  "spectral": {
+    "overlaps": {
+      "stage1_stage2": 0.10600093752145767,
+      "stage2_stage3": 0.11091862618923187,
+      "stage3_stage4": 0.10808960348367691
+    }
+  },
+  "chinchilla": {
+    "n_params": 14387200,
+    "n_tokens": 163840000,
+    "capacity_floor": 3.195758557175119,
+    "capacity_term": 1.505758557175119,
+    "data_floor": 3.5944548531526443,
+    "data_term": 1.9044548531526446,
+    "predicted": 5.100213410327764
+  },
+  "compile_results": [
+    {
+      "prompt": "the bird flies",
+      "generation": "\u0438\u0439000 not not not not not not not not not not not not not not not not not not no",
+      "has_lambda": false
+    },
+    {
+      "prompt": "every student reads",
+      "generation": "\u0438\u0439000 not not not not not not not not not not not not not not not not not not no",
+      "has_lambda": false
+    },
+    {
+      "prompt": "the man who runs",
+      "generation": "iced weight weight weight weight weight weight weight weight weight weight weigh",
+      "has_lambda": false
+    },
+    {
+      "prompt": "no cat sleeps",
+      "generation": "\u0438\u0439000 not not not not not not not not not not not not not not not not not not no",
+      "has_lambda": false
+    }
+  ],
+  "phase_controllers": [
+    {
+      "stage_id": 0,
+      "phase": "balance",
+      "steps_toward_new": 0,
+      "r_ema": 0.3850530618197636,
+      "delta_ema": 0.0,
+      "ce_ema": 5.207576388896404
+    },
+    {
+      "stage_id": 1,
+      "phase": "balance",
+      "steps_toward_new": 0,
+      "r_ema": 0.35689632637103813,
+      "delta_ema": 0.3415278140720684,
+      "ce_ema": 5.197334861838555
+    },
+    {
+      "stage_id": 2,
+      "phase": "balance",
+      "steps_toward_new": 0,
+      "r_ema": 0.35689632637103813,
+      "delta_ema": 0.9754382246713255,
+      "ce_ema": 5.137250431856096
+    },
+    {
+      "stage_id": 3,
+      "phase": "balance",
+      "steps_toward_new": 0,
+      "r_ema": 0.40601825084142484,
+      "delta_ema": 0.004676223302551404,
+      "ce_ema": 5.136917374690847
+    }
+  ]
+}

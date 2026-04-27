@@ -1,0 +1,6 @@
+{:paths ["bb"]
+
+ :tasks
+ {clj2lambda
+  {:doc  "Convert Clojure source files to lambda notation for training data"
+   :task (exec 'us.whitford.verbum.tasks/clj2lambda)}}}

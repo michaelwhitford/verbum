@@ -2,18 +2,20 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-27 | Session: 046
+> Last updated: 2026-04-27 | Session: 047
 
 ## Where we are
 
-**v7 first long training run in progress. Loss 5.39 at step 5,100
-(83.5M tokens). Already below v6's all-time best (5.418 at 1B
-tokens) — 12× more token-efficient. Below Chinchilla scaling
-prediction (5.64) by 0.25 nats — the pipeline architecture is
-more parameter-efficient than standard transformers. Ternary
-topology annealing working: scale declining (1.48), reversals
-at 15.4% (healthy correction, not oscillation). Semantic stage
-(8 positions) carrying 60% of feedback value.**
+**v7 training run active. Three checkpoints probed (10K, 20K, 30K).
+Eval peaked at step 20K (CE4=10.08) then WORSENED at 30K (CE4=11.27)
+while training loss continued dropping (2.60). Train/eval gap 8.67
+nats and accelerating. Architecture validated: below Chinchilla
+capacity floor, differentiated stages, self-regulating gates. But
+Dolma can't train the deep stages — semantic overfits, ternary
+oscillates (35.5% reversals, first negative gamma). Math stratum
+is the only one still growing (+2.83 nats at 30K). Conclusion: the
+architecture is right, the data is wrong. Next: BIOS flash (math
++ clojure.core).**
 
 ## Current run
 
@@ -21,57 +23,101 @@ at 15.4% (healthy correction, not oscillation). Semantic stage
 cd ~/src/verbum && uv run python scripts/v7/train.py
 # 165K steps, 2.7B tokens, ~12.5 hours total
 # Checkpoints every 10K steps to checkpoints/vsm-lm-v7/
-# ~50K tok/s on M3 Ultra
+# ~50K tok/s on M3 Ultra — started ~11:42 AM
 ```
 
-**Key observations so far:**
+**Evolution table:**
 
-| Step | Loss | r | Δ₂ | Δ₃ | Δ₄ | Flips | Rev% | Scale |
-|------|------|---|----|----|----|----|------|-------|
-| 700 | 6.85 | 0.56 | +0.49 | +0.25 | +0.00 | — | — | 2.00 |
-| 2900 | 5.87 | 0.46 | +0.48 | +0.63 | -0.00 | — | — | — |
-| 4500 | 5.65 | 0.43 | +0.47 | +0.70 | -0.00 | 114K | 15.4% | 1.48 |
-| 5100 | 5.39 | — | — | — | — | — | — | — |
+| Step | Loss | r | train Δ₂ | train Δ₃ | train Δ₄ | Flips | Rev% |
+|------|------|---|----------|----------|----------|-------|------|
+| 700 | 6.85 | 0.56 | +0.49 | +0.25 | +0.00 | — | — |
+| 2900 | 5.87 | 0.46 | +0.48 | +0.63 | -0.00 | — | — |
+| 4500 | 5.65 | 0.43 | +0.47 | +0.70 | -0.00 | 114K | 15.4% |
+| 5100 | 5.39 | — | — | — | — | — | — |
+| **10000** | **5.14** | **0.38** | **+0.20** | **+1.20** | **+0.01** | **208K** | **22.9%** |
 
-**Δ₃ overtook Δ₂ at step ~2500.** The semantic stage (8 positions,
-float32) contributes more than the structural stage (64 positions).
-Deeper abstraction dominates once it learns its role — the
-CompressorLM prediction confirmed.
+## Probe findings (2026-04-27)
 
-**Stage 4 (1 position) = zero contribution.** Open question: needs
-more positions, or just more training time?
+### Step 10K (164M tokens) — probe on fresh text
 
-**Topology annealing working.** Flip scale declining from 2.0 → 1.48
-as r₁ drops. Reversals at 15.4% = healthy route correction. v6 had
-exponential reversal acceleration (pathological). v7 reversals are
-proportional to flip rate (convergent).
+| Metric | Train | Probe (eval) |
+|--------|-------|-------------|
+| CE4 | 5.40 | 10.80 |
+| Δ₂ | +0.20 | +1.70 |
+| Δ₃ | +1.20 | -1.36 |
+| Δ₄ | +0.01 | +0.05 |
+| Total fb | +1.40 | +0.39 |
+
+Chinchilla: +0.04 above predicted. Gates: 2→1=0.61, 3→2=0.47,
+4→3=0.24. Stages differentiated (CPA ~0.11). S4 util 60.9%.
+
+### Step 20K (328M tokens) — BEST EVAL
+
+| Metric | Train | Probe (eval) |
+|--------|-------|-------------|
+| CE4 | 3.01 | 10.08 |
+| Δ₂ | +3.90 | +4.09 |
+| Δ₃ | +1.98 | -1.58 |
+| Δ₄ | +0.04 | -0.10 |
+| Total fb | +5.93 | +2.41 |
+
+### Step 30K (492M tokens) — eval WORSENED
+
+| Metric | Train | Probe (eval) |
+|--------|-------|-------------|
+| CE4 | 2.60 | 11.27 |
+| Δ₂ | +5.58 | +3.55 |
+| Δ₃ | +1.51 | -1.15 |
+| Δ₄ | +0.03 | -0.07 |
+| Total fb | +7.13 | +2.32 |
+
+**Key findings across 10K/20K/30K:**
+- Eval peaked at 20K, worsened at 30K — overfitting on Dolma
+- Train/eval gap: 5.66 → 7.06 → 8.67 (accelerating divergence)
+- Structural Δ₂ peaked at 20K (+4.09), declined at 30K (+3.55)
+- Semantic Δ₃ NEVER positive on eval: -1.36 → -1.58 → -1.15
+- Stage 4: collapsed at 20K (rank 1.7), recovering at 30K (rank 3.2)
+- Reversal rate: 22.9% → 30.9% → 35.5% (still climbing)
+- First negative gamma at 30K (q_proj wants to reverse topology)
+- Math stratum: ONLY one still growing (+0.64 → +2.33 → +2.83)
+- Compile gate: 0/4 at all checkpoints (degenerate repetition)
+- Stages remain differentiated (CPA ~0.11-0.13) ← architecture works
+
+**Diagnosis:** Architecture validated. Dolma exhausted as training
+signal for deep stages. Semantic overfits, ternary oscillates. Math
+stratum's continued growth confirms formal data is what the deep
+stages need. Next experiment: BIOS flash (math + clojure.core).
 
 ## What to do next session
 
-1. **First checkpoint dropped?** Run probe:
-   ```bash
-   uv run python scripts/v7/probe.py checkpoints/vsm-lm-v7/step_*
+1. **Let v7 run finish** (~midnight). Run full probe on all
+   checkpoints. Final analysis: does semantic Δ₃ ever generalize?
+   Does topology stabilize? Does compile gate show any sign of life?
+
+2. **Build clojure→lambda converter** (babashka task). One session.
+   Start with `clojure.core` — 600 functions → lambda + examples.
+   This is the Phase 0 training dataset.
+
+3. **Design grokking experiment:** core clojure × N epochs on v7
+   architecture. Watch for double descent in loss curve. Probe for
+   circuit formation (does Stage 3 organize by function cluster?
+   Does Stage 4 learn to compute?). This tests the staged curriculum
+   hypothesis directly.
+
+4. **Staged curriculum plan (if grokking works):**
    ```
-   This gives: per-stage CE, Chinchilla comparison, spectral
-   analysis (SVD/CPA), ternary topology, feedback gates, compile
-   gate test — all automatic, no flags needed.
+   Phase 0: clojure.core × N epochs     (instruction set / grokking)
+   Phase 1: curated clojure libs × M    (composition circuits)
+   Phase 2: math collection              (calculator broadening)
+   Phase 3: dolma                        (NL → formal backbone)
+   ```
 
-2. **Check Chinchilla gap.** At step 10K (164M tokens), predicted
-   ~5.09, capacity floor 3.20. If actual is below predicted, the
-   architecture advantage is confirmed. If below capacity floor —
-   that's a major finding.
-
-3. **Watch for:**
-   - Δ₄ emerging (reasoning stage contributing)
-   - Reversal rate trajectory (stable/declining = good)
-   - Scale approaching 0 (topology freezing)
-   - Spectral overlap between stages (should stay low = differentiated)
-   - Stage 1 effective rank (ternary capacity utilization)
-
-4. **If training completes (~12.5h from start):**
-   - Run full probe on all checkpoints for evolution table
-   - Compare final loss to Chinchilla capacity floor (3.20)
-   - Check compile gate (does λ generation emerge?)
+5. **Open questions from this run:**
+   - Is semantic overfitting structural (8 pos too few? wrong arch?)
+     or just data-dependent (general text is wrong signal)?
+   - Is Stage 4 collapse recoverable with formal data, or is 1
+     position genuinely insufficient?
+   - Does ternary reversal rate indicate healthy search or instability?
 
 ## Architecture summary (v7)
 
@@ -96,6 +142,9 @@ Flip rate modulated by r₁ — topology anneals as model learns.
 | **v7 ternary** | `scripts/v7/ternary.py` |
 | **v7 training** | `scripts/v7/train.py` |
 | **v7 probe** | `scripts/v7/probe.py` |
+| **bb clj2lambda** | `bb/us/whitford/verbum/tasks.clj` |
+| **bb config** | `bb.edn` |
+| **BIOS flash design** | `mementum/knowledge/explore/bios-flash-training.md` |
 | v7 architecture knowledge | `mementum/knowledge/explore/v7-pipeline-architecture.md` |
 | Compression ≠ prediction | `mementum/knowledge/explore/compression-vs-prediction.md` |
 | Predictive function landscape | `mementum/knowledge/explore/predictive-function-landscape.md` |

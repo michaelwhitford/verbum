@@ -1,0 +1,394 @@
+{
+  "timestamp": "2026-04-27T20:35:29.543011+00:00",
+  "architecture": "vsm-lm-v7",
+  "step": 20000,
+  "state_metrics": {
+    "train_loss": 3.011866569519043,
+    "relational": 0.14469871116862462,
+    "grad_norm": 10.544586181361579,
+    "lr": 0.00029074629061049187,
+    "stage1_h_norm": 8.203283309936523,
+    "stage2_h_norm": 10.016576766967773,
+    "stage3_h_norm": 9.257963180541992,
+    "stage4_h_norm": 9.178665161132812,
+    "ce_stage1": 8.715608596801758,
+    "ce_stage2": 5.205552101135254,
+    "ce_stage3": 3.164668560028076,
+    "ce_stage4": 3.1147265434265137
+  },
+  "stage_ce": {
+    "ce_stage1": 12.48504440994555,
+    "r_stage1": 1.0,
+    "ce_stage2": 8.399321208968473,
+    "r_stage2": 0.7344388262328851,
+    "ce_stage3": 9.974846925772013,
+    "r_stage3": 0.9069044486273181,
+    "ce_stage4": 10.07639651828342,
+    "r_stage4": 0.918020619877073,
+    "delta_2": 4.0857232009770765,
+    "delta_3": -1.57552571680354,
+    "delta_4": -0.10154959251140738
+  },
+  "strata_ce": {
+    "prose": {
+      "ce_stage1": 12.743857357237074,
+      "r_stage1": 1.0,
+      "ce_stage2": 8.171985387802124,
+      "r_stage2": 0.7095534095926864,
+      "ce_stage3": 9.767114016744825,
+      "r_stage3": 0.8841648734714989,
+      "ce_stage4": 9.76155752605862,
+      "r_stage4": 0.8835566297504954,
+      "delta_2": 4.57187196943495,
+      "delta_3": -1.5951286289427014,
+      "delta_4": 0.005556490686204896
+    },
+    "compositional": {
+      "ce_stage1": 12.04787564277649,
+      "r_stage1": 1.0,
+      "ce_stage2": 8.646554265703474,
+      "r_stage2": 0.7615023026024028,
+      "ce_stage3": 10.207488077027458,
+      "r_stage3": 0.9323706155821992,
+      "ce_stage4": 10.236807908330645,
+      "r_stage4": 0.935580123938853,
+      "delta_2": 3.4013213770730157,
+      "delta_3": -1.5609338113239843,
+      "delta_4": -0.02931983130318727
+    },
+    "technical": {
+      "ce_stage1": 12.364008784294128,
+      "r_stage1": 1.0,
+      "ce_stage2": 8.288444951176643,
+      "r_stage2": 0.7223017074255645,
+      "ce_stage3": 9.376985736191273,
+      "r_stage3": 0.8414593079566147,
+      "ce_stage4": 9.987688183784485,
+      "r_stage4": 0.9083101226393816,
+      "delta_2": 4.075563833117485,
+      "delta_3": -1.0885407850146294,
+      "delta_4": -0.6107024475932121
+    },
+    "math": {
+      "ce_stage1": 12.68204729107843,
+      "r_stage1": 1.0,
+      "ce_stage2": 8.538730027019113,
+      "r_stage2": 0.7496992744223031,
+      "ce_stage3": 10.557339405667955,
+      "r_stage3": 0.9706672466660233,
+      "ce_stage4": 10.357015402420707,
+      "r_stage4": 0.9487386906722343,
+      "delta_2": 4.143317264059316,
+      "delta_3": -2.0186093786488417,
+      "delta_4": 0.20032400324724797
+    }
+  },
+  "ternary": {
+    "has_ternary": true,
+    "total_weights": 1572864,
+    "sparsity": 0.31320826212565106,
+    "pos_frac": 0.34354591369628906,
+    "neg_frac": 0.3432458241780599,
+    "cooldown_active": 0,
+    "ever_flipped": 0,
+    "ever_flipped_pct": 0.0,
+    "gamma_mean": 0.03628560173739162,
+    "accum_pressure": 0.0,
+    "per_module": [
+      {
+        "path": "feedbacks.0.cross_attn.o_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.3094635009765625,
+        "gamma_mean": 0.044376444071531296,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "feedbacks.0.cross_attn.v_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.309295654296875,
+        "gamma_mean": 0.03938658535480499,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "feedbacks.0.cross_attn.k_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.3287353515625,
+        "gamma_mean": 0.0910872370004654,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "feedbacks.0.cross_attn.q_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.3263397216796875,
+        "gamma_mean": 0.10926178097724915,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.1.ffn.down_proj",
+        "shape": "256\u00d7512",
+        "sparsity": 0.31087493896484375,
+        "gamma_mean": 0.029585225507616997,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.1.ffn.up_proj",
+        "shape": "512\u00d7256",
+        "sparsity": 0.30789947509765625,
+        "gamma_mean": 0.03438081592321396,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.1.ffn.gate_proj",
+        "shape": "512\u00d7256",
+        "sparsity": 0.310455322265625,
+        "gamma_mean": 0.03438228741288185,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.1.attn.o_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.3098297119140625,
+        "gamma_mean": 0.034686844795942307,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.1.attn.v_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.3113250732421875,
+        "gamma_mean": 0.022452645003795624,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.1.attn.k_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.3314208984375,
+        "gamma_mean": 0.009217807091772556,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.1.attn.q_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.3191375732421875,
+        "gamma_mean": 0.003428591415286064,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.0.ffn.down_proj",
+        "shape": "256\u00d7512",
+        "sparsity": 0.308807373046875,
+        "gamma_mean": 0.04587757587432861,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.0.ffn.up_proj",
+        "shape": "512\u00d7256",
+        "sparsity": 0.31157684326171875,
+        "gamma_mean": 0.055531736463308334,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.0.ffn.gate_proj",
+        "shape": "512\u00d7256",
+        "sparsity": 0.31104278564453125,
+        "gamma_mean": 0.057273268699645996,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.0.attn.o_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.308807373046875,
+        "gamma_mean": 0.011427264660596848,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.0.attn.v_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.310546875,
+        "gamma_mean": 0.00435049319639802,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.0.attn.k_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.314483642578125,
+        "gamma_mean": 0.014421620406210423,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.0.attn.q_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.3162994384765625,
+        "gamma_mean": 0.012012607418000698,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      }
+    ]
+  },
+  "feedback_gates": [
+    {
+      "feedback": "Stage 2 \u2192 1",
+      "mean_gate": 0.5703157186508179,
+      "status": "partial",
+      "is_ternary": true
+    },
+    {
+      "feedback": "Stage 3 \u2192 2",
+      "mean_gate": 0.4974631741642952,
+      "status": "partial",
+      "is_ternary": false
+    },
+    {
+      "feedback": "Stage 4 \u2192 3",
+      "mean_gate": 0.3256736323237419,
+      "status": "suppressed",
+      "is_ternary": false
+    }
+  ],
+  "representations": [
+    {
+      "stage": 1,
+      "name": "Surface",
+      "positions": 512,
+      "is_ternary": true,
+      "n_samples": 261,
+      "mean_norm": 8.162681579589844,
+      "effective_rank": 60.85538101196289,
+      "max_rank": 256,
+      "rank_utilization": 0.23771633207798004,
+      "anisotropy": 23867692.0,
+      "top5_energy": 0.5410348773002625,
+      "top10_energy": 0.6996160745620728
+    },
+    {
+      "stage": 2,
+      "name": "Structural",
+      "positions": 64,
+      "is_ternary": false,
+      "n_samples": 1024,
+      "mean_norm": 10.024892807006836,
+      "effective_rank": 71.99657440185547,
+      "max_rank": 256,
+      "rank_utilization": 0.2812366187572479,
+      "anisotropy": 225.55453491210938,
+      "top5_energy": 0.5434786081314087,
+      "top10_energy": 0.6623872518539429
+    },
+    {
+      "stage": 3,
+      "name": "Semantic",
+      "positions": 8,
+      "is_ternary": false,
+      "n_samples": 128,
+      "mean_norm": 9.204620361328125,
+      "effective_rank": 19.924776077270508,
+      "max_rank": 128,
+      "rank_utilization": 0.15566231310367584,
+      "anisotropy": 3760596.25,
+      "top5_energy": 0.8023017644882202,
+      "top10_energy": 0.8952158093452454
+    },
+    {
+      "stage": 4,
+      "name": "Reasoning",
+      "positions": 1,
+      "is_ternary": false,
+      "n_samples": 16,
+      "mean_norm": 9.130363464355469,
+      "effective_rank": 1.658393383026123,
+      "max_rank": 16,
+      "rank_utilization": 0.10364958643913269,
+      "anisotropy": 7903431.0,
+      "top5_energy": 0.9997968673706055,
+      "top10_energy": 0.9999781847000122
+    }
+  ],
+  "spectral": {
+    "overlaps": {
+      "stage1_stage2": 0.0975959524512291,
+      "stage2_stage3": 0.13174594938755035,
+      "stage3_stage4": 0.11547055095434189
+    }
+  },
+  "chinchilla": {
+    "n_params": 14387200,
+    "n_tokens": 327680000,
+    "capacity_floor": 3.195758557175119,
+    "capacity_term": 1.505758557175119,
+    "data_floor": 3.163633831260473,
+    "data_term": 1.4736338312604729,
+    "predicted": 4.6693923884355915
+  },
+  "compile_results": [
+    {
+      "prompt": "the bird flies",
+      "generation": "uouslyuouslyuouslyuouslyuouslyuouslyuouslyuouslyuouslyuouslyuouslyuouslyuouslyuo",
+      "has_lambda": false
+    },
+    {
+      "prompt": "every student reads",
+      "generation": "uouslyuouslyuouslyuouslyuouslyuouslyuouslyuouslyuouslyuouslyuouslyuouslyuouslyuo",
+      "has_lambda": false
+    },
+    {
+      "prompt": "the man who runs",
+      "generation": "uouslyuouslyuouslyuouslyuouslyuouslyuouslyuouslyuouslyuouslyuouslyuouslyuouslyuo",
+      "has_lambda": false
+    },
+    {
+      "prompt": "no cat sleeps",
+      "generation": "uouslyuouslyuouslyuouslyuouslyuouslyuouslyuouslyuouslyuouslyuouslyuouslyuouslyuo",
+      "has_lambda": false
+    }
+  ],
+  "phase_controllers": [
+    {
+      "stage_id": 0,
+      "phase": "refine",
+      "steps_toward_new": 0,
+      "r_ema": 0.19296970364509164,
+      "delta_ema": 0.0,
+      "ce_ema": 3.4528367116634895
+    },
+    {
+      "stage_id": 1,
+      "phase": "refine",
+      "steps_toward_new": 0,
+      "r_ema": 0.15428810144431318,
+      "delta_ema": 2.540954631270394,
+      "ce_ema": 3.276375635854458
+    },
+    {
+      "stage_id": 2,
+      "phase": "refine",
+      "steps_toward_new": 0,
+      "r_ema": 0.15428810144431318,
+      "delta_ema": 2.2432491139386426,
+      "ce_ema": 3.1736596231007845
+    },
+    {
+      "stage_id": 3,
+      "phase": "refine",
+      "steps_toward_new": 0,
+      "r_ema": 0.19617428448135765,
+      "delta_ema": 0.0334524187823162,
+      "ce_ema": 3.1711433264070785
+    }
+  ]
+}
