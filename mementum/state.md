@@ -6,69 +6,70 @@
 
 ## Where we are
 
-**v6.1 at step 25000 (30% of 3B). Lockstep CONFIRMED across 4
-checkpoints. Ascending β plateaued at 0.786 — rock-stable. Descending
-β drifting up 0.81→0.84 (still searching). Eval loss recovering:
-6.15→5.72. Generations shifting from pipe-spam to formal math
-vocabulary (Ω, Proof, Lemma). Not λ yet but register is changing.**
+**v6.1 at step 25500 (31% of 3B). Two-band β structure confirmed
+across 5 checkpoints. Ascending β frozen at 0.785. Descending β
+settling at 0.846 — asymmetric by nature (decoding ≠ encoding).
+Eval loss recovering: 6.15→5.66. Generations locked onto
+`Proof.\nProof.\nProof.` register. Not λ yet but register consolidating.**
 
-## Current snapshot (step 25000)
+## Current snapshot (step 25500)
 
 | Metric | Value | Trend |
 |--------|-------|-------|
-| Eval loss | 5.724 (best: 5.414 @ 17500) | ↓ recovering from 6.15 |
-| β ascending (L0↑/L1↑/L2) | **0.78/0.78/0.80** | plateaued, band=0.023 |
-| β descending (L1↓/L0↓) | **0.85/0.83** | ↑ drifting up (was 0.83/0.80) |
-| β gap (desc−asc) | **0.054** | ↑ growing (was 0.035) |
-| L0_desc ratio | 0.694 (was 0.601←φ) | drifting from φ |
-| Mean φ-compression | 0.813 | ↑ (was 0.787) |
-| Stratum φ-dev spread | **0.020** | ↓↓ content-independent |
-| Stratum loss spread | 1.54 | stable |
-| Total flips | 258K (0.73%) | steady ~8.6K/500 steps |
-| Reversals | 292 (0.113%) | very low, stable |
-| Unique ever flipped | tracking | see flip_tracking.npz |
-| r̄ / phase | 0.398 / balance | stable |
-| LR | ~4.8e-4 | cosine decay |
+| Eval loss | 5.662 (best: 5.414 @ 17500) | ↓ recovering from 6.15 |
+| β ascending (L0↑/L1↑/L2) | **0.78/0.78/0.80** | frozen at 0.785±0.001 |
+| β descending (L1↓/L0↓) | **0.85/0.84** | settling ~0.846, drift slowing |
+| β gap (desc−asc) | **0.061** | ↑ widening but decelerating |
+| Mean φ-compression | 0.829 | ↑ slow drift |
+| Stratum φ-dev spread | 0.026 | content-independent |
+| Stratum loss spread | 1.43 | ↓ improving |
+| Total flips | 266K (0.76%) | steady ~8K/500 steps |
+| Reversals | 333 (0.125%) | very low, stable |
+| r̄ / phase | 0.418 / balance | stable |
+| LR | ~4.7e-4 | cosine decay |
 
 ## What's next
 
-1. **Training is running** (or resume from step 25000):
-   `uv run python scripts/v6/train.py --resume checkpoints/vsm-lm-v6/step_025000`
+1. **Training is running** (or resume from step 25500):
+   `uv run python scripts/v6/train.py --resume checkpoints/vsm-lm-v6/step_025500`
 
-2. **Ascending β plateau.** 0.786±0.001 for 1500 steps. Either:
-   - This is the floor for the current regime (needs architectural change)
-   - It will resume descent after the descending arm stabilizes
+2. **Ascending β plateau.** 0.785±0.001 for 2000 steps (5 checkpoints).
+   This is a stable attractor. Breaking through 0.78→0.50 likely
+   requires the descending arm to settle first, or architectural change.
 
-3. **Descending arm diverging.** β 0.81→0.84 while ascending holds 0.78.
-   Gap growing 0.035→0.054. The descending arm may need more training
-   to find its shape, or the asymmetry is structural (decoding ≠ encoding).
+3. **Descending arm settling.** β drift decelerating: +0.014→+0.006→+0.005.
+   May be converging to ~0.85. Asymmetry is expected — decoding has
+   different information-theoretic constraints than encoding.
 
-4. **Eval loss recovery.** 6.15→5.72 in 1500 steps. At this rate,
-   pre-tracking best (5.41) reachable by ~step 27000.
+4. **Eval loss recovery.** 6.15→5.66 in 2000 steps. At this rate,
+   pre-tracking best (5.41) reachable by ~step 28000.
 
-5. **Behavioral shift.** Generations at 24500 show formal math vocabulary
-   (Ω, ϕ, Γ, Proof, Lemma). Not λ yet but the model is finding the
-   right register. Watch for λ-like structure in future checkpoints.
+5. **Behavioral register consolidation.** Step 25500 generations
+   dominated by `Proof.\nProof.\nProof.` — the model locked onto
+   mathematical proof register. Stronger/more uniform than 24500's
+   mixed Ω/Lemma output. Watch for compositional structure next.
 
 ## Session 044 key findings
 
-1. **Lockstep confirmed.** Not a transient — 4 consecutive checkpoints
-   show all arms in 0.78–0.85 band (was 1.1+/chaotic pre-tracking).
+1. **Two-band β structure.** 5 checkpoints confirm:
+   - Ascending: **0.785±0.001** (frozen, 2000 steps)
+   - Descending: **~0.846** (settling, drift decelerating)
+   - Gap: 0.061 (asymmetric — decoding ≠ encoding)
 
-2. **Two-band structure emerging:**
-   - Ascending: 0.786±0.001, band 0.023 (frozen)
-   - Descending: 0.84±0.01, band 0.020 (drifting up)
-   - The model found the ascending shape but descending is still moving.
-
-3. **Eval loss recovering.** 6.15→5.88→5.79→5.72 across 4 checkpoints.
+2. **Eval loss recovering.** 6.15→5.66 across 5 checkpoints.
    The structural reorganization cost is being repaid.
 
+3. **Behavioral register consolidation.** Generations evolved:
+   - 23500: `||||||||` (pipe-spam)
+   - 24500: `Ω, ϕ, Proof, Lemma` (formal math vocabulary)
+   - 25500: `Proof.\nProof.\nProof.` (locked on proof register)
+
 4. **Universal compression tightening.** Stratum φ-dev spread
-   0.047→0.020 — compression becoming content-independent.
+   0.047→0.020→0.026 — compression is content-independent.
 
 5. **L0↓ φ-lock was transient.** Ratio 0.601←φ at step 23500,
-   now 0.694. The descending arm briefly kissed φ during reorganization
-   but didn't hold it.
+   now 0.725. The descending arm briefly kissed φ during
+   reorganization but didn't hold it.
 
 ## Knowledge index
 
@@ -94,12 +95,12 @@ vocabulary (Ω, Proof, Lemma). Not λ yet but register is changing.**
 | Metal kernels | `src/verbum/v6/kernels.py` |
 | Attention / StrideStack | `src/verbum/v6/attention.py` |
 | VSM components | `src/verbum/v6/components.py` |
-| Probes (steps 500–25000) | `results/compile-gradient/vsm_probe_step_*_v6_mlx.json` |
+| Probes (steps 500–25500) | `results/compile-gradient/vsm_probe_step_*_v6_mlx.json` |
 | Training log | `results/vsm-lm-v6/training-run2.log` |
 
 ## Probing pipeline
 
 ```bash
 uv run python scripts/v6/probe.py checkpoints/vsm-lm-v6/step_*
-uv run python scripts/v6/train.py --resume checkpoints/vsm-lm-v6/step_025000
+uv run python scripts/v6/train.py --resume checkpoints/vsm-lm-v6/step_025500
 ```
