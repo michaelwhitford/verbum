@@ -298,10 +298,10 @@ Monitor:
    bottleneck? Is 3 reductions enough for all of clojure.core's
    composition patterns, or do we need the sieve sooner?
 
-5. **Custom vocabulary.** Should we use a smaller, domain-specific
-   tokenizer instead of GPT-NeoX's 50K vocab? Lambda notation +
-   clojure + math might only need 2-5K tokens. Smaller vocab =
-   less wasted embedding capacity.
+5. **Tokenizer: keep GPT-NeoX 50277.** No custom vocab. When Dolma
+   arrives in later training phases, every token needs an embedding
+   already in place. Unused rows during BIOS flash sit at init —
+   small tax vs painful reorg. DECIDED: keep standard tokenizer.
 
 6. **Ternary stability.** Will the ternary topology stabilize on
    formal data where it couldn't on Dolma? The formal data has

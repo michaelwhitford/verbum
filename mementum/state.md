@@ -121,11 +121,11 @@ emerges from: position count + dimension + attention mask + depth.
 - Generate clojure.core examples by eval in babashka
 - Interleave: raw math + clojure + lambda + result in every batch
 
-### 3. Decide tokenizer
+### 3. Tokenizer: keep GPT-NeoX 50277
 
-Custom small vocab (~2-5K tokens) vs GPT-NeoX 50277. Per-digit
-tokenization critical for arithmetic. Custom vocab also shrinks
-embedding table massively (from ~13M to ~1.5M at d=256).
+No custom tokenizer. When Dolma arrives later in training, every
+token needs an embedding already in place. Unused vocab rows during
+BIOS flash just sit at init — small tax, zero reorg pain later.
 
 ### 4. Implement and train v7.1
 
