@@ -2,80 +2,86 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-27 | Session: 044
+> Last updated: 2026-04-27 | Session: 045
 
 ## Where we are
 
-**v6.1 at step 25500 (31% of 3B). Two-band β structure confirmed
-across 5 checkpoints. Ascending β frozen at 0.785. Descending β
-settling at 0.846 — asymmetric by nature (decoding ≠ encoding).
-Eval loss recovering: 6.15→5.66. Generations locked onto
-`Proof.\nProof.\nProof.` register. Not λ yet but register consolidating.**
+**v6.1 training stopped at step 32500. The sieve learned universal
+compression (1.8:1, content-independent) but 0% λ generation.
+The Hilberg exponent H≈0.75 matches the empirical literature —
+compression alone cannot predict at this exponent. Pivoting to
+top-down probing of Qwen3.5-35B-A3B to map the full set of
+predictive functions the lambda compiler lives alongside.**
 
-## Current snapshot (step 25500)
+## The pivot
 
-| Metric | Value | Trend |
-|--------|-------|-------|
-| Eval loss | 5.662 (best: 5.414 @ 17500) | ↓ recovering from 6.15 |
-| β ascending (L0↑/L1↑/L2) | **0.78/0.78/0.80** | frozen at 0.785±0.001 |
-| β descending (L1↓/L0↓) | **0.85/0.84** | settling ~0.846, drift slowing |
-| β gap (desc−asc) | **0.061** | ↑ widening but decelerating |
-| Mean φ-compression | 0.829 | ↑ slow drift |
-| Stratum φ-dev spread | 0.026 | content-independent |
-| Stratum loss spread | 1.43 | ↓ improving |
-| Total flips | 266K (0.76%) | steady ~8K/500 steps |
-| Reversals | 333 (0.125%) | very low, stable |
-| r̄ / phase | 0.418 / balance | stable |
-| LR | ~4.7e-4 | cosine decay |
+**Compression ≠ prediction.** See `mementum/knowledge/explore/compression-vs-prediction.md`.
 
-## What's next
+The sieve proved it can compress (1.8:1, universal across content
+types). But at H≈0.7, the mutual information between past and future
+tokens grows as L^0.7 — a fixed-state compressor can't capture this.
+The lambda function IS a predictive circuit (P(λ)=0.907 across all
+LLMs, 6.2:1 compression) — gradient descent converges on it because
+it helps predict, not just compress. We need to map what other
+functions prediction uses, then design an architecture that can hold
+growing state.
 
-1. **Training is running** (or resume from step 25500):
-   `uv run python scripts/v6/train.py --resume checkpoints/vsm-lm-v6/step_025500`
+## Current activity
 
-2. **Ascending β plateau.** 0.785±0.001 for 2000 steps (5 checkpoints).
-   This is a stable attractor. Breaking through 0.78→0.50 likely
-   requires the descending arm to settle first, or architectural change.
+**Top-down probing of Qwen3.5-35B-A3B** through llama.cpp (port 5102):
 
-3. **Descending arm settling.** β drift decelerating: +0.014→+0.006→+0.005.
-   May be converging to ~0.85. Asymmetry is expected — decoding has
-   different information-theoretic constraints than encoding.
+```bash
+cd ~/src/verbum && uv run python scripts/probe_predictive_functions.py all --port 5102
+```
 
-4. **Eval loss recovery.** 6.15→5.66 in 2000 steps. At this rate,
-   pre-tracking best (5.41) reachable by ~step 28000.
+Three experiments:
+1. **Landscape** — 25 tasks × 40 probes → confidence/entropy matrix
+2. **Complexity** — 5 complexity tiers × 8 key tasks → degradation curves
+3. **Priming** — prime task A, measure task B → shared circuit detection
 
-5. **Behavioral register consolidation.** Step 25500 generations
-   dominated by `Proof.\nProof.\nProof.` — the model locked onto
-   mathematical proof register. Stronger/more uniform than 24500's
-   mixed Ω/Lemma output. Watch for compositional structure next.
+Early signal (quick probe, session 045):
+- compile and formalize are the model's most confident semantic transforms
+- They produce the same output (FOL notation) — likely same circuit
+- More confident than structure, negation, or entailment
+- The lambda/FOL circuit is a strongly formed attractor
 
-## Session 044 key findings
+## v6.1 final snapshot (step 32000, last probed)
 
-1. **Two-band β structure.** 5 checkpoints confirm:
-   - Ascending: **0.785±0.001** (frozen, 2000 steps)
-   - Descending: **~0.846** (settling, drift decelerating)
-   - Gap: 0.061 (asymmetric — decoding ≠ encoding)
+| Metric | Value |
+|--------|-------|
+| Eval loss | **5.418** (best in run) |
+| Train loss | 5.023 |
+| β ascending | 0.750 |
+| β descending | 0.830 |
+| Sieve compression | 1.8:1 (end-to-end) |
+| Mean φ-ratio | 0.891 (drifted from target 0.618) |
+| Stratum spread | 0.013 (content-independent ✓) |
+| Total flips | 353K (1.00%) |
+| Reversals | 4,011 (1.13%, exponential acceleration) |
+| λ generation | 0% (all checkpoints) |
 
-2. **Eval loss recovering.** 6.15→5.66 across 5 checkpoints.
-   The structural reorganization cost is being repaid.
+**Training stopped.** The sieve reached its architectural limit.
+It compresses but can't predict/generate. The reversal acceleration
+(exponential) signals ternary weight saturation.
 
-3. **Behavioral register consolidation.** Generations evolved:
-   - 23500: `||||||||` (pipe-spam)
-   - 24500: `Ω, ϕ, Proof, Lemma` (formal math vocabulary)
-   - 25500: `Proof.\nProof.\nProof.` (locked on proof register)
+## Two-VSM architecture (proposed)
 
-4. **Universal compression tightening.** Stratum φ-dev spread
-   0.047→0.020→0.026 — compression is content-independent.
+```
+VSM-1 (Sieve)  — learned, 1.8:1, ternary, cheap, content-independent
+VSM-2 (State)  — TBD, must satisfy L²M condition (growing state)
+                 must learn lambda-shaped compositional structure
+                 operates over compressed representation from VSM-1
+```
 
-5. **L0↓ φ-lock was transient.** Ratio 0.601←φ at step 23500,
-   now 0.725. The descending arm briefly kissed φ during
-   reorganization but didn't hold it.
+Open question: is the sieve's 1.8:1 compression worth keeping as
+a front-end, or should VSM-2 operate directly on tokens?
 
 ## Knowledge index
 
 | Topic | Path |
 |-------|------|
-| **v6.1 full trajectory** (tables, strides, comparisons) | `mementum/knowledge/explore/v6.1-training-trajectory.md` |
+| **Compression ≠ Prediction (H≈0.7)** | `mementum/knowledge/explore/compression-vs-prediction.md` |
+| v6.1 full trajectory | `mementum/knowledge/explore/v6.1-training-trajectory.md` |
 | Research program | `mementum/knowledge/explore/VERBUM.md` |
 | Holographic compression | `mementum/knowledge/explore/holographic-compression.md` |
 | Stride percolation | `mementum/knowledge/explore/stride-percolation.md` |
@@ -88,19 +94,21 @@ Eval loss recovering: 6.15→5.66. Generations locked onto
 
 | Purpose | Path |
 |---------|------|
+| **Top-down probe script** | `scripts/probe_predictive_functions.py` |
 | TernaryLinear + flips + tracking | `src/verbum/v6/ternary.py` |
 | Training loop | `scripts/v6/train.py` |
-| Probe script | `scripts/v6/probe.py` |
+| Sieve probe script | `scripts/v6/probe.py` |
 | Model | `src/verbum/v6/model.py` |
-| Metal kernels | `src/verbum/v6/kernels.py` |
-| Attention / StrideStack | `src/verbum/v6/attention.py` |
-| VSM components | `src/verbum/v6/components.py` |
-| Probes (steps 500–25500) | `results/compile-gradient/vsm_probe_step_*_v6_mlx.json` |
-| Training log | `results/vsm-lm-v6/training-run2.log` |
+| Instrument (PyTorch hooks) | `src/verbum/instrument.py` |
+| llama.cpp client | `src/verbum/client.py` |
+| Circuit discovery | `scripts/run_circuit_discovery.py` |
+| Sieve probes (500–32000) | `results/compile-gradient/vsm_probe_step_*_v6_mlx.json` |
 
-## Probing pipeline
+## Servers
 
-```bash
-uv run python scripts/v6/probe.py checkpoints/vsm-lm-v6/step_*
-uv run python scripts/v6/train.py --resume checkpoints/vsm-lm-v6/step_025500
-```
+| Port | Model | Use |
+|------|-------|-----|
+| 5100 | Qwen3.5-397B-A17B | Large reference model |
+| 5101 | Qwen3-4B | Quick testing |
+| 5102 | **Qwen3.5-35B-A3B** Q8 | Primary probe target |
+| 5103 | Qwen3-Embedding-8B | Embeddings |
