@@ -3214,3 +3214,4 @@ VSM-LM v6 — Ternary on Metal (MLX)
      saved: checkpoints/vsm-lm-v6/step_025500
   step 25525/82398  loss=4.9437  r=0.356  r̄=0.409  xppl=25.9  lr=4.72e-04  ‖g‖=0.86  flips=266,725  phase=b  tokens=836M (31%)  tok/s=52406  elapsed=15960s
   step 25550/82398  loss=5.5619  r=0.424  r̄=0.409  xppl=48.0  lr=4.72e-04  ‖g‖=0.91  flips=267,113  phase=b  tokens=837M (31%)  tok/s=51938  elapsed=16120s
+  step 25575/82398  loss=5.3355  r=0.399  r̄=0.408  xppl=38.3  lr=4.72e-04  ‖g‖=0.57  flips=267,505  phase=b  tokens=838M (31%)  tok/s=51481  elapsed=16279s
