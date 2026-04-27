@@ -28,12 +28,17 @@ growing state.
 
 ## Current activity
 
-**Top-down probing complete.** See `mementum/knowledge/explore/predictive-function-landscape.md`.
+**Top-down probing of A3B complete. A17B probing running.**
 
-Three experiments ran on Qwen3.5-35B-A3B (port 5102):
+Qwen3.5-35B-A3B (port 5102) — done, results in `results/predictive-functions/a3b/`:
 1. **Landscape** ✓ — 25 tasks × 40 probes = 1000 measurements
 2. **Complexity** ✓ — 5 tiers × 8 tasks × 3 inputs = 120 measurements
 3. **Priming** ✓ — 6 conditions × 7 tasks × 3 inputs = 126 measurements
+
+Qwen3.5-397B-A17B (port 5100) — running, results to `results/predictive-functions/a17b/`:
+```bash
+cd ~/src/verbum && uv run python scripts/probe_predictive_functions.py all --port 5100 --name a17b
+```
 
 ### Key results
 
