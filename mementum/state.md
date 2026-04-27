@@ -28,22 +28,35 @@ growing state.
 
 ## Current activity
 
-**Top-down probing of Qwen3.5-35B-A3B** through llama.cpp (port 5102):
+**Top-down probing complete.** See `mementum/knowledge/explore/predictive-function-landscape.md`.
 
-```bash
-cd ~/src/verbum && uv run python scripts/probe_predictive_functions.py all --port 5102
-```
+Three experiments ran on Qwen3.5-35B-A3B (port 5102):
+1. **Landscape** ✓ — 25 tasks × 40 probes = 1000 measurements
+2. **Complexity** ✓ — 5 tiers × 8 tasks × 3 inputs = 120 measurements
+3. **Priming** ✓ — 6 conditions × 7 tasks × 3 inputs = 126 measurements
 
-Three experiments:
-1. **Landscape** — 25 tasks × 40 probes → confidence/entropy matrix
-2. **Complexity** — 5 complexity tiers × 8 key tasks → degradation curves
-3. **Priming** — prime task A, measure task B → shared circuit detection
+### Key results
 
-Early signal (quick probe, session 045):
-- compile and formalize are the model's most confident semantic transforms
-- They produce the same output (FOL notation) — likely same circuit
-- More confident than structure, negation, or entailment
-- The lambda/FOL circuit is a strongly formed attractor
+**Four tiers of predictive function** (by confidence):
+1. **Surface** (ent 0.30-0.35): translate, correct, simplify, paraphrase, structure
+2. **Structural** (ent 0.37-0.45): sentiment, classify, question, coreference
+3. **Semantic** (ent 0.45-0.50): continue, formalize, decompose, scope
+4. **Reasoning** (ent 0.50+): compile, entail, causality, negate, elaborate
+
+**Compile is Tier 4** — NOT the most confident function. The model is
+most confident about surface transforms. Lambda compilation requires
+the deepest processing. This reframes our extraction target.
+
+**Circuit competition discovered:**
+- Compile *competes* with structure (+55% interference when primed)
+- Formalize *competes* with structure even harder (+75% interference)
+- Negate *cooperates* with compile (-32% boost when primed)
+- Compile self-boosts by 37% with one exemplar (needs activation)
+
+**Complexity robustness:**
+- Structure, negate, entail: ROBUST (work at any nesting depth)
+- Compile, formalize: MODERATE (degrade with complexity)
+- Decompose: FRAGILE (breaks on complex input)
 
 ## v6.1 final snapshot (step 32000, last probed)
 
@@ -81,6 +94,7 @@ a front-end, or should VSM-2 operate directly on tokens?
 | Topic | Path |
 |-------|------|
 | **Compression ≠ Prediction (H≈0.7)** | `mementum/knowledge/explore/compression-vs-prediction.md` |
+| **Predictive Function Landscape** | `mementum/knowledge/explore/predictive-function-landscape.md` |
 | v6.1 full trajectory | `mementum/knowledge/explore/v6.1-training-trajectory.md` |
 | Research program | `mementum/knowledge/explore/VERBUM.md` |
 | Holographic compression | `mementum/knowledge/explore/holographic-compression.md` |
