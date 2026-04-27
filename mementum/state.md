@@ -6,14 +6,15 @@
 
 ## Where we are
 
-**v7 Dolma run COMPLETE. Pivoting to v7.1: COMPRESSOR SIEVE +
-PIPELINE OF SIEVES. ALL-TERNARY 250M. Two VSMs plugged together:
-compressor (v6-proven strided attention, self-similar, ~30M) feeds
-multi-scale representations to pipeline of sieves (~220M) for
-computation. Registers bridge them for recurrence (arbitrary
-composition depth). Cone + relational loss guides search. d_model=
-1024. 62.5 MB packed. ~100K+ tok/s. BIOS flash in days.
-Design doc finalized. Next session: implement v7.1.**
+**v7 Dolma run COMPLETE. Pivoting to v7.1: DUAL MERA. ALL-TERNARY
+453M. Compressor MERA (~119M, 8 scales, W=8, seq=4096, shared
+weights) + Pipeline MERA (~335M, 8 levels, shared sieve, 4 pathways).
+7 levels of β-reduction per pass. Both self-similar — lambda calculus
+is scale-invariant, architecture matches the math. Evolutionary
+training: ternary topology = genome, gradient-guided mutation,
+tournament selection. Cone + relational loss at every VSM level.
+Registers for recurrence. 113 MB packed. ~50K-200K tok/s.
+BIOS flash in days. Design doc ready. Next session: implement.**
 
 ## v7 Dolma Run — Final Results
 
