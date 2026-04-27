@@ -7,12 +7,13 @@
 ## Where we are
 
 **v7 Dolma run COMPLETE (killed at step 40K). Architecture validated.
-Eval peaked at step 20K then monotonically worsened through 30K and
-40K. Four checkpoint probes confirm: pipeline architecture works
-(below Chinchilla, differentiated stages, self-regulating gates) but
-Dolma can't train the deep stages. Best eval checkpoint: step 20K.
-Now pivoting to BIOS flash: holographic math + clojure.core training.
-Design doc written. bb clj2lambda converter scaffolded.**
+Pivoting to v7.1: PIPELINE OF SIEVES. Each stage becomes multiple
+parallel pathways (sieve), each shaped so only the correct function
+can emerge. Topology IS the type system — wrong computations are
+unreachable, not forbidden. Combined with BIOS flash training
+(holographic math + clojure.core). Also considering d_model bump
+to 512-1024 for Church encoding capacity. Design doc and clj2lambda
+converter exist. Next session: implement v7.1 architecture.**
 
 ## v7 Dolma Run — Final Results
 
@@ -85,35 +86,69 @@ deeply nested lambda composition. Sieve architecture needed later.
 
 ## What to do next session
 
-1. **BIOS flash training data generation.** Priority. Read the design
-   doc first: `mementum/knowledge/explore/bios-flash-training.md`
-   
-   Build the holographic dataset:
-   - Math generator (python): arithmetic, comparisons, predicates,
-     boolean, bitwise, compound expressions. All difficulties.
-   - Update `bb clj2lambda` to emit `io!` for effectful forms
-   - Generate clojure.core examples by eval in babashka
-   - Interleave into holographic JSONL: raw math + clojure + lambda + result
+**Read first:**
+- `mementum/knowledge/explore/bios-flash-training.md` — holographic training design
+- `mementum/knowledge/explore/v7-pipeline-architecture.md` — current v7 architecture
+- `scripts/v7/model.py` — current implementation (modify for v7.1)
 
-2. **Decide sequence format.** How does the model see the holographic
-   examples? All representations in one sequence, or separate examples?
-   
-3. **Decide tokenizer.** Keep GPT-NeoX 50277? Or custom small vocab
-   (~2-5K) for lambda + clojure + math? Smaller = less wasted capacity.
+### 1. Design v7.1: Pipeline of Sieves
 
-4. **Train v7 on holographic data.** Fresh weights, same architecture.
-   Many epochs. Monitor for grokking (double descent in loss curve).
-   Probe for circuit formation in Stages 3-4.
+Each stage becomes a SIEVE — multiple parallel pathways, each shaped
+(molded) so only the correct function can emerge. Key design decisions:
 
-5. **Open questions (refined by this run):**
-   - Semantic interference: is 8 positions too few, or wrong data?
-     (BIOS flash will answer — if Δ₃ flips positive on formal data,
-     it was the data not the architecture)
-   - Stage 4: is 1 position sufficient for computation? (BIOS flash
-     will answer — if it learns arithmetic, 1 position is enough)
-   - Ternary: will it stabilize on formal data? (formal has much
-     less surface variety, should crystallize faster)
-   - Sieve: when does 3 reductions become the bottleneck?
+- **Pathways per stage:** how many? 4? 8? Match to head count?
+- **Pathway shapes:** what makes each pathway's mold different?
+  Position count, attention pattern, dimension, activation?
+- **Intra-sieve interaction:** do pathways within a stage share info?
+  (cross-pathway attention? shared normalization? independent?)
+- **Sieve → reducer:** how do N parallel outputs merge for reduction
+  to the next stage? Concatenate? Weighted sum? Cross-attention?
+- **Feedback through sieves:** how does the downward cascade route
+  through parallel pathways? Each pathway gets full feedback, or
+  routed feedback?
+- **Parameter budget:** target ~64-250M params depending on d_model
+- **d_model:** 512 or 1024? (Church encoding needs width for
+  superposition headroom — 256 is too narrow per the analysis)
+
+**The core principle:** topology IS the type system. Each pathway is
+shaped so wrong computations are unreachable, not forbidden. The mold
+emerges from: position count + dimension + attention mask + depth.
+
+### 2. Build holographic training data (parallel with arch work)
+
+- Math generator (arithmetic, comparisons, predicates, boolean, bitwise)
+- Update `bb clj2lambda` to emit `io!` for effectful forms
+- Generate clojure.core examples by eval in babashka
+- Interleave: raw math + clojure + lambda + result in every batch
+
+### 3. Decide tokenizer
+
+Custom small vocab (~2-5K tokens) vs GPT-NeoX 50277. Per-digit
+tokenization critical for arithmetic. Custom vocab also shrinks
+embedding table massively (from ~13M to ~1.5M at d=256).
+
+### 4. Implement and train v7.1
+
+- Implement sieve architecture in `scripts/v7.1/model.py`
+- Train on holographic data, many epochs
+- Monitor for grokking (double descent)
+- Probe for: circuit formation, pathway specialization, digit ceiling
+- Compare to v7 single-pipeline baseline
+
+### Open design questions
+
+- **Attention as β-reduction:** each layer does β-reduce (attention)
+  → expand (FFN) → β-reduce. FFNs index into superpositions. The
+  sieve pre-separates the superposition so each pathway's FFN has
+  clean signal. How explicit should the separation be?
+- **Church encoding capacity:** Qwen3.5-35B-A3B proves 17 digits
+  via Church encoding in attention. What d_model gives v7.1 enough
+  superposition headroom for 12-17 digits?
+- **Mold design:** what CONCRETELY makes each pathway's shape
+  different? Different d_ff? Different attention mask? Different
+  position count? Or same shape but different initialization?
+- **Pathway count vs d_model tradeoff:** 4 pathways × d=1024 vs
+  8 pathways × d=512? Same param budget, different tradeoffs.
 
 ## Architecture summary (v7)
 
