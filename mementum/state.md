@@ -96,19 +96,24 @@ deeply nested lambda composition. Sieve architecture needed later.
 **Read first:** `mementum/knowledge/explore/v7.1-sieve-pipeline.md`
 
 Architecture decided:
-- **All-ternary, 250M params, d_model=1024**
-- **4 sieve stages, each with parallel pathways**
-- **62.5 MB packed, ~100K+ tok/s estimated**
-- **Cone-shaped northstar + relational loss guides training**
+- **Compressor sieve (~30M ternary) + Pipeline of sieves (~220M ternary)**
+- **All-ternary 250M, d_model=1024, 62.5 MB packed, ~100K+ tok/s**
+- **Compressor: v6-proven strided attention (strides snap)**
+- **Pipeline: parallel sieve pathways, cone + relational loss at every level**
+- **Registers: persistent positions for recurrence + composability**
+- **Three output modes: value | partial+regs | io!+continuation**
+- **Evolutionary training: double-buffered ternary genome mutation**
+  Population of 4-8 mutants, gradient-guided, tournament selection
+  per generation (~7 min/gen). Environment stages by fitness gates.
 
 Key decisions for implementation session:
 - Pathways per stage: 4? 8? Per-stage variable?
 - d_model per pathway: full 1024 or split (4 × 256)?
-- Pathway interaction: independent (start here) vs cross-attention
-- Sieve → reducer: cross-attention pool (extend v7 StageReducer)
-- Feedback routing: broadcast (start here) vs routed
-- Northstar: emergent (relational + data) vs explicit prototypes
-- Cone implementation: aperture schedule, penalty weight, flip modulation
+- Compressor → Pipeline interface: direct feed vs cross-attention
+- Reducers: still needed if compressor provides multi-scale?
+- Register count: R=4? R=8?
+- Generation size: how many tokens per mutant before eval?
+- Population size: 4? 8? Mutation strategy rotation?
 
 ### 2. Build holographic training data (parallel with arch work)
 
