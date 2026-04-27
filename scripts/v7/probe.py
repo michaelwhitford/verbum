@@ -301,39 +301,153 @@ def analyze_feedback_gates(model: VSMPipeline, tokenizer, texts: list[str]) -> l
 
 
 # ═══════════════════════════════════════════════════════════════════
-# Representation geometry
+# Representation geometry + Spectral analysis (SVD / CPA)
 # ═══════════════════════════════════════════════════════════════════
 
 
-def analyze_representations(model: VSMPipeline, tokenizer, texts: list[str]) -> list[dict]:
-    """Measure per-stage representation statistics."""
-    stage_norms = [[] for _ in range(len(model.stages))]
-    stage_vars = [[] for _ in range(len(model.stages))]
+def _collect_stage_activations(model: VSMPipeline, tokenizer, texts: list[str]):
+    """Run forward pass, collect raw activations at each stage.
 
-    for text in texts[:4]:
+    Returns list of numpy arrays, one per stage, shape (total_positions, d_model).
+    """
+    stage_acts = [[] for _ in range(len(model.stages))]
+
+    for text in texts:
         ids = mx.array(tokenizer.encode(text), dtype=mx.int32).reshape(1, -1)
         if ids.shape[1] < 2:
             continue
 
         inputs = ids[:, :-1]
-        if inputs.shape[1] < model.cfg.seq_len:
-            pad_len = model.cfg.seq_len - inputs.shape[1]
+        seq_len = inputs.shape[1]
+        if seq_len < model.cfg.seq_len:
+            pad_len = model.cfg.seq_len - seq_len
             inputs = mx.concatenate([inputs, mx.zeros((1, pad_len), dtype=mx.int32)], axis=1)
 
-        _, metrics = model.forward_with_metrics(inputs)
-        for i in range(len(model.stages)):
-            stage_norms[i].append(metrics.get(f"stage{i+1}_h_norm", 0))
+        # Run upward path manually to capture per-stage outputs
+        x = model.embed(inputs)
+        h = x
+        for i, stage in enumerate(model.stages):
+            h = stage(h, mask=model._causal_masks[i])
+            # Only keep the non-padded positions for Stage 1
+            if i == 0 and seq_len < model.cfg.seq_len:
+                act = h[:, :seq_len, :]
+            else:
+                act = h
+            mx.eval(act)
+            stage_acts[i].append(np.array(act.reshape(-1, act.shape[-1])))
+            if i < len(model.stages) - 1:
+                h = model.reducers[i](h, mask=model._reduction_masks[i])
 
-    results = []
-    for i in range(len(model.stages)):
-        results.append({
+    return [np.concatenate(acts, axis=0) if acts else np.zeros((1, model.cfg.d_model))
+            for acts in stage_acts]
+
+
+def _effective_rank(singular_values: np.ndarray) -> float:
+    """Participation ratio: (Σσ)² / Σσ².
+
+    =1 if one direction dominates, =d if all directions equal.
+    """
+    s = singular_values
+    s = s[s > 1e-10]  # drop numerical zeros
+    if len(s) == 0:
+        return 0.0
+    return float((s.sum() ** 2) / (s ** 2).sum())
+
+
+def _anisotropy(singular_values: np.ndarray) -> float:
+    """Condition number: σ₁ / σ_last (among non-zero)."""
+    s = singular_values
+    s = s[s > 1e-10]
+    if len(s) < 2:
+        return 1.0
+    return float(s[0] / s[-1])
+
+
+def _subspace_overlap(V1: np.ndarray, V2: np.ndarray, k: int = 10) -> float:
+    """Mean absolute cosine similarity between top-k right singular vectors.
+
+    V1, V2: (d_model, d_model) right singular vector matrices from SVD.
+    Measures how aligned the principal directions are between two stages.
+    1.0 = identical subspace (redundancy). 0.0 = orthogonal (differentiation).
+    """
+    k = min(k, V1.shape[1], V2.shape[1])
+    V1k = V1[:, :k]  # (d_model, k)
+    V2k = V2[:, :k]  # (d_model, k)
+    # Gram matrix of cosine similarities
+    cos_sim = np.abs(V1k.T @ V2k)  # (k, k)
+    # Mean of maximum alignment per direction
+    return float(np.mean(np.max(cos_sim, axis=1)))
+
+
+def analyze_representations(model: VSMPipeline, tokenizer, texts: list[str]) -> tuple[list[dict], dict]:
+    """Full representation analysis: norms, SVD, cross-stage alignment.
+
+    Returns:
+        (per_stage_results, spectral_summary)
+    """
+    # Collect activations
+    stage_acts = _collect_stage_activations(model, tokenizer, texts)
+
+    # Per-stage SVD
+    per_stage = []
+    svd_results = []  # (S, Vt) per stage for CPA
+
+    for i, acts in enumerate(stage_acts):
+        n_samples, d = acts.shape
+
+        # Norms
+        norms = np.sqrt(np.sum(acts ** 2, axis=-1))
+        mean_norm = float(np.mean(norms))
+
+        # SVD (on centered activations for cleaner spectrum)
+        acts_centered = acts - acts.mean(axis=0, keepdims=True)
+        # Use min(n_samples, d) to avoid huge SVDs
+        try:
+            U, S, Vt = np.linalg.svd(acts_centered, full_matrices=False)
+        except np.linalg.LinAlgError:
+            S = np.ones(min(n_samples, d))
+            Vt = np.eye(d)[:min(n_samples, d)]
+
+        eff_rank = _effective_rank(S)
+        aniso = _anisotropy(S)
+        max_rank = min(n_samples, d)
+
+        # Energy in top-k components
+        total_energy = (S ** 2).sum()
+        top5_energy = (S[:5] ** 2).sum() / total_energy if total_energy > 0 else 0
+        top10_energy = (S[:10] ** 2).sum() / total_energy if total_energy > 0 else 0
+
+        svd_results.append((S, Vt.T))  # store V (not Vt) for overlap
+
+        per_stage.append({
             "stage": i + 1,
             "name": STAGE_NAMES[i],
             "positions": model.cfg.stage_positions[i],
-            "mean_norm": np.mean(stage_norms[i]) if stage_norms[i] else 0,
             "is_ternary": model.stages[i].is_ternary,
+            "n_samples": n_samples,
+            "mean_norm": mean_norm,
+            "effective_rank": eff_rank,
+            "max_rank": max_rank,
+            "rank_utilization": eff_rank / max_rank if max_rank > 0 else 0,
+            "anisotropy": aniso,
+            "top5_energy": top5_energy,
+            "top10_energy": top10_energy,
         })
-    return results
+
+    # Cross-stage overlap (CPA)
+    overlaps = {}
+    for i in range(len(svd_results) - 1):
+        _, V_i = svd_results[i]
+        _, V_j = svd_results[i + 1]
+        k = min(10, V_i.shape[1], V_j.shape[1])
+        overlap = _subspace_overlap(V_i, V_j, k=k)
+        overlaps[f"stage{i+1}_stage{i+2}"] = overlap
+
+    spectral = {
+        "overlaps": overlaps,
+    }
+
+    return per_stage, spectral
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -409,6 +523,7 @@ def print_probe_results(
     ternary_stats: dict,
     gate_analysis: list[dict],
     repr_analysis: list[dict],
+    spectral: dict | None = None,
     compile_results: list[dict] | None = None,
 ):
     """Print formatted probe results."""
@@ -481,13 +596,34 @@ def print_probe_results(
             t_mark = " [T]" if g["is_ternary"] else ""
             print(f"  {g['feedback']}{t_mark}:  gate={g['mean_gate']:.3f}  ({g['status']})")
 
-    # ── Representation geometry ──
+    # ── Representation geometry + spectral ──
     if repr_analysis:
-        print(f"\n  ── Representation Geometry ──")
+        print(f"\n  ── Representation Geometry & Spectral Analysis ──")
+        print(f"  {'Stage':<22} {'‖h‖':>6} {'eff_rank':>9} {'max':>5} "
+              f"{'util%':>6} {'aniso':>7} {'top5E':>6} {'top10E':>7}")
+        print(f"  {'─'*75}")
         for r in repr_analysis:
             t_mark = " [T]" if r["is_ternary"] else ""
-            print(f"  Stage {r['stage']} ({r['name']}){t_mark}:  "
-                  f"‖h‖={r['mean_norm']:.2f}  pos={r['positions']}")
+            name = f"S{r['stage']} {r['name']}{t_mark}"
+            print(f"  {name:<22} {r['mean_norm']:6.2f} "
+                  f"{r['effective_rank']:9.1f} {r['max_rank']:>5} "
+                  f"{r['rank_utilization']*100:5.1f}% "
+                  f"{r['anisotropy']:7.1f} "
+                  f"{r['top5_energy']*100:5.1f}% "
+                  f"{r['top10_energy']*100:6.1f}%")
+
+    # ── Cross-stage overlap (CPA) ──
+    if spectral and spectral.get("overlaps"):
+        print(f"\n  ── Cross-Stage Principal Alignment ──")
+        print(f"  (1.0 = redundant,  0.0 = orthogonal/differentiated)")
+        for pair, overlap in spectral["overlaps"].items():
+            # pair like "stage1_stage2"
+            parts = pair.split("_")
+            label = f"{parts[0].replace('stage', 'Stage ')} → {parts[1].replace('stage', 'Stage ')}"
+            verdict = ("redundant" if overlap > 0.7
+                       else "partial" if overlap > 0.4
+                       else "differentiated")
+            print(f"  {label}:  {overlap:.3f}  ({verdict})")
 
     # ── Compile gate ──
     if compile_results:
@@ -585,8 +721,9 @@ def main():
         print(f"  Analyzing feedback gates...")
         gate_analysis = analyze_feedback_gates(model, tokenizer, all_texts[:4])
 
-        # ── Representation geometry ──
-        repr_analysis = analyze_representations(model, tokenizer, all_texts[:4])
+        # ── Representation geometry + spectral ──
+        print(f"  Analyzing representations (SVD/CPA)...")
+        repr_analysis, spectral = analyze_representations(model, tokenizer, all_texts)
 
         # ── Compile gate test ──
         compile_results = None
@@ -598,7 +735,7 @@ def main():
         print_probe_results(
             step, state, stage_ce, strata_ce,
             ternary_stats, gate_analysis, repr_analysis,
-            compile_results,
+            spectral, compile_results,
         )
 
         # ── Save results ──
@@ -615,6 +752,7 @@ def main():
             "ternary": ternary_stats if ternary_stats.get("has_ternary") else None,
             "feedback_gates": gate_analysis,
             "representations": repr_analysis,
+            "spectral": spectral,
             "compile_results": compile_results,
             "phase_controllers": state.get("phase_controllers", []),
         }
