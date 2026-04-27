@@ -45,6 +45,14 @@ E_IRREDUCIBLE = 1.69
 LOG_V = float(np.log(50277))
 LEARNABLE_RANGE = LOG_V - E_IRREDUCIBLE
 
+# Chinchilla scaling law: L(N,D) = E + A/N^α + B/D^β
+# Hoffmann et al. 2022, Epoch AI replication 2024
+CHINCHILLA_E = 1.69   # irreducible entropy (we use same estimate)
+CHINCHILLA_A = 482.0
+CHINCHILLA_ALPHA = 0.35
+CHINCHILLA_B = 2085.0
+CHINCHILLA_BETA = 0.37
+
 STAGE_NAMES = ["Surface", "Structural", "Semantic", "Reasoning"]
 
 # ═══════════════════════════════════════════════════════════════════
@@ -136,6 +144,30 @@ def load_checkpoint(path: Path) -> tuple[VSMPipeline, int, dict]:
 
 def relational_loss(loss: float) -> float:
     return min(1.0, max(0.0, (loss - E_IRREDUCIBLE) / LEARNABLE_RANGE))
+
+
+def chinchilla_prediction(n_params: int, n_tokens: int) -> dict:
+    """Compute Chinchilla scaling law loss predictions.
+
+    L(N,D) = E + A/N^α + B/D^β
+
+    Returns dict with:
+      capacity_floor: E + A/N^α  (best this model SIZE can do, infinite data)
+      data_floor:     E + B/D^β  (best ANY model can do, this much data)
+      predicted:      E + A/N^α + B/D^β  (expected loss at this N,D)
+    """
+    capacity_term = CHINCHILLA_A / (n_params ** CHINCHILLA_ALPHA)
+    data_term = CHINCHILLA_B / (n_tokens ** CHINCHILLA_BETA) if n_tokens > 0 else float('inf')
+
+    return {
+        "n_params": n_params,
+        "n_tokens": n_tokens,
+        "capacity_floor": CHINCHILLA_E + capacity_term,
+        "capacity_term": capacity_term,
+        "data_floor": CHINCHILLA_E + data_term,
+        "data_term": data_term,
+        "predicted": CHINCHILLA_E + capacity_term + data_term,
+    }
 
 
 def measure_stage_ce(model: VSMPipeline, tokenizer, texts: list[str]) -> dict:
@@ -525,16 +557,36 @@ def print_probe_results(
     repr_analysis: list[dict],
     spectral: dict | None = None,
     compile_results: list[dict] | None = None,
+    scaling: dict | None = None,
 ):
     """Print formatted probe results."""
     print(f"\n{'='*70}")
     print(f"  v7 Pipeline Probe — Step {step:,}")
     print(f"{'='*70}")
 
-    # ── Training state ──
+    # ── Training state + Chinchilla comparison ──
     metrics = state.get("metrics", {})
-    print(f"\n  Training: loss={metrics.get('train_loss', '?'):.4f}  "
+    actual_loss = metrics.get("train_loss", 0)
+    print(f"\n  Training: loss={actual_loss:.4f}  "
           f"r={metrics.get('relational', '?'):.3f}")
+
+    if scaling:
+        predicted = scaling["predicted"]
+        cap_floor = scaling["capacity_floor"]
+        delta_pred = actual_loss - predicted
+        delta_cap = actual_loss - cap_floor
+        status = ("BELOW" if actual_loss < predicted
+                  else "AT" if abs(delta_pred) < 0.1
+                  else "above")
+        print(f"\n  ── Chinchilla Scaling Comparison ──")
+        print(f"  Non-embedding params: {scaling['n_params']:,}")
+        print(f"  Tokens seen:          {scaling['n_tokens']:,}")
+        print(f"  Capacity floor:       {cap_floor:.3f}  (E + A/N^α, infinite data)")
+        print(f"  Data floor:           {scaling['data_floor']:.3f}  (E + B/D^β, infinite model)")
+        print(f"  Chinchilla predicted: {predicted:.3f}  (E + A/N^α + B/D^β)")
+        print(f"  Actual loss:          {actual_loss:.3f}  ({delta_pred:+.3f} vs predicted, {status})")
+        if actual_loss < cap_floor:
+            print(f"  ★ BELOW capacity floor — architecture is more parameter-efficient than standard")
 
     # ── Per-stage CE ──
     print(f"\n  ── Per-Stage CE Decomposition ──")
@@ -703,6 +755,15 @@ def main():
         model, step, state = load_checkpoint(ckpt_path)
         print(f"  Step {step:,}, seq_len={model.cfg.seq_len}")
 
+        # ── Chinchilla scaling prediction ──
+        counts = model.count_params()
+        n_non_embed = counts["total"] - counts["embedding"]
+        config_data = state.get("config", {})
+        tokens_per_step = (config_data.get("seq_len", 512)
+                           * 8 * 4)  # batch_size × grad_accum defaults
+        n_tokens = step * tokens_per_step
+        scaling = chinchilla_prediction(n_non_embed, n_tokens)
+
         # ── Per-stage CE ──
         print(f"  Measuring per-stage CE...")
         stage_ce = measure_stage_ce(model, tokenizer, all_texts)
@@ -735,7 +796,7 @@ def main():
         print_probe_results(
             step, state, stage_ce, strata_ce,
             ternary_stats, gate_analysis, repr_analysis,
-            spectral, compile_results,
+            spectral, compile_results, scaling,
         )
 
         # ── Save results ──
@@ -753,6 +814,7 @@ def main():
             "feedback_gates": gate_analysis,
             "representations": repr_analysis,
             "spectral": spectral,
+            "chinchilla": scaling,
             "compile_results": compile_results,
             "phase_controllers": state.get("phase_controllers", []),
         }
