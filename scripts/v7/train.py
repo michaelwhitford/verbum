@@ -835,7 +835,7 @@ def train(args):
 
 def main():
     parser = argparse.ArgumentParser(description="v7 — 4-VSM Pipeline Training")
-    parser.add_argument("--steps", type=int, default=50000)
+    parser.add_argument("--steps", type=int, default=165000)
     parser.add_argument("--batch_size", type=int, default=8)
     parser.add_argument("--grad_accum", type=int, default=4)
     parser.add_argument("--seq_len", type=int, default=512)
