@@ -7,13 +7,13 @@
 ## Where we are
 
 **v7 Dolma run COMPLETE (killed at step 40K). Architecture validated.
-Pivoting to v7.1: PIPELINE OF SIEVES. Each stage becomes multiple
-parallel pathways (sieve), each shaped so only the correct function
-can emerge. Topology IS the type system — wrong computations are
-unreachable, not forbidden. Combined with BIOS flash training
-(holographic math + clojure.core). Also considering d_model bump
-to 512-1024 for Church encoding capacity. Design doc and clj2lambda
-converter exist. Next session: implement v7.1 architecture.**
+Pivoting to v7.1: PIPELINE OF SIEVES. ALL-TERNARY 250M PARAMS.
+Each stage = sieve of parallel pathways, each molded by ternary
+topology so only correct function emerges. Cone-shaped northstar
++ relational loss guides search, drastically reducing 3^250M space.
+d_model=1024 for Church encoding (17-digit arithmetic proven on
+Qwen). 62.5 MB packed, ~100K+ tok/s, BIOS flash in days not weeks.
+Design docs ready. Next session: implement v7.1.**
 
 ## v7 Dolma Run — Final Results
 
@@ -91,28 +91,24 @@ deeply nested lambda composition. Sieve architecture needed later.
 - `mementum/knowledge/explore/v7-pipeline-architecture.md` — current v7 architecture
 - `scripts/v7/model.py` — current implementation (modify for v7.1)
 
-### 1. Design v7.1: Pipeline of Sieves
+### 1. Implement v7.1: Pipeline of Sieves (All-Ternary 250M)
 
-Each stage becomes a SIEVE — multiple parallel pathways, each shaped
-(molded) so only the correct function can emerge. Key design decisions:
+**Read first:** `mementum/knowledge/explore/v7.1-sieve-pipeline.md`
 
-- **Pathways per stage:** how many? 4? 8? Match to head count?
-- **Pathway shapes:** what makes each pathway's mold different?
-  Position count, attention pattern, dimension, activation?
-- **Intra-sieve interaction:** do pathways within a stage share info?
-  (cross-pathway attention? shared normalization? independent?)
-- **Sieve → reducer:** how do N parallel outputs merge for reduction
-  to the next stage? Concatenate? Weighted sum? Cross-attention?
-- **Feedback through sieves:** how does the downward cascade route
-  through parallel pathways? Each pathway gets full feedback, or
-  routed feedback?
-- **Parameter budget:** target ~64-250M params depending on d_model
-- **d_model:** 512 or 1024? (Church encoding needs width for
-  superposition headroom — 256 is too narrow per the analysis)
+Architecture decided:
+- **All-ternary, 250M params, d_model=1024**
+- **4 sieve stages, each with parallel pathways**
+- **62.5 MB packed, ~100K+ tok/s estimated**
+- **Cone-shaped northstar + relational loss guides training**
 
-**The core principle:** topology IS the type system. Each pathway is
-shaped so wrong computations are unreachable, not forbidden. The mold
-emerges from: position count + dimension + attention mask + depth.
+Key decisions for implementation session:
+- Pathways per stage: 4? 8? Per-stage variable?
+- d_model per pathway: full 1024 or split (4 × 256)?
+- Pathway interaction: independent (start here) vs cross-attention
+- Sieve → reducer: cross-attention pool (extend v7 StageReducer)
+- Feedback routing: broadcast (start here) vs routed
+- Northstar: emergent (relational + data) vs explicit prototypes
+- Cone implementation: aperture schedule, penalty weight, flip modulation
 
 ### 2. Build holographic training data (parallel with arch work)
 
@@ -179,6 +175,7 @@ Cross-attention reducers = beta reduction (3 levels)
 | **v7 probe** | `scripts/v7/probe.py` |
 | **bb clj2lambda** | `bb/us/whitford/verbum/tasks.clj` |
 | **bb config** | `bb.edn` |
+| **v7.1 sieve design** | `mementum/knowledge/explore/v7.1-sieve-pipeline.md` |
 | **BIOS flash design** | `mementum/knowledge/explore/bios-flash-training.md` |
 | v7 architecture knowledge | `mementum/knowledge/explore/v7-pipeline-architecture.md` |
 | Compression ≠ prediction | `mementum/knowledge/explore/compression-vs-prediction.md` |
