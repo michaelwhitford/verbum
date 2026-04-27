@@ -1,0 +1,394 @@
+{
+  "timestamp": "2026-04-27T21:52:52.466567+00:00",
+  "architecture": "vsm-lm-v7",
+  "step": 40000,
+  "state_metrics": {
+    "train_loss": 2.337989330291748,
+    "relational": 0.07093243985915432,
+    "grad_norm": 17.17661279404957,
+    "lr": 0.00026337545944493,
+    "stage1_h_norm": 5.982820510864258,
+    "stage2_h_norm": 6.855985641479492,
+    "stage3_h_norm": 5.941527843475342,
+    "stage4_h_norm": 5.433107376098633,
+    "ce_stage1": 10.670654296875,
+    "ce_stage2": 3.310286045074463,
+    "ce_stage3": 2.2366364002227783,
+    "ce_stage4": 2.1549737453460693
+  },
+  "stage_ce": {
+    "ce_stage1": 14.812090965066377,
+    "r_stage1": 1.0,
+    "ce_stage2": 11.111652363305804,
+    "r_stage2": 1.0,
+    "ce_stage3": 12.575093459352223,
+    "r_stage3": 1.0,
+    "ce_stage4": 12.728280893230803,
+    "r_stage4": 1.0,
+    "delta_2": 3.700438601760572,
+    "delta_3": -1.4634410960464184,
+    "delta_4": -0.15318743387858014
+  },
+  "strata_ce": {
+    "prose": {
+      "ce_stage1": 15.016099903318617,
+      "r_stage1": 1.0,
+      "ce_stage2": 11.048237085342407,
+      "r_stage2": 1.0,
+      "ce_stage3": 12.229321718215942,
+      "r_stage3": 1.0,
+      "ce_stage4": 12.473211950725979,
+      "r_stage4": 1.0,
+      "delta_2": 3.9678628179762097,
+      "delta_3": -1.1810846328735352,
+      "delta_4": -0.2438902325100365
+    },
+    "compositional": {
+      "ce_stage1": 14.41692589010511,
+      "r_stage1": 1.0,
+      "ce_stage2": 11.025040967123848,
+      "r_stage2": 1.0,
+      "ce_stage3": 12.405062692505973,
+      "r_stage3": 1.0,
+      "ce_stage4": 12.494715980121068,
+      "r_stage4": 1.0,
+      "delta_2": 3.391884922981262,
+      "delta_3": -1.3800217253821252,
+      "delta_4": -0.08965328761509461
+    },
+    "technical": {
+      "ce_stage1": 14.535400301218033,
+      "r_stage1": 1.0,
+      "ce_stage2": 11.154183864593506,
+      "r_stage2": 1.0,
+      "ce_stage3": 12.67478346824646,
+      "r_stage3": 1.0,
+      "ce_stage4": 12.799470961093903,
+      "r_stage4": 1.0,
+      "delta_2": 3.381216436624527,
+      "delta_3": -1.520599603652954,
+      "delta_4": -0.12468749284744263
+    },
+    "math": {
+      "ce_stage1": 15.176566372747006,
+      "r_stage1": 1.0,
+      "ce_stage2": 11.208668625873068,
+      "r_stage2": 1.0,
+      "ce_stage3": 12.981428643931514,
+      "r_stage3": 1.0,
+      "ce_stage4": 13.117968351944633,
+      "r_stage4": 1.0,
+      "delta_2": 3.9678977468739376,
+      "delta_3": -1.7727600180584453,
+      "delta_4": -0.1365397080131192
+    }
+  },
+  "ternary": {
+    "has_ternary": true,
+    "total_weights": 1572864,
+    "sparsity": 0.3130334218343099,
+    "pos_frac": 0.3436654408772786,
+    "neg_frac": 0.34330113728841144,
+    "cooldown_active": 0,
+    "ever_flipped": 0,
+    "ever_flipped_pct": 0.0,
+    "gamma_mean": 0.036608422317335174,
+    "accum_pressure": 0.0,
+    "per_module": [
+      {
+        "path": "feedbacks.0.cross_attn.o_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.3094635009765625,
+        "gamma_mean": 0.03225211426615715,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "feedbacks.0.cross_attn.v_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.309295654296875,
+        "gamma_mean": 0.028658313676714897,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "feedbacks.0.cross_attn.k_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.32891845703125,
+        "gamma_mean": 0.1115996241569519,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "feedbacks.0.cross_attn.q_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.32196044921875,
+        "gamma_mean": 0.13463176786899567,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.1.ffn.down_proj",
+        "shape": "256\u00d7512",
+        "sparsity": 0.310882568359375,
+        "gamma_mean": 0.027548404410481453,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.1.ffn.up_proj",
+        "shape": "512\u00d7256",
+        "sparsity": 0.307891845703125,
+        "gamma_mean": 0.032879043370485306,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.1.ffn.gate_proj",
+        "shape": "512\u00d7256",
+        "sparsity": 0.3104705810546875,
+        "gamma_mean": 0.029617801308631897,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.1.attn.o_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.309814453125,
+        "gamma_mean": 0.03146679699420929,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.1.attn.v_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.3113250732421875,
+        "gamma_mean": 0.023345664143562317,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.1.attn.k_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.331390380859375,
+        "gamma_mean": -0.0008022866677492857,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.1.attn.q_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.3191375732421875,
+        "gamma_mean": -0.004281975328922272,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.0.ffn.down_proj",
+        "shape": "256\u00d7512",
+        "sparsity": 0.308807373046875,
+        "gamma_mean": 0.05467906594276428,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.0.ffn.up_proj",
+        "shape": "512\u00d7256",
+        "sparsity": 0.31157684326171875,
+        "gamma_mean": 0.05802181363105774,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.0.ffn.gate_proj",
+        "shape": "512\u00d7256",
+        "sparsity": 0.3110504150390625,
+        "gamma_mean": 0.06071791425347328,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.0.attn.o_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.308807373046875,
+        "gamma_mean": 0.010822528973221779,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.0.attn.v_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.310546875,
+        "gamma_mean": 0.0037062051706016064,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.0.attn.k_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.314483642578125,
+        "gamma_mean": 0.010528326034545898,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      },
+      {
+        "path": "stages.0.layers.0.attn.q_proj",
+        "shape": "256\u00d7256",
+        "sparsity": 0.3162994384765625,
+        "gamma_mean": 0.013560479506850243,
+        "cooldown_active": 0,
+        "ever_flipped": 0
+      }
+    ]
+  },
+  "feedback_gates": [
+    {
+      "feedback": "Stage 2 \u2192 1",
+      "mean_gate": 0.5739362686872482,
+      "status": "partial",
+      "is_ternary": true
+    },
+    {
+      "feedback": "Stage 3 \u2192 2",
+      "mean_gate": 0.5301213562488556,
+      "status": "partial",
+      "is_ternary": false
+    },
+    {
+      "feedback": "Stage 4 \u2192 3",
+      "mean_gate": 0.3841405436396599,
+      "status": "suppressed",
+      "is_ternary": false
+    }
+  ],
+  "representations": [
+    {
+      "stage": 1,
+      "name": "Surface",
+      "positions": 512,
+      "is_ternary": true,
+      "n_samples": 261,
+      "mean_norm": 5.458466529846191,
+      "effective_rank": 49.346214294433594,
+      "max_rank": 256,
+      "rank_utilization": 0.19275864958763123,
+      "anisotropy": 44662720.0,
+      "top5_energy": 0.6393136382102966,
+      "top10_energy": 0.7811379432678223
+    },
+    {
+      "stage": 2,
+      "name": "Structural",
+      "positions": 64,
+      "is_ternary": false,
+      "n_samples": 1024,
+      "mean_norm": 6.874666690826416,
+      "effective_rank": 64.3301010131836,
+      "max_rank": 256,
+      "rank_utilization": 0.2512894570827484,
+      "anisotropy": 268.721923828125,
+      "top5_energy": 0.5881765484809875,
+      "top10_energy": 0.7078378200531006
+    },
+    {
+      "stage": 3,
+      "name": "Semantic",
+      "positions": 8,
+      "is_ternary": false,
+      "n_samples": 128,
+      "mean_norm": 5.8720808029174805,
+      "effective_rank": 15.589485168457031,
+      "max_rank": 128,
+      "rank_utilization": 0.12179285287857056,
+      "anisotropy": 7618326.0,
+      "top5_energy": 0.8837411999702454,
+      "top10_energy": 0.9312924146652222
+    },
+    {
+      "stage": 4,
+      "name": "Reasoning",
+      "positions": 1,
+      "is_ternary": false,
+      "n_samples": 16,
+      "mean_norm": 5.443169116973877,
+      "effective_rank": 2.011108636856079,
+      "max_rank": 16,
+      "rank_utilization": 0.12569428980350494,
+      "anisotropy": 2077915.125,
+      "top5_energy": 0.99851393699646,
+      "top10_energy": 0.9997357726097107
+    }
+  ],
+  "spectral": {
+    "overlaps": {
+      "stage1_stage2": 0.13393117487430573,
+      "stage2_stage3": 0.1327226608991623,
+      "stage3_stage4": 0.11838878691196442
+    }
+  },
+  "chinchilla": {
+    "n_params": 14387200,
+    "n_tokens": 655360000,
+    "capacity_floor": 3.195758557175119,
+    "capacity_term": 1.505758557175119,
+    "data_floor": 2.8302720652792304,
+    "data_term": 1.1402720652792304,
+    "predicted": 4.3360306224543494
+  },
+  "compile_results": [
+    {
+      "prompt": "the bird flies",
+      "generation": "izeizeizeizeizeizeizeizeizeizeizeizeizeizeizeizeizeviolentviolentviolentviolentv",
+      "has_lambda": false
+    },
+    {
+      "prompt": "every student reads",
+      "generation": "izeizeizeizeizeizeizeizeizeizeizeizeizeizeizeizeizeizeizeizeizeizeviolent Terror",
+      "has_lambda": false
+    },
+    {
+      "prompt": "the man who runs",
+      "generation": "izeizeizeizeizeizeizeizeizeizeizeizeizeviolentviolentviolentviolentviolentviolen",
+      "has_lambda": false
+    },
+    {
+      "prompt": "no cat sleeps",
+      "generation": "izeizeizeizeizeizeizeizeizeizeizeizeizeizeizeizeviolentviolentviolentviolentviol",
+      "has_lambda": false
+    }
+  ],
+  "phase_controllers": [
+    {
+      "stage_id": 0,
+      "phase": "refine",
+      "steps_toward_new": 0,
+      "r_ema": 0.1275530224836826,
+      "delta_ema": 0.0,
+      "ce_ema": 2.8553263000000824
+    },
+    {
+      "stage_id": 1,
+      "phase": "refine",
+      "steps_toward_new": 0,
+      "r_ema": 0.0781016677626119,
+      "delta_ema": 6.789526264559833,
+      "ce_ema": 2.4851116474649
+    },
+    {
+      "stage_id": 2,
+      "phase": "refine",
+      "steps_toward_new": 0,
+      "r_ema": 0.0781016677626119,
+      "delta_ema": 1.315696796675525,
+      "ce_ema": 2.4310779226247967
+    },
+    {
+      "stage_id": 3,
+      "phase": "refine",
+      "steps_toward_new": 0,
+      "r_ema": 0.11149838298436167,
+      "delta_ema": 0.0672085827423148,
+      "ce_ema": 2.426969431620353
+    }
+  ]
+}

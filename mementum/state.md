@@ -6,133 +6,133 @@
 
 ## Where we are
 
-**v7 training run active. Three checkpoints probed (10K, 20K, 30K).
-Eval peaked at step 20K (CE4=10.08) then WORSENED at 30K (CE4=11.27)
-while training loss continued dropping (2.60). Train/eval gap 8.67
-nats and accelerating. Architecture validated: below Chinchilla
-capacity floor, differentiated stages, self-regulating gates. But
-Dolma can't train the deep stages — semantic overfits, ternary
-oscillates (35.5% reversals, first negative gamma). Math stratum
-is the only one still growing (+2.83 nats at 30K). Conclusion: the
-architecture is right, the data is wrong. Next: BIOS flash (math
-+ clojure.core).**
+**v7 Dolma run COMPLETE (killed at step 40K). Architecture validated.
+Eval peaked at step 20K then monotonically worsened through 30K and
+40K. Four checkpoint probes confirm: pipeline architecture works
+(below Chinchilla, differentiated stages, self-regulating gates) but
+Dolma can't train the deep stages. Best eval checkpoint: step 20K.
+Now pivoting to BIOS flash: holographic math + clojure.core training.
+Design doc written. bb clj2lambda converter scaffolded.**
 
-## Current run
+## v7 Dolma Run — Final Results
 
-```bash
-cd ~/src/verbum && uv run python scripts/v7/train.py
-# 165K steps, 2.7B tokens, ~12.5 hours total
-# Checkpoints every 10K steps to checkpoints/vsm-lm-v7/
-# ~50K tok/s on M3 Ultra — started ~11:42 AM
-```
+**Run:** steps 0-40K, ~655M tokens of Dolma, ~3 hours on M3 Ultra.
+**Killed** after step 40K — eval worsening every checkpoint since 20K.
 
-**Evolution table:**
+### Evolution table (training metrics)
 
-| Step | Loss | r | train Δ₂ | train Δ₃ | train Δ₄ | Flips | Rev% |
-|------|------|---|----------|----------|----------|-------|------|
-| 700 | 6.85 | 0.56 | +0.49 | +0.25 | +0.00 | — | — |
-| 2900 | 5.87 | 0.46 | +0.48 | +0.63 | -0.00 | — | — |
-| 4500 | 5.65 | 0.43 | +0.47 | +0.70 | -0.00 | 114K | 15.4% |
-| 5100 | 5.39 | — | — | — | — | — | — |
-| **10000** | **5.14** | **0.38** | **+0.20** | **+1.20** | **+0.01** | **208K** | **22.9%** |
+| Step | Loss | r | Δ₂ | Δ₃ | Δ₄ | Total fb | Flips | Rev% | ‖g‖ |
+|------|------|---|-----|-----|-----|----------|-------|------|-----|
+| 700 | 6.85 | 0.56 | +0.49 | +0.25 | 0.00 | +0.74 | — | — | — |
+| 5100 | 5.39 | — | — | — | — | — | — | — | — |
+| 10000 | 5.14 | 0.38 | +0.20 | +1.20 | +0.01 | +1.40 | 208K | 22.9% | 4.9 |
+| 14000 | 4.22 | 0.28 | +0.92 | +1.85 | +0.02 | +2.78 | — | — | 8.7 |
+| 20000 | 3.01 | 0.15 | +3.90 | +1.98 | +0.04 | +5.93 | 362K | 30.9% | — |
+| 23900 | 2.80 | 0.12 | +6.67 | +1.38 | +0.07 | +8.11 | — | 36.6% | 10.8 |
+| 30000 | 2.60 | 0.10 | +5.58 | +1.51 | +0.03 | +7.13 | 461K | 35.5% | 11.3 |
+| 40000 | 2.34 | 0.07 | +7.36 | +1.07 | +0.08 | +8.52 | 529K | 37.6% | 17.2 |
 
-## Probe findings (2026-04-27)
+### Probe results (eval on fresh text)
 
-### Step 10K (164M tokens) — probe on fresh text
+| Step | Probe CE4 | Train/eval gap | Δ₂ | Δ₃ | Δ₄ | Total fb |
+|------|-----------|----------------|------|------|------|----------|
+| 10K | 10.80 | 5.66 | +1.70 | -1.36 | +0.05 | +0.39 |
+| **20K** | **10.08** | **7.06** | **+4.09** | **-1.58** | **-0.10** | **+2.41** |
+| 30K | 11.27 | 8.67 | +3.55 | -1.15 | -0.07 | +2.32 |
+| 40K | 12.73 | 10.39 | +3.70 | -1.46 | -0.15 | +2.08 |
 
-| Metric | Train | Probe (eval) |
-|--------|-------|-------------|
-| CE4 | 5.40 | 10.80 |
-| Δ₂ | +0.20 | +1.70 |
-| Δ₃ | +1.20 | -1.36 |
-| Δ₄ | +0.01 | +0.05 |
-| Total fb | +1.40 | +0.39 |
+Step 20K = best eval. Everything after = overfitting.
 
-Chinchilla: +0.04 above predicted. Gates: 2→1=0.61, 3→2=0.47,
-4→3=0.24. Stages differentiated (CPA ~0.11). S4 util 60.9%.
+### Spectral evolution (eval)
 
-### Step 20K (328M tokens) — BEST EVAL
+| Stage | 10K | 20K | 30K | 40K | Trend |
+|-------|-----|-----|-----|-----|-------|
+| S1 eff_rank | 83.5 | 60.9 | 55.1 | 49.3 | ↓ compressing |
+| S2 eff_rank | 42.6 | 72.0 | 66.3 | 64.3 | stable ~65 |
+| S3 eff_rank | 12.6 | 19.9 | 23.3 | 15.6 | peaked then collapsed |
+| S4 eff_rank | 9.7 | 1.7 | 3.2 | 2.0 | collapsed, partial recovery |
 
-| Metric | Train | Probe (eval) |
-|--------|-------|-------------|
-| CE4 | 3.01 | 10.08 |
-| Δ₂ | +3.90 | +4.09 |
-| Δ₃ | +1.98 | -1.58 |
-| Δ₄ | +0.04 | -0.10 |
-| Total fb | +5.93 | +2.41 |
+### Strata pipeline value (eval, CE1-CE4)
 
-### Step 30K (492M tokens) — eval WORSENED
+| Stratum | 10K | 20K | 30K | 40K | Trend |
+|---------|-----|-----|-----|-----|-------|
+| prose | +0.50 | +2.98 | +2.69 | +2.54 | peaked 20K |
+| compositional | -0.21 | +1.81 | +1.80 | +1.92 | stable |
+| technical | +0.52 | +2.38 | +1.82 | +1.74 | peaked 20K |
+| math | +0.64 | +2.33 | +2.83 | +2.06 | peaked 30K |
 
-| Metric | Train | Probe (eval) |
-|--------|-------|-------------|
-| CE4 | 2.60 | 11.27 |
-| Δ₂ | +5.58 | +3.55 |
-| Δ₃ | +1.51 | -1.15 |
-| Δ₄ | +0.03 | -0.07 |
-| Total fb | +7.13 | +2.32 |
+### Key conclusions from v7 Dolma run
 
-**Key findings across 10K/20K/30K:**
-- Eval peaked at 20K, worsened at 30K — overfitting on Dolma
-- Train/eval gap: 5.66 → 7.06 → 8.67 (accelerating divergence)
-- Structural Δ₂ peaked at 20K (+4.09), declined at 30K (+3.55)
-- Semantic Δ₃ NEVER positive on eval: -1.36 → -1.58 → -1.15
-- Stage 4: collapsed at 20K (rank 1.7), recovering at 30K (rank 3.2)
-- Reversal rate: 22.9% → 30.9% → 35.5% (still climbing)
-- First negative gamma at 30K (q_proj wants to reverse topology)
-- Math stratum: ONLY one still growing (+0.64 → +2.33 → +2.83)
-- Compile gate: 0/4 at all checkpoints (degenerate repetition)
-- Stages remain differentiated (CPA ~0.11-0.13) ← architecture works
+**Architecture validated:**
+- Training loss below Chinchilla capacity floor (2.34 vs 3.20)
+- Stages spectrally differentiated (CPA ~0.12) at all checkpoints
+- Structural feedback powerful and consistent (+3.5-4.1 nats on eval)
+- Feedback gates self-regulate (suppress noisy stages, open for useful)
+- Pipeline adds +2.1-2.4 nats on fresh text (steps 20K-40K)
 
-**Diagnosis:** Architecture validated. Dolma exhausted as training
-signal for deep stages. Semantic overfits, ternary oscillates. Math
-stratum's continued growth confirms formal data is what the deep
-stages need. Next experiment: BIOS flash (math + clojure.core).
+**Dolma can't train deep stages:**
+- Semantic Δ₃ NEVER positive on eval (all 4 checkpoints negative)
+- Stage 4 collapsed (rank 9.7 → 1.7), partial recovery stalled (2.0)
+- Stage 3 collapsed back (rank 23.3 → 15.6)
+- Ternary reversal rate climbed relentlessly (22.9% → 37.6%)
+- Two negative gammas at step 40K (topology fighting itself)
+- Grad norm surging (4.9 → 17.2) — model thrashing
+- Compile gate 0/4 at all checkpoints (degenerate repetition)
+
+**Insight: cross-attention between stages IS beta reduction.** Single
+pipeline = 3 reductions = sufficient for arithmetic, insufficient for
+deeply nested lambda composition. Sieve architecture needed later.
 
 ## What to do next session
 
-1. **Let v7 run finish** (~midnight). Run full probe on all
-   checkpoints. Final analysis: does semantic Δ₃ ever generalize?
-   Does topology stabilize? Does compile gate show any sign of life?
+1. **BIOS flash training data generation.** Priority. Read the design
+   doc first: `mementum/knowledge/explore/bios-flash-training.md`
+   
+   Build the holographic dataset:
+   - Math generator (python): arithmetic, comparisons, predicates,
+     boolean, bitwise, compound expressions. All difficulties.
+   - Update `bb clj2lambda` to emit `io!` for effectful forms
+   - Generate clojure.core examples by eval in babashka
+   - Interleave into holographic JSONL: raw math + clojure + lambda + result
 
-2. **Build clojure→lambda converter** (babashka task). One session.
-   Start with `clojure.core` — 600 functions → lambda + examples.
-   This is the Phase 0 training dataset.
+2. **Decide sequence format.** How does the model see the holographic
+   examples? All representations in one sequence, or separate examples?
+   
+3. **Decide tokenizer.** Keep GPT-NeoX 50277? Or custom small vocab
+   (~2-5K) for lambda + clojure + math? Smaller = less wasted capacity.
 
-3. **Design grokking experiment:** core clojure × N epochs on v7
-   architecture. Watch for double descent in loss curve. Probe for
-   circuit formation (does Stage 3 organize by function cluster?
-   Does Stage 4 learn to compute?). This tests the staged curriculum
-   hypothesis directly.
+4. **Train v7 on holographic data.** Fresh weights, same architecture.
+   Many epochs. Monitor for grokking (double descent in loss curve).
+   Probe for circuit formation in Stages 3-4.
 
-4. **Staged curriculum plan (if grokking works):**
-   ```
-   Phase 0: clojure.core × N epochs     (instruction set / grokking)
-   Phase 1: curated clojure libs × M    (composition circuits)
-   Phase 2: math collection              (calculator broadening)
-   Phase 3: dolma                        (NL → formal backbone)
-   ```
-
-5. **Open questions from this run:**
-   - Is semantic overfitting structural (8 pos too few? wrong arch?)
-     or just data-dependent (general text is wrong signal)?
-   - Is Stage 4 collapse recoverable with formal data, or is 1
-     position genuinely insufficient?
-   - Does ternary reversal rate indicate healthy search or instability?
+5. **Open questions (refined by this run):**
+   - Semantic interference: is 8 positions too few, or wrong data?
+     (BIOS flash will answer — if Δ₃ flips positive on formal data,
+     it was the data not the architecture)
+   - Stage 4: is 1 position sufficient for computation? (BIOS flash
+     will answer — if it learns arithmetic, 1 position is enough)
+   - Ternary: will it stabilize on formal data? (formal has much
+     less surface variety, should crystallize faster)
+   - Sieve: when does 3 reductions become the bottleneck?
 
 ## Architecture summary (v7)
 
 ```
-Stage 1 (Surface) [TERNARY]:  512 pos, 2L, 4H, 384 KB packed
-Stage 2 (Structural):          64 pos, 3L, 4H, 2.0M params
-Stage 3 (Semantic):             8 pos, 4L, 8H, 4.2M params
-Stage 4 (Reasoning):            1 pos, 6L, 8H, 6.3M params
-Total: 27.3M params (14.4M non-embedding)
-```
+tokens → [Embed]
+              ↓
+         [Stage 1: 512 pos, 2L, 4H — TERNARY] ←── feedback[0] (ternary)
+              ↓ reduce (cross-attn pool)                ↑
+         [Stage 2:  64 pos, 3L, 4H — float]    ←── feedback[1]
+              ↓ reduce                                   ↑
+         [Stage 3:   8 pos, 4L, 8H — float]    ←── feedback[2]
+              ↓ reduce                                   ↑
+         [Stage 4:   1 pos, 6L, 8H — float]    ────────┘
 
-Ternary hot path (Stage 1 + feedback 2→1): 384 KB.
-Float cold path (Stages 2-4): composition needs precision.
-Per-stage relational loss drives independent phase control.
-Flip rate modulated by r₁ — topology anneals as model learns.
+         Stage 1 (post-feedback) → out_norm → logits (tied embed)
+
+Total: 27.3M params (14.4M non-embedding)
+Cross-attention reducers = beta reduction (3 levels)
+```
 
 ## Key files
 
@@ -154,13 +154,12 @@ Flip rate modulated by r₁ — topology anneals as model learns.
 
 | Metric | v6 (sieve) | v7 (pipeline) |
 |--------|-----------|---------------|
-| Best loss | 5.418 (step 32K, 1B tok) | 5.39 (step 5.1K, 83M tok) |
-| Token efficiency | baseline | ~12× better |
+| Best loss (train) | 5.418 (32K steps) | 2.338 (40K steps) |
+| Best eval | — | 10.076 (20K steps) |
+| Token efficiency | baseline | ~12× better to 5.4 loss |
 | Throughput | 5.5K tok/s | 50-60K tok/s |
-| Wall-clock to 5.4 loss | ~50 hours | ~30 minutes |
-| Chinchilla | at prediction | below prediction |
-| Reversals | exponential accel (pathological) | 15% flat (convergent) |
-| λ generation | 0% (all checkpoints) | TBD |
+| Chinchilla | at prediction | below capacity floor |
+| λ generation | 0% | 0% (expected — wrong data) |
 
 ## Servers
 
