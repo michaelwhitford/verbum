@@ -1,0 +1,994 @@
+{
+  "timestamp": "2026-04-27T01:53:20.248350+00:00",
+  "architecture": "vsm-lm-v6-mlx",
+  "step": 24000,
+  "config": {
+    "d_model": 512,
+    "d_register": 128,
+    "d_ff": 1536,
+    "d_ff_consolidate": 2048,
+    "n_heads": 8,
+    "strides": [
+      1,
+      8,
+      16,
+      32,
+      64,
+      128,
+      256,
+      512,
+      1024
+    ],
+    "window": 8,
+    "vocab_size": 50277,
+    "seq_len": 4096,
+    "alpha": 1.18,
+    "n_passes": 5,
+    "pass_names": [
+      "L0_asc",
+      "L1_asc",
+      "L2_apex",
+      "L1_desc",
+      "L0_desc"
+    ],
+    "phase_names": [
+      "prep",
+      "converge",
+      "consolidate"
+    ],
+    "reg_names": [
+      "type",
+      "scope",
+      "role"
+    ],
+    "total_ternary_weights": 35258368
+  },
+  "total_flips": 241607,
+  "total_reversals": 253,
+  "flip_consensus": 50,
+  "flip_cooldown": 4,
+  "grad_norm": 0.8673658967018127,
+  "train_loss": 5.595864295959473,
+  "eval_loss": 5.879975843429565,
+  "relational_loss": 0.427557170033069,
+  "excess_ppl": 49.6930108254677,
+  "ppl": 269.31031334849837,
+  "phi_compression": {
+    "overall": {
+      "L0_asc": {
+        "mean_ratio": 0.9359137619339247,
+        "std_ratio": 0.013342985081283353,
+        "mean_h_in": -1.9314405620098114,
+        "mean_h_out": -1.807988241314888,
+        "phi_dev": 0.31787977318402993,
+        "direction": "compressing"
+      },
+      "L1_asc": {
+        "mean_ratio": 0.8423366543169741,
+        "std_ratio": 0.0128100520828284,
+        "mean_h_in": -1.807988241314888,
+        "mean_h_out": -1.523286484181881,
+        "phi_dev": 0.22430266556707934,
+        "direction": "compressing"
+      },
+      "L2_apex": {
+        "mean_ratio": 0.7773528443662014,
+        "std_ratio": 0.025253256512056954,
+        "mean_h_in": -1.523286484181881,
+        "mean_h_out": -1.1847344264388084,
+        "phi_dev": 0.15931885561630665,
+        "direction": "compressing"
+      },
+      "L1_desc": {
+        "mean_ratio": 0.7163943151973785,
+        "std_ratio": 0.02935644302787418,
+        "mean_h_in": -1.1847344264388084,
+        "mean_h_out": -0.8505842573940754,
+        "phi_dev": 0.09836032644748371,
+        "direction": "compressing"
+      },
+      "L0_desc": {
+        "mean_ratio": 0.6130130963437844,
+        "std_ratio": 0.04981818799573193,
+        "mean_h_in": -0.8505842573940754,
+        "mean_h_out": -0.5253140646964312,
+        "phi_dev": 0.005020892406110367,
+        "direction": "compressing"
+      },
+      "aggregate": {
+        "mean_ratio": 0.7770021344316527,
+        "mean_phi_dev": 0.160976502644202,
+        "target": 0.6180339887498948
+      },
+      "loss": {
+        "mean_loss": 6.792300134897232,
+        "relational_loss": 0.558525550565785,
+        "excess_ppl": 164.39961403448822
+      },
+      "gates": {
+        "L0_asc_prep": 0.3151596449315548,
+        "L0_asc_converge": 0.894196730107069,
+        "L0_asc_consolidate": 0.6108925957232714,
+        "L1_asc_prep": 0.46509481593966484,
+        "L1_asc_converge": 0.7151879630982876,
+        "L1_asc_consolidate": 0.8275892697274685,
+        "L2_apex_prep": 0.5566100366413593,
+        "L2_apex_converge": 0.8541121743619442,
+        "L2_apex_consolidate": 0.8724642768502235,
+        "L1_desc_prep": 0.6536727137863636,
+        "L1_desc_converge": 0.9930461347103119,
+        "L1_desc_consolidate": 0.9669257588684559,
+        "L0_desc_prep": 0.8137089982628822,
+        "L0_desc_converge": 0.9950847290456295,
+        "L0_desc_consolidate": 0.9771294072270393
+      },
+      "mod_mean": {
+        "L0_asc_prep": 0.0017478990594099741,
+        "L0_asc_converge": -0.0028928698447998613,
+        "L0_asc_consolidate": -0.000549585631915761,
+        "L1_asc_prep": 0.004158039911999367,
+        "L1_asc_converge": -0.0036556885243044235,
+        "L1_asc_consolidate": -0.0012987843574592262,
+        "L2_apex_prep": 0.005458275962155312,
+        "L2_apex_converge": -0.004378857192932628,
+        "L2_apex_consolidate": -0.0014805467762926128,
+        "L1_desc_prep": 0.006688173481961712,
+        "L1_desc_converge": 0.00328447729407344,
+        "L1_desc_consolidate": -0.0013779967493974254,
+        "L0_desc_prep": 0.0076146548526594415,
+        "L0_desc_converge": 0.002393425442278385,
+        "L0_desc_consolidate": -0.0008935378682508599
+      },
+      "mod_std": {
+        "L0_asc_prep": 0.06570935039781034,
+        "L0_asc_converge": 0.22863543219864368,
+        "L0_asc_consolidate": 0.10757948504760861,
+        "L1_asc_prep": 0.08772158715873957,
+        "L1_asc_converge": 0.18228478636592627,
+        "L1_asc_consolidate": 0.12625911086797714,
+        "L2_apex_prep": 0.09521771594882011,
+        "L2_apex_converge": 0.20371457003057003,
+        "L2_apex_consolidate": 0.11987032881006598,
+        "L1_desc_prep": 0.10427399259060621,
+        "L1_desc_converge": 0.19219600223004818,
+        "L1_desc_consolidate": 0.126516779884696,
+        "L0_desc_prep": 0.12839471735060215,
+        "L0_desc_converge": 0.18947350606322289,
+        "L0_desc_consolidate": 0.1253603850491345
+      },
+      "meta_gates": {
+        "L0_asc": 0.9999997392296791,
+        "L1_asc": 0.9999997243285179,
+        "L2_apex": 0.9999997057020664,
+        "L1_desc": 0.9999996423721313,
+        "L0_desc": 0.9999995492398739
+      },
+      "write_gates": {
+        "L0_asc_prep_write_type": 0.2742753578349948,
+        "L0_asc_prep_write_scope": 0.6162176094949245,
+        "L0_asc_prep_write_role": 0.6197700202465057,
+        "L0_asc_converge_write_type": 0.7689409470185637,
+        "L0_asc_converge_write_scope": 0.8435649517923594,
+        "L0_asc_converge_write_role": 0.17034167749807239,
+        "L0_asc_consolidate_write_type": 0.8823938183486462,
+        "L0_asc_consolidate_write_scope": 0.8793702088296413,
+        "L0_asc_consolidate_write_role": 0.8670396469533443,
+        "L1_asc_prep_write_type": 0.7318504005670547,
+        "L1_asc_prep_write_scope": 0.5905870199203491,
+        "L1_asc_prep_write_role": 0.6391958482563496,
+        "L1_asc_converge_write_type": 0.03779030928853899,
+        "L1_asc_converge_write_scope": 0.37393378745764494,
+        "L1_asc_converge_write_role": 0.9394482113420963,
+        "L1_asc_consolidate_write_type": 0.7978090643882751,
+        "L1_asc_consolidate_write_scope": 0.8442947939038277,
+        "L1_asc_consolidate_write_role": 0.6585637144744396,
+        "L2_apex_prep_write_type": 0.7917627245187759,
+        "L2_apex_prep_write_scope": 0.8904625363647938,
+        "L2_apex_prep_write_role": 0.7259725667536259,
+        "L2_apex_converge_write_type": 0.8709191409870982,
+        "L2_apex_converge_write_scope": 0.9868127107620239,
+        "L2_apex_converge_write_role": 0.05103705020155758,
+        "L2_apex_consolidate_write_type": 0.7232181839644909,
+        "L2_apex_consolidate_write_scope": 0.7145052887499332,
+        "L2_apex_consolidate_write_role": 0.716091837733984,
+        "L1_desc_prep_write_type": 0.9259027317166328,
+        "L1_desc_prep_write_scope": 0.9722755886614323,
+        "L1_desc_prep_write_role": 0.9797876551747322,
+        "L1_desc_converge_write_type": 0.9377439729869366,
+        "L1_desc_converge_write_scope": 0.13030693994369358,
+        "L1_desc_converge_write_role": 0.8925323747098446,
+        "L1_desc_consolidate_write_type": 0.5795450862497091,
+        "L1_desc_consolidate_write_scope": 0.8036496713757515,
+        "L1_desc_consolidate_write_role": 0.8180238753557205,
+        "L0_desc_prep_write_type": 0.9646856188774109,
+        "L0_desc_prep_write_scope": 0.9633000679314137,
+        "L0_desc_prep_write_role": 0.8759092912077904,
+        "L0_desc_converge_write_type": 0.08732549950946122,
+        "L0_desc_converge_write_scope": 0.9363289698958397,
+        "L0_desc_converge_write_role": 0.2417319561354816,
+        "L0_desc_consolidate_write_type": 0.6402088403701782,
+        "L0_desc_consolidate_write_scope": 0.6759665757417679,
+        "L0_desc_consolidate_write_role": 0.6501916944980621
+      },
+      "strides": {
+        "L0_asc_stride_0_s1_ratio": 0.7065051747719006,
+        "L0_asc_stride_0_s1_delta_norm": 10.897184491157532,
+        "L0_asc_stride_0_s1_rel_contrib": 1.1323612012883042,
+        "L0_asc_stride_1_s8_ratio": 0.8998184930006298,
+        "L0_asc_stride_1_s8_delta_norm": 6.69492644071579,
+        "L0_asc_stride_1_s8_rel_contrib": 0.452153045318432,
+        "L0_asc_stride_2_s16_ratio": 0.9170692964679182,
+        "L0_asc_stride_2_s16_delta_norm": 5.8139408230781555,
+        "L0_asc_stride_2_s16_rel_contrib": 0.35047817940776815,
+        "L0_asc_stride_3_s32_ratio": 0.9241441053340502,
+        "L0_asc_stride_3_s32_delta_norm": 5.252891004085541,
+        "L0_asc_stride_3_s32_rel_contrib": 0.29530705561187287,
+        "L0_asc_stride_4_s64_ratio": 0.9256361550217065,
+        "L0_asc_stride_4_s64_delta_norm": 5.1709965467453,
+        "L0_asc_stride_4_s64_rel_contrib": 0.27352239670294687,
+        "L0_asc_stride_5_s128_ratio": 0.9405669747927476,
+        "L0_asc_stride_5_s128_delta_norm": 4.9166553020477295,
+        "L0_asc_stride_5_s128_rel_contrib": 0.24616773513910747,
+        "L0_asc_stride_6_s256_ratio": 0.9318528455317093,
+        "L0_asc_stride_6_s256_delta_norm": 5.111059546470642,
+        "L0_asc_stride_6_s256_rel_contrib": 0.24349292521185503,
+        "L0_asc_stride_7_s512_ratio": 0.941418137751518,
+        "L0_asc_stride_7_s512_delta_norm": 4.271040439605713,
+        "L0_asc_stride_7_s512_rel_contrib": 0.19558755958755192,
+        "L0_asc_stride_8_s1024_ratio": 0.9403561567041527,
+        "L0_asc_stride_8_s1024_delta_norm": 4.550117701292038,
+        "L0_asc_stride_8_s1024_rel_contrib": 0.2016767621726057,
+        "L0_asc_stride_mean_ratio": 0.9030408154862593,
+        "L1_asc_stride_0_s1_ratio": 0.7603100369779419,
+        "L1_asc_stride_0_s1_delta_norm": 12.174864053726196,
+        "L1_asc_stride_0_s1_rel_contrib": 1.04565056199361,
+        "L1_asc_stride_1_s8_ratio": 0.9151202516864342,
+        "L1_asc_stride_1_s8_delta_norm": 7.169695794582367,
+        "L1_asc_stride_1_s8_rel_contrib": 0.41609349867301104,
+        "L1_asc_stride_2_s16_ratio": 0.934210533966158,
+        "L1_asc_stride_2_s16_delta_norm": 5.7773876786231995,
+        "L1_asc_stride_2_s16_rel_contrib": 0.3031298197314892,
+        "L1_asc_stride_3_s32_ratio": 0.9401055325473766,
+        "L1_asc_stride_3_s32_delta_norm": 5.164010137319565,
+        "L1_asc_stride_3_s32_rel_contrib": 0.25724298826142317,
+        "L1_asc_stride_4_s64_ratio": 0.9414998708180184,
+        "L1_asc_stride_4_s64_delta_norm": 4.871895879507065,
+        "L1_asc_stride_4_s64_rel_contrib": 0.23260829342628644,
+        "L1_asc_stride_5_s128_ratio": 0.9488332373380072,
+        "L1_asc_stride_5_s128_delta_norm": 4.93546786904335,
+        "L1_asc_stride_5_s128_rel_contrib": 0.22499284355307334,
+        "L1_asc_stride_6_s256_ratio": 0.9456572599006159,
+        "L1_asc_stride_6_s256_delta_norm": 4.967924118041992,
+        "L1_asc_stride_6_s256_rel_contrib": 0.21694988782971877,
+        "L1_asc_stride_7_s512_ratio": 0.9555137224360514,
+        "L1_asc_stride_7_s512_delta_norm": 4.215470641851425,
+        "L1_asc_stride_7_s512_rel_contrib": 0.17831043562079768,
+        "L1_asc_stride_8_s1024_ratio": 0.9521398254189587,
+        "L1_asc_stride_8_s1024_delta_norm": 4.502220064401627,
+        "L1_asc_stride_8_s1024_rel_contrib": 0.1851183661341179,
+        "L1_asc_stride_mean_ratio": 0.9214878078988402,
+        "L2_apex_stride_0_s1_ratio": 0.8131138966858555,
+        "L2_apex_stride_0_s1_delta_norm": 12.56394374370575,
+        "L2_apex_stride_0_s1_rel_contrib": 0.8443519611544055,
+        "L2_apex_stride_1_s8_ratio": 0.9321721981749871,
+        "L2_apex_stride_1_s8_delta_norm": 6.956999957561493,
+        "L2_apex_stride_1_s8_rel_contrib": 0.3505746830457349,
+        "L2_apex_stride_2_s16_ratio": 0.9440032940050688,
+        "L2_apex_stride_2_s16_delta_norm": 5.511356741189957,
+        "L2_apex_stride_2_s16_rel_contrib": 0.258183182128218,
+        "L2_apex_stride_3_s32_ratio": 0.9492961192913238,
+        "L2_apex_stride_3_s32_delta_norm": 4.859996557235718,
+        "L2_apex_stride_3_s32_rel_contrib": 0.2199202000015945,
+        "L2_apex_stride_4_s64_ratio": 0.9494228766656592,
+        "L2_apex_stride_4_s64_delta_norm": 4.515270292758942,
+        "L2_apex_stride_4_s64_rel_contrib": 0.19908086819195023,
+        "L2_apex_stride_5_s128_ratio": 0.9554178390543385,
+        "L2_apex_stride_5_s128_delta_norm": 4.757228463888168,
+        "L2_apex_stride_5_s128_rel_contrib": 0.20245009359009775,
+        "L2_apex_stride_6_s256_ratio": 0.9530405574219623,
+        "L2_apex_stride_6_s256_delta_norm": 4.729736626148224,
+        "L2_apex_stride_6_s256_rel_contrib": 0.1954595233930637,
+        "L2_apex_stride_7_s512_ratio": 0.9588495087712047,
+        "L2_apex_stride_7_s512_delta_norm": 4.039129748940468,
+        "L2_apex_stride_7_s512_rel_contrib": 0.1630907479305051,
+        "L2_apex_stride_8_s1024_ratio": 0.9551885110829896,
+        "L2_apex_stride_8_s1024_delta_norm": 4.367186546325684,
+        "L2_apex_stride_8_s1024_rel_contrib": 0.17256936093104855,
+        "L2_apex_stride_mean_ratio": 0.9345005334614878,
+        "L1_desc_stride_0_s1024_ratio": 0.9521089930478492,
+        "L1_desc_stride_0_s1024_delta_norm": 3.892222121357918,
+        "L1_desc_stride_0_s1024_rel_contrib": 0.20795345921414968,
+        "L1_desc_stride_1_s512_ratio": 0.9500628537451856,
+        "L1_desc_stride_1_s512_delta_norm": 3.8510263860225677,
+        "L1_desc_stride_1_s512_rel_contrib": 0.2022428095210057,
+        "L1_desc_stride_2_s256_ratio": 0.9416498821499119,
+        "L1_desc_stride_2_s256_delta_norm": 4.286106169223785,
+        "L1_desc_stride_2_s256_rel_contrib": 0.22010862127981465,
+        "L1_desc_stride_3_s128_ratio": 0.9448592841000154,
+        "L1_desc_stride_3_s128_delta_norm": 4.1820827424526215,
+        "L1_desc_stride_3_s128_rel_contrib": 0.2099403988377271,
+        "L1_desc_stride_4_s64_ratio": 0.9445309478773116,
+        "L1_desc_stride_4_s64_delta_norm": 4.149329513311386,
+        "L1_desc_stride_4_s64_rel_contrib": 0.20335482851083972,
+        "L1_desc_stride_5_s32_ratio": 0.9353585814540298,
+        "L1_desc_stride_5_s32_delta_norm": 4.280623823404312,
+        "L1_desc_stride_5_s32_rel_contrib": 0.20555348445779714,
+        "L1_desc_stride_6_s16_ratio": 0.928714067534556,
+        "L1_desc_stride_6_s16_delta_norm": 4.7403824031353,
+        "L1_desc_stride_6_s16_rel_contrib": 0.22359859080932465,
+        "L1_desc_stride_7_s8_ratio": 0.9277238921563407,
+        "L1_desc_stride_7_s8_delta_norm": 4.952899247407913,
+        "L1_desc_stride_7_s8_rel_contrib": 0.22775641934143248,
+        "L1_desc_stride_8_s1_ratio": 0.8234967166548017,
+        "L1_desc_stride_8_s1_delta_norm": 11.532281160354614,
+        "L1_desc_stride_8_s1_rel_contrib": 0.5193675735987376,
+        "L1_desc_stride_mean_ratio": 0.9276116909688891,
+        "L0_desc_stride_0_s1024_ratio": 0.9518672329781918,
+        "L0_desc_stride_0_s1024_delta_norm": 3.852173998951912,
+        "L0_desc_stride_0_s1024_rel_contrib": 0.17526157394918795,
+        "L0_desc_stride_1_s512_ratio": 0.9479133530690347,
+        "L0_desc_stride_1_s512_delta_norm": 3.877282604575157,
+        "L0_desc_stride_1_s512_rel_contrib": 0.1742952333806034,
+        "L0_desc_stride_2_s256_ratio": 0.9396097624304625,
+        "L0_desc_stride_2_s256_delta_norm": 4.234609663486481,
+        "L0_desc_stride_2_s256_rel_contrib": 0.18722574601833766,
+        "L0_desc_stride_3_s128_ratio": 0.9426983507242481,
+        "L0_desc_stride_3_s128_delta_norm": 4.115050762891769,
+        "L0_desc_stride_3_s128_rel_contrib": 0.17868194176068383,
+        "L0_desc_stride_4_s64_ratio": 0.941417058943438,
+        "L0_desc_stride_4_s64_delta_norm": 4.128706336021423,
+        "L0_desc_stride_4_s64_rel_contrib": 0.17628687402762389,
+        "L0_desc_stride_5_s32_ratio": 0.9324795027856344,
+        "L0_desc_stride_5_s32_delta_norm": 4.275499850511551,
+        "L0_desc_stride_5_s32_rel_contrib": 0.18009939170140257,
+        "L0_desc_stride_6_s16_ratio": 0.921324901880258,
+        "L0_desc_stride_6_s16_delta_norm": 4.686454802751541,
+        "L0_desc_stride_6_s16_rel_contrib": 0.19486354005425938,
+        "L0_desc_stride_7_s8_ratio": 0.920188133437794,
+        "L0_desc_stride_7_s8_delta_norm": 4.946329444646835,
+        "L0_desc_stride_7_s8_rel_contrib": 0.20216569757058978,
+        "L0_desc_stride_8_s1_ratio": 0.7997383609969955,
+        "L0_desc_stride_8_s1_delta_norm": 11.432973027229309,
+        "L0_desc_stride_8_s1_rel_contrib": 0.46031437578645906,
+        "L0_desc_stride_mean_ratio": 0.9219151841384507
+      },
+      "hilberg": {
+        "L0_asc": {
+          "slope": -0.21699184098508567,
+          "beta": 0.7830081590149143
+        },
+        "L1_asc": {
+          "slope": -0.2267300145648713,
+          "beta": 0.7732699854351287
+        },
+        "L2_apex": {
+          "slope": -0.19853433308049134,
+          "beta": 0.8014656669195086
+        },
+        "L1_desc": {
+          "slope": -0.1690873192992407,
+          "beta": 0.8309126807007593
+        },
+        "L0_desc": {
+          "slope": -0.1847543938872972,
+          "beta": 0.8152456061127028
+        }
+      },
+      "embed_norm": 9.543194830417633
+    },
+    "strata": {
+      "prose": {
+        "L0_asc": {
+          "mean_ratio": 0.9306190174433662,
+          "std_ratio": 0.010479334015743342,
+          "mean_h_in": -1.9320524334907532,
+          "mean_h_out": -1.798234909772873,
+          "phi_dev": 0.3125850286934714,
+          "direction": "compressing"
+        },
+        "L1_asc": {
+          "mean_ratio": 0.8377335164682163,
+          "std_ratio": 0.011469298095483093,
+          "mean_h_in": -1.798234909772873,
+          "mean_h_out": -1.506924957036972,
+          "phi_dev": 0.21969952771832146,
+          "direction": "compressing"
+        },
+        "L2_apex": {
+          "mean_ratio": 0.7954233245736324,
+          "std_ratio": 0.010444167419084917,
+          "mean_h_in": -1.506924957036972,
+          "mean_h_out": -1.1991750597953796,
+          "phi_dev": 0.17738933582373761,
+          "direction": "compressing"
+        },
+        "L1_desc": {
+          "mean_ratio": 0.7316427317636799,
+          "std_ratio": 0.011387504262946236,
+          "mean_h_in": -1.1991750597953796,
+          "mean_h_out": -0.8780490010976791,
+          "phi_dev": 0.1136087430137851,
+          "direction": "compressing"
+        },
+        "L0_desc": {
+          "mean_ratio": 0.6389489462709634,
+          "std_ratio": 0.019856725877907423,
+          "mean_h_in": -0.8780490010976791,
+          "mean_h_out": -0.5621722191572189,
+          "phi_dev": 0.020914957521068644,
+          "direction": "compressing"
+        },
+        "aggregate": {
+          "mean_ratio": 0.7868735073039717,
+          "mean_phi_dev": 0.16883951855407683,
+          "target": 0.6180339887498948
+        },
+        "loss": {
+          "mean_loss": 6.684240221977234,
+          "relational_loss": 0.5466967242008013,
+          "excess_ppl": 147.56078933725814
+        }
+      },
+      "compositional": {
+        "L0_asc": {
+          "mean_ratio": 0.9416054219247818,
+          "std_ratio": 0.009995266552076002,
+          "mean_h_in": -1.9439976811408997,
+          "mean_h_out": -1.8306149244308472,
+          "phi_dev": 0.323571433174887,
+          "direction": "compressing"
+        },
+        "L1_asc": {
+          "mean_ratio": 0.8387178080844012,
+          "std_ratio": 0.015440596376252107,
+          "mean_h_in": -1.8306149244308472,
+          "mean_h_out": -1.5358626544475555,
+          "phi_dev": 0.22068381933450643,
+          "direction": "compressing"
+        },
+        "L2_apex": {
+          "mean_ratio": 0.793239711907358,
+          "std_ratio": 0.023823266484702673,
+          "mean_h_in": -1.5358626544475555,
+          "mean_h_out": -1.2195664942264557,
+          "phi_dev": 0.1752057231574632,
+          "direction": "compressing"
+        },
+        "L1_desc": {
+          "mean_ratio": 0.7356940920888544,
+          "std_ratio": 0.025169396954253763,
+          "mean_h_in": -1.2195664942264557,
+          "mean_h_out": -0.8991710394620895,
+          "phi_dev": 0.1176601033389596,
+          "direction": "compressing"
+        },
+        "L0_desc": {
+          "mean_ratio": 0.6473591486208328,
+          "std_ratio": 0.03989235334529972,
+          "mean_h_in": -0.8991710394620895,
+          "mean_h_out": -0.5855232551693916,
+          "phi_dev": 0.029325159870937978,
+          "direction": "compressing"
+        },
+        "aggregate": {
+          "mean_ratio": 0.7913232365252456,
+          "mean_phi_dev": 0.17328924777535085,
+          "target": 0.6180339887498948
+        },
+        "loss": {
+          "mean_loss": 7.1070756912231445,
+          "relational_loss": 0.5929825966535144,
+          "excess_ppl": 225.2195470727351
+        }
+      },
+      "technical": {
+        "L0_asc": {
+          "mean_ratio": 0.922290750955199,
+          "std_ratio": 0.010026017119045414,
+          "mean_h_in": -1.892316848039627,
+          "mean_h_out": -1.745336502790451,
+          "phi_dev": 0.3042567622053042,
+          "direction": "compressing"
+        },
+        "L1_asc": {
+          "mean_ratio": 0.8390240209649613,
+          "std_ratio": 0.008494779749006937,
+          "mean_h_in": -1.745336502790451,
+          "mean_h_out": -1.464584469795227,
+          "phi_dev": 0.22099003221506652,
+          "direction": "compressing"
+        },
+        "L2_apex": {
+          "mean_ratio": 0.765700035682018,
+          "std_ratio": 0.014521578066259038,
+          "mean_h_in": -1.464584469795227,
+          "mean_h_out": -1.1219701170921326,
+          "phi_dev": 0.14766604693212326,
+          "direction": "compressing"
+        },
+        "L1_desc": {
+          "mean_ratio": 0.7040103752756817,
+          "std_ratio": 0.020558196135985005,
+          "mean_h_in": -1.1219701170921326,
+          "mean_h_out": -0.7908087819814682,
+          "phi_dev": 0.08597638652578687,
+          "direction": "compressing"
+        },
+        "L0_desc": {
+          "mean_ratio": 0.5925021685827733,
+          "std_ratio": 0.03598609512572738,
+          "mean_h_in": -0.7908087819814682,
+          "mean_h_out": -0.47053372859954834,
+          "phi_dev": 0.02553182016712152,
+          "direction": "compressing"
+        },
+        "aggregate": {
+          "mean_ratio": 0.7647054702921267,
+          "mean_phi_dev": 0.15688420960908048,
+          "target": 0.6180339887498948
+        },
+        "loss": {
+          "mean_loss": 7.605945706367493,
+          "relational_loss": 0.6475916244454223,
+          "excess_ppl": 370.9049040247257
+        }
+      },
+      "math": {
+        "L0_asc": {
+          "mean_ratio": 0.9509197887283464,
+          "std_ratio": 0.008860659784095833,
+          "mean_h_in": -1.9573952853679657,
+          "mean_h_out": -1.8612240254878998,
+          "phi_dev": 0.3328857999784516,
+          "direction": "compressing"
+        },
+        "L1_asc": {
+          "mean_ratio": 0.8486039453038027,
+          "std_ratio": 0.015440325357142024,
+          "mean_h_in": -1.8612240254878998,
+          "mean_h_out": -1.579455941915512,
+          "phi_dev": 0.23056995655390788,
+          "direction": "compressing"
+        },
+        "L2_apex": {
+          "mean_ratio": 0.7546236374086875,
+          "std_ratio": 0.029526381652952193,
+          "mean_h_in": -1.579455941915512,
+          "mean_h_out": -1.1931205689907074,
+          "phi_dev": 0.13658964865879275,
+          "direction": "compressing"
+        },
+        "L1_desc": {
+          "mean_ratio": 0.6996086755837697,
+          "std_ratio": 0.02832929429855653,
+          "mean_h_in": -1.1931205689907074,
+          "mean_h_out": -0.8369294703006744,
+          "phi_dev": 0.08157468683387492,
+          "direction": "compressing"
+        },
+        "L0_desc": {
+          "mean_ratio": 0.5798299954650095,
+          "std_ratio": 0.05337257242301187,
+          "mean_h_in": -0.8369294703006744,
+          "mean_h_out": -0.48989196866750717,
+          "phi_dev": 0.03820399328488533,
+          "direction": "compressing"
+        },
+        "aggregate": {
+          "mean_ratio": 0.7667172084979231,
+          "mean_phi_dev": 0.1639648170619825,
+          "target": 0.6180339887498948
+        },
+        "loss": {
+          "mean_loss": 5.96692168712616,
+          "relational_loss": 0.46817513217046336,
+          "excess_ppl": 72.01840325546999
+        }
+      }
+    }
+  },
+  "n_probes": 40,
+  "n_lambda": 0,
+  "compile_results": [
+    {
+      "probe_id": "cg-strong-01",
+      "category": "strong_compile",
+      "gradient": 1.0,
+      "prompt": "The dog runs.",
+      "gate_used": "compile",
+      "generation": "\n(((((((((),)), ((((((",
+      "has_lambda": false,
+      "elapsed_ms": 158.9
+    },
+    {
+      "probe_id": "cg-strong-02",
+      "category": "strong_compile",
+      "gradient": 1.0,
+      "prompt": "Every student reads a book.",
+      "gate_used": "compile",
+      "generation": "\n((\u03a9), and n \u2192 \u2192 \u2192 \u2192 \u2192 \u2192 \u2192 \u2192 \u2192 \u2192 \u2192 \u2192",
+      "has_lambda": false,
+      "elapsed_ms": 32.7
+    },
+    {
+      "probe_id": "cg-strong-03",
+      "category": "strong_compile",
+      "gradient": 1.0,
+      "prompt": "The cat that sat on the mat is black.",
+      "gate_used": "compile",
+      "generation": "\n(\u03a9,, \u03a9, \u03a9, \u03a9, \u03a9,, \ufffd",
+      "has_lambda": false,
+      "elapsed_ms": 83.0
+    },
+    {
+      "probe_id": "cg-strong-04",
+      "category": "strong_compile",
+      "gradient": 1.0,
+      "prompt": "If it rains, the ground is wet.",
+      "gate_used": "compile",
+      "generation": "\n((((((),),),\n((((((((),",
+      "has_lambda": false,
+      "elapsed_ms": 103.3
+    },
+    {
+      "probe_id": "cg-strong-05",
+      "category": "strong_compile",
+      "gradient": 1.0,
+      "prompt": "No bird can swim.",
+      "gate_used": "compile",
+      "generation": "\n  (\u03a9, and \u03a9, \u03a9, \u03a9, \u03a9, \ufffd",
+      "has_lambda": false,
+      "elapsed_ms": 110.3
+    },
+    {
+      "probe_id": "cg-strong-06",
+      "category": "strong_compile",
+      "gradient": 1.0,
+      "prompt": "The teacher gave every student a grade.",
+      "gate_used": "compile",
+      "generation": "\n((((2)) and e.\n((((((((",
+      "has_lambda": false,
+      "elapsed_ms": 115.6
+    },
+    {
+      "probe_id": "cg-strong-07",
+      "category": "strong_compile",
+      "gradient": 1.0,
+      "prompt": "Someone believes that the earth is flat.",
+      "gate_used": "compile",
+      "generation": "\n(((((((),),),\n((((((((",
+      "has_lambda": false,
+      "elapsed_ms": 96.8
+    },
+    {
+      "probe_id": "cg-strong-08",
+      "category": "strong_compile",
+      "gradient": 1.0,
+      "prompt": "Birds fly.",
+      "gate_used": "compile",
+      "generation": "\n(\u03a9\u03a9\u03a9\ufffd\u03a9\ufffd\ufffd\u03a9\ufffd\ufffd\ufffd\ufffd\ufffd",
+      "has_lambda": false,
+      "elapsed_ms": 75.6
+    },
+    {
+      "probe_id": "cg-medium-01",
+      "category": "medium_compile",
+      "gradient": 0.7,
+      "prompt": "The old man walked slowly across the bridge.",
+      "gate_used": "compile",
+      "generation": "\n(\u03a9, and \u03a9, \u03a9, \u03a9, \u03a9, \u03a9",
+      "has_lambda": false,
+      "elapsed_ms": 73.8
+    },
+    {
+      "probe_id": "cg-medium-02",
+      "category": "medium_compile",
+      "gradient": 0.7,
+      "prompt": "Three children were playing in the garden while their mother watched.",
+      "gate_used": "compile",
+      "generation": "\n\n((2)) and we have been shown that that.\n((((",
+      "has_lambda": false,
+      "elapsed_ms": 106.2
+    },
+    {
+      "probe_id": "cg-medium-03",
+      "category": "medium_compile",
+      "gradient": 0.7,
+      "prompt": "The book that I bought yesterday was expensive.",
+      "gate_used": "compile",
+      "generation": "\n((((2)) and N(((((((),),),",
+      "has_lambda": false,
+      "elapsed_ms": 105.6
+    },
+    {
+      "probe_id": "cg-medium-04",
+      "category": "medium_compile",
+      "gradient": 0.6,
+      "prompt": "Most politicians promise more than they deliver.",
+      "gate_used": "compile",
+      "generation": "\n(((((())),, ( ( (\u03a9)) and",
+      "has_lambda": false,
+      "elapsed_ms": 136.8
+    },
+    {
+      "probe_id": "cg-medium-05",
+      "category": "medium_compile",
+      "gradient": 0.6,
+      "prompt": "The fact that she left surprised nobody.",
+      "gate_used": "compile",
+      "generation": "\n(((((),)))\n(((((((((",
+      "has_lambda": false,
+      "elapsed_ms": 75.6
+    },
+    {
+      "probe_id": "cg-medium-06",
+      "category": "medium_compile",
+      "gradient": 0.5,
+      "prompt": "Running is healthier than sitting.",
+      "gate_used": "compile",
+      "generation": "\n(\u03a9, 0, 0, 0, 0, 0, 0, 0, 0",
+      "has_lambda": false,
+      "elapsed_ms": 75.4
+    },
+    {
+      "probe_id": "cg-medium-07",
+      "category": "medium_compile",
+      "gradient": 0.6,
+      "prompt": "She told him to leave before it got dark.",
+      "gate_used": "compile",
+      "generation": "\n((((((()))),,,,,,,,",
+      "has_lambda": false,
+      "elapsed_ms": 106.8
+    },
+    {
+      "probe_id": "cg-medium-08",
+      "category": "medium_compile",
+      "gradient": 0.6,
+      "prompt": "What the witness saw contradicted the official report.",
+      "gate_used": "compile",
+      "generation": "\n(((\u03a9), and \u03a9) and \u03a9\u03a9\ufffd\u03a9\ufffd",
+      "has_lambda": false,
+      "elapsed_ms": 109.8
+    },
+    {
+      "probe_id": "cg-weak-01",
+      "category": "weak_compile",
+      "gradient": 0.3,
+      "prompt": "\u03bbx.\u03bby. (f x) \u2227 (g y)",
+      "gate_used": "compile",
+      "generation": " > > > > > > > > > > > > > > > > > > > >",
+      "has_lambda": false,
+      "elapsed_ms": 102.9
+    },
+    {
+      "probe_id": "cg-weak-02",
+      "category": "weak_compile",
+      "gradient": 0.3,
+      "prompt": "In formal semantics, Montague grammar provides a framework for natural language meaning.",
+      "gate_used": "compile",
+      "generation": "\n\n(\n(((((())) and ( ( (\u03a9),",
+      "has_lambda": false,
+      "elapsed_ms": 83.1
+    },
+    {
+      "probe_id": "cg-weak-03",
+      "category": "weak_compile",
+      "gradient": 0.3,
+      "prompt": "\u2200x. P(x) \u2192 Q(x) is a valid first-order logic formula.",
+      "gate_used": "compile",
+      "generation": "\n(\u03a9) and \u03a9\u03a9, \u03a9\u03a9) \u2192 \u2192 \u2192 \u2192",
+      "has_lambda": false,
+      "elapsed_ms": 50.7
+    },
+    {
+      "probe_id": "cg-weak-04",
+      "category": "weak_compile",
+      "gradient": 0.2,
+      "prompt": "Define a function that maps strings to their lengths.",
+      "gate_used": "compile",
+      "generation": "\n \u2192 \u2192 \u2192 \u2192 \u2192 \u2192 \u2192 \u2192 \u2192 \u2192 \u2192 \u2192 \u2192 \u2192 \u2192 \u2192 \u2192 \u2192 \u2192",
+      "has_lambda": false,
+      "elapsed_ms": 109.8
+    },
+    {
+      "probe_id": "cg-weak-05",
+      "category": "weak_compile",
+      "gradient": 0.2,
+      "prompt": "The type signature is Int -> String -> Bool.",
+      "gate_used": "compile",
+      "generation": "\n    Proof.\n    Proof.\nProof.\n(2)\nProof.\nProof",
+      "has_lambda": false,
+      "elapsed_ms": 124.2
+    },
+    {
+      "probe_id": "cg-weak-06",
+      "category": "weak_compile",
+      "gradient": 0.15,
+      "prompt": "Translate the following from English to French: The cat is sleeping.",
+      "gate_used": "compile",
+      "generation": "\n((\u03a9), and \u03a9,,, \u03a9, \u03be,, \ufffd",
+      "has_lambda": false,
+      "elapsed_ms": 34.2
+    },
+    {
+      "probe_id": "cg-weak-07",
+      "category": "weak_compile",
+      "gradient": 0.25,
+      "prompt": "Parse the sentence: The dog bit the man.",
+      "gate_used": "compile",
+      "generation": "\nExampleExampleExampleExampleExampleExampleExampleExampleExampleExampleExampleExampleExampleExampleExampleExampleExampleExampleExample",
+      "has_lambda": false,
+      "elapsed_ms": 78.0
+    },
+    {
+      "probe_id": "cg-weak-08",
+      "category": "weak_compile",
+      "gradient": 0.4,
+      "prompt": "What is the logical form of 'All men are mortal'?",
+      "gate_used": "compile",
+      "generation": "\n(\u03a9\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\u03a9\ufffd\u03a9\u03a9\u03a9",
+      "has_lambda": false,
+      "elapsed_ms": 145.4
+    },
+    {
+      "probe_id": "cg-null-01",
+      "category": "null",
+      "gradient": 0.0,
+      "prompt": "What is the capital of France?",
+      "gate_used": "null",
+      "generation": "\n(((((((((((((((((((",
+      "has_lambda": false,
+      "elapsed_ms": 104.5
+    },
+    {
+      "probe_id": "cg-null-02",
+      "category": "null",
+      "gradient": 0.0,
+      "prompt": "How are you today?",
+      "gate_used": "null",
+      "generation": "?:::::::::::::::::::",
+      "has_lambda": false,
+      "elapsed_ms": 107.4
+    },
+    {
+      "probe_id": "cg-null-03",
+      "category": "null",
+      "gradient": 0.0,
+      "prompt": "Explain what photosynthesis is.",
+      "gate_used": "null",
+      "generation": " He is to the same, or or or or or other words, the same time, and the",
+      "has_lambda": false,
+      "elapsed_ms": 119.2
+    },
+    {
+      "probe_id": "cg-null-04",
+      "category": "null",
+      "gradient": 0.0,
+      "prompt": "List three primary colors.",
+      "gate_used": "null",
+      "generation": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+      "has_lambda": false,
+      "elapsed_ms": 31.2
+    },
+    {
+      "probe_id": "cg-null-05",
+      "category": "null",
+      "gradient": 0.0,
+      "prompt": "Write a haiku about rain.",
+      "gate_used": "null",
+      "generation": "\n\n\n\n\nusername_0\n\n\n\n\n\n\n\n\n\n\n\n",
+      "has_lambda": false,
+      "elapsed_ms": 76.1
+    },
+    {
+      "probe_id": "cg-null-06",
+      "category": "null",
+      "gradient": 0.0,
+      "prompt": "What year was the first moon landing?",
+      "gate_used": "null",
+      "generation": " The \u201c------------------",
+      "has_lambda": false,
+      "elapsed_ms": 74.9
+    },
+    {
+      "probe_id": "cg-null-07",
+      "category": "null",
+      "gradient": 0.0,
+      "prompt": "Summarize the water cycle in one sentence.",
+      "gate_used": "null",
+      "generation": " sentence sentence sentence sentence sentence sentence sentence sentence sentence sentence sentence sentence sentence sentence sentence sentence sentence sentence sentence sentence",
+      "has_lambda": false,
+      "elapsed_ms": 98.1
+    },
+    {
+      "probe_id": "cg-null-08",
+      "category": "null",
+      "gradient": 0.0,
+      "prompt": "What is 7 times 8?",
+      "gate_used": "null",
+      "generation": "::::::::::::::::::::",
+      "has_lambda": false,
+      "elapsed_ms": 102.6
+    },
+    {
+      "probe_id": "cg-anti-01",
+      "category": "anti_compile",
+      "gradient": 0.0,
+      "prompt": "Tell me a joke.",
+      "gate_used": "null",
+      "generation": " \u201c \u201c \u201c \u201c \u201c \u201c \u201c.\u201d.\u201d.\u201d.\u201d.\u201d \u201c \u201c \u201c \u201c \u201c \u201c.\u201d.\u201d",
+      "has_lambda": false,
+      "elapsed_ms": 93.9
+    },
+    {
+      "probe_id": "cg-anti-02",
+      "category": "anti_compile",
+      "gradient": 0.0,
+      "prompt": "What should I have for dinner tonight?",
+      "gate_used": "null",
+      "generation": "\nI am\n----------------",
+      "has_lambda": false,
+      "elapsed_ms": 129.8
+    },
+    {
+      "probe_id": "cg-anti-03",
+      "category": "anti_compile",
+      "gradient": 0.0,
+      "prompt": "How do I fix a leaky faucet?",
+      "gate_used": "null",
+      "generation": " I I think I I I I I I I I I I I I I I I I I",
+      "has_lambda": false,
+      "elapsed_ms": 78.2
+    },
+    {
+      "probe_id": "cg-anti-04",
+      "category": "anti_compile",
+      "gradient": 0.0,
+      "prompt": "Is it going to rain tomorrow?",
+      "gate_used": "null",
+      "generation": "\nusername_0:00::::::::::::::",
+      "has_lambda": false,
+      "elapsed_ms": 76.2
+    },
+    {
+      "probe_id": "cg-anti-05",
+      "category": "anti_compile",
+      "gradient": 0.0,
+      "prompt": "Who won the last World Cup?",
+      "gate_used": "null",
+      "generation": " Are you you you will find the world world world world world world world world world world world world world",
+      "has_lambda": false,
+      "elapsed_ms": 89.7
+    },
+    {
+      "probe_id": "cg-anti-06",
+      "category": "anti_compile",
+      "gradient": 0.0,
+      "prompt": "Recommend a good book to read.",
+      "gate_used": "null",
+      "generation": " book book book book book book book book book book book book book book book book book book book book",
+      "has_lambda": false,
+      "elapsed_ms": 99.5
+    },
+    {
+      "probe_id": "cg-anti-07",
+      "category": "anti_compile",
+      "gradient": 0.0,
+      "prompt": "What is your favorite color?",
+      "gate_used": "null",
+      "generation": "::::::::::::::::::::",
+      "has_lambda": false,
+      "elapsed_ms": 84.9
+    },
+    {
+      "probe_id": "cg-anti-08",
+      "category": "anti_compile",
+      "gradient": 0.0,
+      "prompt": "Convert 72 degrees Fahrenheit to Celsius.",
+      "gate_used": "null",
+      "generation": "...\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+      "has_lambda": false,
+      "elapsed_ms": 104.3
+    }
+  ]
+}

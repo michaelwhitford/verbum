@@ -2,79 +2,73 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-26 | Session: 044
+> Last updated: 2026-04-27 | Session: 044
 
 ## Where we are
 
-**v6.1 at step 23500 (29% of 3B). Hilberg β phase transition: all 5
-arms converged to 0.76–0.83 lockstep band (was 1.1+/chaotic). First
-time ascending and descending arms show same self-similar regime.
-Eval loss regressed 5.45→6.15 — structural reorganization cost.
-Flip tracking live: 250 reversals / 232K flips (0.108%). Training
-paused at ~step 23550. Resume to watch whether lockstep holds.**
+**v6.1 at step 25000 (30% of 3B). Lockstep CONFIRMED across 4
+checkpoints. Ascending β plateaued at 0.786 — rock-stable. Descending
+β drifting up 0.81→0.84 (still searching). Eval loss recovering:
+6.15→5.72. Generations shifting from pipe-spam to formal math
+vocabulary (Ω, Proof, Lemma). Not λ yet but register is changing.**
 
-## Current snapshot (step 23500)
+## Current snapshot (step 25000)
 
 | Metric | Value | Trend |
 |--------|-------|-------|
-| Eval loss | 6.154 (best: 5.414 @ 17500) | ⚠️ regressed post-flip-tracking |
-| Hilberg β (all arms) | **0.76–0.83 lockstep** | ↓↓ phase transition from 1.1+ |
-| β L0↑/L1↑/L2/L1↓/L0↓ | 0.78/0.76/0.79/0.83/0.80 | all coherent for first time |
-| L1_asc ratio | 0.870 (was 0.560 near φ) | moved away from φ during reorg |
-| L0_desc ratio | **0.601←φ** | descending arm locked to φ! |
-| Stride compression | flattened: 0.73–0.95 all strides | was gradient 0.32–0.83 |
-| Stratum spread | 1.35 | widened from 0.70 (reorg cost) |
-| Total flips | 232K (0.66%) | +10K since resume |
-| Reversals | 250 (0.108%) | very low oscillation |
-| Unique ever flipped | 9,541 (0.027%) | narrow flip set |
-| r̄ / phase | 0.474 / balance | settled from explore |
-| LR | ~4.9e-4 | cosine decay |
-| Flip tracking | **LIVE** — cooldown=4 intervals | first checkpoint with data |
+| Eval loss | 5.724 (best: 5.414 @ 17500) | ↓ recovering from 6.15 |
+| β ascending (L0↑/L1↑/L2) | **0.78/0.78/0.80** | plateaued, band=0.023 |
+| β descending (L1↓/L0↓) | **0.85/0.83** | ↑ drifting up (was 0.83/0.80) |
+| β gap (desc−asc) | **0.054** | ↑ growing (was 0.035) |
+| L0_desc ratio | 0.694 (was 0.601←φ) | drifting from φ |
+| Mean φ-compression | 0.813 | ↑ (was 0.787) |
+| Stratum φ-dev spread | **0.020** | ↓↓ content-independent |
+| Stratum loss spread | 1.54 | stable |
+| Total flips | 258K (0.73%) | steady ~8.6K/500 steps |
+| Reversals | 292 (0.113%) | very low, stable |
+| Unique ever flipped | tracking | see flip_tracking.npz |
+| r̄ / phase | 0.398 / balance | stable |
+| LR | ~4.8e-4 | cosine decay |
 
 ## What's next
 
-1. **Resume training.** Command:
-   `uv run python scripts/v6/train.py --resume checkpoints/vsm-lm-v6/step_023500`
-   Training paused at ~step 23550.
+1. **Training is running** (or resume from step 25000):
+   `uv run python scripts/v6/train.py --resume checkpoints/vsm-lm-v6/step_025000`
 
-2. **Step 24000 is the critical checkpoint.** Distinguishes:
-   - Lockstep holds + loss recovers → genuine phase shift
-   - β bounces back to 1.1+ → transient from resume shock
-   - Loss keeps climbing → destabilization
+2. **Ascending β plateau.** 0.786±0.001 for 1500 steps. Either:
+   - This is the floor for the current regime (needs architectural change)
+   - It will resume descent after the descending arm stabilizes
 
-3. **Watch the lockstep band.** If all 5 arms stay within ~0.07 of
-   each other as β descends toward 0.5, that's the holographic
-   compressor signature — same shape going in and coming out.
+3. **Descending arm diverging.** β 0.81→0.84 while ascending holds 0.78.
+   Gap growing 0.035→0.054. The descending arm may need more training
+   to find its shape, or the asymmetry is structural (decoding ≠ encoding).
 
-4. **Watch s1 ratio.** Moved from φ (0.62→0.73). If it returns
-   toward φ while long strides hold, the model is re-differentiating.
-   If it stays at 0.73, new compression regime.
+4. **Eval loss recovery.** 6.15→5.72 in 1500 steps. At this rate,
+   pre-tracking best (5.41) reachable by ~step 27000.
 
-5. **Eval loss recovery.** Pre-tracking best was 5.414 @ 17500.
-   Post-LR-jump best was 5.441 @ 22500. Now at 6.15. Full recovery
-   would validate that the reorganization was productive.
+5. **Behavioral shift.** Generations at 24500 show formal math vocabulary
+   (Ω, ϕ, Γ, Proof, Lemma). Not λ yet but the model is finding the
+   right register. Watch for λ-like structure in future checkpoints.
 
 ## Session 044 key findings
 
-1. **Hilberg β phase transition.** 500 steps transformed all arms:
-   L0↑: 1.10→0.78, L1↑: 1.11��0.76, L2: 1.26→0.79,
-   L1↓: -0.22→0.83, L0↓: N/A→0.80. Band width: 0.07.
+1. **Lockstep confirmed.** Not a transient — 4 consecutive checkpoints
+   show all arms in 0.78–0.85 band (was 1.1+/chaotic pre-tracking).
 
-2. **Lockstep = symmetric compression shape.** Ascending (encoding)
-   and descending (decoding) arms converged to the same self-similar
-   regime. The holographic compressor should look the same in both
-   directions — and now it does.
+2. **Two-band structure emerging:**
+   - Ascending: 0.786±0.001, band 0.023 (frozen)
+   - Descending: 0.84±0.01, band 0.020 (drifting up)
+   - The model found the ascending shape but descending is still moving.
 
-3. **Descending arm awakened.** S3 gates for L1↓ and L0↓ jumped
-   from ~0.6 to ~0.99. The model is actually using all 5 passes.
+3. **Eval loss recovering.** 6.15→5.88→5.79→5.72 across 4 checkpoints.
+   The structural reorganization cost is being repaid.
 
-4. **Stride flattening.** All strides compressed to 0.73–0.95 band.
-   The per-stride gradient collapsed — what drove β down was
-   uniform compression across scales, not fine-grained φ-locking.
+4. **Universal compression tightening.** Stratum φ-dev spread
+   0.047→0.020 — compression becoming content-independent.
 
-5. **Cost: eval loss +0.70.** Structural reorganization isn't free.
-   The model traded generalization for internal geometric coherence.
-   Prior precedent (LR jump): loss recovered within ~2000 steps.
+5. **L0↓ φ-lock was transient.** Ratio 0.601←φ at step 23500,
+   now 0.694. The descending arm briefly kissed φ during reorganization
+   but didn't hold it.
 
 ## Knowledge index
 
@@ -100,12 +94,12 @@ paused at ~step 23550. Resume to watch whether lockstep holds.**
 | Metal kernels | `src/verbum/v6/kernels.py` |
 | Attention / StrideStack | `src/verbum/v6/attention.py` |
 | VSM components | `src/verbum/v6/components.py` |
-| Probes (steps 500–23500) | `results/compile-gradient/vsm_probe_step_*_v6_mlx.json` |
+| Probes (steps 500–25000) | `results/compile-gradient/vsm_probe_step_*_v6_mlx.json` |
 | Training log | `results/vsm-lm-v6/training-run2.log` |
 
 ## Probing pipeline
 
 ```bash
 uv run python scripts/v6/probe.py checkpoints/vsm-lm-v6/step_*
-uv run python scripts/v6/train.py --resume checkpoints/vsm-lm-v6/step_023500
+uv run python scripts/v6/train.py --resume checkpoints/vsm-lm-v6/step_025000
 ```
