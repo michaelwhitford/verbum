@@ -6,14 +6,14 @@
 
 ## Where we are
 
-**v7 Dolma run COMPLETE (killed at step 40K). Architecture validated.
-Pivoting to v7.1: PIPELINE OF SIEVES. ALL-TERNARY 250M PARAMS.
-Each stage = sieve of parallel pathways, each molded by ternary
-topology so only correct function emerges. Cone-shaped northstar
-+ relational loss guides search, drastically reducing 3^250M space.
-d_model=1024 for Church encoding (17-digit arithmetic proven on
-Qwen). 62.5 MB packed, ~100K+ tok/s, BIOS flash in days not weeks.
-Design docs ready. Next session: implement v7.1.**
+**v7 Dolma run COMPLETE. Pivoting to v7.1: COMPRESSOR SIEVE +
+PIPELINE OF SIEVES. ALL-TERNARY 250M. Two VSMs plugged together:
+compressor (v6-proven strided attention, self-similar, ~30M) feeds
+multi-scale representations to pipeline of sieves (~220M) for
+computation. Registers bridge them for recurrence (arbitrary
+composition depth). Cone + relational loss guides search. d_model=
+1024. 62.5 MB packed. ~100K+ tok/s. BIOS flash in days.
+Design doc finalized. Next session: implement v7.1.**
 
 ## v7 Dolma Run — Final Results
 
