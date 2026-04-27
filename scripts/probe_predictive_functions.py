@@ -489,6 +489,7 @@ def main():
     parser.add_argument("experiment", choices=["landscape", "complexity", "priming", "all"])
     parser.add_argument("--port", type=int, default=5102)
     parser.add_argument("--host", type=str, default="localhost")
+    parser.add_argument("--name", type=str, default=None, help="Model name for output subdir (e.g. a3b, a17b)")
     args = parser.parse_args()
 
     base_url = f"http://{args.host}:{args.port}"
@@ -502,7 +503,8 @@ def main():
         print(f"ERROR: Cannot reach {base_url}: {e}")
         sys.exit(1)
 
-    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    results_dir = RESULTS_DIR / args.name if args.name else RESULTS_DIR
+    results_dir.mkdir(parents=True, exist_ok=True)
 
     experiments = (
         ["landscape", "complexity", "priming"]
@@ -520,7 +522,7 @@ def main():
         else:
             continue
 
-        out_path = RESULTS_DIR / f"{exp_name}.json"
+        out_path = results_dir / f"{exp_name}.json"
         out_path.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n")
         print(f"\n  Saved: {out_path}\n")
 
