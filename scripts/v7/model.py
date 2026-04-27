@@ -540,7 +540,11 @@ class VSMPipeline(nn.Module):
         return logits
 
     def _stage1_ce(self, h1: mx.array, targets: mx.array) -> mx.array:
-        """Project Stage 1 representation to logits and compute CE."""
+        """Project Stage 1 representation to logits and compute CE.
+
+        Returns an mx.array scalar — caller is responsible for mx.eval().
+        Do NOT call float() here; batch evaluations externally.
+        """
         h_out = self.out_norm(h1)
         logits = h_out @ self.embed.weight.T
         return nn.losses.cross_entropy(
@@ -572,36 +576,37 @@ class VSMPipeline(nn.Module):
 
         # ── Upward path: abstraction ──
         stage_outputs = []
+        h_norms = []
         h = x
         for i, stage in enumerate(self.stages):
             h = stage(h, mask=self._causal_masks[i])
             stage_outputs.append(h)
-            metrics[f"stage{i+1}_h_norm"] = float(
-                mx.mean(mx.sqrt(mx.sum(h * h, axis=-1)))
-            )
+            h_norms.append(mx.mean(mx.sqrt(mx.sum(h * h, axis=-1))))
             if i < len(self.stages) - 1:
                 h = self.reducers[i](h, mask=self._reduction_masks[i])
+
+        # Single eval for all norms
+        mx.eval(*h_norms)
+        for i, hn in enumerate(h_norms):
+            metrics[f"stage{i+1}_h_norm"] = float(hn)
 
         # ── Per-stage CE measurement (incremental feedback) ──
         if targets is not None:
             # Save raw stage outputs (before any feedback modifies them)
             raw = [s for s in stage_outputs]
 
+            # Build all 4 CE computations lazily, then eval once
             # CE₁: Stage 1 alone — surface-only prediction
             ce1 = self._stage1_ce(raw[0], targets)
-            metrics["ce_stage1"] = float(ce1)
 
             # CE₂: Stage 1 + feedback from raw Stage 2
             h1_fb2 = self.feedbacks[0](raw[0], raw[1])
             ce2 = self._stage1_ce(h1_fb2, targets)
-            metrics["ce_stage2"] = float(ce2)
 
             # CE₃: Stage 1 + feedback from Stage 2 refined by raw Stage 3
-            # (Stage 3 has NOT been refined by Stage 4 here)
             s2_with_s3 = self.feedbacks[1](raw[1], raw[2])
             h1_fb23 = self.feedbacks[0](raw[0], s2_with_s3)
             ce3 = self._stage1_ce(h1_fb23, targets)
-            metrics["ce_stage3"] = float(ce3)
 
             # CE₄: Full cascade — Stage 3 refined by 4, Stage 2 by refined-3,
             # Stage 1 by refined-2. This equals the main training loss.
@@ -609,6 +614,12 @@ class VSMPipeline(nn.Module):
             s2_with_s34 = self.feedbacks[1](raw[1], s3_with_s4)
             h1_fb234 = self.feedbacks[0](raw[0], s2_with_s34)
             ce4 = self._stage1_ce(h1_fb234, targets)
+
+            # Single eval for all 4 CEs — one sync point, not four
+            mx.eval(ce1, ce2, ce3, ce4)
+            metrics["ce_stage1"] = float(ce1)
+            metrics["ce_stage2"] = float(ce2)
+            metrics["ce_stage3"] = float(ce3)
             metrics["ce_stage4"] = float(ce4)
 
         # ── Full cascade for logits (same as grad path) ──

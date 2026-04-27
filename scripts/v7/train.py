@@ -641,11 +641,10 @@ def train(args):
         if has_ternary:
             accum_grads = zero_ternary_grads(model, accum_grads)
 
-        # ── Gradient clipping ──
-        grad_norm = sum(
-            float(mx.sum(g * g))
-            for _, g in tree_flatten(accum_grads)
-        ) ** 0.5
+        # ── Gradient clipping (single eval, not per-param) ──
+        grad_sq = [mx.sum(g * g) for _, g in tree_flatten(accum_grads)]
+        mx.eval(*grad_sq)
+        grad_norm = sum(float(g) for g in grad_sq) ** 0.5
 
         if args.max_grad_norm > 0 and grad_norm > args.max_grad_norm:
             scale = args.max_grad_norm / (grad_norm + 1e-6)
@@ -655,7 +654,7 @@ def train(args):
         optimizer.update(model, accum_grads)
         mx.eval(model.parameters(), optimizer.state)
 
-        # ── Restore ternary weights to uint8 ──
+        # ── Restore ternary weights to uint8 (only if ternary) ──
         if has_ternary:
             restore_ternary(model)
 
@@ -689,18 +688,26 @@ def train(args):
         train_losses.append(avg_loss)
         dt = time.time() - t0
 
-        # ── Per-stage metrics (from last micro-batch, no grad path) ──
-        _, step_metrics = model.forward_with_metrics(inputs, targets=targets)
+        # ── Per-stage metrics (expensive — only at log interval) ──
+        # Between measurements, phase controllers use the global training loss.
+        # This avoids 4 extra CE projections + 6 feedback passes per step.
+        compute_stage_metrics = (step % args.log_interval == 0 or step == 1)
 
-        # ── Phase control (per-stage, independent signals) ──
-        ce_keys = ["ce_stage1", "ce_stage2", "ce_stage3", "ce_stage4"]
-        ces = [step_metrics.get(k, avg_loss) for k in ce_keys]
+        if compute_stage_metrics:
+            logits_m, step_metrics = model.forward_with_metrics(inputs, targets=targets)
+            mx.eval(logits_m)  # force single eval of the full graph
+            ce_keys = ["ce_stage1", "ce_stage2", "ce_stage3", "ce_stage4"]
+            ces = [step_metrics.get(k, avg_loss) for k in ce_keys]
 
-        # Stage 1: driven by its own CE
-        stage_controllers[0].update_stage1(ces[0])
-        # Stages 2-4: driven by their contribution delta
-        for k in range(1, len(stage_controllers)):
-            stage_controllers[k].update_higher(ces[k], ces[k - 1])
+            # Update phase controllers with per-stage signal
+            stage_controllers[0].update_stage1(ces[0])
+            for k in range(1, len(stage_controllers)):
+                stage_controllers[k].update_higher(ces[k], ces[k - 1])
+        else:
+            # Cheap update: all controllers use the global loss
+            for sc in stage_controllers:
+                sc.update_stage1(avg_loss)
+            ces = None
 
         r = relational_loss(avg_loss)
         g_phase = global_controller.phase
@@ -719,11 +726,12 @@ def train(args):
                 f"{tps/1000:.1f}k tok/s  {dt:.2f}s"
             )
 
-            # Per-stage CE and deltas
-            ce_parts = [f"CE{i+1}={ces[i]:.3f}" for i in range(4)]
-            deltas = [f"Δ{i+1}={ces[i-1]-ces[i]:+.3f}" for i in range(1, 4)]
-            print(f"         │ {' '.join(ce_parts)}")
-            print(f"         │ {' '.join(deltas)}")
+            # Per-stage CE and deltas (only when measured)
+            if ces is not None:
+                ce_parts = [f"CE{i+1}={ces[i]:.3f}" for i in range(4)]
+                deltas = [f"Δ{i+1}={ces[i-1]-ces[i]:+.3f}" for i in range(1, 4)]
+                print(f"         │ {' '.join(ce_parts)}")
+                print(f"         │ {' '.join(deltas)}")
 
             # Per-stage r_ema and phase
             r_parts = [f"r{i+1}={sc.r_ema:.3f}" for i, sc in enumerate(stage_controllers)]
