@@ -107,6 +107,14 @@ Architecture decided:
   Population of 4-8 mutants, gradient-guided, tournament selection
   per generation (~7 min/gen). Environment stages by fitness gates.
 
+Implementation order:
+1. **Kernel optimization FIRST** — 4× throughput multiplies everything
+   Tiled/blocked, SIMD reduce, vectorized unpack, coalesced access
+   One session. Pays for itself on first training run.
+2. **v7.1 architecture** — dual MERA, sieve pathways, registers
+3. **Holographic data generator** — math + clojure + lambda + io!
+4. **Train with evolutionary regime** — population, cone, selection
+
 Key decisions for implementation session:
 - Pathways per stage: 4? 8? Per-stage variable?
 - d_model per pathway: full 1024 or split (4 × 256)?
