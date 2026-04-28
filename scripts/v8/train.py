@@ -136,34 +136,105 @@ def relational_loss(loss: float) -> float:
 
 
 # ═══════════════════════════════════════════════════════════════════
-# Cheap circuit probe for tournament fitness
+# Teacher-forced circuit probe for tournament fitness
 # ═══════════════════════════════════════════════════════════════════
 
-def run_cheap_probe(model: DualMERA, seq_len: int, seed: int, n_examples: int = 10) -> float:
-    """Lightweight tier-1 probe for tournament fitness evaluation.
+def run_teacher_forced_probe(
+    model: DualMERA, seq_len: int, seed: int, n_examples: int = 10,
+) -> float:
+    """Fast circuit probe via teacher forcing — single batched forward pass.
 
-    Generates n_examples single-arithmetic problems, greedy-decodes,
-    checks exact match. Returns accuracy as float [0, 1].
+    Instead of autoregressive decode (150 sequential forward passes),
+    feeds prompt+answer as input and checks if logits at each answer
+    position have the correct next token as argmax.
 
-    Much cheaper than the full compute probe: ~10 examples vs ~100,
-    tier-1 only (short answers), short generation limit.
+    An example is "correct" if ALL answer tokens are predicted correctly
+    at every position (teacher-forced exact match).
+
+    Cost: 1 forward pass at batch=n_examples ≈ 130ms
+    vs autoregressive: 150 forward passes at batch=1 ≈ 9500ms
+
+    Args:
+        model:      DualMERA model
+        seq_len:    model sequence length
+        seed:       random seed for example generation
+        n_examples: number of tier-1 examples (default 10)
+
+    Returns:
+        Accuracy as float [0, 1].
     """
     import random as stdlib_random
-    from compute_probe import _gen_tier1, _greedy_generate
-    from tokenizer import encode, decode
+    from compute_probe import _gen_tier1
+    from tokenizer import encode, PAD_ID
 
     rng = stdlib_random.Random(seed)
-    examples = _gen_tier1(rng, n=n_examples)
+    examples = _gen_tier1(rng, n=n_examples)[:n_examples]
 
+    # Tokenize each prompt+answer pair and track answer boundaries.
+    # BPE may re-segment at the prompt/answer boundary, so we tokenize
+    # the full string and find the answer span from the end.
+    sequences = []   # (full_ids, n_answer_tokens)
+    for prompt, expected, _tier, _op in examples:
+        full_text = prompt + expected
+        full_ids = encode(full_text)
+        answer_ids = encode(expected)
+
+        # The answer tokens are at the END of full_ids.
+        # Due to BPE merging at the boundary, full_ids[-len(answer_ids):]
+        # may not equal answer_ids. So we count answer tokens by encoding
+        # just the answer and using that length as the span from the end.
+        # This is correct even if BPE merges boundary tokens differently,
+        # because we check against full_ids (the ground truth tokenization).
+        n_ans = len(answer_ids)
+
+        # Clamp to seq_len (leave room for at least 1 prompt token)
+        if len(full_ids) > seq_len:
+            full_ids = full_ids[:seq_len]
+            n_ans = min(n_ans, seq_len - 1)
+
+        if n_ans < 1:
+            continue
+
+        sequences.append((full_ids, n_ans))
+
+    if not sequences:
+        return 0.0
+
+    B = len(sequences)
+
+    # Pad all sequences to seq_len (model requires exact seq_len for MERA structure).
+    # Left-pad with PAD tokens so answer tokens are right-aligned.
+    import numpy as np_
+    batch = np_.full((B, seq_len), PAD_ID, dtype=np_.int64)
+    for i, (ids, _) in enumerate(sequences):
+        L = len(ids)
+        batch[i, seq_len - L :] = ids
+
+    # Forward pass: logits[b, t] predicts token at position t+1
+    tokens = mx.array(batch, dtype=mx.int32)
+    logits = model(tokens)
+    mx.eval(logits)
+
+    # Check answer tokens: for each example, the answer occupies the
+    # last n_ans tokens of the padded sequence. To predict token at position j,
+    # we check argmax(logits[b, j-1]). So for answer tokens at positions
+    # [seq_len - n_ans, seq_len), we check logits at [seq_len - n_ans - 1, seq_len - 1).
     correct = 0
-    for prompt, expected, tier, op in examples[:n_examples]:
-        prompt_ids = encode(prompt)
-        gen_ids = _greedy_generate(model, prompt_ids, seq_len, max_tokens=15)
-        gen_text = decode(gen_ids).strip()
-        if gen_text.startswith(expected):
+    for i, (ids, n_ans) in enumerate(sequences):
+        # Answer tokens are at batch positions [seq_len - n_ans, seq_len)
+        # The logit that predicts batch[i, j] is logits[i, j-1]
+        all_match = True
+        for k in range(n_ans):
+            pos = seq_len - n_ans + k       # position of answer token k
+            target_token = batch[i, pos]
+            predicted = int(mx.argmax(logits[i, pos - 1]).item())
+            if predicted != target_token:
+                all_match = False
+                break
+        if all_match:
             correct += 1
 
-    return correct / max(1, n_examples)
+    return correct / B
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -322,13 +393,13 @@ def run_tournament(
     # ── Pass 2: probe champion and best mutant for circuit fitness ──
     # Probe champion
     load_topology(model, champion_snapshot)
-    champion_probe = run_cheap_probe(model, seq_len, seed=gen_seed)
+    champion_probe = run_teacher_forced_probe(model, seq_len, seed=gen_seed)
     champion_fitness = champion_loss - circuit_bonus * champion_probe
 
     if best_snapshot is not None and best_strategy is not None:
         # Probe best mutant
         load_topology(model, best_snapshot)
-        mutant_probe = run_cheap_probe(
+        mutant_probe = run_teacher_forced_probe(
             model, seq_len,
             seed=gen_seed + hash(best_strategy) % (2**31),
         )
