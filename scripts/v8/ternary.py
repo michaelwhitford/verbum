@@ -856,14 +856,175 @@ class TernaryLinear(nn.Module):
 
 
 # ══════════════════════════════════════════════════════════════════════
+# TernaryEmbedding — packed ternary lookup table
+# ══════════════════════════════════════════════════════════════════════
+
+
+class TernaryEmbedding(nn.Module):
+    """Embedding layer with ternary vectors and per-token gamma.
+
+    Each vocabulary entry is a ternary vector {-1, 0, +1}^d_model with a
+    float32 per-token scale (gamma). Lookup unpacks the selected rows on
+    the fly, producing float32 output identical to standard embedding.
+
+    Storage: vocab_size × d_model/4 bytes (packed) + vocab_size × 4 bytes (gamma)
+           = vocab_size × (d_model/4 + 4) bytes
+    vs float: vocab_size × d_model × 4 bytes
+
+    For vocab=50277, d=1024: 13.1 MB packed vs 196.4 MB float (15× smaller).
+
+    The ternary embedding participates in the flip accumulation mechanism
+    just like TernaryLinear, enabling topology evolution during training.
+    """
+
+    def __init__(self, vocab_size: int, d_model: int):
+        super().__init__()
+        self.vocab_size = vocab_size
+        self.d_model = d_model
+
+        # Initialize: random normal → quantize → pack
+        w_packed, gamma = _ternary_init(vocab_size, d_model)
+        self.ternary_weight = w_packed   # (vocab_size, d_model//4) uint8
+        self.gamma = gamma               # (vocab_size,) float32
+
+        # Flip accumulator (same as TernaryLinear)
+        self._flip_accum = mx.zeros((vocab_size, d_model), dtype=mx.int8)
+        self._flip_cooldown = mx.zeros((vocab_size, d_model), dtype=mx.int8)
+        self._flip_last_dir = mx.zeros((vocab_size, d_model), dtype=mx.int8)
+
+    def __call__(self, tokens: mx.array) -> mx.array:
+        """Lookup ternary embeddings for token indices.
+
+        tokens: (*, ) int array of token indices
+        Returns: (*, d_model) float32 array
+
+        Unpacks the packed rows for the selected tokens and multiplies
+        by the per-token gamma scale.
+        """
+        return _ternary_embed_fwd(tokens, self.ternary_weight, self.gamma)
+
+    @property
+    def weight_T(self) -> mx.array:
+        """Unpacked weight matrix transposed: (d_model, vocab_size) float32.
+
+        Used for tied output projection: logits = h @ embed.weight_T
+        This is computed on-the-fly from packed ternary weights + gamma.
+        """
+        # Unpack: (vocab_size, d_model) int8
+        w = unpack_ternary(self.ternary_weight, self.d_model).astype(mx.float32)
+        # Scale by gamma: (vocab_size, d_model) * (vocab_size, 1) → (vocab_size, d_model)
+        w = w * mx.expand_dims(self.gamma, axis=-1)
+        return w.T  # (d_model, vocab_size)
+
+    @property
+    def in_features(self):
+        """For compatibility with _walk_ternary_modules / flip utilities."""
+        return self.d_model
+
+    @property
+    def out_features(self):
+        return self.vocab_size
+
+
+@mx.custom_function
+def _ternary_embed_fwd(tokens: mx.array, w_packed: mx.array, gamma: mx.array) -> mx.array:
+    """Forward: unpack selected rows from packed ternary embedding, scale by gamma.
+
+    tokens:   (*,) int indices
+    w_packed: (vocab_size, d_model//4) uint8
+    gamma:    (vocab_size,) float32
+
+    Returns:  (*, d_model) float32
+    """
+    d_model = w_packed.shape[1] * 4
+    # Gather packed rows for the selected tokens
+    flat_tokens = tokens.reshape(-1)
+    packed_rows = w_packed[flat_tokens]     # (N, d_model//4) uint8
+    gamma_rows = gamma[flat_tokens]         # (N,) float32
+
+    # Unpack: (N, d_model//4) uint8 → (N, d_model) int8 → float32
+    w0 = ((packed_rows >> 6) & 0x3).astype(mx.float32) - 1.0
+    w1 = ((packed_rows >> 4) & 0x3).astype(mx.float32) - 1.0
+    w2 = ((packed_rows >> 2) & 0x3).astype(mx.float32) - 1.0
+    w3 = (packed_rows & 0x3).astype(mx.float32) - 1.0
+    # Interleave: columns {4k, 4k+1, 4k+2, 4k+3}
+    N = flat_tokens.shape[0]
+    K4 = packed_rows.shape[1]
+    unpacked = mx.stack([w0, w1, w2, w3], axis=-1).reshape(N, d_model)
+
+    # Scale by per-token gamma
+    result = unpacked * mx.expand_dims(gamma_rows, axis=-1)
+
+    # Reshape to match input token shape + d_model
+    return result.reshape(*tokens.shape, d_model)
+
+
+@_ternary_embed_fwd.vjp
+def _ternary_embed_vjp(primals, cotangent, output):
+    """Backward through ternary embedding lookup.
+
+    ∂L/∂tokens:  zeros (integer indices, not differentiable)
+    ∂L/∂w_packed: zeros matching packed shape — real grad goes to _embed_grad_cache
+                  (flip accumulator collects it separately, same as TernaryLinear)
+    ∂L/∂gamma:   per-token grad, scattered back to (vocab_size,)
+    """
+    tokens, w_packed, gamma = primals
+    grad_out = cotangent  # (*, d_model)
+    d_model = w_packed.shape[1] * 4
+
+    flat_tokens = tokens.reshape(-1)
+    N = flat_tokens.shape[0]
+    grad_flat = grad_out.reshape(N, d_model)
+
+    # ∂L/∂gamma: for each selected token, reduce grad_out over d_model
+    # First unpack the selected rows to compute the dot product
+    packed_rows = w_packed[flat_tokens]
+    w0 = ((packed_rows >> 6) & 0x3).astype(mx.float32) - 1.0
+    w1 = ((packed_rows >> 4) & 0x3).astype(mx.float32) - 1.0
+    w2 = ((packed_rows >> 2) & 0x3).astype(mx.float32) - 1.0
+    w3 = (packed_rows & 0x3).astype(mx.float32) - 1.0
+    unpacked = mx.stack([w0, w1, w2, w3], axis=-1).reshape(N, d_model)
+
+    # grad_gamma_per_token = Σ_d (grad_out[n,d] * unpacked[n,d])
+    grad_gamma_per_token = mx.sum(grad_flat * unpacked, axis=-1)  # (N,)
+
+    # Scatter gamma grads back to (vocab_size,) — use vectorized scatter
+    grad_gamma = mx.zeros((gamma.shape[0],), dtype=mx.float32)
+    grad_gamma = grad_gamma.at[flat_tokens].add(grad_gamma_per_token)
+
+    # ∂L/∂w: return zeros for w_packed (shape-matched), store real grad
+    # in the module's _embed_grad_cache for the flip accumulator
+    grad_w_packed = mx.zeros_like(w_packed).astype(mx.float32)
+
+    # Compute and cache the STE grad for flip accumulation:
+    # Store in a module-level cache that accumulate_flips_embed reads
+    gamma_rows = gamma[flat_tokens]  # (N,)
+    grad_w_dense = grad_flat * mx.expand_dims(gamma_rows, axis=-1)  # (N, d_model)
+    # Scatter to full vocab: (vocab_size, d_model)
+    full_grad = mx.zeros((w_packed.shape[0], d_model), dtype=mx.float32)
+    full_grad = full_grad.at[flat_tokens].add(grad_w_dense)
+    # Store in global cache keyed by w_packed id
+    _EMBED_GRAD_CACHE[id(w_packed)] = full_grad
+
+    # No gradient for tokens
+    grad_tokens = mx.zeros(tokens.shape, dtype=mx.float32)
+
+    return grad_tokens, grad_w_packed, grad_gamma
+
+
+# Global cache for embedding STE gradients (consumed by accumulate_flips)
+_EMBED_GRAD_CACHE: dict[int, mx.array] = {}
+
+
+# ══════════════════════════════════════════════════════════════════════
 # Flip utilities (simplified for v8)
 # ══════════════════════════════════════════════════════════════════════
 
 
 def _walk_ternary_modules(model: nn.Module):
-    """Yield (path, module) for all TernaryLinear modules in model."""
+    """Yield (path, module) for all TernaryLinear and TernaryEmbedding modules in model."""
     for path, module in model.named_modules():
-        if isinstance(module, TernaryLinear):
+        if isinstance(module, (TernaryLinear, TernaryEmbedding)):
             yield path, module
 
 
@@ -900,9 +1061,16 @@ def accumulate_flips(model: nn.Module, ternary_grads: dict[str, Any]) -> None:
 
     accums = []
     for path, module in _walk_ternary_modules(model):
-        parts = path.split(".") if path else []
-        parts.append("ternary_weight")
-        grad = _extract_grad(ternary_grads, parts)
+        # For TernaryEmbedding: retrieve cached STE grad from VJP
+        if isinstance(module, TernaryEmbedding):
+            cache_key = id(module.ternary_weight)
+            grad = _EMBED_GRAD_CACHE.pop(cache_key, None)
+        else:
+            # For TernaryLinear: extract from grad pytree
+            parts = path.split(".") if path else []
+            parts.append("ternary_weight")
+            grad = _extract_grad(ternary_grads, parts)
+
         if grad is not None:
             # NaN guard: don't poison the accumulator with NaN gradients
             if mx.any(mx.isnan(grad)).item():
@@ -1180,7 +1348,7 @@ def restore_ternary(model: nn.Module) -> None:
     Call after every optimizer.update().
     """
     def _walk(mod):
-        if isinstance(mod, TernaryLinear):
+        if isinstance(mod, (TernaryLinear, TernaryEmbedding)):
             if mod.ternary_weight.dtype != mx.uint8:
                 mod.ternary_weight = mx.clip(
                     mx.round(mod.ternary_weight), 0, 255

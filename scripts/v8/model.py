@@ -40,7 +40,7 @@ import mlx.core as mx
 import mlx.nn as nn
 from mlx.utils import tree_flatten
 
-from ternary import TernaryLinear
+from ternary import TernaryLinear, TernaryEmbedding
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -384,10 +384,9 @@ class CompressorMERA(nn.Module):
         super().__init__()
         self.cfg = cfg
 
-        # Ternary embedding
-        # Note: nn.Embedding doesn't support ternary, so we use standard
-        # embedding and let the ternary projections in layers do the routing.
-        self.embed = nn.Embedding(cfg.vocab_size, cfg.d_model)
+        # Ternary embedding: packed {-1,0,+1} vectors with per-token gamma
+        # 15× smaller than float32 embedding (13 MB vs 196 MB at vocab=50277, d=1024)
+        self.embed = TernaryEmbedding(cfg.vocab_size, cfg.d_model)
 
         # Level 0: own weights (stride 8 compression)
         self.level0 = CompressorLevel(cfg)
@@ -603,14 +602,17 @@ class PipelineFeedback(nn.Module):
 
     The gate allows the model to control influence magnitude.
     Starts near zero (higher levels haven't learned yet).
+    All ternary — gate topology routes the sigmoid control signal.
     """
 
     def __init__(self, cfg: DualMERAConfig):
         super().__init__()
         self.cross_attn = TernaryCrossAttention(cfg.d_model, cfg.feedback_heads)
         self.norm = RMSNorm(cfg.d_model)
-        # Gate: float (cheap, needs precision for sigmoid)
-        self.gate_proj = nn.Linear(cfg.d_model, cfg.d_model, bias=False)
+        # Gate: ternary routing → sigmoid. Topology controls which
+        # dimensions the gate attends to. Sigmoid provides continuous
+        # gating on top of the discrete routing.
+        self.gate_proj = TernaryLinear(cfg.d_model, cfg.d_model, pre_norm=False)
 
     def __call__(self, lower: mx.array, higher: mx.array) -> mx.array:
         """
@@ -823,8 +825,8 @@ class DualMERA(nn.Module):
         h_up = self._upsample(h0, self.cfg.seq_len)
         h_out = self.out_norm(h_up)
 
-        # Tied embedding
-        logits = h_out @ self.compressor.embed.weight.T
+        # Tied embedding (ternary: unpack + gamma on-the-fly)
+        logits = h_out @ self.compressor.embed.weight_T
 
         return logits
 
@@ -842,7 +844,7 @@ class DualMERA(nn.Module):
         h0, regs_out, _ = self.pipeline(scales, regs)
         h_up = self._upsample(h0, self.cfg.seq_len)
         h_out = self.out_norm(h_up)
-        logits = h_out @ self.compressor.embed.weight.T
+        logits = h_out @ self.compressor.embed.weight_T
         return logits, regs_out
 
     def _upsample(self, h: mx.array, target_len: int) -> mx.array:
