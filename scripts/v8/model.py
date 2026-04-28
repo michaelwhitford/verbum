@@ -868,21 +868,27 @@ class DualMERA(nn.Module):
     def count_params(self) -> dict:
         """Count LOGICAL parameters by component.
 
-        Ternary weights are packed 4-per-byte as uint8. This method counts
-        logical weights (N × K) not storage elements (N × K/4). This matches
-        the design doc convention for parameter budgets.
+        TernaryLinear uses MLX uint32 packing (16 values per element, bits=2).
+        TernaryEmbedding uses uint8 packing (4 values per element).
+        This method counts logical weights (N × K) not storage elements.
         """
         counts = {}
+
+        def _logical_size(param_name: str, v) -> int:
+            """Return logical element count for a parameter array."""
+            if v.dtype == mx.uint32 and param_name.endswith(".weight"):
+                # TernaryLinear: uint32, 16 logical weights per element
+                return v.size * 16
+            if "ternary_weight" in param_name:
+                # TernaryEmbedding: uint8, 4 logical weights per element
+                return v.size * 4
+            return v.size
 
         def _count_logical(module, name):
             """Count logical params, unpacking ternary weight sizes."""
             total = 0
             for param_name, v in tree_flatten(module.parameters()):
-                if "ternary_weight" in param_name:
-                    # Packed (N, K/4) → logical (N, K) = N × K/4 × 4 = size × 4
-                    total += v.size * 4
-                else:
-                    total += v.size
+                total += _logical_size(param_name, v)
             counts[name] = total
 
         # Compressor
@@ -893,7 +899,7 @@ class DualMERA(nn.Module):
         for r in self.compressor.reducers:
             t = 0
             for pn, v in tree_flatten(r.parameters()):
-                t += v.size * 4 if "ternary_weight" in pn else v.size
+                t += _logical_size(pn, v)
             comp_reducer_total += t
         counts["compressor/reducers"] = comp_reducer_total
         counts["compressor/reducer_queries"] = sum(q.size for q in self.compressor.reducer_queries)
@@ -907,7 +913,7 @@ class DualMERA(nn.Module):
         for r in self.pipeline.reducers:
             t = 0
             for pn, v in tree_flatten(r.parameters()):
-                t += v.size * 4 if "ternary_weight" in pn else v.size
+                t += _logical_size(pn, v)
             pipe_reducer_total += t
         counts["pipeline/reducers"] = pipe_reducer_total
         counts["pipeline/reducer_queries"] = sum(q.size for q in self.pipeline.reducer_queries)
@@ -915,7 +921,7 @@ class DualMERA(nn.Module):
         for f in self.pipeline.feedbacks:
             t = 0
             for pn, v in tree_flatten(f.parameters()):
-                t += v.size * 4 if "ternary_weight" in pn else v.size
+                t += _logical_size(pn, v)
             pipe_feedback_total += t
         counts["pipeline/feedbacks"] = pipe_feedback_total
         _count_logical(self.pipeline.out_norm, "pipeline/out_norm")
@@ -931,13 +937,18 @@ class DualMERA(nn.Module):
         counts["total"] = sum(counts[k] for k in counts
                               if not k.endswith("_total") and k != "output/norm") + counts["output/norm"]
 
-        # Storage size (packed bytes for ternary, 4 bytes for float)
+        # Storage size in bytes:
+        #   TernaryLinear weight: uint32 → 4 bytes per element (stores 16 logical weights)
+        #   TernaryEmbedding ternary_weight: uint8 → 1 byte per element
+        #   All other params: float32 → 4 bytes per element
         total_storage = 0
-        for _, v in tree_flatten(self.parameters()):
+        for pn, v in tree_flatten(self.parameters()):
             if v.dtype == mx.uint8:
-                total_storage += v.size  # packed ternary
+                total_storage += v.size          # packed uint8 ternary embedding
+            elif v.dtype == mx.uint32:
+                total_storage += v.size * 4      # packed uint32 ternary linear
             else:
-                total_storage += v.size * 4  # float32
+                total_storage += v.size * 4      # float32
         counts["storage_bytes"] = total_storage
         counts["storage_mb"] = total_storage / (1024 * 1024)
 
