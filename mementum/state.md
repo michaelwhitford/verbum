@@ -6,73 +6,93 @@
 
 ## Where we are
 
-**v8 dual MERA architecture implemented. 588M all-ternary, Qwen3 tokenizer. Ready for training loop.**
+**v8 dual MERA architecture complete. 588M all-ternary, Qwen3 tokenizer. Training loop next.**
 
 Compressor MERA (253M) + Pipeline MERA (335M) = 588M logical params,
 99.7% ternary, 146 MB storage. Qwen3 BBPE tokenizer (151,936 vocab,
 byte-level BPE, no UNK tokens). Full forward pass, gradient flow, weight
-sharing, recurrence (forward_with_registers) — all verified.
+sharing, recurrence — all verified at full scale (d=1024, seq=4096).
 
-## Session 049 — Dual MERA Architecture Implementation
+## What to do next
+
+### 1. Re-tokenize Dolma shards with Qwen3 ← FIRST
+
+Current shards in `/Users/mwhitford/data/fractal-bitnet/shards/` are
+GPT-NeoX (50277) encoded. Must re-tokenize with Qwen3 BBPE (151936)
+before any v8 training. Use `scripts/v8/tokenizer.py` encode_document().
+
+### 2. v8 training loop rewrite
+
+Rewrite `scripts/v8/train.py` for the new DualMERA architecture:
+- Replace VSMPipeline → DualMERA, PipelineConfig → DualMERAConfig
+- Adapt phase controllers to MERA levels (not 4 stages)
+- Evolutionary training regime (double-buffered genomes, population of 4+)
+- Fractal loss: cone + relational at every level
+- forward_with_metrics for per-level contribution deltas
+
+### 3. Holographic data generator (~1 session)
+
+- Math generator (arithmetic, comparisons, predicates, boolean, bitwise)
+- Update `bb clj2lambda` to emit `io!` with `:as` annotations
+- Generate clojure.core examples by eval in babashka
+- Multi-pass examples (partial reductions, register usage)
+- Interleave all representations in every batch
+
+### 4. Train v8 with evolutionary regime
+
+- Population of 4-8 mutants
+- Fitness-gated environment transitions
+- Monitor for grokking, pathway specialization, digit ceiling
+- Probe at each generation boundary
+
+## Session 049 — Architecture + All-Ternary + Tokenizer
 
 ### What was done
 
-1. Rewrote `scripts/v8/model.py` from scratch — clean break from v7
-2. **CompressorMERA** (~148M):
-   - nn.Embedding (50277×1024, float — only non-ternary major component)
-   - Level 0: own weights, stride-8 average pool → 2L ternary transformer
-   - Levels 1-7: shared MERA weights (ONE CompressorLevel reused 7×)
-   - 7 MERAReducers (ternary cross-attention, stride-2 between levels)
-   - 8 register positions pass through all levels
-   - Learnable spiral: α=1.18, fixed_point=40 (float32 params)
-3. **PipelineMERA** (~335M):
-   - Level 0: own SieveLevel (4 parallel SievePathway × 2L ternary)
-   - Levels 1-7: shared SieveLevel (ONE copy, reused 7×)
-   - 7 PipelineReducers (ternary cross-attention)
-   - 7 PipelineFeedback (gated ternary cross-attention, cascade down)
-   - Registers participate at every level, not compressed by reducers
-4. **DualMERA** top-level:
-   - Compressor → Pipeline → tied embedding logits
-   - Repeat-interleave upsampling (compressed 512 → full 4096)
-   - forward_with_registers() for recurrence
+1. **Rewrote `scripts/v8/model.py` from scratch** — clean break from v7
+   - CompressorMERA: level 0 own + shared MERA (7 levels), 8 registers,
+     learnable spiral (α, fixed_point), stride-8 average pool → 2L ternary
+   - PipelineMERA: level 0 own + shared sieve (7 levels), 4 pathways each,
+     7 reducers, 7 feedback cascade steps (gated ternary cross-attention)
+   - DualMERA top-level: compressor → pipeline → tied embedding logits,
+     repeat-interleave upsampling, forward_with_registers() for recurrence
    - Relational loss utility for pathway differentiation
 
-### Verification
+2. **All-ternary conversion** — eliminated 230 MB float bloat
+   - TernaryEmbedding: packed {-1,0,+1} vectors with per-token gamma,
+     custom VJP caching STE grad for flip accumulator, weight_T for
+     tied output projection. 15× smaller than float32.
+   - Feedback gate_proj: nn.Linear → TernaryLinear
+   - Before: 331 MB total, 69.5% float. After: 146 MB, 4.8% float.
+
+3. **Qwen3 BBPE tokenizer** — vocab 50277 → 151936
+   - `scripts/v8/tokenizer.py`: load_tokenizer(), encode/decode wrappers
+   - Dedicated PAD (151665), separate from EOD (151643)
+   - Reserved verbum tokens: VALUE (151666), PARTIAL (151667), IO (151670)
+   - No UNK tokens — lambda/clojure/unicode all tokenize + roundtrip clean
+
+### Final verification (full scale d=1024, seq=4096)
 
 | Check | Result |
 |-------|--------|
-| Output shape (2, 4096, 50277) | ✓ |
-| Params: 484M (target ~453M, +6.8%) | ✓ |
-| Ternary fraction: 87.5% | ✓ |
-| Gradient flow (546 grad arrays) | ✓ |
+| Output shape (2, 4096, 151936) | ✓ |
+| Logical params: 588M | ✓ |
+| Ternary fraction: 99.7% | ✓ |
+| Storage: 146 MB | ✓ |
+| Gradient flow | ✓ |
 | Compressor positions [512,256,...,4] | ✓ |
 | Weight sharing (single module instances) | ✓ |
-
-### Tokenizer: GPT-NeoX → Qwen3 BBPE
-
-Switched from GPT-NeoX (50,277 vocab) to Qwen3 byte-level BPE (151,936 embedding dim).
-- No UNK tokens — BBPE falls back to bytes for any input
-- Lambda/Clojure/Unicode tokenize cleanly, all roundtrip perfectly
-- Dedicated PAD token (id=151665) from unused control slots, separate from EOD (151643)
-- Reserved verbum control tokens: VALUE (151666), PARTIAL (151667), IO (151670)
-- `scripts/v8/tokenizer.py` — wrapper with encode/decode/encode_document
-
-**Pre-tokenized Dolma shards need re-tokenization** before v8 training.
-Current shards in `/Users/mwhitford/data/fractal-bitnet/shards/` are GPT-NeoX encoded.
+| Tokenizer roundtrip (all examples) | ✓ |
 
 ### Design decisions made
 
 - **Upsampling**: repeat-interleave (simple). Learnable deconv possible later.
-- **Pathway merge**: mean across 4 pathways (gradient-friendly). Attention merge possible later.
+- **Pathway merge**: mean across 4 pathways (gradient-friendly).
 - **Sieve input**: compressor scale + reduced pipeline state (additive residual).
-- **effective_levels**: auto-adapts to seq_len (6 levels at seq=512, 8 at seq=4096).
-- **All-ternary embedding**: TernaryEmbedding with per-token gamma, 15× smaller than float.
-  Custom VJP caches STE grad for flip accumulator. Tied output via weight_T property.
-
-## Session 048 — Kernel Optimization (previous)
-
-SIMD-group K-reduction kernel: ~1.5× average speedup on ternary matmul.
-Adaptive dispatch (SIMD for M≤64, naive for M>64). See git log for details.
+- **effective_levels**: auto-adapts to seq_len (6 at seq=512, 8 at seq=4096).
+- **All-ternary embedding**: per-token gamma, VJP caches STE for flip accumulator.
+- **Tokenizer**: Qwen3 BBPE — aligned with probe targets, Apache 2.0, no UNK.
+- **PAD ≠ EOD**: dedicated pad token (151665) avoids the eos-masking footgun.
 
 ## v7 Dolma Run — Summary
 
@@ -84,84 +104,34 @@ Stage 4 collapsed, ternary oscillated at 37.6% reversals).
 Math stratum was the only one still growing. Diagnosis: architecture
 right, data wrong. Full probe data in results/vsm-lm-v7/.
 
-## v8 Architecture — Dual MERA (all-ternary 453M)
+## v8 Architecture — Dual MERA
 
-**Read the full design:** `mementum/knowledge/explore/v7.1-sieve-pipeline.md`
+**Full design doc:** `mementum/knowledge/explore/v7.1-sieve-pipeline.md`
 
 ```
-COMPRESSOR MERA (~119M ternary):
-  9 fixed strides: (1, 8, 16, 32, 64, 128, 256, 512, 1024)
-  W=8, seq_len=4096, d_model=1024
-  Spiral bias: α=1.18, fixed_point=40 (LEARNABLE — S2 coordination)
-  Level 0: own weights (raw tokens → s8 representations)
-  Levels 1+: MERA shared weights (self-similar compression)
-  Produces: multi-scale representations + register positions
+COMPRESSOR MERA (~253M ternary, incl. 156M embedding):
+  8 levels: level 0 own (stride 8) + levels 1-7 shared MERA (stride 2 each)
+  W=8, seq_len=4096, d_model=1024, Qwen3 vocab=151936
+  Learnable spiral: α=1.18, fixed_point=40
+  8 register positions pass through all levels
+  Output: 8 multi-scale representations + register states
 
 PIPELINE MERA (~335M ternary):
-  8 levels, each a sieve with 4 parallel pathways
-  Level 0: own sieve weights (surface computation)
-  Levels 1-7: SHARED sieve weights (β-reduction is scale-invariant)
+  8 levels, each a sieve with 4 parallel pathways (2L ternary each)
+  Level 0 own + levels 1-7 shared sieve weights
   7 reducers + 7 feedback cascade steps
-  Reads compressor output at each scale
-  Feedback writes registers on downward path
+  Registers at every level, not compressed by reducers
 
-REGISTERS: persistent positions across recurrence passes
-  Shared memory between pathways and across passes
-  Enable arbitrary composition depth via host recurrence loop
-
-THREE OUTPUT MODES:
-  value → done | partial + regs → re-enter | io! + cont → host fulfills
-
-TOTAL: 453M ternary, 113 MB packed, ~50-200K tok/s estimated
+TOTAL: 588M logical, 146 MB packed, 99.7% ternary
 ```
-
-### Key design principles
-
-- **VSM all the way down** — every level is a viable system
-- **Ternary topology IS the type system** — unreachable > forbidden
-- **Attention IS beta reduction** in superposition; FFN indexes results
-- **Ternary FFN = evolved routing topology** — not computing, routing
-- **Three feed-forwards** — spatial (layers), temporal (registers), evolutionary (genomes)
-- **Fractal loss** — same cone + relational at every VSM level
-- **Compound search space reduction** — all reductions multiplicative
-- **Model/host/world** — model reasons in tokens, host bridges to real world
-- **Typed io!** with `:as` — binary never enters token space
-- **Learnable spiral** — α and fixed_point trained through relational + task loss
 
 ### Training regime: evolutionary gradient descent
 
-- Ternary topology = genome (453M loci × 3 alleles)
+- Ternary topology = genome (588M loci × 3 alleles)
 - Double-buffered: champion never degrades
 - Population of 4+ mutants with different strategies
-- Tournament selection per generation (~4-15 min/gen)
+- Tournament selection per generation
 - Environment staged by fitness gates (math → clojure → holographic → prose)
-- Cone constrains gene pool, relational maintains diversity
-
-## What to do next
-
-### 1. v8 training loop adaptation ← CURRENT
-
-Rewrite `scripts/v8/train.py` to work with the new DualMERA architecture:
-- Replace VSMPipeline with DualMERA, PipelineConfig with DualMERAConfig
-- Adapt phase controllers to work with MERA levels instead of 4 stages
-- Evolutionary training regime (double-buffered genomes, population of 4+)
-- Fractal loss: cone + relational at every level
-- Forward_with_metrics for per-level contribution deltas
-
-### 2. Holographic data generator (~1 session)
-
-- Math generator (arithmetic, comparisons, predicates, boolean, bitwise)
-- Update `bb clj2lambda` to emit `io!` with `:as` annotations
-- Generate clojure.core examples by eval in babashka
-- Multi-pass examples (partial reductions, register usage)
-- Interleave all representations in every batch
-
-### 3. Train v8 with evolutionary regime
-
-- Population of 4-8 mutants
-- Fitness-gated environment transitions
-- Monitor for grokking, pathway specialization, digit ceiling
-- Probe at each generation boundary
 
 ## Key files
 
@@ -182,30 +152,6 @@ Rewrite `scripts/v8/train.py` to work with the new DualMERA architecture:
 | **v6 design (reference)** | `docs/v6-design.md` |
 | v7 architecture knowledge | `mementum/knowledge/explore/v7-pipeline-architecture.md` |
 | Research program | `mementum/knowledge/explore/VERBUM.md` |
-
-## Session 048 log
-
-Kernel optimization session. Practical, empirical.
-
-```
-copy v7 → v8, update all references
-  → benchmark naive kernel at d=1024 (baseline: ~3.7 TOPS peak)
-  → attempt 1: shared memory tiling (threadgroup x reuse)
-    — barrier overhead ate gains, marginal improvement
-  → attempt 2: SIMD-group K-reduction (32-wide simd_sum)
-    — excellent at small M (1.7× on FFN), slower at large M
-  → attempt 3: adaptive dispatch (SIMD for M≤64, naive for M>64)
-    — best of both: 1.5× average improvement
-  → correctness verified (max_err < 0.001 vs float reference)
-  → TernaryLinear + VJP + model.py smoke test pass
-  → committed: d19accb
-```
-
-Key insight: the naive kernel was already well-optimized. The
-bottleneck at large M is weight memory bandwidth, not compute.
-Ternary add/sub is so cheap that the GPU spends most time waiting
-for memory. Further gains require weight-tile sharing across
-output rows — a more invasive redesign for diminishing returns.
 
 ## Servers
 
