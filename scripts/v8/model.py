@@ -62,7 +62,7 @@ class DualMERAConfig:
       4 parallel pathways per level
     """
     # Global dimensions
-    vocab_size: int = 50277       # GPT-NeoX tokenizer
+    vocab_size: int = 151936      # Qwen3 BBPE (151,643 regular + 208 control + padding)
     seq_len: int = 4096           # context window
     d_model: int = 1024           # representation dimension
     d_ff: int = 4096              # FFN expansion

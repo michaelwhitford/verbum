@@ -6,12 +6,12 @@
 
 ## Where we are
 
-**v8 dual MERA architecture implemented. 484M all-ternary. Ready for training loop.**
+**v8 dual MERA architecture implemented. 588M all-ternary, Qwen3 tokenizer. Ready for training loop.**
 
-Compressor MERA (148M) + Pipeline MERA (335M) = 484M logical params,
-87.5% ternary, 331 MB storage. Full forward pass, gradient flow, weight
-sharing, recurrence (forward_with_registers) — all verified. Smoke test
-passes at both reduced (d=256, seq=512) and full scale (d=1024, seq=4096).
+Compressor MERA (253M) + Pipeline MERA (335M) = 588M logical params,
+99.7% ternary, 146 MB storage. Qwen3 BBPE tokenizer (151,936 vocab,
+byte-level BPE, no UNK tokens). Full forward pass, gradient flow, weight
+sharing, recurrence (forward_with_registers) — all verified.
 
 ## Session 049 — Dual MERA Architecture Implementation
 
@@ -48,14 +48,26 @@ passes at both reduced (d=256, seq=512) and full scale (d=1024, seq=4096).
 | Compressor positions [512,256,...,4] | ✓ |
 | Weight sharing (single module instances) | ✓ |
 
+### Tokenizer: GPT-NeoX → Qwen3 BBPE
+
+Switched from GPT-NeoX (50,277 vocab) to Qwen3 byte-level BPE (151,936 embedding dim).
+- No UNK tokens — BBPE falls back to bytes for any input
+- Lambda/Clojure/Unicode tokenize cleanly, all roundtrip perfectly
+- Dedicated PAD token (id=151665) from unused control slots, separate from EOD (151643)
+- Reserved verbum control tokens: VALUE (151666), PARTIAL (151667), IO (151670)
+- `scripts/v8/tokenizer.py` — wrapper with encode/decode/encode_document
+
+**Pre-tokenized Dolma shards need re-tokenization** before v8 training.
+Current shards in `/Users/mwhitford/data/fractal-bitnet/shards/` are GPT-NeoX encoded.
+
 ### Design decisions made
 
 - **Upsampling**: repeat-interleave (simple). Learnable deconv possible later.
 - **Pathway merge**: mean across 4 pathways (gradient-friendly). Attention merge possible later.
 - **Sieve input**: compressor scale + reduced pipeline state (additive residual).
 - **effective_levels**: auto-adapts to seq_len (6 levels at seq=512, 8 at seq=4096).
-- **Embedding stays float**: 51.5M params but enables gradient through tokens.
-  Ternary embedding would save 39 MB but complicates initialization.
+- **All-ternary embedding**: TernaryEmbedding with per-token gamma, 15× smaller than float.
+  Custom VJP caches STE grad for flip accumulator. Tied output via weight_T property.
 
 ## Session 048 — Kernel Optimization (previous)
 
@@ -158,6 +170,7 @@ Rewrite `scripts/v8/train.py` to work with the new DualMERA architecture:
 | **v8 design doc** | `mementum/knowledge/explore/v7.1-sieve-pipeline.md` |
 | **v8 model (dual MERA)** | `scripts/v8/model.py` |
 | **v8 ternary (optimized kernel)** | `scripts/v8/ternary.py` |
+| **v8 tokenizer (Qwen3 BBPE)** | `scripts/v8/tokenizer.py` |
 | **v8 training (needs rewrite)** | `scripts/v8/train.py` |
 | **v8 probe** | `scripts/v8/probe.py` |
 | **v8 kernel benchmark** | `scripts/v8/bench_kernel.py` |
