@@ -553,6 +553,8 @@ def count_ternary_weights(model: nn.Module) -> int:
 def mutation_cone(r_ema: float, total_weights: int, base_pct: float = 0.001) -> int:
     """Compute mutation budget from relational loss via quadratic cone.
 
+    Used by Dolma phase to protect BIOS-burned circuits. NOT used during BIOS.
+
     Args:
         r_ema:          relational loss EMA ∈ [0, 1]. 1.0 = random, 0.0 = converged.
         total_weights:  total ternary weight count
@@ -565,6 +567,40 @@ def mutation_cone(r_ema: float, total_weights: int, base_pct: float = 0.001) -> 
         return 0  # converged — topology frozen
     # Quadratic cone: budget ∝ r²; full budget at r ≥ 0.6
     scale = min(1.0, (r_ema / 0.6) ** 2)
+    return max(1, int(total_weights * base_pct * scale))
+
+
+def bios_mutation_budget(
+    step: int,
+    total_steps: int,
+    total_weights: int,
+    base_pct: float = 0.005,
+) -> int:
+    """Compute mutation budget for BIOS phase: high constant then late decay.
+
+    During BIOS burn-in, topology exploration should NOT be gated by loss.
+    Gamma (continuous) learns surface statistics fast, driving loss down and
+    starving topology evolution via the cone. Instead:
+
+      First 80%: full budget — explore topology freely, find circuits.
+      Last 20%:  linear decay to 10% — crystallize what worked.
+
+    Args:
+        step:          current training step
+        total_steps:   total BIOS training steps
+        total_weights: total ternary weight count
+        base_pct:      mutation rate during exploration phase (default 0.5%)
+
+    Returns:
+        Number of weights to mutate this generation.
+    """
+    decay_start = int(total_steps * 0.8)
+    if step <= decay_start:
+        scale = 1.0
+    else:
+        # Linear decay from 1.0 → 0.1 over the last 20%
+        progress = (step - decay_start) / max(1, total_steps - decay_start)
+        scale = 1.0 - 0.9 * progress
     return max(1, int(total_weights * base_pct * scale))
 
 
@@ -605,20 +641,35 @@ def load_topology(model: nn.Module, snapshot: list[tuple[str, mx.array]]) -> Non
         mx.eval(*restored)
 
 
-def mutate_topology(model: nn.Module, budget: int, rng: Any) -> int:
+def mutate_topology(
+    model: nn.Module,
+    budget: int,
+    rng: Any,
+    depth_weights: dict[str, float] | None = None,
+    sign_flip_rate: float = 0.2,
+) -> int:
     """Apply random mutations to the ternary topology.
 
-    Distributes `budget` mutations proportionally across all ternary
-    modules.  Each mutation flips one weight one step:
-        -1 → 0,  0 → ±1 (random),  +1 → 0
+    Distributes `budget` mutations across ternary modules, optionally
+    weighted by depth priority.  Each mutation flips one weight:
+        -1 → 0 (deactivate)           ~80% of non-zero mutations
+        +1 → 0 (deactivate)           ~80% of non-zero mutations
+        -1 → +1 (sign correction)     ~20% of non-zero mutations
+        +1 → -1 (sign correction)     ~20% of non-zero mutations
+         0 → ±1 (activate, random)    all zero-position mutations
 
     TernaryLinear:   operates on MLX uint32 packed format (16 per uint32).
     TernaryEmbedding: operates on uint8 packed format (4 per byte).
 
     Args:
-        model:  the model to mutate IN PLACE
-        budget: total number of logical weights to flip
-        rng:    numpy RandomState for reproducible mutations
+        model:           the model to mutate IN PLACE
+        budget:          total number of logical weights to flip
+        rng:             numpy RandomState for reproducible mutations
+        depth_weights:   optional dict mapping module path prefixes to float
+                         priority weights. Higher weight → more mutations.
+                         If None, falls back to proportional-by-size.
+        sign_flip_rate:  fraction of non-zero mutations that flip sign
+                         directly instead of deactivating (default 0.2).
 
     Returns:
         Actual number of mutations applied.
@@ -629,23 +680,43 @@ def mutate_topology(model: nn.Module, budget: int, rng: Any) -> int:
     if not modules or budget <= 0:
         return 0
 
-    # Proportional allocation by logical weight count
+    # Compute effective weight for each module
     sizes = [mod.out_features * mod.in_features for _, mod in modules]
-    total = sum(sizes)
+
+    if depth_weights is not None:
+        # Apply depth priority: size * weight_multiplier
+        effective = []
+        for (path, _), n_weights in zip(modules, sizes):
+            # Match longest prefix in depth_weights
+            best_weight = 1.0
+            best_len = 0
+            for prefix, w in depth_weights.items():
+                if path.startswith(prefix) and len(prefix) > best_len:
+                    best_weight = w
+                    best_len = len(prefix)
+            effective.append(n_weights * best_weight)
+    else:
+        effective = [float(s) for s in sizes]
+
+    total_effective = sum(effective)
 
     total_mutated = 0
     mutated_arrays = []
 
-    for (path, mod), n_weights in zip(modules, sizes):
-        mod_budget = max(0, round(budget * n_weights / total))
+    for (path, mod), n_weights, eff in zip(modules, sizes, effective):
+        mod_budget = max(0, round(budget * eff / total_effective))
         if mod_budget == 0:
             continue
         mod_budget = min(mod_budget, n_weights)
 
         if isinstance(mod, TernaryLinear):
-            total_mutated += _mutate_linear(mod, mod_budget, rng, np, mutated_arrays)
+            total_mutated += _mutate_linear(
+                mod, mod_budget, rng, np, mutated_arrays, sign_flip_rate,
+            )
         else:
-            total_mutated += _mutate_embedding(mod, mod_budget, rng, np, mutated_arrays)
+            total_mutated += _mutate_embedding(
+                mod, mod_budget, rng, np, mutated_arrays, sign_flip_rate,
+            )
 
     if mutated_arrays:
         mx.eval(*mutated_arrays)
@@ -659,11 +730,17 @@ def _mutate_linear(
     rng: Any,
     np: Any,
     mutated_arrays: list,
+    sign_flip_rate: float = 0.2,
 ) -> int:
     """Mutate TernaryLinear.weight (uint32, MLX 2-bit little-endian format).
 
     MLX 2-bit layout: value i at bits [2*i : 2*i+2], i=0..15 within uint32.
     Encoding: {0→-1, 1→0, 2→+1}.
+
+    Mutation rules:
+        0 → ±1        (activate with random sign)
+       ±1 → 0         (deactivate, probability 1-sign_flip_rate)
+       ±1 → ∓1        (sign flip, probability sign_flip_rate)
 
     Operates on the flat uint32 array to avoid full unpack/repack.
     """
@@ -687,10 +764,22 @@ def _mutate_linear(
     current_encoded = ((flat_packed[uint32_idx] >> shifts) & np.uint32(0x3))  # {0,1,2}
     current_val = current_encoded.astype(np.int8) - 1                          # {-1,0,+1}
 
-    # Apply ternary flip: -1→0, +1→0, 0→±1 (random)
+    # Apply mutations
     new_val = np.copy(current_val)
-    new_val[current_val == -1] = 0
-    new_val[current_val == 1] = 0
+
+    # Non-zero positions: deactivate or sign-flip
+    nonzero_mask = current_val != 0
+    n_nonzero = int(nonzero_mask.sum())
+    if n_nonzero > 0:
+        # Draw random floats to decide: sign-flip vs deactivate
+        flip_roll = rng.random(size=n_nonzero)
+        do_flip = flip_roll < sign_flip_rate
+        # Sign flip: negate the value
+        nonzero_vals = current_val[nonzero_mask]
+        new_nonzero = np.where(do_flip, -nonzero_vals, np.int8(0))
+        new_val[nonzero_mask] = new_nonzero
+
+    # Zero positions: activate with random sign
     zero_mask = current_val == 0
     n_zeros = int(zero_mask.sum())
     if n_zeros > 0:
@@ -713,11 +802,15 @@ def _mutate_embedding(
     rng: Any,
     np: Any,
     mutated_arrays: list,
+    sign_flip_rate: float = 0.2,
 ) -> int:
     """Mutate TernaryEmbedding.ternary_weight (uint8, 4-per-byte big-endian format).
 
     Encoding: {0b00→-1, 0b01→0, 0b10→+1}.
     Bit positions: bits {7:6, 5:4, 3:2, 1:0} for columns {4k, 4k+1, 4k+2, 4k+3}.
+
+    Same mutation rules as _mutate_linear: deactivate or sign-flip for non-zero,
+    random activation for zero.
     """
     vocab_size = mod.vocab_size
     d_model = mod.d_model
@@ -738,10 +831,20 @@ def _mutate_embedding(
     current_encoded = (flat_packed[byte_idx] >> shifts) & np.uint8(0x3)  # {0,1,2}
     current_val = current_encoded.astype(np.int8) - 1                     # {-1,0,+1}
 
-    # Apply ternary flip
+    # Apply mutations
     new_val = np.copy(current_val)
-    new_val[current_val == -1] = 0
-    new_val[current_val == 1] = 0
+
+    # Non-zero: deactivate or sign-flip
+    nonzero_mask = current_val != 0
+    n_nonzero = int(nonzero_mask.sum())
+    if n_nonzero > 0:
+        flip_roll = rng.random(size=n_nonzero)
+        do_flip = flip_roll < sign_flip_rate
+        nonzero_vals = current_val[nonzero_mask]
+        new_nonzero = np.where(do_flip, -nonzero_vals, np.int8(0))
+        new_val[nonzero_mask] = new_nonzero
+
+    # Zero: activate with random sign
     zero_mask = current_val == 0
     n_zeros = int(zero_mask.sum())
     if n_zeros > 0:

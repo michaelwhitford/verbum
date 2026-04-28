@@ -39,6 +39,7 @@ from ternary import (
     load_ternary_state,
     count_ternary_weights,
     mutation_cone,
+    bios_mutation_budget,
     save_topology,
     load_topology,
     mutate_topology,
@@ -67,8 +68,10 @@ PHASE_DEFAULTS = {
         "checkpoint_interval": 5000,
         "log_interval": 50,
         "gen_interval": 50,          # evolutionary generation interval
-        "gen_base_pct": 0.001,       # max mutation rate at cone's widest
+        "gen_base_pct": 0.005,       # mutation rate during BIOS exploration (0.5%)
         "gen_n_mutants": 4,          # population size per generation
+        "gen_circuit_bonus": 0.5,    # fitness bonus scale for probe accuracy
+        "gen_sign_flip_rate": 0.2,   # fraction of non-zero mutations that flip sign
     },
     "dolma": {
         "data_dir": "/Users/mwhitford/data/fractal-bitnet/shards-qwen3",
@@ -86,8 +89,34 @@ PHASE_DEFAULTS = {
         "gen_interval": 200,         # slower evolution — topology mostly frozen
         "gen_base_pct": 0.0002,      # narrow cone — protect BIOS circuits
         "gen_n_mutants": 4,
+        "gen_circuit_bonus": 1.0,    # strong circuit protection during Dolma
+        "gen_sign_flip_rate": 0.2,
     },
 }
+
+
+# ═══════════════════════════════════════════════════════════════════
+# BIOS depth-weighted mutation priorities
+# ═══════════════════════════════════════════════════════════════════
+#
+# During BIOS burn-in, concentrate mutations where circuits need to form.
+# Pipeline shared level (reused at every depth) and feedbacks get highest
+# priority. Embedding gets minimal mutations — it's 156M params of token
+# lookup, not computation.
+
+BIOS_DEPTH_WEIGHTS = {
+    "compressor.embed":       0.1,   # token lookup — barely touch
+    "compressor.level0":      0.3,   # surface routing
+    "compressor.shared":      0.3,   # deep compressor routing
+    "compressor.reducer":     0.5,   # inter-level pooling
+    "pipeline.level0":        1.0,   # surface computation
+    "pipeline.shared":        2.0,   # deep computation — HIGHEST priority
+    "pipeline.reducer":       1.0,   # inter-level pooling
+    "pipeline.feedback":      1.5,   # constraint propagation (feedback cascade)
+}
+
+# Dolma: no depth weighting — uniform proportional (protect everything equally)
+DOLMA_DEPTH_WEIGHTS = None
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -107,6 +136,37 @@ def relational_loss(loss: float) -> float:
 
 
 # ═══════════════════════════════════════════════════════════════════
+# Cheap circuit probe for tournament fitness
+# ═══════════════════════════════════════════════════════════════════
+
+def run_cheap_probe(model: DualMERA, seq_len: int, seed: int, n_examples: int = 10) -> float:
+    """Lightweight tier-1 probe for tournament fitness evaluation.
+
+    Generates n_examples single-arithmetic problems, greedy-decodes,
+    checks exact match. Returns accuracy as float [0, 1].
+
+    Much cheaper than the full compute probe: ~10 examples vs ~100,
+    tier-1 only (short answers), short generation limit.
+    """
+    import random as stdlib_random
+    from compute_probe import _gen_tier1, _greedy_generate
+    from tokenizer import encode, decode
+
+    rng = stdlib_random.Random(seed)
+    examples = _gen_tier1(rng, n=n_examples)
+
+    correct = 0
+    for prompt, expected, tier, op in examples[:n_examples]:
+        prompt_ids = encode(prompt)
+        gen_ids = _greedy_generate(model, prompt_ids, seq_len, max_tokens=15)
+        gen_text = decode(gen_ids).strip()
+        if gen_text.startswith(expected):
+            correct += 1
+
+    return correct / max(1, n_examples)
+
+
+# ═══════════════════════════════════════════════════════════════════
 # Evolutionary tournament
 # ═══════════════════════════════════════════════════════════════════
 
@@ -120,39 +180,97 @@ MUTANT_STRATEGIES = {
     "explorer":     4.0,
 }
 
+# Strategy win tracking for adaptive mutation rate
+_strategy_history: list[str | None] = []
+_STRATEGY_WINDOW = 20
+
+
+def _adapt_base_pct(base_pct: float, phase: str) -> tuple[float, str | None]:
+    """Adapt mutation rate based on which strategies are winning.
+
+    If explorer wins >50% of the last 20 generations, the model wants
+    more exploration → increase base_pct.
+    If conservative wins >50%, the model is near a good topology →
+    decrease base_pct.
+
+    Returns (new_base_pct, adaptation_reason_or_None).
+    """
+    if len(_strategy_history) < _STRATEGY_WINDOW:
+        return base_pct, None
+
+    window = _strategy_history[-_STRATEGY_WINDOW:]
+    wins = {}
+    for s in window:
+        if s is not None:
+            wins[s] = wins.get(s, 0) + 1
+
+    # Bounds depend on phase
+    if phase == "bios":
+        min_pct, max_pct = 0.001, 0.02
+    else:
+        min_pct, max_pct = 0.00005, 0.001
+
+    explorer_rate = wins.get("explorer", 0) / _STRATEGY_WINDOW
+    conservative_rate = wins.get("conservative", 0) / _STRATEGY_WINDOW
+
+    if explorer_rate > 0.5:
+        new_pct = min(max_pct, base_pct * 1.5)
+        if new_pct != base_pct:
+            return new_pct, f"explorer winning {explorer_rate:.0%} → ↑ base_pct"
+    elif conservative_rate > 0.5:
+        new_pct = max(min_pct, base_pct * 0.67)
+        if new_pct != base_pct:
+            return new_pct, f"conservative winning {conservative_rate:.0%} → ↓ base_pct"
+
+    return base_pct, None
+
 
 def run_tournament(
     model: DualMERA,
     eval_loader,
-    r_ema: float,
+    step: int,
+    total_steps: int,
     total_ternary: int,
     base_pct: float,
     n_mutants: int,
     n_eval_batches: int,
     gen_seed: int,
+    phase: str = "bios",
+    r_ema: float = 1.0,
+    circuit_bonus: float = 0.5,
+    depth_weights: dict[str, float] | None = None,
+    sign_flip_rate: float = 0.2,
+    seq_len: int = 512,
 ) -> dict:
     """Run one evolutionary generation: mutate, evaluate, select.
 
-    1. Evaluate champion (current model)
-    2. For each mutant strategy:
-       a. Save champion topology
-       b. Mutate with strategy-scaled budget
-       c. Evaluate mutant
-       d. Keep if better, else revert
-    3. Return stats
+    BIOS mode:  phase-aware constant budget (not loss-gated)
+    Dolma mode: relational loss cone (protect BIOS circuits)
+
+    Two-pass selection to keep tournament fast:
+      Pass 1: Select best mutant by eval loss alone (cheap — batched forward only)
+      Pass 2: Probe champion and best mutant for circuit fitness (expensive — greedy decode)
+
+    If the winning mutant has better fitness (loss - circuit_bonus * probe_accuracy)
+    than champion, adopt it. Otherwise revert.
 
     Champion never degrades — invariant of the double-buffer.
     """
-    # Evaluate champion
+    # Evaluate champion (loss only — probe comes after selection)
     champion_metrics = evaluate(model, eval_loader, n_batches=n_eval_batches)
     champion_loss = champion_metrics["loss"]
 
-    # Base budget from the relational loss cone
-    base_budget = mutation_cone(r_ema, total_ternary, base_pct)
+    # Compute base budget (phase-dependent)
+    if phase == "bios":
+        base_budget = bios_mutation_budget(step, total_steps, total_ternary, base_pct)
+    else:
+        base_budget = mutation_cone(r_ema, total_ternary, base_pct)
 
     if base_budget == 0:
+        _strategy_history.append(None)
         return {
             "champion_loss": champion_loss,
+            "champion_probe": 0.0,
             "budget": 0,
             "accepted": None,
             "accepted_loss": champion_loss,
@@ -163,6 +281,7 @@ def run_tournament(
     # Save champion for reversion
     champion_snapshot = save_topology(model)
 
+    # ── Pass 1: loss-only selection across all mutants ──
     best_loss = champion_loss
     best_strategy = None
     best_snapshot = None
@@ -177,9 +296,13 @@ def run_tournament(
         # Mutate from champion (always start from champion, not from previous mutant)
         load_topology(model, champion_snapshot)
         rng = np.random.RandomState(gen_seed + hash(strategy_name) % (2**31))
-        n_applied = mutate_topology(model, budget, rng)
+        n_applied = mutate_topology(
+            model, budget, rng,
+            depth_weights=depth_weights,
+            sign_flip_rate=sign_flip_rate,
+        )
 
-        # Evaluate mutant
+        # Evaluate mutant: loss only (fast)
         mutant_metrics = evaluate(model, eval_loader, n_batches=n_eval_batches)
         mutant_loss = mutant_metrics["loss"]
 
@@ -188,8 +311,7 @@ def run_tournament(
             "budget": budget,
             "applied": n_applied,
             "loss": mutant_loss,
-            "delta": mutant_loss - champion_loss,
-            "accepted": mutant_loss <= best_loss,
+            "delta_loss": mutant_loss - champion_loss,
         })
 
         if mutant_loss <= best_loss:
@@ -197,19 +319,49 @@ def run_tournament(
             best_strategy = strategy_name
             best_snapshot = save_topology(model)
 
-    # Restore the winner
+    # ── Pass 2: probe champion and best mutant for circuit fitness ──
+    # Probe champion
+    load_topology(model, champion_snapshot)
+    champion_probe = run_cheap_probe(model, seq_len, seed=gen_seed)
+    champion_fitness = champion_loss - circuit_bonus * champion_probe
+
     if best_snapshot is not None and best_strategy is not None:
+        # Probe best mutant
         load_topology(model, best_snapshot)
+        mutant_probe = run_cheap_probe(
+            model, seq_len,
+            seed=gen_seed + hash(best_strategy) % (2**31),
+        )
+        mutant_fitness = best_loss - circuit_bonus * mutant_probe
+
+        if mutant_fitness <= champion_fitness:
+            # Accept: mutant wins on combined fitness
+            load_topology(model, best_snapshot)
+        else:
+            # Reject: mutant had better loss but worse circuits
+            # Revert to champion
+            load_topology(model, champion_snapshot)
+            best_strategy = None
+            best_loss = champion_loss
+            mutant_probe = champion_probe
     else:
-        # All mutants were worse — revert to champion
+        # No mutant beat champion on loss — revert
         load_topology(model, champion_snapshot)
+        mutant_probe = champion_probe
+
+    # Track strategy wins for adaptive rate
+    _strategy_history.append(best_strategy)
+
+    accepted_probe = mutant_probe if best_strategy is not None else champion_probe
 
     return {
         "champion_loss": champion_loss,
+        "champion_probe": champion_probe,
         "budget": base_budget,
         "accepted": best_strategy,
         "accepted_loss": best_loss,
-        "delta": best_loss - champion_loss,
+        "accepted_probe": accepted_probe,
+        "delta": (best_loss - circuit_bonus * accepted_probe) - champion_fitness,
         "mutations_tried": len(strategies_tried),
         "strategies": strategies_tried,
         "frozen": False,
@@ -376,6 +528,7 @@ def save_checkpoint(
     total_accepted: int,
     r_ema: float,
     phase: str,
+    gen_base_pct: float = 0.005,
 ):
     """Save full training state."""
     step_dir = checkpoint_dir / f"step_{step:06d}"
@@ -396,6 +549,7 @@ def save_checkpoint(
         "data_pos": data_pos,
         "phase": phase,
         "r_ema": r_ema,
+        "gen_base_pct": gen_base_pct,
         "metrics": {k: float(v) if isinstance(v, (int, float, np.floating)) else v
                     for k, v in metrics.items()},
         "train_losses_last100": train_losses[-100:],
@@ -509,6 +663,7 @@ def train(args):
     total_generations = 0
     total_accepted = 0
     total_rejected = 0
+    adapt_reason = None  # adaptive mutation rate change reason (for logging)
     r_ema = 1.0  # relational loss EMA
     ema_alpha = 0.02
 
@@ -541,6 +696,9 @@ def train(args):
         total_accepted = state.get("total_accepted", 0)
         total_rejected = state.get("total_rejected", 0)
         r_ema = state.get("r_ema", 1.0)
+        # Restore adaptive mutation rate if saved
+        if "gen_base_pct" in state:
+            args.gen_base_pct = state["gen_base_pct"]
         train_loader._pos = state.get("data_pos", 0)
         train_loader.epoch = state.get("epoch", 0)
 
@@ -549,8 +707,14 @@ def train(args):
     print(f"  LR: {args.lr}, warmup: {args.warmup}")
     print(f"  Steps: {start_step} → {args.steps}")
     print(f"  Evolution: gen_interval={args.gen_interval}, "
-          f"base_pct={args.gen_base_pct*100:.2f}%, "
-          f"mutants={args.gen_n_mutants}")
+          f"base_pct={args.gen_base_pct*100:.3f}%, "
+          f"mutants={args.gen_n_mutants}, "
+          f"circuit_bonus={args.gen_circuit_bonus}, "
+          f"sign_flip={args.gen_sign_flip_rate}")
+    if phase == "bios":
+        print(f"  Mode: BIOS (phase-aware budget, depth-weighted, probe fitness)")
+    else:
+        print(f"  Mode: Dolma (relational loss cone, uniform, probe fitness)")
     print(f"  Ternary: {total_ternary:,} weights")
     print(f"  Checkpoint: {checkpoint_dir}")
     print(f"\n{'='*70}\n", flush=True)
@@ -612,21 +776,36 @@ def train(args):
 
         # ── Evolutionary tournament ──
         if step % args.gen_interval == 0:
+            # Select depth weights based on phase
+            depth_weights = BIOS_DEPTH_WEIGHTS if phase == "bios" else DOLMA_DEPTH_WEIGHTS
+
             gen_result = run_tournament(
                 model=model,
                 eval_loader=eval_loader,
-                r_ema=r_ema,
+                step=step,
+                total_steps=args.steps,
                 total_ternary=total_ternary,
                 base_pct=args.gen_base_pct,
                 n_mutants=args.gen_n_mutants,
                 n_eval_batches=args.eval_batches,
                 gen_seed=step,
+                phase=phase,
+                r_ema=r_ema,
+                circuit_bonus=args.gen_circuit_bonus,
+                depth_weights=depth_weights,
+                sign_flip_rate=args.gen_sign_flip_rate,
+                seq_len=args.seq_len,
             )
             total_generations += 1
             if gen_result["accepted"]:
                 total_accepted += 1
             elif not gen_result["frozen"]:
                 total_rejected += 1
+
+            # Adaptive mutation rate
+            new_pct, adapt_reason = _adapt_base_pct(args.gen_base_pct, phase)
+            if adapt_reason:
+                args.gen_base_pct = new_pct
 
         train_losses.append(avg_loss)
         dt = time.time() - t0
@@ -647,18 +826,23 @@ def train(args):
 
             # Evolution stats on generation steps
             if step % args.gen_interval == 0:
-                budget = mutation_cone(r_ema, total_ternary, args.gen_base_pct)
+                budget = gen_result.get("budget", 0)
                 accept_rate = (total_accepted / total_generations * 100
                                if total_generations > 0 else 0)
                 status = gen_result.get("accepted", "—") or "rejected"
                 delta = gen_result.get("delta", 0)
+                probe_acc = gen_result.get("accepted_probe", gen_result.get("champion_probe", 0))
                 print(
                     f"         │ 🧬 gen {total_generations}: "
                     f"{status}  Δ={delta:+.4f}  "
                     f"budget={budget:,}  "
-                    f"accept={total_accepted}/{total_generations} ({accept_rate:.0f}%)",
+                    f"probe={probe_acc:.0%}  "
+                    f"accept={total_accepted}/{total_generations} ({accept_rate:.0f}%)  "
+                    f"base_pct={args.gen_base_pct:.4f}",
                     flush=True,
                 )
+                if adapt_reason:
+                    print(f"         │ 📐 {adapt_reason}", flush=True)
 
         # ── Eval ──
         if step % args.eval_interval == 0:
@@ -700,6 +884,7 @@ def train(args):
                 total_accepted=total_accepted,
                 r_ema=r_ema,
                 phase=phase,
+                gen_base_pct=args.gen_base_pct,
             )
 
     # ── Final ──
@@ -728,6 +913,7 @@ def train(args):
         total_accepted=total_accepted,
         r_ema=r_ema,
         phase=phase,
+        gen_base_pct=args.gen_base_pct,
     )
 
     # Save loss curve
@@ -774,6 +960,10 @@ def main():
                         help="Max mutation rate at cone's widest")
     parser.add_argument("--gen-n-mutants", type=int, default=None,
                         help="Number of mutants per generation")
+    parser.add_argument("--gen-circuit-bonus", type=float, default=None,
+                        help="Fitness bonus scale for probe accuracy in tournament")
+    parser.add_argument("--gen-sign-flip-rate", type=float, default=None,
+                        help="Fraction of non-zero mutations that flip sign (0-1)")
     parser.add_argument("--resume", type=str, default=None,
                         help="Checkpoint directory to resume from")
 
