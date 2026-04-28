@@ -2,11 +2,11 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-28 | Session: 049
+> Last updated: 2026-04-28 | Session: 050
 
 ## Where we are
 
-**v8 dual MERA architecture complete. 588M all-ternary, Qwen3 tokenizer. Training loop next.**
+**v8 ready to train. BIOS flash data + Dolma shards + training loop all complete.**
 
 Compressor MERA (253M) + Pipeline MERA (335M) = 588M logical params,
 99.7% ternary, 146 MB storage. Qwen3 BBPE tokenizer (151,936 vocab,
@@ -15,35 +15,87 @@ sharing, recurrence — all verified at full scale (d=1024, seq=4096).
 
 ## What to do next
 
-### 1. Re-tokenize Dolma shards with Qwen3 ← FIRST
+### 1. ~~Re-tokenize Dolma shards with Qwen3~~ ✅ DONE (session 050)
 
-Current shards in `/Users/mwhitford/data/fractal-bitnet/shards/` are
-GPT-NeoX (50277) encoded. Must re-tokenize with Qwen3 BBPE (151936)
-before any v8 training. Use `scripts/v8/tokenizer.py` encode_document().
+60 shards, 3B tokens, 4.47M documents in `shards-qwen3/`.
+Script: `scripts/v8/retokenize_dolma.py`. Zero errors.
 
-### 2. v8 training loop rewrite
+### 2. ~~v8 training loop rewrite~~ ✅ DONE (session 050)
 
-Rewrite `scripts/v8/train.py` for the new DualMERA architecture:
-- Replace VSMPipeline → DualMERA, PipelineConfig → DualMERAConfig
-- Adapt phase controllers to MERA levels (not 4 stages)
-- Evolutionary training regime (double-buffered genomes, population of 4+)
-- Fractal loss: cone + relational at every level
-- forward_with_metrics for per-level contribution deltas
+`scripts/v8/train.py` rewritten for DualMERA with phase modes:
+- `--phase bios`: burn-in on math + clojure (1 shard, many epochs, seq=512)
+- `--phase dolma`: prose training (60 shards, seq=4096, resumes from BIOS)
+Simplified from v7 (no per-stage phase controllers — MERA levels are
+weight-shared). Ternary flip annealing driven by relational loss.
 
-### 3. Holographic data generator (~1 session)
+### 3. ~~BIOS flash data generator~~ ✅ DONE (session 050)
 
-- Math generator (arithmetic, comparisons, predicates, boolean, bitwise)
-- Update `bb clj2lambda` to emit `io!` with `:as` annotations
-- Generate clojure.core examples by eval in babashka
+Babashka generator: `bb gen-bios` → 1.85M eval-verified examples.
+~80 generators covering math (tiers 1-3) + clojure.core (~110 functions).
+Single notation per example (forces computation, no translation shortcuts).
+Packed: `shards-bios/shard_00000.npy` (49.75M tokens, 1 shard).
+Pipeline: `bb gen-bios | uv run python scripts/v8/pack_bios.py`
+
+### 4. Train v8 BIOS flash ← NEXT
+
+```bash
+uv run python scripts/v8/train.py --phase bios
+```
+
+- 588M all-ternary DualMERA on 1 shard of math + clojure
+- Monitor for grokking (train loss plateau → second drop)
+- Probe at intervals: does the model actually compute?
+- Target: computation circuits burned into ternary topology
+
+### 5. Train v8 Dolma (after BIOS)
+
+```bash
+uv run python scripts/v8/train.py --phase dolma --resume checkpoints/v8-bios/step_050000
+```
+
+- Resume from BIOS checkpoint, conservative ternary flips
+- 60 shards, 3B tokens, seq_len=4096
+- Deep circuits should resist overwriting by prose
+
+### 6. Future: io! notation + sieve pipeline
+
+- Update `bb clj2lambda` for `io!` with `:as` annotations
+- Pure/effectful classification training
 - Multi-pass examples (partial reductions, register usage)
-- Interleave all representations in every batch
 
-### 4. Train v8 with evolutionary regime
+## Session 050 — Data Pipeline + Training Loop
 
-- Population of 4-8 mutants
-- Fitness-gated environment transitions
-- Monitor for grokking, pathway specialization, digit ceiling
-- Probe at each generation boundary
+### What was done
+
+1. **Dolma re-tokenization** — GPT-NeoX (50277) → Qwen3 BBPE (151936)
+   - `scripts/v8/retokenize_dolma.py`: streams parquets, 931K tok/s
+   - 60 shards × 50M tokens = 3B tokens, 4.47M documents, zero errors
+   - Output: `/Users/mwhitford/data/fractal-bitnet/shards-qwen3/`
+
+2. **BIOS flash data generator** — babashka eval-verified
+   - `bb/us/whitford/verbum/bios.clj`: ~80 generators, 3 notations
+   - Math tiers 1-3 (arithmetic, compound, nested) + clojure.core (~110 functions)
+   - Single notation per example — forces computation every time
+   - 1.85M examples → 49.75M tokens → 1 shard
+   - Pipeline: `bb gen-bios | uv run python scripts/v8/pack_bios.py`
+
+3. **v8 training loop** — DualMERA with phase modes
+   - `scripts/v8/train.py`: `--phase bios` (burn-in) or `--phase dolma` (prose)
+   - BIOS: 1 shard, seq=512, aggressive ternary flips, many epochs
+   - Dolma: 60 shards, seq=4096, conservative flips, resumes from BIOS
+   - Cosine LR, grad accumulation, ternary flip annealing, relational loss
+
+### Design decisions made
+
+- **Single-notation examples** for BIOS flash — model must compute every
+  result from the expression alone. No multi-representation interleaving
+  (would let model copy answers instead of computing).
+- **Babashka IS ground truth** — moved all generation from Python templates
+  to babashka eval. Every result verified by real evaluation.
+- **Phase flag** over config-driven — `--phase bios|dolma` sets sensible
+  defaults, individual flags override.
+- **Simplified from v7** — no per-stage phase controllers (MERA levels are
+  weight-shared, not independently phased). Single r_ema drives ternary flips.
 
 ## Session 049 — Architecture + All-Ternary + Tokenizer
 
@@ -141,10 +193,15 @@ TOTAL: 588M logical, 146 MB packed, 99.7% ternary
 | **v8 model (dual MERA)** | `scripts/v8/model.py` |
 | **v8 ternary (optimized kernel)** | `scripts/v8/ternary.py` |
 | **v8 tokenizer (Qwen3 BBPE)** | `scripts/v8/tokenizer.py` |
-| **v8 training (needs rewrite)** | `scripts/v8/train.py` |
+| **v8 training loop** | `scripts/v8/train.py` |
 | **v8 probe** | `scripts/v8/probe.py` |
 | **v8 kernel benchmark** | `scripts/v8/bench_kernel.py` |
+| **BIOS data generator (bb)** | `bb/us/whitford/verbum/bios.clj` |
+| **BIOS shard packer** | `scripts/v8/pack_bios.py` |
+| **Dolma re-tokenizer** | `scripts/v8/retokenize_dolma.py` |
 | **BIOS flash design** | `mementum/knowledge/explore/bios-flash-training.md` |
+| **BIOS shards** | `/Users/mwhitford/data/fractal-bitnet/shards-bios/` |
+| **Dolma Qwen3 shards** | `/Users/mwhitford/data/fractal-bitnet/shards-qwen3/` |
 | **v7 model (reference)** | `scripts/v7/model.py` |
 | **v7 ternary (reference)** | `scripts/v7/ternary.py` |
 | **bb clj2lambda** | `bb/us/whitford/verbum/tasks.clj` |
