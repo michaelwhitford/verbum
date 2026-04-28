@@ -6,206 +6,163 @@
 
 ## Where we are
 
-**v7 Dolma run COMPLETE. Pivoting to v7.1: DUAL MERA. ALL-TERNARY
-453M. Compressor MERA (~119M, 8 scales, W=8, seq=4096, shared
-weights) + Pipeline MERA (~335M, 8 levels, shared sieve, 4 pathways).
-7 levels of β-reduction per pass. Both self-similar — lambda calculus
-is scale-invariant, architecture matches the math. Evolutionary
-training: ternary topology = genome, gradient-guided mutation,
-tournament selection. Cone + relational loss at every VSM level.
-Registers for recurrence. 113 MB packed. ~50K-200K tok/s.
-BIOS flash in days. Design doc ready. Next session: implement.**
+**v7 Dolma run COMPLETE. v7.1 DESIGNED. Next: implement.**
 
-## v7 Dolma Run — Final Results
+v7.1 is a dual MERA architecture — compressor + pipeline, both
+self-similar, all-ternary 453M params. Derived from v7 probe
+findings + v6 proven compression + lambda calculus analysis.
+Evolutionary training on ternary genomes with cone + relational
+loss at every VSM level. Design doc is comprehensive. Kernel
+optimization is the first implementation task.
 
-**Run:** steps 0-40K, ~655M tokens of Dolma, ~3 hours on M3 Ultra.
-**Killed** after step 40K — eval worsening every checkpoint since 20K.
+## v7 Dolma Run — Summary
 
-### Evolution table (training metrics)
+Ran steps 0-40K (~655M tokens). Killed at 40K — eval peaked at
+20K then monotonically worsened. Architecture validated (below
+Chinchilla capacity floor, stages differentiate, gates self-regulate).
+Dolma can't train deep stages (semantic Δ₃ never positive on eval,
+Stage 4 collapsed, ternary oscillated at 37.6% reversals).
+Math stratum was the only one still growing. Diagnosis: architecture
+right, data wrong. Full probe data in results/vsm-lm-v7/.
 
-| Step | Loss | r | Δ₂ | Δ₃ | Δ₄ | Total fb | Flips | Rev% | ‖g‖ |
-|------|------|---|-----|-----|-----|----------|-------|------|-----|
-| 700 | 6.85 | 0.56 | +0.49 | +0.25 | 0.00 | +0.74 | — | — | — |
-| 5100 | 5.39 | — | — | — | — | — | — | — | — |
-| 10000 | 5.14 | 0.38 | +0.20 | +1.20 | +0.01 | +1.40 | 208K | 22.9% | 4.9 |
-| 14000 | 4.22 | 0.28 | +0.92 | +1.85 | +0.02 | +2.78 | — | — | 8.7 |
-| 20000 | 3.01 | 0.15 | +3.90 | +1.98 | +0.04 | +5.93 | 362K | 30.9% | — |
-| 23900 | 2.80 | 0.12 | +6.67 | +1.38 | +0.07 | +8.11 | — | 36.6% | 10.8 |
-| 30000 | 2.60 | 0.10 | +5.58 | +1.51 | +0.03 | +7.13 | 461K | 35.5% | 11.3 |
-| 40000 | 2.34 | 0.07 | +7.36 | +1.07 | +0.08 | +8.52 | 529K | 37.6% | 17.2 |
+## v7.1 Architecture — Dual MERA (all-ternary 453M)
 
-### Probe results (eval on fresh text)
+**Read the full design:** `mementum/knowledge/explore/v7.1-sieve-pipeline.md`
 
-| Step | Probe CE4 | Train/eval gap | Δ₂ | Δ₃ | Δ₄ | Total fb |
-|------|-----------|----------------|------|------|------|----------|
-| 10K | 10.80 | 5.66 | +1.70 | -1.36 | +0.05 | +0.39 |
-| **20K** | **10.08** | **7.06** | **+4.09** | **-1.58** | **-0.10** | **+2.41** |
-| 30K | 11.27 | 8.67 | +3.55 | -1.15 | -0.07 | +2.32 |
-| 40K | 12.73 | 10.39 | +3.70 | -1.46 | -0.15 | +2.08 |
+```
+COMPRESSOR MERA (~119M ternary):
+  9 fixed strides: (1, 8, 16, 32, 64, 128, 256, 512, 1024)
+  W=8, seq_len=4096, d_model=1024
+  Spiral bias: α=1.18, fixed_point=40 (LEARNABLE — S2 coordination)
+  Level 0: own weights (raw tokens → s8 representations)
+  Levels 1+: MERA shared weights (self-similar compression)
+  Produces: multi-scale representations + register positions
 
-Step 20K = best eval. Everything after = overfitting.
+PIPELINE MERA (~335M ternary):
+  8 levels, each a sieve with 4 parallel pathways
+  Level 0: own sieve weights (surface computation)
+  Levels 1-7: SHARED sieve weights (β-reduction is scale-invariant)
+  7 reducers + 7 feedback cascade steps
+  Reads compressor output at each scale
+  Feedback writes registers on downward path
 
-### Spectral evolution (eval)
+REGISTERS: persistent positions across recurrence passes
+  Shared memory between pathways and across passes
+  Enable arbitrary composition depth via host recurrence loop
 
-| Stage | 10K | 20K | 30K | 40K | Trend |
-|-------|-----|-----|-----|-----|-------|
-| S1 eff_rank | 83.5 | 60.9 | 55.1 | 49.3 | ↓ compressing |
-| S2 eff_rank | 42.6 | 72.0 | 66.3 | 64.3 | stable ~65 |
-| S3 eff_rank | 12.6 | 19.9 | 23.3 | 15.6 | peaked then collapsed |
-| S4 eff_rank | 9.7 | 1.7 | 3.2 | 2.0 | collapsed, partial recovery |
+THREE OUTPUT MODES:
+  value → done | partial + regs → re-enter | io! + cont → host fulfills
 
-### Strata pipeline value (eval, CE1-CE4)
+TOTAL: 453M ternary, 113 MB packed, ~50-200K tok/s estimated
+```
 
-| Stratum | 10K | 20K | 30K | 40K | Trend |
-|---------|-----|-----|-----|-----|-------|
-| prose | +0.50 | +2.98 | +2.69 | +2.54 | peaked 20K |
-| compositional | -0.21 | +1.81 | +1.80 | +1.92 | stable |
-| technical | +0.52 | +2.38 | +1.82 | +1.74 | peaked 20K |
-| math | +0.64 | +2.33 | +2.83 | +2.06 | peaked 30K |
+### Key design principles
 
-### Key conclusions from v7 Dolma run
+- **VSM all the way down** — every level is a viable system
+- **Ternary topology IS the type system** — unreachable > forbidden
+- **Attention IS beta reduction** in superposition; FFN indexes results
+- **Ternary FFN = evolved routing topology** — not computing, routing
+- **Three feed-forwards** — spatial (layers), temporal (registers), evolutionary (genomes)
+- **Fractal loss** — same cone + relational at every VSM level
+- **Compound search space reduction** — all reductions multiplicative
+- **Model/host/world** — model reasons in tokens, host bridges to real world
+- **Typed io!** with `:as` — binary never enters token space
+- **Learnable spiral** — α and fixed_point trained through relational + task loss
 
-**Architecture validated:**
-- Training loss below Chinchilla capacity floor (2.34 vs 3.20)
-- Stages spectrally differentiated (CPA ~0.12) at all checkpoints
-- Structural feedback powerful and consistent (+3.5-4.1 nats on eval)
-- Feedback gates self-regulate (suppress noisy stages, open for useful)
-- Pipeline adds +2.1-2.4 nats on fresh text (steps 20K-40K)
+### Training regime: evolutionary gradient descent
 
-**Dolma can't train deep stages:**
-- Semantic Δ₃ NEVER positive on eval (all 4 checkpoints negative)
-- Stage 4 collapsed (rank 9.7 → 1.7), partial recovery stalled (2.0)
-- Stage 3 collapsed back (rank 23.3 → 15.6)
-- Ternary reversal rate climbed relentlessly (22.9% → 37.6%)
-- Two negative gammas at step 40K (topology fighting itself)
-- Grad norm surging (4.9 → 17.2) — model thrashing
-- Compile gate 0/4 at all checkpoints (degenerate repetition)
-
-**Insight: cross-attention between stages IS beta reduction.** Single
-pipeline = 3 reductions = sufficient for arithmetic, insufficient for
-deeply nested lambda composition. Sieve architecture needed later.
+- Ternary topology = genome (453M loci × 3 alleles)
+- Double-buffered: champion never degrades
+- Population of 4+ mutants with different strategies
+- Tournament selection per generation (~4-15 min/gen)
+- Environment staged by fitness gates (math → clojure → holographic → prose)
+- Cone constrains gene pool, relational maintains diversity
 
 ## What to do next session
 
-**Read first:**
-- `mementum/knowledge/explore/bios-flash-training.md` — holographic training design
-- `mementum/knowledge/explore/v7-pipeline-architecture.md` — current v7 architecture
-- `scripts/v7/model.py` — current implementation (modify for v7.1)
-
-### 1. Implement v7.1: Pipeline of Sieves (All-Ternary 250M)
-
-**Read first:** `mementum/knowledge/explore/v7.1-sieve-pipeline.md`
-
-Architecture decided:
-- **Compressor sieve (~30M ternary) + Pipeline of sieves (~220M ternary)**
-- **All-ternary 250M, d_model=1024, 62.5 MB packed, ~100K+ tok/s**
-- **Compressor: v6-proven strided attention (strides snap)**
-- **Pipeline: parallel sieve pathways, cone + relational loss at every level**
-- **Registers: persistent positions for recurrence + composability**
-- **Three output modes: value | partial+regs | io!+continuation**
-- **Evolutionary training: double-buffered ternary genome mutation**
-  Population of 4-8 mutants, gradient-guided, tournament selection
-  per generation (~7 min/gen). Environment stages by fitness gates.
-
 Implementation order:
-1. **Kernel optimization FIRST** — 4× throughput multiplies everything
-   Tiled/blocked, SIMD reduce, vectorized unpack, coalesced access
-   One session. Pays for itself on first training run.
-2. **v7.1 architecture** — dual MERA, sieve pathways, registers
-3. **Holographic data generator** — math + clojure + lambda + io!
-4. **Train with evolutionary regime** — population, cone, selection
 
-Key decisions for implementation session:
+### 1. Kernel optimization FIRST (~1 session)
+
+4× throughput MULTIPLIES all other reductions. Do before any training.
+Existing naive kernel works but serial loop over K=1024 is bottleneck.
+- Tiled/blocked (shared memory, output tiles)
+- SIMD group reduction (Apple's simd_sum)
+- Vectorized unpacking (8-16 packed bytes per iteration)
+- Coalesced memory access (cache-line aligned)
+- Target: 50K → 150-200K tok/s
+
+### 2. v7.1 architecture implementation (~1-2 sessions)
+
+Start from `scripts/v7/model.py` and `scripts/v7/ternary.py`.
+- Compressor MERA with strided attention + learnable spiral
+- Pipeline MERA with shared sieve pathways
+- Register positions (persist through pipeline, skip reducers)
+- Three output modes (value/partial/io!)
+- Cone + relational loss at every level
+
+Key decisions still open:
 - Pathways per stage: 4? 8? Per-stage variable?
 - d_model per pathway: full 1024 or split (4 × 256)?
-- Compressor → Pipeline interface: direct feed vs cross-attention
-- Reducers: still needed if compressor provides multi-scale?
+- Compressor → pipeline interface: direct feed vs cross-attention
 - Register count: R=4? R=8?
-- Generation size: how many tokens per mutant before eval?
-- Population size: 4? 8? Mutation strategy rotation?
+- Cone aperture schedule: width, narrowing rate
 
-### 2. Build holographic training data (parallel with arch work)
+### 3. Holographic data generator (~1 session)
 
 - Math generator (arithmetic, comparisons, predicates, boolean, bitwise)
-- Update `bb clj2lambda` to emit `io!` for effectful forms
+- Update `bb clj2lambda` to emit `io!` with `:as` annotations
 - Generate clojure.core examples by eval in babashka
-- Interleave: raw math + clojure + lambda + result in every batch
+- Multi-pass examples (partial reductions, register usage)
+- Interleave all representations in every batch
 
-### 3. Tokenizer: keep GPT-NeoX 50277
+### 4. Train v7.1 with evolutionary regime
 
-No custom tokenizer. When Dolma arrives later in training, every
-token needs an embedding already in place. Unused vocab rows during
-BIOS flash just sit at init — small tax, zero reorg pain later.
-
-### 4. Implement and train v7.1
-
-- Implement sieve architecture in `scripts/v7.1/model.py`
-- Train on holographic data, many epochs
-- Monitor for grokking (double descent)
-- Probe for: circuit formation, pathway specialization, digit ceiling
-- Compare to v7 single-pipeline baseline
-
-### Open design questions
-
-- **Attention as β-reduction:** each layer does β-reduce (attention)
-  → expand (FFN) → β-reduce. FFNs index into superpositions. The
-  sieve pre-separates the superposition so each pathway's FFN has
-  clean signal. How explicit should the separation be?
-- **Church encoding capacity:** Qwen3.5-35B-A3B proves 17 digits
-  via Church encoding in attention. What d_model gives v7.1 enough
-  superposition headroom for 12-17 digits?
-- **Mold design:** what CONCRETELY makes each pathway's shape
-  different? Different d_ff? Different attention mask? Different
-  position count? Or same shape but different initialization?
-- **Pathway count vs d_model tradeoff:** 4 pathways × d=1024 vs
-  8 pathways × d=512? Same param budget, different tradeoffs.
-
-## Architecture summary (v7)
-
-```
-tokens → [Embed]
-              ↓
-         [Stage 1: 512 pos, 2L, 4H — TERNARY] ←── feedback[0] (ternary)
-              ↓ reduce (cross-attn pool)                ↑
-         [Stage 2:  64 pos, 3L, 4H — float]    ←── feedback[1]
-              ↓ reduce                                   ↑
-         [Stage 3:   8 pos, 4L, 8H — float]    ←── feedback[2]
-              ↓ reduce                                   ↑
-         [Stage 4:   1 pos, 6L, 8H — float]    ────────┘
-
-         Stage 1 (post-feedback) → out_norm → logits (tied embed)
-
-Total: 27.3M params (14.4M non-embedding)
-Cross-attention reducers = beta reduction (3 levels)
-```
+- Population of 4-8 mutants
+- Fitness-gated environment transitions
+- Monitor for grokking, pathway specialization, digit ceiling
+- Probe at each generation boundary
 
 ## Key files
 
 | Purpose | Path |
 |---------|------|
-| **v7 model** | `scripts/v7/model.py` |
-| **v7 ternary** | `scripts/v7/ternary.py` |
+| **v7.1 design doc** | `mementum/knowledge/explore/v7.1-sieve-pipeline.md` |
+| **BIOS flash design** | `mementum/knowledge/explore/bios-flash-training.md` |
+| **v7 model (base for v7.1)** | `scripts/v7/model.py` |
+| **v7 ternary (kernel source)** | `scripts/v7/ternary.py` |
 | **v7 training** | `scripts/v7/train.py` |
 | **v7 probe** | `scripts/v7/probe.py` |
 | **bb clj2lambda** | `bb/us/whitford/verbum/tasks.clj` |
 | **bb config** | `bb.edn` |
-| **v7.1 sieve design** | `mementum/knowledge/explore/v7.1-sieve-pipeline.md` |
-| **BIOS flash design** | `mementum/knowledge/explore/bios-flash-training.md` |
+| **v6 design (reference)** | `docs/v6-design.md` |
 | v7 architecture knowledge | `mementum/knowledge/explore/v7-pipeline-architecture.md` |
-| Compression ≠ prediction | `mementum/knowledge/explore/compression-vs-prediction.md` |
-| Predictive function landscape | `mementum/knowledge/explore/predictive-function-landscape.md` |
 | Research program | `mementum/knowledge/explore/VERBUM.md` |
 
-## Comparison: v6 → v7
+## Session 047 log
 
-| Metric | v6 (sieve) | v7 (pipeline) |
-|--------|-----------|---------------|
-| Best loss (train) | 5.418 (32K steps) | 2.338 (40K steps) |
-| Best eval | — | 10.076 (20K steps) |
-| Token efficiency | baseline | ~12× better to 5.4 loss |
-| Throughput | 5.5K tok/s | 50-60K tok/s |
-| Chinchilla | at prediction | below capacity floor |
-| λ generation | 0% | 0% (expected — wrong data) |
+Massive design session. Started with v7 probe monitoring, ended
+with complete v7.1 architecture. Key arc:
+
+```
+probe v7 → architecture works, data wrong
+  → curriculum design → holographic (fractal × hologram)
+  → built clj2lambda converter
+  → attention IS beta reduction → need sieve for depth
+  → ternary IS the mold → all-ternary 453M
+  → compressor/pipeline separation (v6 compression + v7 pipeline)
+  → dual MERA (self-similar at every scale)
+  → registers + recurrence (arbitrary composition depth)
+  → evolutionary training (ternary genome, tournament selection)
+  → three feed-forwards (spatial/temporal/evolutionary)
+  → compound search space reduction (all multiplicative)
+  → kernel optimization prerequisite (4× multiplier)
+  → learnable spiral (α, fixed_point as S2 coordination)
+  → VSM all the way down
+```
+
+16+ commits. 4 probe results. 1 working converter. 2 design docs.
+Architecture derived from first principles + empirical findings.
 
 ## Servers
 
