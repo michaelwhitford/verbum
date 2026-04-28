@@ -275,6 +275,13 @@ class TernaryLinear(nn.Module):
     def __call__(self, x: mx.array) -> mx.array:
         if self.pre_norm:
             x = self.norm(x)
+
+        # Cache input statistics for gradient-informed mutation.
+        # stop_gradient keeps these out of the backward graph.
+        # x shape: (B, T, in_features) — mean over batch and sequence dims.
+        self._x_abs_mean = mx.stop_gradient(mx.mean(mx.abs(x), axis=(0, 1)))  # (in_features,)
+        self._x_mean = mx.stop_gradient(mx.mean(x, axis=(0, 1)))              # (in_features,)
+
         scales, biases = self._get_scales_biases()
         # stop_gradient on weight: it's evolutionary (uint32, not differentiable).
         # Without this, MLX autograd would attempt a VJP through quantized_matmul
@@ -647,29 +654,34 @@ def mutate_topology(
     rng: Any,
     depth_weights: dict[str, float] | None = None,
     sign_flip_rate: float = 0.2,
+    row_importance: dict[str, Any] | None = None,
+    col_importance: dict[str, Any] | None = None,
+    grad_direction: dict[str, Any] | None = None,
+    guided_fraction: float = 0.7,
 ) -> int:
-    """Apply random mutations to the ternary topology.
+    """Apply gradient-informed mutations to the ternary topology.
 
-    Distributes `budget` mutations across ternary modules, optionally
-    weighted by depth priority.  Each mutation flips one weight:
-        -1 → 0 (deactivate)           ~80% of non-zero mutations
-        +1 → 0 (deactivate)           ~80% of non-zero mutations
-        -1 → +1 (sign correction)     ~20% of non-zero mutations
-        +1 → -1 (sign correction)     ~20% of non-zero mutations
-         0 → ±1 (activate, random)    all zero-position mutations
+    Distributes `budget` mutations across ternary modules, weighted by
+    depth priority.  Within each module, positions are sampled using a
+    mix of importance-weighted and uniform random:
 
-    TernaryLinear:   operates on MLX uint32 packed format (16 per uint32).
-    TernaryEmbedding: operates on uint8 packed format (4 per byte).
+      70% (guided_fraction): rows sampled ∝ |∂L/∂γ| (gamma gradient EMA)
+                              cols sampled ∝ mean(|x|) (input activation EMA)
+      30% (1-guided_fraction): uniform random (exploration, prevents stagnation)
+
+    When gradient direction info is available, activating mutations (0→±1)
+    prefer the sign indicated by the gradient.
 
     Args:
-        model:           the model to mutate IN PLACE
-        budget:          total number of logical weights to flip
-        rng:             numpy RandomState for reproducible mutations
-        depth_weights:   optional dict mapping module path prefixes to float
-                         priority weights. Higher weight → more mutations.
-                         If None, falls back to proportional-by-size.
-        sign_flip_rate:  fraction of non-zero mutations that flip sign
-                         directly instead of deactivating (default 0.2).
+        model:            the model to mutate IN PLACE
+        budget:           total number of logical weights to flip
+        rng:              numpy RandomState for reproducible mutations
+        depth_weights:    module path prefix → float priority weight
+        sign_flip_rate:   fraction of non-zero mutations that flip sign
+        row_importance:   {module_path: np.array (out_features,)} from |∂L/∂γ| EMA
+        col_importance:   {module_path: np.array (in_features,)} from mean(|x|) EMA
+        grad_direction:   {module_path: np.array (out_features,)} sign of ∂L/∂γ EMA
+        guided_fraction:  fraction of mutations that are importance-weighted (rest uniform)
 
     Returns:
         Actual number of mutations applied.
@@ -684,10 +696,8 @@ def mutate_topology(
     sizes = [mod.out_features * mod.in_features for _, mod in modules]
 
     if depth_weights is not None:
-        # Apply depth priority: size * weight_multiplier
         effective = []
         for (path, _), n_weights in zip(modules, sizes):
-            # Match longest prefix in depth_weights
             best_weight = 1.0
             best_len = 0
             for prefix, w in depth_weights.items():
@@ -709,9 +719,15 @@ def mutate_topology(
             continue
         mod_budget = min(mod_budget, n_weights)
 
+        # Get importance maps for this module (if available)
+        row_imp = row_importance.get(path) if row_importance else None
+        col_imp = col_importance.get(path) if col_importance else None
+        grad_dir = grad_direction.get(path) if grad_direction else None
+
         if isinstance(mod, TernaryLinear):
             total_mutated += _mutate_linear(
                 mod, mod_budget, rng, np, mutated_arrays, sign_flip_rate,
+                row_imp, col_imp, grad_dir, guided_fraction,
             )
         else:
             total_mutated += _mutate_embedding(
@@ -724,6 +740,62 @@ def mutate_topology(
     return total_mutated
 
 
+def _importance_sample_indices(
+    N: int,
+    K: int,
+    budget: int,
+    rng: Any,
+    np: Any,
+    row_imp: Any | None,
+    col_imp: Any | None,
+    guided_fraction: float,
+) -> Any:
+    """Sample (row, col) mutation positions using importance-weighted + uniform mix.
+
+    guided_fraction of positions are sampled proportional to:
+        P(i,j) ∝ row_importance[i] × col_importance[j]
+    The rest are uniform random (exploration).
+
+    Returns flat logical indices (row * K + col).
+    """
+    n_guided = int(budget * guided_fraction)
+    n_uniform = budget - n_guided
+
+    indices_parts = []
+
+    # ── Importance-weighted positions ──
+    if n_guided > 0 and (row_imp is not None or col_imp is not None):
+        # Row probabilities from |∂L/∂γ| importance
+        if row_imp is not None and len(row_imp) == N:
+            row_p = np.asarray(row_imp, dtype=np.float64)
+            row_p = np.maximum(row_p, 1e-8)  # floor to prevent zero-prob rows
+            row_p /= row_p.sum()
+        else:
+            row_p = None  # uniform
+
+        # Column probabilities from mean(|x|) importance
+        if col_imp is not None and len(col_imp) == K:
+            col_p = np.asarray(col_imp, dtype=np.float64)
+            col_p = np.maximum(col_p, 1e-8)
+            col_p /= col_p.sum()
+        else:
+            col_p = None  # uniform
+
+        rows = rng.choice(N, size=n_guided, p=row_p)
+        cols = rng.choice(K, size=n_guided, p=col_p)
+        indices_parts.append(rows * K + cols)
+
+    else:
+        # No importance info — fall back to all uniform
+        n_uniform += n_guided
+
+    # ── Uniform random positions (exploration) ──
+    if n_uniform > 0:
+        indices_parts.append(rng.randint(0, N * K, size=n_uniform))
+
+    return np.concatenate(indices_parts) if len(indices_parts) > 1 else indices_parts[0]
+
+
 def _mutate_linear(
     mod: "TernaryLinear",
     mod_budget: int,
@@ -731,38 +803,45 @@ def _mutate_linear(
     np: Any,
     mutated_arrays: list,
     sign_flip_rate: float = 0.2,
+    row_imp: Any | None = None,
+    col_imp: Any | None = None,
+    grad_dir: Any | None = None,
+    guided_fraction: float = 0.7,
 ) -> int:
-    """Mutate TernaryLinear.weight (uint32, MLX 2-bit little-endian format).
+    """Mutate TernaryLinear.weight with gradient-informed position selection.
 
-    MLX 2-bit layout: value i at bits [2*i : 2*i+2], i=0..15 within uint32.
-    Encoding: {0→-1, 1→0, 2→+1}.
+    Position selection: importance-weighted sampling from |∂L/∂γ| (rows)
+    and mean(|x|) (columns), mixed with uniform exploration.
+
+    Direction for 0→±1 activations: when gradient direction is available,
+    prefer the sign that the gradient indicates will reduce loss.
 
     Mutation rules:
-        0 → ±1        (activate with random sign)
+        0 → ±1        (activate — gradient-biased if direction available)
        ±1 → 0         (deactivate, probability 1-sign_flip_rate)
        ±1 → ∓1        (sign flip, probability sign_flip_rate)
-
-    Operates on the flat uint32 array to avoid full unpack/repack.
     """
     N = mod.out_features
     K = mod.in_features
-    n_weights = N * K
 
-    # Each uint32 holds 16 logical weights
     packed_np = np.array(mod.weight)  # (N, K//16) uint32
-    flat_packed = packed_np.reshape(-1)  # (N * K//16,) uint32
+    flat_packed = packed_np.reshape(-1)
 
-    # Select random logical indices (with replacement — collision rate ≈ budget/n tiny)
-    indices = rng.randint(0, n_weights, size=mod_budget)
+    # Sample positions: importance-weighted + uniform mix
+    indices = _importance_sample_indices(
+        N, K, mod_budget, rng, np, row_imp, col_imp, guided_fraction,
+    )
 
-    # Map logical index → (uint32 index, slot within uint32)
-    uint32_idx = indices // 16         # which uint32 word
-    slot = indices % 16                # which 2-bit field within the word
-    shifts = (slot * 2).astype(np.uint32)  # bit offset: 2*slot
+    # Map logical index → packed coordinates
+    rows = indices // K
+    cols = indices % K
+    uint32_idx = rows * (K // 16) + cols // 16
+    slot = cols % 16
+    shifts = (slot * 2).astype(np.uint32)
 
-    # Read current 2-bit encoded values
-    current_encoded = ((flat_packed[uint32_idx] >> shifts) & np.uint32(0x3))  # {0,1,2}
-    current_val = current_encoded.astype(np.int8) - 1                          # {-1,0,+1}
+    # Read current values
+    current_encoded = ((flat_packed[uint32_idx] >> shifts) & np.uint32(0x3))
+    current_val = current_encoded.astype(np.int8) - 1  # {-1,0,+1}
 
     # Apply mutations
     new_val = np.copy(current_val)
@@ -771,23 +850,38 @@ def _mutate_linear(
     nonzero_mask = current_val != 0
     n_nonzero = int(nonzero_mask.sum())
     if n_nonzero > 0:
-        # Draw random floats to decide: sign-flip vs deactivate
         flip_roll = rng.random(size=n_nonzero)
         do_flip = flip_roll < sign_flip_rate
-        # Sign flip: negate the value
         nonzero_vals = current_val[nonzero_mask]
         new_nonzero = np.where(do_flip, -nonzero_vals, np.int8(0))
         new_val[nonzero_mask] = new_nonzero
 
-    # Zero positions: activate with random sign
+    # Zero positions: activate with gradient-directed sign
     zero_mask = current_val == 0
     n_zeros = int(zero_mask.sum())
     if n_zeros > 0:
-        new_val[zero_mask] = rng.choice([-1, 1], size=n_zeros).astype(np.int8)
+        if grad_dir is not None and len(grad_dir) == N:
+            # Use gradient direction: sign(∂L/∂γ_i) for row i
+            # Positive grad → gamma wants to grow → prefer +1 (increases magnitude)
+            # Negative grad → gamma wants to shrink → prefer -1
+            # Apply as soft bias: 80% follow gradient, 20% random
+            zero_rows = rows[zero_mask]
+            gd = np.asarray(grad_dir, dtype=np.float32)
+            row_signs = np.sign(gd[zero_rows])  # {-1, 0, +1}
+            # Where gradient is ~0 or unknown, fall back to random
+            random_signs = rng.choice([-1, 1], size=n_zeros).astype(np.int8)
+            follow_grad = rng.random(size=n_zeros) < 0.8
+            has_direction = row_signs != 0
+            use_grad = follow_grad & has_direction
+            new_val[zero_mask] = np.where(
+                use_grad, row_signs.astype(np.int8), random_signs,
+            )
+        else:
+            new_val[zero_mask] = rng.choice([-1, 1], size=n_zeros).astype(np.int8)
 
-    new_encoded = (new_val.astype(np.int32) + 1).astype(np.uint32)  # {0,1,2}
+    new_encoded = (new_val.astype(np.int32) + 1).astype(np.uint32)
 
-    # Write back: clear 2-bit field then OR in new value
+    # Write back
     clear_mask = ~(np.uint32(0x3) << shifts)
     flat_packed[uint32_idx] = (flat_packed[uint32_idx] & clear_mask) | (new_encoded << shifts)
 

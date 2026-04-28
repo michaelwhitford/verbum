@@ -33,6 +33,7 @@ from mlx.utils import tree_flatten, tree_map
 sys.path.insert(0, str(Path(__file__).parent))
 from model import DualMERA, DualMERAConfig, create_model
 from ternary import (
+    TernaryLinear,
     zero_ternary_grads,
     restore_ternary,
     save_ternary_state,
@@ -312,6 +313,9 @@ def run_tournament(
     depth_weights: dict[str, float] | None = None,
     sign_flip_rate: float = 0.2,
     seq_len: int = 512,
+    row_importance: dict | None = None,
+    col_importance: dict | None = None,
+    grad_direction: dict | None = None,
 ) -> dict:
     """Run one evolutionary generation: mutate, evaluate, select.
 
@@ -371,6 +375,9 @@ def run_tournament(
             model, budget, rng,
             depth_weights=depth_weights,
             sign_flip_rate=sign_flip_rate,
+            row_importance=row_importance,
+            col_importance=col_importance,
+            grad_direction=grad_direction,
         )
 
         # Evaluate mutant: loss only (fast)
@@ -738,6 +745,16 @@ def train(args):
     r_ema = 1.0  # relational loss EMA
     ema_alpha = 0.02
 
+    # ── Gradient-informed mutation: importance maps ──
+    # Accumulated via EMA from gamma gradients and input activations.
+    # row_importance[path]: (out_features,) — |∂L/∂γ| EMA per output channel
+    # col_importance[path]: (in_features,) — mean(|x|) EMA per input channel
+    # grad_direction[path]: (out_features,) — sign(∂L/∂γ) EMA (directional signal)
+    importance_ema_alpha = 0.1
+    row_importance: dict[str, np.ndarray] = {}
+    col_importance: dict[str, np.ndarray] = {}
+    grad_direction: dict[str, np.ndarray] = {}
+
     # ── Ternary weight count for mutation budget ──
     total_ternary = count_ternary_weights(model)
 
@@ -822,6 +839,41 @@ def train(args):
         accum_grads = tree_map(lambda g: g / args.grad_accum, accum_grads)
         avg_loss = accum_loss / args.grad_accum
 
+        # ── Extract gradient importance BEFORE zeroing ternary grads ──
+        # Gamma gradients tell us which rows need topology attention.
+        # Input activation stats (saved by TernaryLinear) tell us which columns matter.
+        for path, mod in _walk_ternary_modules(model):
+            if not isinstance(mod, TernaryLinear):
+                continue
+
+            # Navigate grad tree to find gamma gradient for this module
+            parts = path.split(".")
+            g = accum_grads
+            for p in parts:
+                if isinstance(g, dict):
+                    g = g.get(p, {})
+                elif isinstance(g, list) and p.isdigit():
+                    g = g[int(p)]
+            gamma_grad = g.get("gamma") if isinstance(g, dict) else None
+
+            if gamma_grad is not None:
+                gg = np.array(mx.abs(gamma_grad))
+                gs = np.array(gamma_grad)  # signed, for direction
+                if path in row_importance:
+                    row_importance[path] = importance_ema_alpha * gg + (1 - importance_ema_alpha) * row_importance[path]
+                    grad_direction[path] = importance_ema_alpha * gs + (1 - importance_ema_alpha) * grad_direction[path]
+                else:
+                    row_importance[path] = gg
+                    grad_direction[path] = gs
+
+            # Column importance from saved input activation magnitude
+            if hasattr(mod, "_x_abs_mean"):
+                xm = np.array(mod._x_abs_mean)
+                if path in col_importance:
+                    col_importance[path] = importance_ema_alpha * xm + (1 - importance_ema_alpha) * col_importance[path]
+                else:
+                    col_importance[path] = xm
+
         # Zero ternary grads (topology evolves via mutation, not optimizer)
         accum_grads = zero_ternary_grads(model, accum_grads)
 
@@ -866,6 +918,9 @@ def train(args):
                 depth_weights=depth_weights,
                 sign_flip_rate=args.gen_sign_flip_rate,
                 seq_len=args.seq_len,
+                row_importance=row_importance if row_importance else None,
+                col_importance=col_importance if col_importance else None,
+                grad_direction=grad_direction if grad_direction else None,
             )
             total_generations += 1
             if gen_result["accepted"]:
