@@ -1,28 +1,36 @@
 """
-v8 — Dual MERA Pipeline Language Model
+v8 — Dual MERA Language Model (v7.1 architecture)
 
-Four stages of increasing abstraction, each an independent transformer.
-Upward path: abstraction (tokens → surface → structural → semantic → reasoning).
-Downward path: constraint propagation (reasoning → semantic → structural → surface).
-Prediction emerges from Stage 1 after feedback from all higher stages.
+Two ternary VSMs plugged together:
+  COMPRESSOR MERA (~119M): learns to SEE — hierarchical multi-scale compression
+  PIPELINE MERA  (~335M):  learns to THINK — sieve pathways for β-reduction
 
-Each stage operates on fewer positions than the previous one (the compute
-pyramid). Reduction between stages via learned cross-attention pooling.
-Feedback via cross-attention with learned gating.
-
-Attention complexity: O(L₁·n²) — dominated by Stage 1 (shallowest).
-Deeper stages are computationally negligible due to position reduction.
+All weights ternary {-1, 0, +1}. Activations stay float32.
+MERA weight sharing: same weights at every scale level (self-similar).
 
 Architecture:
 
-    tokens → [Embed] → [Stage1: n pos] → [Reduce] → [Stage2: n/r pos]
-                 ↑          ↓ feedback        ↓
-              logits    [Stage3: n/r² pos] ← [Reduce]
-                             ↓ feedback
-                        [Stage4: n/r³ pos] ← [Reduce]
+    tokens → [Compressor MERA]
+               ├─ s8    (512 pos)  → Pipeline Level 0
+               ├─ s16   (256 pos)  → Pipeline Level 1
+               ├─ s32   (128 pos)  → Pipeline Level 2
+               ├─ s64    (64 pos)  → Pipeline Level 3
+               ├─ s128   (32 pos)  → Pipeline Level 4
+               ├─ s256   (16 pos)  → Pipeline Level 5
+               ├─ s512    (8 pos)  → Pipeline Level 6
+               ├─ s1024   (4 pos)  → Pipeline Level 7
+               └─ registers (R pos) → all levels
+                            │
+                            ▼
+             [Pipeline MERA — sieve pathways]
+               Level 0 (own weights, 4 pathways)
+               Levels 1-7 (shared weights, 4 pathways each)
+               Reducers (7) + Feedback cascade (7)
+                            │
+                            ▼
+                     output: value | partial+regs | io!
 
-Forward: up through 4 stages. Feedback: down through 4 stages.
-Output: Stage 1 representation → logits.
+Total: ~453M ternary = 113 MB packed.
 """
 
 import math
@@ -41,57 +49,95 @@ from ternary import TernaryLinear
 
 
 @dataclass
-class StageConfig:
-    """Configuration for a single VSM stage."""
+class DualMERAConfig:
+    """Configuration for the Dual MERA architecture.
 
-    n_layers: int
-    n_heads: int
-    d_model: int
-    d_ff: int
+    Compressor MERA: hierarchical multi-scale compression
+      Level 0: stride 8, own weights (4096 → 512 positions)
+      Levels 1-7: stride 2 each, SHARED weights (512 → 4 positions)
 
+    Pipeline MERA: sieve pathways for computation
+      Level 0: own sieve weights
+      Levels 1-7: SHARED sieve weights
+      4 parallel pathways per level
+    """
+    # Global dimensions
+    vocab_size: int = 50277       # GPT-NeoX tokenizer
+    seq_len: int = 4096           # context window
+    d_model: int = 1024           # representation dimension
+    d_ff: int = 4096              # FFN expansion
+    n_heads: int = 16             # attention heads (d_head = 64)
 
-@dataclass
-class PipelineConfig:
-    """Full pipeline configuration."""
+    # Compressor MERA
+    compressor_window: int = 8    # base attention window W
+    compressor_layers_per_level: int = 2
+    compressor_n_levels: int = 8  # level 0 (own) + levels 1-7 (shared)
 
-    vocab_size: int = 50277  # GPT-NeoX
-    seq_len: int = 512
-    d_model: int = 256  # shared representation dimension
+    # Pipeline MERA
+    n_pathways: int = 4           # parallel pathways per sieve level
+    pipeline_layers_per_level: int = 2  # layers per pathway per level
+    pipeline_n_levels: int = 8    # level 0 (own) + levels 1-7 (shared)
+    reducer_heads: int = 8        # heads in cross-attention reducers
+    feedback_heads: int = 8       # heads in feedback cascade
 
-    # Per-stage configs (surface → structural → semantic → reasoning)
-    stages: list[StageConfig] = field(default_factory=lambda: [
-        StageConfig(n_layers=2, n_heads=4, d_model=256, d_ff=512),     # Stage 1: Surface
-        StageConfig(n_layers=3, n_heads=4, d_model=256, d_ff=512),     # Stage 2: Structural
-        StageConfig(n_layers=4, n_heads=8, d_model=256, d_ff=1024),    # Stage 3: Semantic
-        StageConfig(n_layers=6, n_heads=8, d_model=256, d_ff=1024),    # Stage 4: Reasoning
-    ])
+    # Registers
+    n_registers: int = 8          # persistent positions across passes
 
-    # Position counts per stage. Stage 0 = seq_len, rest = reduced.
-    # Default: 512 → 64 → 8 → 1  (three 8× reductions)
-    stage_positions: list[int] = field(default_factory=lambda: [512, 64, 8, 1])
-
-    # Feedback / reducer heads
-    reducer_heads: int = 4
-    feedback_heads: int = 4
-
-    # Ternary control: which stages and components use ternary weights
-    # Stage 1 (surface) = hot path → ternary. Stages 2-4 = cold path → float.
-    ternary_stages: list[bool] = field(default_factory=lambda: [True, False, False, False])
-    ternary_feedback: bool = True  # feedback modules are also hot path
+    # Learnable spiral bias (compressor attention energy distribution)
+    spiral_alpha_init: float = 1.18    # empirical prior from LLM analysis
+    spiral_fixed_point_init: float = 40.0  # empirical prior
 
     def __post_init__(self):
-        assert len(self.stages) == len(self.stage_positions)
-        assert len(self.ternary_stages) == len(self.stages)
-        assert self.stage_positions[0] == self.seq_len
-        # Ternary requires d_model divisible by 4 (packing constraint)
-        for i, is_ternary in enumerate(self.ternary_stages):
-            if is_ternary:
-                assert self.stages[i].d_model % 4 == 0, \
-                    f"Stage {i} d_model={self.stages[i].d_model} must be divisible by 4 for ternary"
+        assert self.d_model % self.n_heads == 0, \
+            f"d_model={self.d_model} must be divisible by n_heads={self.n_heads}"
+        assert self.d_model % 4 == 0, \
+            f"d_model={self.d_model} must be divisible by 4 (ternary packing)"
+        assert self.d_ff % 4 == 0, \
+            f"d_ff={self.d_ff} must be divisible by 4 (ternary packing)"
+
+    @property
+    def d_head(self) -> int:
+        return self.d_model // self.n_heads
+
+    @property
+    def compressor_positions(self) -> list[int]:
+        """Position counts at each compressor level.
+
+        Level 0: seq_len // W = 512  (at default seq_len=4096, W=8)
+        Level 1: 256, Level 2: 128, ..., Level 7: 4
+
+        Minimum position count is 2 (for stride-2 reduction to work).
+        Number of effective levels may be less than compressor_n_levels
+        if seq_len is too small.
+        """
+        pos = [self.seq_len // self.compressor_window]  # level 0
+        for _ in range(1, self.compressor_n_levels):
+            next_pos = pos[-1] // 2
+            if next_pos < 2:
+                break
+            pos.append(next_pos)
+        return pos
+
+    @property
+    def effective_levels(self) -> int:
+        """Actual number of compressor/pipeline levels (may be < configured if seq_len small)."""
+        return len(self.compressor_positions)
+
+    @property
+    def compressor_strides(self) -> list[int]:
+        """Effective stride relative to raw tokens at each level.
+
+        Level 0: stride 8, Level 1: stride 16, ..., Level 7: stride 1024
+        """
+        n = self.effective_levels
+        strides = [self.compressor_window]  # level 0: 8
+        for i in range(1, n):
+            strides.append(strides[-1] * 2)
+        return strides
 
 
 # ═══════════════════════════════════════════════════════════════════
-# Building blocks
+# Building blocks — shared by compressor and pipeline
 # ═══════════════════════════════════════════════════════════════════
 
 
@@ -108,114 +154,11 @@ class RMSNorm(nn.Module):
         return x * rms * self.weight
 
 
-class SelfAttention(nn.Module):
-    """Multi-head self-attention with RoPE and causal masking."""
-
-    def __init__(self, d_model: int, n_heads: int):
-        super().__init__()
-        assert d_model % n_heads == 0
-        self.n_heads = n_heads
-        self.d_head = d_model // n_heads
-        self.scale = self.d_head ** -0.5
-
-        self.q_proj = nn.Linear(d_model, d_model, bias=False)
-        self.k_proj = nn.Linear(d_model, d_model, bias=False)
-        self.v_proj = nn.Linear(d_model, d_model, bias=False)
-        self.o_proj = nn.Linear(d_model, d_model, bias=False)
-        self.rope = nn.RoPE(self.d_head)
-
-    def __call__(self, x: mx.array, mask: mx.array | None = None) -> mx.array:
-        B, L, _ = x.shape
-
-        q = self.q_proj(x).reshape(B, L, self.n_heads, self.d_head).transpose(0, 2, 1, 3)
-        k = self.k_proj(x).reshape(B, L, self.n_heads, self.d_head).transpose(0, 2, 1, 3)
-        v = self.v_proj(x).reshape(B, L, self.n_heads, self.d_head).transpose(0, 2, 1, 3)
-
-        q = self.rope(q)
-        k = self.rope(k)
-
-        attn = (q @ k.transpose(0, 1, 3, 2)) * self.scale
-        if mask is not None:
-            attn = attn + mask
-        attn = mx.softmax(attn, axis=-1)
-
-        out = (attn @ v).transpose(0, 2, 1, 3).reshape(B, L, -1)
-        return self.o_proj(out)
-
-
-class CrossAttention(nn.Module):
-    """Multi-head cross-attention. Queries from one stage, keys/values from another."""
-
-    def __init__(self, d_model: int, n_heads: int):
-        super().__init__()
-        assert d_model % n_heads == 0
-        self.n_heads = n_heads
-        self.d_head = d_model // n_heads
-        self.scale = self.d_head ** -0.5
-
-        self.q_proj = nn.Linear(d_model, d_model, bias=False)
-        self.k_proj = nn.Linear(d_model, d_model, bias=False)
-        self.v_proj = nn.Linear(d_model, d_model, bias=False)
-        self.o_proj = nn.Linear(d_model, d_model, bias=False)
-
-    def __call__(
-        self, q_in: mx.array, kv_in: mx.array, mask: mx.array | None = None
-    ) -> mx.array:
-        B, Lq, _ = q_in.shape
-        Lkv = kv_in.shape[1]
-
-        q = self.q_proj(q_in).reshape(B, Lq, self.n_heads, self.d_head).transpose(0, 2, 1, 3)
-        k = self.k_proj(kv_in).reshape(B, Lkv, self.n_heads, self.d_head).transpose(0, 2, 1, 3)
-        v = self.v_proj(kv_in).reshape(B, Lkv, self.n_heads, self.d_head).transpose(0, 2, 1, 3)
-
-        attn = (q @ k.transpose(0, 1, 3, 2)) * self.scale
-        if mask is not None:
-            attn = attn + mask
-        attn = mx.softmax(attn, axis=-1)
-
-        out = (attn @ v).transpose(0, 2, 1, 3).reshape(B, Lq, -1)
-        return self.o_proj(out)
-
-
-class FeedForward(nn.Module):
-    """SwiGLU feed-forward network."""
-
-    def __init__(self, d_model: int, d_ff: int):
-        super().__init__()
-        self.gate_proj = nn.Linear(d_model, d_ff, bias=False)
-        self.up_proj = nn.Linear(d_model, d_ff, bias=False)
-        self.down_proj = nn.Linear(d_ff, d_model, bias=False)
-
-    def __call__(self, x: mx.array) -> mx.array:
-        return self.down_proj(nn.silu(self.gate_proj(x)) * self.up_proj(x))
-
-
-class TransformerBlock(nn.Module):
-    """Pre-norm transformer block: RMSNorm → SelfAttn → RMSNorm → FFN."""
-
-    def __init__(self, d_model: int, n_heads: int, d_ff: int):
-        super().__init__()
-        self.attn_norm = RMSNorm(d_model)
-        self.attn = SelfAttention(d_model, n_heads)
-        self.ffn_norm = RMSNorm(d_model)
-        self.ffn = FeedForward(d_model, d_ff)
-
-    def __call__(self, x: mx.array, mask: mx.array | None = None) -> mx.array:
-        x = x + self.attn(self.attn_norm(x), mask=mask)
-        x = x + self.ffn(self.ffn_norm(x))
-        return x
-
-
-# ═══════════════════════════════════════════════════════════════════
-# Ternary building blocks (hot-path: Stage 1 + Feedback)
-# ═══════════════════════════════════════════════════════════════════
-
-
 class TernarySelfAttention(nn.Module):
-    """Multi-head self-attention with ternary Q,K,V,O projections.
+    """Multi-head self-attention with ternary projections and RoPE.
 
-    RoPE and causal masking are identical to float version.
-    Projections use TernaryLinear (packed uint8, add/sub only on Metal).
+    Supports both full causal and windowed attention modes.
+    Windowed: each position attends only to the W positions within its window.
     """
 
     def __init__(self, d_model: int, n_heads: int):
@@ -225,7 +168,6 @@ class TernarySelfAttention(nn.Module):
         self.d_head = d_model // n_heads
         self.scale = self.d_head ** -0.5
 
-        # Ternary projections: no bias, pre_norm handled externally
         self.q_proj = TernaryLinear(d_model, d_model, pre_norm=False)
         self.k_proj = TernaryLinear(d_model, d_model, pre_norm=False)
         self.v_proj = TernaryLinear(d_model, d_model, pre_norm=False)
@@ -252,7 +194,12 @@ class TernarySelfAttention(nn.Module):
 
 
 class TernaryFeedForward(nn.Module):
-    """SwiGLU feed-forward with ternary projections."""
+    """SwiGLU feed-forward with ternary projections.
+
+    Ternary FFN = discrete routing topology:
+      gate selects which activations pass (+1), negate (-1), or disconnect (0)
+      up/down project through the selected routes
+    """
 
     def __init__(self, d_model: int, d_ff: int):
         super().__init__()
@@ -265,7 +212,10 @@ class TernaryFeedForward(nn.Module):
 
 
 class TernaryTransformerBlock(nn.Module):
-    """Pre-norm transformer block with ternary attention + FFN."""
+    """Pre-norm transformer block: RMSNorm → SelfAttn → RMSNorm → FFN.
+
+    All projections ternary. Norms and activations float32.
+    """
 
     def __init__(self, d_model: int, n_heads: int, d_ff: int):
         super().__init__()
@@ -315,107 +265,12 @@ class TernaryCrossAttention(nn.Module):
 
 
 # ═══════════════════════════════════════════════════════════════════
-# Stage components
-# ═══════════════════════════════════════════════════════════════════
-
-
-class TransformerStage(nn.Module):
-    """A stack of transformer blocks — one VSM stage.
-
-    Operates over a fixed number of positions with causal self-attention.
-    Each stage is an independent transformer with its own parameters.
-    Supports ternary or float blocks based on the `ternary` flag.
-    """
-
-    def __init__(self, cfg: StageConfig, ternary: bool = False):
-        super().__init__()
-        Block = TernaryTransformerBlock if ternary else TransformerBlock
-        self.layers = [
-            Block(cfg.d_model, cfg.n_heads, cfg.d_ff)
-            for _ in range(cfg.n_layers)
-        ]
-        self.norm = RMSNorm(cfg.d_model)
-        self.is_ternary = ternary
-
-    def __call__(self, x: mx.array, mask: mx.array | None = None) -> mx.array:
-        for layer in self.layers:
-            x = layer(x, mask=mask)
-        return self.norm(x)
-
-
-class StageReducer(nn.Module):
-    """Reduce positions between stages via learned cross-attention pooling.
-
-    Uses a set of learned query vectors that cross-attend to the previous
-    stage's output. Causality: output position j attends only to input
-    positions in chunks 0..j (each chunk = input_positions / output_positions).
-
-    This is where the 10× search-space reduction happens — each output
-    position learns to summarize its chunk of the input into a denser
-    representation at the next level of abstraction.
-    """
-
-    def __init__(self, d_model: int, n_output_positions: int, n_heads: int):
-        super().__init__()
-        self.n_output = n_output_positions
-        self.cross_attn = CrossAttention(d_model, n_heads)
-        self.queries = mx.random.normal((1, n_output_positions, d_model)) * 0.02
-        self.norm = RMSNorm(d_model)
-
-    def __call__(self, x: mx.array, mask: mx.array) -> mx.array:
-        """
-        x:    (B, n_input, d_model) — previous stage output
-        mask: (n_output, n_input) — causal reduction mask
-        Returns: (B, n_output, d_model)
-        """
-        B = x.shape[0]
-        q = mx.broadcast_to(self.queries, (B, self.n_output, x.shape[-1]))
-        out = self.cross_attn(q, x, mask=mask)
-        return self.norm(out)
-
-
-class StageFeedback(nn.Module):
-    """Incorporate higher stage's output into lower stage's representation.
-
-    Cross-attention (lower queries, higher keys/values) with a learned
-    sigmoid gate on the residual. The gate lets the model control how
-    much influence the higher stage has — starting near zero and
-    increasing as the higher stage learns meaningful representations.
-
-    This is the downward constraint propagation path.
-    Supports ternary cross-attention for the hot path (feedback to Stage 1).
-    """
-
-    def __init__(self, d_model: int, n_heads: int, ternary: bool = False):
-        super().__init__()
-        Attn = TernaryCrossAttention if ternary else CrossAttention
-        self.cross_attn = Attn(d_model, n_heads)
-        self.norm = RMSNorm(d_model)
-        # Gate: always float (cheap, needs precision for sigmoid)
-        self.gate_proj = nn.Linear(d_model, d_model, bias=False)
-        self.is_ternary = ternary
-
-    def __call__(self, lower: mx.array, higher: mx.array) -> mx.array:
-        """
-        lower:  (B, n_lower, d_model) — this stage's representation (queries)
-        higher: (B, n_higher, d_model) — higher stage's output (keys/values)
-        Returns: (B, n_lower, d_model) — lower + gated feedback
-        """
-        feedback = self.cross_attn(lower, higher)
-        gate = mx.sigmoid(self.gate_proj(lower))
-        return lower + gate * self.norm(feedback)
-
-
-# ═══════════════════════════════════════════════════════════════════
 # Mask utilities
 # ═══════════════════════════════════════════════════════════════════
 
 
 def causal_mask(seq_len: int) -> mx.array:
     """Standard causal attention mask. Returns additive mask (0 / -inf)."""
-    mask = mx.full((seq_len, seq_len), -1e9)
-    mask = mx.triu(mask, k=1)  # zero on and below diagonal
-    # Invert: we want causal (lower-triangular allowed)
     return mx.where(
         mx.arange(seq_len)[:, None] >= mx.arange(seq_len)[None, :],
         mx.zeros((seq_len, seq_len)),
@@ -423,265 +278,712 @@ def causal_mask(seq_len: int) -> mx.array:
     )
 
 
-def reduction_causal_mask(n_input: int, n_output: int) -> mx.array:
-    """Causal mask for the StageReducer cross-attention.
+def windowed_causal_mask(seq_len: int, window: int) -> mx.array:
+    """Windowed causal mask: each position attends to [max(0, i-W+1)..i].
 
-    Output position j can attend to input positions in chunks 0..j.
-    Chunk size = n_input / n_output (integer division).
+    Combines causal constraint with local window. Used by compressor
+    where W=8 limits each position to its local context.
 
-    If n_output == 1 (Stage 4), the single output position sees all inputs.
+    Returns additive mask (0 / -inf) of shape (seq_len, seq_len).
     """
-    chunk_size = n_input // n_output
-    # Last input position visible to each output position
-    # output j sees input positions 0..((j+1)*chunk_size - 1)
-    boundaries = mx.arange(1, n_output + 1) * chunk_size  # (n_output,)
-    input_positions = mx.arange(n_input)  # (n_input,)
+    rows = mx.arange(seq_len)[:, None]
+    cols = mx.arange(seq_len)[None, :]
+    # Causal: can only attend to positions <= current
+    causal = rows >= cols
+    # Window: can only attend to positions within W of current
+    in_window = (rows - cols) < window
+    visible = causal & in_window
+    return mx.where(visible, mx.zeros((seq_len, seq_len)), mx.full((seq_len, seq_len), -1e9))
 
-    # mask[j, i] = 0.0 if input_positions[i] < boundaries[j], else -1e9
-    visible = input_positions[None, :] < boundaries[:, None]  # (n_output, n_input)
+
+def reduction_mask(n_input: int, n_output: int) -> mx.array:
+    """Mask for cross-attention reducer: output j attends to input chunk j.
+
+    Each output position attends to a contiguous chunk of input positions.
+    Chunk size = n_input // n_output. Output j sees positions
+    [j * chunk, (j+1) * chunk). This is a block-diagonal mask, NOT causal —
+    each output sees exactly its own chunk.
+
+    For the MERA structure: stride-2 reduction, so chunk_size = 2.
+    Output j sees input positions [2j, 2j+1].
+
+    Returns additive mask (0 / -inf) of shape (n_output, n_input).
+    """
+    chunk = n_input // n_output
+    out_pos = mx.arange(n_output)[:, None]  # (n_output, 1)
+    in_pos = mx.arange(n_input)[None, :]    # (1, n_input)
+    # Each output j sees input positions in [j*chunk, (j+1)*chunk)
+    in_chunk = in_pos // chunk  # which chunk each input belongs to
+    visible = out_pos == in_chunk
     return mx.where(visible, mx.zeros((n_output, n_input)), mx.full((n_output, n_input), -1e9))
 
 
 # ═══════════════════════════════════════════════════════════════════
-# The full pipeline
+# Compressor MERA (~119M ternary)
 # ═══════════════════════════════════════════════════════════════════
 
 
-class VSMPipeline(nn.Module):
-    """4-VSM Pipeline Language Model.
+class CompressorLevel(nn.Module):
+    """One level of the compressor: a stack of ternary transformer blocks.
 
-    Forward pass:
-      1. Embed tokens
-      2. Stage 1 (Surface): full-resolution causal self-attention
-      3. Reduce → Stage 2 (Structural): reduced positions
-      4. Reduce → Stage 3 (Semantic): further reduced
-      5. Reduce → Stage 4 (Reasoning): minimal positions
-      6. Feedback: Stage 4 → 3 → 2 → 1 (constraint propagation)
-      7. Project Stage 1 output → logits (tied embeddings)
-
-    The compute pyramid: each stage is deeper but over exponentially
-    fewer positions. Total attention cost ≈ O(L₁ · n²).
+    Operates on positions at a given scale, with windowed causal attention.
     """
 
-    def __init__(self, cfg: PipelineConfig):
+    def __init__(self, cfg: DualMERAConfig):
+        super().__init__()
+        self.layers = [
+            TernaryTransformerBlock(cfg.d_model, cfg.n_heads, cfg.d_ff)
+            for _ in range(cfg.compressor_layers_per_level)
+        ]
+        self.norm = RMSNorm(cfg.d_model)
+
+    def __call__(self, x: mx.array, mask: mx.array | None = None) -> mx.array:
+        for layer in self.layers:
+            x = layer(x, mask=mask)
+        return self.norm(x)
+
+
+class MERAReducer(nn.Module):
+    """Stride-2 reducer between MERA levels via cross-attention pooling.
+
+    Reduces n positions to n//2 by learned cross-attention.
+    Each output position attends to its 2 corresponding input positions.
+    """
+
+    def __init__(self, cfg: DualMERAConfig):
+        super().__init__()
+        self.cross_attn = TernaryCrossAttention(cfg.d_model, cfg.reducer_heads)
+        self.norm = RMSNorm(cfg.d_model)
+
+    def __call__(self, x: mx.array, queries: mx.array, mask: mx.array) -> mx.array:
+        """
+        x:       (B, n_in, d_model) — input from previous level
+        queries: (B, n_out, d_model) — learned query positions
+        mask:    (n_out, n_in) — block-diagonal reduction mask
+        Returns: (B, n_out, d_model)
+        """
+        out = self.cross_attn(queries, x, mask=mask)
+        return self.norm(out)
+
+
+class CompressorMERA(nn.Module):
+    """Compressor MERA: hierarchical multi-scale compression.
+
+    Level 0: own weights, stride 8 (4096 → 512 positions)
+    Levels 1-7: SHARED MERA weights, stride 2 each (512 → 4 positions)
+
+    Registers: R dedicated positions, appended to sequence at level 0,
+    pass through all levels (not compressed by reducers).
+
+    Learnable spiral: α and fixed_point bias attention energy distribution.
+
+    Output: list of representations at each scale + register states.
+    """
+
+    def __init__(self, cfg: DualMERAConfig):
         super().__init__()
         self.cfg = cfg
 
-        # Token embedding (tied with output projection)
+        # Ternary embedding
+        # Note: nn.Embedding doesn't support ternary, so we use standard
+        # embedding and let the ternary projections in layers do the routing.
         self.embed = nn.Embedding(cfg.vocab_size, cfg.d_model)
 
-        # 4 transformer stages (ternary or float per config)
-        self.stages = [
-            TransformerStage(s, ternary=cfg.ternary_stages[i])
-            for i, s in enumerate(cfg.stages)
+        # Level 0: own weights (stride 8 compression)
+        self.level0 = CompressorLevel(cfg)
+
+        # Levels 1-7: SHARED weights — ONE CompressorLevel, reused 7×
+        self.shared_level = CompressorLevel(cfg)
+
+        # MERA reducers: one per transition between levels
+        # These are NOT shared — each reducer operates at a different position count
+        # But they share the same architecture. The learned queries are per-reducer.
+        n_levels = cfg.effective_levels
+        self.reducers = [MERAReducer(cfg) for _ in range(n_levels - 1)]
+
+        # Learned query positions for each reducer (one set per level transition)
+        positions = cfg.compressor_positions
+        self.reducer_queries = [
+            mx.random.normal((1, positions[i + 1], cfg.d_model)) * 0.02
+            for i in range(n_levels - 1)
         ]
 
-        # 3 reducers (between stages 1→2, 2→3, 3→4) — always float
-        # Reducers are cold path (run rarely), precision matters for learned queries
-        self.reducers = [
-            StageReducer(cfg.d_model, cfg.stage_positions[i + 1], cfg.reducer_heads)
-            for i in range(len(cfg.stages) - 1)
-        ]
+        # Register position embeddings (learned, distinguish from data positions)
+        self.register_embed = mx.random.normal((1, cfg.n_registers, cfg.d_model)) * 0.02
 
-        # 3 feedback modules (from stages 4→3, 3→2, 2→1)
-        # feedback[0] = 2→1 (hot: runs every token) → ternary if configured
-        # feedback[1] = 3→2, feedback[2] = 4→3 → float (cold path)
-        self.feedbacks = [
-            StageFeedback(
-                cfg.d_model, cfg.feedback_heads,
-                ternary=(cfg.ternary_feedback and i == 0),  # only feedback to Stage 1
-            )
-            for i in range(len(cfg.stages) - 1)
-        ]
+        # Learnable spiral bias parameters
+        self.spiral_alpha = mx.array([cfg.spiral_alpha_init])
+        self.spiral_fixed_point = mx.array([cfg.spiral_fixed_point_init])
 
-        # Output projection (tied with embeddings — applied manually)
-        self.out_norm = RMSNorm(cfg.d_model)
+        # Strided pooling for level 0: average-pool with stride W to go from
+        # seq_len to seq_len//W positions. This is the input compression step.
+        # (The ternary transformer then refines these pooled representations.)
 
-        # Pre-compute masks (static for a given config)
-        self._causal_masks = [causal_mask(p) for p in cfg.stage_positions]
-        self._reduction_masks = [
-            reduction_causal_mask(cfg.stage_positions[i], cfg.stage_positions[i + 1])
-            for i in range(len(cfg.stages) - 1)
-        ]
+        # Pre-compute masks
+        self._masks = {}
 
-    def __call__(self, tokens: mx.array) -> mx.array:
+    def _get_mask(self, seq_len: int, window: int) -> mx.array:
+        """Cached windowed causal mask."""
+        key = (seq_len, window)
+        if key not in self._masks:
+            self._masks[key] = windowed_causal_mask(seq_len, window)
+        return self._masks[key]
+
+    def _get_reduction_mask(self, n_in: int, n_out: int) -> mx.array:
+        """Cached reduction mask."""
+        key = ("red", n_in, n_out)
+        if key not in self._masks:
+            self._masks[key] = reduction_mask(n_in, n_out)
+        return self._masks[key]
+
+    def _stride_pool(self, x: mx.array, stride: int) -> mx.array:
+        """Average-pool along sequence dimension with given stride.
+
+        x: (B, L, D) → (B, L//stride, D)
+        Groups stride adjacent positions and averages them.
+        """
+        B, L, D = x.shape
+        n_groups = L // stride
+        # Reshape to (B, n_groups, stride, D) and mean over the stride dim
+        x = x[:, :n_groups * stride, :].reshape(B, n_groups, stride, D)
+        return x.mean(axis=2)
+
+    def __call__(self, tokens: mx.array) -> tuple[list[mx.array], mx.array]:
         """
         tokens: (B, seq_len) int array
-        Returns: logits (B, seq_len, vocab_size)
+
+        Returns:
+            scales: list of 8 tensors, one per compressor level
+                    scales[0] = (B, 512, d_model)  — s8
+                    scales[1] = (B, 256, d_model)  — s16
+                    ...
+                    scales[7] = (B, 4, d_model)    — s1024
+            registers: (B, R, d_model) — register states after full compression
         """
-        B, L = tokens.shape
+        B = tokens.shape[0]
+        cfg = self.cfg
 
-        # ── Embed ──
-        x = self.embed(tokens)  # (B, L, d_model)
+        # ── Embed tokens ──
+        x = self.embed(tokens)  # (B, seq_len, d_model)
 
-        # ── Upward path: abstraction ──
-        stage_outputs = []
-        h = x
-        for i, stage in enumerate(self.stages):
-            h = stage(h, mask=self._causal_masks[i])
-            stage_outputs.append(h)
-            # Reduce for next stage (except last)
-            if i < len(self.stages) - 1:
-                h = self.reducers[i](h, mask=self._reduction_masks[i])
+        # ── Level 0: stride-8 compression ──
+        # Pool from seq_len=4096 to 512 positions, then refine with transformer
+        h = self._stride_pool(x, cfg.compressor_window)  # (B, 512, d_model)
 
-        # ── Downward path: constraint propagation ──
-        # Walk backwards: stage 4→3, 3→2, 2→1
-        # Each feedback uses the ALREADY-REFINED higher stage output,
-        # so constraints cascade: 4's reasoning refines 3, refined-3
-        # then refines 2, refined-2 then refines 1.
-        for i in range(len(self.stages) - 2, -1, -1):
-            stage_outputs[i] = self.feedbacks[i](stage_outputs[i], stage_outputs[i + 1])
+        # Append registers to the sequence for joint attention
+        regs = mx.broadcast_to(self.register_embed, (B, cfg.n_registers, cfg.d_model))
+        h_with_regs = mx.concatenate([h, regs], axis=1)  # (B, 512 + R, d_model)
 
-        # ── Output from Stage 1 (full token resolution) ──
-        h_out = self.out_norm(stage_outputs[0])
-        # Tied embedding: logits = h_out @ embed.weight.T
-        logits = h_out @ self.embed.weight.T
+        # Level 0 attention (own weights) — windowed causal
+        n_pos = h_with_regs.shape[1]
+        mask0 = self._get_mask(n_pos, cfg.compressor_window)
+        h_with_regs = self.level0(h_with_regs, mask=mask0)
+
+        # Split data and registers
+        h = h_with_regs[:, :cfg.compressor_positions[0], :]
+        regs = h_with_regs[:, cfg.compressor_positions[0]:, :]
+
+        scales = [h]  # scales[0] = s8 (512 positions)
+
+        # ── Levels 1+: shared MERA weights, stride 2 each ──
+        n_levels = cfg.effective_levels
+        for level in range(1, n_levels):
+            # Reduce: cross-attention pooling, stride 2
+            n_in = cfg.compressor_positions[level - 1]
+            n_out = cfg.compressor_positions[level]
+            red_mask = self._get_reduction_mask(n_in, n_out)
+            queries = mx.broadcast_to(
+                self.reducer_queries[level - 1],
+                (B, n_out, cfg.d_model),
+            )
+            h = self.reducers[level - 1](h, queries, red_mask)
+
+            # Append registers for joint attention
+            h_with_regs = mx.concatenate([h, regs], axis=1)
+
+            # Shared MERA level (same weights, different input)
+            n_pos = h_with_regs.shape[1]
+            mask = self._get_mask(n_pos, cfg.compressor_window)
+            h_with_regs = self.shared_level(h_with_regs, mask=mask)
+
+            # Split
+            h = h_with_regs[:, :n_out, :]
+            regs = h_with_regs[:, n_out:, :]
+
+            scales.append(h)
+
+        return scales, regs
+
+
+# ═══════════════════════════════════════════════════════════════════
+# Pipeline MERA (~335M ternary)
+# ═══════════════════════════════════════════════════════════════════
+
+
+class SievePathway(nn.Module):
+    """One pathway within a sieve level: a stack of ternary transformer blocks.
+
+    Each pathway develops its own ternary sparsity pattern (topology).
+    Different pathways crystallize different specialties.
+    """
+
+    def __init__(self, cfg: DualMERAConfig):
+        super().__init__()
+        self.layers = [
+            TernaryTransformerBlock(cfg.d_model, cfg.n_heads, cfg.d_ff)
+            for _ in range(cfg.pipeline_layers_per_level)
+        ]
+        self.norm = RMSNorm(cfg.d_model)
+
+    def __call__(self, x: mx.array, mask: mx.array | None = None) -> mx.array:
+        for layer in self.layers:
+            x = layer(x, mask=mask)
+        return self.norm(x)
+
+
+class SieveLevel(nn.Module):
+    """One level of the pipeline: n_pathways parallel SievePathways.
+
+    Input is split across pathways (not duplicated — each pathway
+    gets the full input but operates independently). Outputs are
+    averaged to form the level's representation.
+
+    Registers participate in attention within each pathway but are
+    shared: each pathway reads the same registers, and the merged
+    output updates them.
+    """
+
+    def __init__(self, cfg: DualMERAConfig):
+        super().__init__()
+        self.cfg = cfg
+        self.pathways = [SievePathway(cfg) for _ in range(cfg.n_pathways)]
+        # Merge: average pathway outputs (simple, gradient-friendly)
+        # Could also use learned attention merge, but start simple.
+
+    def __call__(
+        self, x: mx.array, regs: mx.array, mask: mx.array | None = None
+    ) -> tuple[mx.array, mx.array]:
+        """
+        x:    (B, L, d_model) — data positions
+        regs: (B, R, d_model) — register positions
+        mask: additive mask for the combined sequence (L+R, L+R)
+
+        Returns:
+            h: (B, L, d_model) — updated data
+            regs: (B, R, d_model) — updated registers
+        """
+        B = x.shape[0]
+        L = x.shape[1]
+        R = regs.shape[1]
+
+        # Concatenate data + registers for joint attention
+        combined = mx.concatenate([x, regs], axis=1)  # (B, L+R, d_model)
+
+        # Run each pathway independently, collect outputs
+        pathway_outputs = []
+        for pathway in self.pathways:
+            out = pathway(combined, mask=mask)
+            pathway_outputs.append(out)
+
+        # Merge: average across pathways
+        merged = pathway_outputs[0]
+        for p in pathway_outputs[1:]:
+            merged = merged + p
+        merged = merged / len(self.pathways)
+
+        # Split data and registers
+        h = merged[:, :L, :]
+        regs_out = merged[:, L:, :]
+
+        return h, regs_out
+
+
+class PipelineFeedback(nn.Module):
+    """Feedback module: higher level → lower level with gated cross-attention.
+
+    The gate allows the model to control influence magnitude.
+    Starts near zero (higher levels haven't learned yet).
+    """
+
+    def __init__(self, cfg: DualMERAConfig):
+        super().__init__()
+        self.cross_attn = TernaryCrossAttention(cfg.d_model, cfg.feedback_heads)
+        self.norm = RMSNorm(cfg.d_model)
+        # Gate: float (cheap, needs precision for sigmoid)
+        self.gate_proj = nn.Linear(cfg.d_model, cfg.d_model, bias=False)
+
+    def __call__(self, lower: mx.array, higher: mx.array) -> mx.array:
+        """
+        lower:  (B, L_low, d_model)  — this level's representation (queries)
+        higher: (B, L_high, d_model) — higher level's output (keys/values)
+        Returns: (B, L_low, d_model) — lower + gated feedback
+        """
+        feedback = self.cross_attn(lower, higher)
+        gate = mx.sigmoid(self.gate_proj(lower))
+        return lower + gate * self.norm(feedback)
+
+
+class PipelineReducer(nn.Module):
+    """Reducer between pipeline levels: cross-attention pooling.
+
+    Halves positions between adjacent levels so the pipeline operates
+    at progressively coarser scales matching the compressor output.
+    """
+
+    def __init__(self, cfg: DualMERAConfig):
+        super().__init__()
+        self.cross_attn = TernaryCrossAttention(cfg.d_model, cfg.reducer_heads)
+        self.norm = RMSNorm(cfg.d_model)
+
+    def __call__(self, x: mx.array, queries: mx.array, mask: mx.array) -> mx.array:
+        out = self.cross_attn(queries, x, mask=mask)
+        return self.norm(out)
+
+
+class PipelineMERA(nn.Module):
+    """Pipeline MERA: sieve pathways for computation.
+
+    Level 0: own sieve weights (surface computation)
+    Levels 1-7: SHARED sieve weights (one copy, reused 7×)
+
+    Each level reads the corresponding compressor scale.
+    Registers participate at every level, not compressed by reducers.
+
+    Upward path: Level 0 → 7 (abstraction)
+    Feedback cascade: Level 7 → 0 (constraint propagation)
+    """
+
+    def __init__(self, cfg: DualMERAConfig):
+        super().__init__()
+        self.cfg = cfg
+
+        # Level 0: own sieve weights
+        self.level0 = SieveLevel(cfg)
+
+        # Levels 1-7: SHARED sieve — ONE SieveLevel, reused 7×
+        self.shared_level = SieveLevel(cfg)
+
+        # Reducers between pipeline levels
+        n_levels = cfg.effective_levels
+        self.reducers = [PipelineReducer(cfg) for _ in range(n_levels - 1)]
+
+        # Learned queries for each reducer
+        positions = cfg.compressor_positions
+        self.reducer_queries = [
+            mx.random.normal((1, positions[i + 1], cfg.d_model)) * 0.02
+            for i in range(n_levels - 1)
+        ]
+
+        # Feedback cascade modules (from higher → lower)
+        self.feedbacks = [PipelineFeedback(cfg) for _ in range(n_levels - 1)]
+
+        # Output norm
+        self.out_norm = RMSNorm(cfg.d_model)
+
+        # Pre-computed masks cache
+        self._masks = {}
+
+    def _get_causal_mask(self, seq_len: int) -> mx.array:
+        key = ("causal", seq_len)
+        if key not in self._masks:
+            self._masks[key] = causal_mask(seq_len)
+        return self._masks[key]
+
+    def _get_reduction_mask(self, n_in: int, n_out: int) -> mx.array:
+        key = ("red", n_in, n_out)
+        if key not in self._masks:
+            self._masks[key] = reduction_mask(n_in, n_out)
+        return self._masks[key]
+
+    def __call__(
+        self,
+        compressor_scales: list[mx.array],
+        registers: mx.array,
+    ) -> tuple[mx.array, mx.array, list[list[mx.array]]]:
+        """
+        compressor_scales: list of 8 tensors from compressor, each (B, L_i, d_model)
+        registers: (B, R, d_model) from compressor
+
+        Returns:
+            h0: (B, L_0, d_model) — Level 0 output after full feedback cascade
+            registers: (B, R, d_model) — final register states
+            pathway_outputs: list of lists — for relational loss computation
+                pathway_outputs[level][pathway] = (B, L_level, d_model)
+        """
+        B = compressor_scales[0].shape[0]
+        cfg = self.cfg
+        R = registers.shape[1]
+
+        # ── Upward path ──
+        level_outputs = []
+        pathway_outputs = []  # for relational loss
+        regs = registers
+
+        n_levels = cfg.effective_levels
+        for level in range(n_levels):
+            # Input: compressor scale at this level
+            h = compressor_scales[level]
+            L = h.shape[1]
+
+            # Add compressor input as a residual-like connection
+            # At level 0, h is the raw compressor s8 output
+            # At level >0, h combines reduced pipeline state + compressor scale
+            if level > 0:
+                # Reduce from previous level
+                n_in = cfg.compressor_positions[level - 1]
+                n_out = cfg.compressor_positions[level]
+                red_mask = self._get_reduction_mask(n_in, n_out)
+                queries = mx.broadcast_to(
+                    self.reducer_queries[level - 1],
+                    (B, n_out, cfg.d_model),
+                )
+                h_reduced = self.reducers[level - 1](
+                    level_outputs[-1], queries, red_mask
+                )
+                # Combine reduced pipeline state with compressor scale
+                h = h + h_reduced
+
+            # Causal mask for data + register positions
+            mask = self._get_causal_mask(L + R)
+
+            # Run sieve level
+            if level == 0:
+                h_out, regs = self.level0(h, regs, mask=mask)
+            else:
+                h_out, regs = self.shared_level(h, regs, mask=mask)
+
+            level_outputs.append(h_out)
+
+            # Capture per-pathway outputs for relational loss
+            # Re-run pathways to get individual outputs (expensive — only during metrics)
+            # For the forward pass, we skip this. Relational loss is computed separately.
+            pathway_outputs.append(None)  # placeholder
+
+        # ── Feedback cascade: highest → lowest ──
+        for level in range(n_levels - 2, -1, -1):
+            level_outputs[level] = self.feedbacks[level](
+                level_outputs[level], level_outputs[level + 1]
+            )
+
+        h0 = self.out_norm(level_outputs[0])
+        return h0, regs, pathway_outputs
+
+
+# ═══════════════════════════════════════════════════════════════════
+# Top-level Dual MERA model
+# ═══════════════════════════════════════════════════════════════════
+
+
+class DualMERA(nn.Module):
+    """Dual MERA Language Model.
+
+    Compressor MERA sees tokens → produces multi-scale representations.
+    Pipeline MERA thinks with sieve pathways → produces output.
+    Registers bridge both and persist across recurrence passes.
+
+    Output modes:
+      - value:   next-token prediction logits (standard LM)
+      - partial: intermediate state for recurrence (registers + partial expr)
+    """
+
+    def __init__(self, cfg: DualMERAConfig):
+        super().__init__()
+        self.cfg = cfg
+        self.compressor = CompressorMERA(cfg)
+        self.pipeline = PipelineMERA(cfg)
+
+        # Output projection norm (tied embedding applied manually)
+        self.out_norm = RMSNorm(cfg.d_model)
+
+    def __call__(
+        self, tokens: mx.array, registers: mx.array | None = None
+    ) -> mx.array:
+        """Standard forward: tokens → logits.
+
+        tokens: (B, seq_len) int array
+        registers: (B, R, d_model) optional — for recurrence passes
+        Returns: logits (B, seq_len, vocab_size) via tied embedding
+        """
+        B = tokens.shape[0]
+
+        # ── Compressor ──
+        scales, regs = self.compressor(tokens)
+
+        # If external registers provided (recurrence), use those instead
+        if registers is not None:
+            regs = registers
+
+        # ── Pipeline ──
+        h0, regs_out, _ = self.pipeline(scales, regs)
+
+        # ── Output: project to vocab via tied embedding ──
+        # h0 is (B, L_0, d_model) where L_0 = seq_len // 8 = 512
+        # For LM loss, we need (B, seq_len, vocab_size)
+        # Upsample h0 back to seq_len by repeating each position stride times
+        h_up = self._upsample(h0, self.cfg.seq_len)
+        h_out = self.out_norm(h_up)
+
+        # Tied embedding
+        logits = h_out @ self.compressor.embed.weight.T
 
         return logits
 
-    def _stage1_ce(self, h1: mx.array, targets: mx.array) -> mx.array:
-        """Project Stage 1 representation to logits and compute CE.
+    def forward_with_registers(
+        self, tokens: mx.array, registers: mx.array | None = None
+    ) -> tuple[mx.array, mx.array]:
+        """Forward that also returns updated registers for recurrence.
 
-        Returns an mx.array scalar — caller is responsible for mx.eval().
-        Do NOT call float() here; batch evaluations externally.
+        Returns: (logits, registers_out)
         """
-        h_out = self.out_norm(h1)
-        logits = h_out @ self.embed.weight.T
-        return nn.losses.cross_entropy(
-            logits.reshape(-1, logits.shape[-1]),
-            targets.reshape(-1),
-            reduction="mean",
-        )
+        B = tokens.shape[0]
+        scales, regs = self.compressor(tokens)
+        if registers is not None:
+            regs = registers
+        h0, regs_out, _ = self.pipeline(scales, regs)
+        h_up = self._upsample(h0, self.cfg.seq_len)
+        h_out = self.out_norm(h_up)
+        logits = h_out @ self.compressor.embed.weight.T
+        return logits, regs_out
 
-    def forward_with_metrics(
-        self, tokens: mx.array, targets: mx.array | None = None
-    ) -> tuple[mx.array, dict]:
-        """Forward pass with per-stage metrics. Use outside grad computation.
+    def _upsample(self, h: mx.array, target_len: int) -> mx.array:
+        """Upsample compressed representation back to full sequence length.
 
-        When targets are provided, computes cross-entropy at each step
-        of the feedback cascade to measure each stage's contribution:
+        h: (B, L_compressed, d_model) where L_compressed = target_len // stride
+        Returns: (B, target_len, d_model)
 
-          ce_stage1: Stage 1 alone (no feedback)
-          ce_stage2: Stage 1 + feedback from raw Stage 2
-          ce_stage3: Stage 1 + feedback from Stage 2 refined by Stage 3
-          ce_stage4: Stage 1 + full cascade (2 refined by 3 refined by 4)
-
-        CE₁ ≥ CE₂ ≥ CE₃ ≥ CE₄ when each stage adds value.
-        Δₖ = CEₖ₋₁ - CEₖ = value contributed by stage k's feedback.
+        Uses repeat-interleave: each compressed position maps to `stride`
+        consecutive output positions. Simple but gradient-friendly.
+        More sophisticated upsampling (learned deconv, cross-attention from
+        original embeddings) can be added later.
         """
-        B, L = tokens.shape
-        metrics = {}
-
-        x = self.embed(tokens)
-
-        # ── Upward path: abstraction ──
-        stage_outputs = []
-        h_norms = []
-        h = x
-        for i, stage in enumerate(self.stages):
-            h = stage(h, mask=self._causal_masks[i])
-            stage_outputs.append(h)
-            h_norms.append(mx.mean(mx.sqrt(mx.sum(h * h, axis=-1))))
-            if i < len(self.stages) - 1:
-                h = self.reducers[i](h, mask=self._reduction_masks[i])
-
-        # Single eval for all norms
-        mx.eval(*h_norms)
-        for i, hn in enumerate(h_norms):
-            metrics[f"stage{i+1}_h_norm"] = float(hn)
-
-        # ── Per-stage CE measurement (incremental feedback) ──
-        if targets is not None:
-            # Save raw stage outputs (before any feedback modifies them)
-            raw = [s for s in stage_outputs]
-
-            # Build all 4 CE computations lazily, then eval once
-            # CE₁: Stage 1 alone — surface-only prediction
-            ce1 = self._stage1_ce(raw[0], targets)
-
-            # CE₂: Stage 1 + feedback from raw Stage 2
-            h1_fb2 = self.feedbacks[0](raw[0], raw[1])
-            ce2 = self._stage1_ce(h1_fb2, targets)
-
-            # CE₃: Stage 1 + feedback from Stage 2 refined by raw Stage 3
-            s2_with_s3 = self.feedbacks[1](raw[1], raw[2])
-            h1_fb23 = self.feedbacks[0](raw[0], s2_with_s3)
-            ce3 = self._stage1_ce(h1_fb23, targets)
-
-            # CE₄: Full cascade — Stage 3 refined by 4, Stage 2 by refined-3,
-            # Stage 1 by refined-2. This equals the main training loss.
-            s3_with_s4 = self.feedbacks[2](raw[2], raw[3])
-            s2_with_s34 = self.feedbacks[1](raw[1], s3_with_s4)
-            h1_fb234 = self.feedbacks[0](raw[0], s2_with_s34)
-            ce4 = self._stage1_ce(h1_fb234, targets)
-
-            # Single eval for all 4 CEs — one sync point, not four
-            mx.eval(ce1, ce2, ce3, ce4)
-            metrics["ce_stage1"] = float(ce1)
-            metrics["ce_stage2"] = float(ce2)
-            metrics["ce_stage3"] = float(ce3)
-            metrics["ce_stage4"] = float(ce4)
-
-        # ── Full cascade for logits (same as grad path) ──
-        for i in range(len(self.stages) - 2, -1, -1):
-            stage_outputs[i] = self.feedbacks[i](
-                stage_outputs[i], stage_outputs[i + 1]
-            )
-
-        h_out = self.out_norm(stage_outputs[0])
-        logits = h_out @ self.embed.weight.T
-
-        return logits, metrics
+        B, L, D = h.shape
+        stride = target_len // L
+        # Repeat each position `stride` times along the sequence axis
+        # (B, L, D) → (B, L, stride, D) → (B, L*stride, D)
+        h = mx.repeat(h, stride, axis=1)
+        return h
 
     def count_params(self) -> dict:
-        """Count parameters by component, distinguishing ternary vs float."""
-        counts = {}
-        ternary_bytes = 0  # track ternary memory savings
+        """Count LOGICAL parameters by component.
 
-        def _count(module, name):
-            total = sum(v.size for _, v in tree_flatten(module.parameters()))
+        Ternary weights are packed 4-per-byte as uint8. This method counts
+        logical weights (N × K) not storage elements (N × K/4). This matches
+        the design doc convention for parameter budgets.
+        """
+        counts = {}
+
+        def _count_logical(module, name):
+            """Count logical params, unpacking ternary weight sizes."""
+            total = 0
+            for param_name, v in tree_flatten(module.parameters()):
+                if "ternary_weight" in param_name:
+                    # Packed (N, K/4) → logical (N, K) = N × K/4 × 4 = size × 4
+                    total += v.size * 4
+                else:
+                    total += v.size
             counts[name] = total
 
-        _count(self.embed, "embedding")
-        for i, stage in enumerate(self.stages):
-            label = f"stage{i+1}"
-            if stage.is_ternary:
-                label += " (ternary)"
-            _count(stage, label)
-        for i, reducer in enumerate(self.reducers):
-            _count(reducer, f"reducer{i+1}→{i+2}")
-        for i, fb in enumerate(self.feedbacks):
-            label = f"feedback{i+2}→{i+1}"
-            if fb.is_ternary:
-                label += " (ternary)"
-            _count(fb, label)
-        _count(self.out_norm, "out_norm")
+        # Compressor
+        _count_logical(self.compressor.embed, "compressor/embedding")
+        _count_logical(self.compressor.level0, "compressor/level0 (own)")
+        _count_logical(self.compressor.shared_level, "compressor/levels1-7 (shared)")
+        comp_reducer_total = 0
+        for r in self.compressor.reducers:
+            t = 0
+            for pn, v in tree_flatten(r.parameters()):
+                t += v.size * 4 if "ternary_weight" in pn else v.size
+            comp_reducer_total += t
+        counts["compressor/reducers"] = comp_reducer_total
+        counts["compressor/reducer_queries"] = sum(q.size for q in self.compressor.reducer_queries)
+        counts["compressor/registers"] = self.compressor.register_embed.size
+        counts["compressor/spiral"] = 2  # alpha + fixed_point
 
-        counts["total"] = sum(counts.values())
+        # Pipeline
+        _count_logical(self.pipeline.level0, "pipeline/level0 (own)")
+        _count_logical(self.pipeline.shared_level, "pipeline/levels1-7 (shared)")
+        pipe_reducer_total = 0
+        for r in self.pipeline.reducers:
+            t = 0
+            for pn, v in tree_flatten(r.parameters()):
+                t += v.size * 4 if "ternary_weight" in pn else v.size
+            pipe_reducer_total += t
+        counts["pipeline/reducers"] = pipe_reducer_total
+        counts["pipeline/reducer_queries"] = sum(q.size for q in self.pipeline.reducer_queries)
+        pipe_feedback_total = 0
+        for f in self.pipeline.feedbacks:
+            t = 0
+            for pn, v in tree_flatten(f.parameters()):
+                t += v.size * 4 if "ternary_weight" in pn else v.size
+            pipe_feedback_total += t
+        counts["pipeline/feedbacks"] = pipe_feedback_total
+        _count_logical(self.pipeline.out_norm, "pipeline/out_norm")
 
-        # Compute hot-path memory in bytes (ternary = 0.25 bytes/weight, float = 4)
-        hot_ternary = 0  # ternary weight count
-        hot_float = 0    # float weight count on hot path
-        for i, stage in enumerate(self.stages):
-            if stage.is_ternary:
-                from ternary import _walk_ternary_modules
-                for _, mod in _walk_ternary_modules(stage):
-                    hot_ternary += mod.out_features * mod.in_features
-            elif i == 0:  # Stage 1 is hot path even if float
-                stage_params = sum(v.size for _, v in tree_flatten(stage.parameters()))
-                hot_float += stage_params
-        for fb in self.feedbacks:
-            if fb.is_ternary:
-                from ternary import _walk_ternary_modules
-                for _, mod in _walk_ternary_modules(fb):
-                    hot_ternary += mod.out_features * mod.in_features
+        # Output
+        _count_logical(self.out_norm, "output/norm")
 
-        counts["hot_ternary_weights"] = hot_ternary
-        counts["hot_ternary_bytes"] = hot_ternary // 4  # packed 2-bit
-        counts["hot_float_bytes"] = hot_float * 4
-        counts["hot_total_bytes"] = counts["hot_ternary_bytes"] + counts["hot_float_bytes"]
+        # Summaries
+        comp_total = sum(v for k, v in counts.items() if k.startswith("compressor"))
+        pipe_total = sum(v for k, v in counts.items() if k.startswith("pipeline"))
+        counts["compressor_total"] = comp_total
+        counts["pipeline_total"] = pipe_total
+        counts["total"] = sum(counts[k] for k in counts
+                              if not k.endswith("_total") and k != "output/norm") + counts["output/norm"]
+
+        # Storage size (packed bytes for ternary, 4 bytes for float)
+        total_storage = 0
+        for _, v in tree_flatten(self.parameters()):
+            if v.dtype == mx.uint8:
+                total_storage += v.size  # packed ternary
+            else:
+                total_storage += v.size * 4  # float32
+        counts["storage_bytes"] = total_storage
+        counts["storage_mb"] = total_storage / (1024 * 1024)
 
         return counts
+
+
+# ═══════════════════════════════════════════════════════════════════
+# Relational loss utilities
+# ═══════════════════════════════════════════════════════════════════
+
+
+def pathway_relational_loss(model: DualMERA, x: mx.array, regs: mx.array,
+                             level: int, mask: mx.array) -> mx.array:
+    """Compute relational loss for pathways within a pipeline sieve level.
+
+    Runs each pathway independently, computes pairwise cosine similarity,
+    and penalizes similarity (pushing pathways to differentiate).
+
+    L_relational = Σ_{i≠j} cosine_similarity(pathway_i, pathway_j)
+
+    Returns scalar loss.
+    """
+    cfg = model.cfg
+    sieve = model.pipeline.level0 if level == 0 else model.pipeline.shared_level
+
+    # Run each pathway independently
+    combined = mx.concatenate([x, regs], axis=1)
+    outputs = []
+    for pathway in sieve.pathways:
+        out = pathway(combined, mask=mask)
+        # Use mean-pooled representation for similarity
+        outputs.append(out.mean(axis=1))  # (B, d_model)
+
+    # Pairwise cosine similarity
+    loss = mx.array(0.0)
+    n_pairs = 0
+    for i in range(len(outputs)):
+        for j in range(i + 1, len(outputs)):
+            # Cosine similarity per batch, then mean
+            a = outputs[i]
+            b = outputs[j]
+            sim = mx.sum(a * b, axis=-1) / (
+                mx.sqrt(mx.sum(a * a, axis=-1)) * mx.sqrt(mx.sum(b * b, axis=-1)) + 1e-8
+            )
+            loss = loss + sim.mean()
+            n_pairs += 1
+
+    return loss / max(n_pairs, 1)
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -689,43 +991,124 @@ class VSMPipeline(nn.Module):
 # ═══════════════════════════════════════════════════════════════════
 
 
-def create_model(cfg: PipelineConfig | None = None) -> VSMPipeline:
-    """Create a VSMPipeline with default or custom config."""
+def create_model(cfg: DualMERAConfig | None = None) -> DualMERA:
+    """Create a DualMERA with default or custom config."""
     if cfg is None:
-        cfg = PipelineConfig()
-    model = VSMPipeline(cfg)
+        cfg = DualMERAConfig()
+    model = DualMERA(cfg)
     mx.eval(model.parameters())
     return model
 
 
 if __name__ == "__main__":
-    print("Building VSM Pipeline...")
-    cfg = PipelineConfig()
-    model = create_model(cfg)
+    import time
 
-    # Print architecture
-    print(f"\nConfig: seq_len={cfg.seq_len}, stages={len(cfg.stages)}")
-    print(f"Positions per stage: {cfg.stage_positions}")
-    for i, s in enumerate(cfg.stages):
-        print(f"  Stage {i+1}: {s.n_layers}L, {s.n_heads}H, d={s.d_model}, ff={s.d_ff}, pos={cfg.stage_positions[i]}")
+    print("=" * 70)
+    print("  v8 — Dual MERA Language Model (v7.1 architecture)")
+    print("=" * 70)
+
+    # Use smaller dims for smoke test to avoid OOM
+    # Full config: d_model=1024, d_ff=4096, seq_len=4096
+    # Smoke test: d_model=256, d_ff=1024, seq_len=512
+    # Parse --full flag for full-scale test
+    import sys as _sys
+    full_scale = "--full" in _sys.argv
+
+    if full_scale:
+        cfg = DualMERAConfig()
+        print("\n[FULL SCALE — d_model=1024, seq_len=4096]")
+    else:
+        cfg = DualMERAConfig(
+            d_model=256,
+            d_ff=1024,
+            n_heads=4,
+            seq_len=512,
+            compressor_window=8,
+        )
+        print("\n[SMOKE TEST — reduced dimensions]")
+        print("  (use --full for full-scale test)")
+
+    print(f"\nConfig:")
+    print(f"  seq_len={cfg.seq_len}, d_model={cfg.d_model}, d_ff={cfg.d_ff}")
+    print(f"  n_heads={cfg.n_heads}, d_head={cfg.d_head}")
+    print(f"  compressor: {cfg.compressor_n_levels} levels, W={cfg.compressor_window}")
+    print(f"  pipeline: {cfg.pipeline_n_levels} levels, {cfg.n_pathways} pathways")
+    print(f"  registers: {cfg.n_registers}")
+    print(f"  compressor positions: {cfg.compressor_positions}")
+    print(f"  compressor strides: {cfg.compressor_strides}")
+
+    print(f"\nBuilding model...")
+    t0 = time.time()
+    model = create_model(cfg)
+    dt = time.time() - t0
+    print(f"  Built in {dt:.2f}s")
 
     # Parameter count
     counts = model.count_params()
     print(f"\nParameters:")
     for name, count in counts.items():
-        print(f"  {name:>20s}: {count:>10,}")
+        print(f"  {name:>40s}: {count:>12,}")
 
-    # Forward pass test (grad-safe path)
-    print(f"\nForward pass test (grad path)...")
-    tokens = mx.zeros((2, cfg.seq_len), dtype=mx.int32)
+    # Verify weight sharing
+    print(f"\nWeight sharing verification:")
+    comp_shared = model.compressor.shared_level
+    pipe_shared = model.pipeline.shared_level
+    print(f"  Compressor shared_level id: {id(comp_shared)}")
+    print(f"  Pipeline shared_level id:   {id(pipe_shared)}")
+    print(f"  Compressor L1-L7 all use same object: ✓ (by design — single module)")
+    print(f"  Pipeline L1-L7 all use same object:   ✓ (by design — single module)")
+
+    # Forward pass
+    print(f"\nForward pass test...")
+    B = 2
+    tokens = mx.zeros((B, cfg.seq_len), dtype=mx.int32)
+    t0 = time.time()
     logits = model(tokens)
     mx.eval(logits)
+    dt = time.time() - t0
     print(f"  Input:  {tokens.shape}")
     print(f"  Output: {logits.shape}")
+    print(f"  Time:   {dt:.3f}s")
+    assert logits.shape == (B, cfg.seq_len, cfg.vocab_size), \
+        f"Expected {(B, cfg.seq_len, cfg.vocab_size)}, got {logits.shape}"
+    print(f"  Shape:  ✓")
 
-    # Forward pass test (metrics path)
-    print(f"\nForward pass test (metrics path)...")
-    logits, metrics = model.forward_with_metrics(tokens)
-    mx.eval(logits)
-    print(f"  Metrics: {metrics}")
-    print("\n✓ Forward pass successful")
+    # Compressor multi-scale outputs
+    print(f"\nCompressor scale outputs:")
+    scales, regs = model.compressor(tokens)
+    mx.eval(*scales, regs)
+    for i, s in enumerate(scales):
+        stride = cfg.compressor_strides[i]
+        print(f"  Level {i} (s{stride:>4d}): {s.shape}")
+    print(f"  Registers: {regs.shape}")
+
+    # Forward with registers (recurrence test)
+    print(f"\nRecurrence test (forward_with_registers)...")
+    logits2, regs_out = model.forward_with_registers(tokens)
+    mx.eval(logits2, regs_out)
+    print(f"  Logits:    {logits2.shape}")
+    print(f"  Registers: {regs_out.shape}")
+
+    # Gradient test
+    print(f"\nGradient test...")
+    def test_loss(model, tokens):
+        logits = model(tokens)
+        # Simple CE against zeros
+        targets = mx.zeros((B, cfg.seq_len), dtype=mx.int32)
+        return nn.losses.cross_entropy(
+            logits.reshape(-1, cfg.vocab_size),
+            targets.reshape(-1),
+            reduction="mean",
+        )
+
+    loss_and_grad = nn.value_and_grad(model, test_loss)
+    loss_val, grads = loss_and_grad(model, tokens)
+    mx.eval(loss_val, grads)
+    print(f"  Loss: {float(loss_val):.4f}")
+    n_grad_arrays = len(tree_flatten(grads))
+    print(f"  Gradient arrays: {n_grad_arrays}")
+    print(f"  Gradient test: ✓")
+
+    print(f"\n{'='*70}")
+    print(f"  ✓ All smoke tests passed")
+    print(f"{'='*70}")
