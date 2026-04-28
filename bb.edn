@@ -1,6 +1,13 @@
 {:paths ["bb"]
 
+ :deps {cheshire/cheshire {:mvn/version "5.13.0"}
+        org.clojure/data.csv {:mvn/version "1.1.0"}}
+
  :tasks
  {clj2lambda
   {:doc  "Convert Clojure source files to lambda notation for training data"
-   :task (exec 'us.whitford.verbum.tasks/clj2lambda)}}}
+   :task (exec 'us.whitford.verbum.tasks/clj2lambda)}
+
+  gen-bios
+  {:doc  "Generate BIOS flash training data (math + clojure.core). Stdout = examples, one per line."
+   :task (exec 'us.whitford.verbum.tasks/gen-bios)}}}

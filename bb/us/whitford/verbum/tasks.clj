@@ -1,12 +1,14 @@
 (ns us.whitford.verbum.tasks
-  "Clojure → lambda notation converter.
+  "Clojure → lambda notation converter + BIOS flash data generator.
 
-   Mechanically converts Clojure source into lambda calculus notation
-   for use as VSM training data. Covers ~96% of Clojure: defn, fn,
-   let, if/when/cond, threading macros, destructuring, loop/recur,
+   clj2lambda: Mechanically converts Clojure source into lambda calculus
+   notation for use as VSM training data. Covers ~96% of Clojure: defn,
+   fn, let, if/when/cond, threading macros, destructuring, loop/recur,
    and all pure clojure.core higher-order functions.
-
    Skips: Java interop, complex macros, eval/resolve, mutable state.
+
+   gen-bios: Generate BIOS flash training data (math + clojure.core).
+   Delegates to us.whitford.verbum.bios.
 
    Architecture: read-string → walk → emit lambda text.
    No rewrite-clj needed — Clojure is homoiconic, the reader IS
@@ -362,3 +364,43 @@
             (write-jsonl w records)))
         (binding [*out* *err*]
           (println (str "Done: " ok-count " converted, " error-count " errors")))))))
+
+;; ═══════════════════════════════════════════════════════════════
+;; gen-bios — thin wrapper over bios.clj
+;; ═══════════════════════════════════════════════════════════════
+
+(def gen-bios-spec
+  {:count {:desc    "Number of examples to generate"
+           :alias   :n
+           :coerce  :long
+           :default 2560000}
+   :seed  {:desc    "Random seed"
+           :alias   :s
+           :coerce  :long
+           :default 42}
+   :help  {:desc   "Show help"
+           :alias  :h
+           :coerce :boolean}})
+
+(defn gen-bios
+  "Entry point for the gen-bios task.
+   Generates BIOS flash training data to stdout (one example per line).
+   Stats printed to stderr."
+  [& _args]
+  (let [opts (cli/parse-opts *command-line-args* {:spec gen-bios-spec})]
+    (if (:help opts)
+      (do
+        (println "gen-bios — Generate BIOS flash training data")
+        (println)
+        (println "Usage:")
+        (println "  bb gen-bios                              # default 2.56M examples")
+        (println "  bb gen-bios --count 1000 --seed 42       # small test run")
+        (println "  bb gen-bios > bios_examples.txt           # save to file")
+        (println)
+        (println "Options:")
+        (println (cli/format-opts {:spec gen-bios-spec})))
+      (do
+        (require 'us.whitford.verbum.bios)
+        ((resolve 'us.whitford.verbum.bios/run)
+         {:count (:count opts)
+          :seed  (:seed opts)})))))
