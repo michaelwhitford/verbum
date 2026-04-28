@@ -1372,8 +1372,8 @@ def pack_to_shards(
 
 def main():
     parser = argparse.ArgumentParser(description="Generate BIOS flash training data")
-    parser.add_argument("--count", type=int, default=500_000,
-                        help="Number of examples to generate (default: 500K)")
+    parser.add_argument("--count", type=int, default=2_600_000,
+                        help="Number of examples to generate (default: 2.6M, ~50M tokens)")
     parser.add_argument("--seed", type=int, default=42,
                         help="Random seed")
     parser.add_argument("--math-ratio", type=float, default=0.5,
