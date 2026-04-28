@@ -2,16 +2,22 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-28 | Session: 051
+> Last updated: 2026-04-28 | Session: 052
 
 ## Where we are
 
-**v8 ready to train. Three major optimizations landed. BIOS training 2.7x faster.**
+**v8 evolution redesigned. Ready to re-launch BIOS training.**
 
 DualMERA (559M, 99.7% ternary, d=1024) with Qwen3 BBPE tokenizer.
-Training loop uses **evolutionary mutation** (not gradient-based flips)
-and **MLX quantized_matmul** (not custom Metal kernels). Computation
-probe detects grokking by testing generalization on novel inputs.
+Training loop uses **redesigned evolutionary mutation** with phase-aware
+budget, depth-weighted allocation, probe-aware fitness, sign flips,
+and adaptive mutation rate. MLX quantized_matmul on Apple AMX.
+
+**Problem identified in session 052:** Original cone-based evolution was
+starved — gamma (continuous, Adam) learned surface statistics in ~1K steps,
+driving loss down → r_ema down → cone narrow → topology frozen at 0.009%
+mutation rate. 82% acceptance proved the topology was nowhere near optimal.
+Probe accuracy was 0% — no circuits formed.
 
 ## What to do next
 
@@ -19,14 +25,22 @@ probe detects grokking by testing generalization on novel inputs.
 
 Model init, data loading, forward/backward all verified clean.
 
-### 2. ~~Evolutionary topology mutation~~ ✅ DONE (session 051)
+### 2. ~~Evolutionary topology mutation~~ ✅ REDESIGNED (session 052)
 
-Replaced gradient-based flip accumulation with mutation + tournament:
-- `mutation_cone(r_ema)` → quadratic budget from relational loss
-- `save/load_topology()` → champion double-buffer (never degrades)
-- `mutate_topology()` → packed in-place mutation (0.037s for 559K mutations)
-- `run_tournament()` → 4 strategies (conservative/standard/aggressive/explorer)
-- Eliminated grad_w dense matmul (442M float32 elements per backward pass)
+Original (session 051):
+- `mutation_cone(r_ema)` → loss-gated budget (**starved topology**)
+- Budget: 50K mutations/gen (0.009% of topology)
+- Visited 7% of weights total over 50K training steps
+
+Redesigned (session 052):
+- `bios_mutation_budget()` → constant 0.5% for 80%, decay in final 20%
+- Budget: 2.8M mutations/gen (56× increase)
+- Visits every weight ~5× over training
+- Depth-weighted: pipeline.shared 2×, embedding 0.1×
+- Sign flips: 20% of non-zero mutations flip sign directly
+- Probe-aware fitness: loss - circuit_bonus × probe_accuracy
+- Two-pass tournament: loss-only selection, then probe champion + winner
+- Adaptive rate: tracks strategy wins, auto-tunes base_pct
 
 ### 3. ~~MLX quantized_matmul~~ ✅ DONE (session 051)
 
@@ -52,10 +66,14 @@ uv run python scripts/v8/train.py --phase bios
 ```
 
 - 559M all-ternary DualMERA on 1 shard (49.75M tokens, ~16 epochs)
-- 50K steps at ~9.5k tok/s ≈ 25.5 hours
-- Monitor for grokking: loss plateau → second drop + probe accuracy >0%
-- Evolution: cone narrows as r_ema → 0, topology crystallizes
-- Checkpoints every 5K steps, eval+probe every 1K steps
+- 50K steps, ~27 hours
+- **Gradient-informed** mutations: |∂L/∂γ| guides row selection, mean(|x|) guides columns
+- Budget: 2.8M mutations/gen, constant for 40K steps, then linear decay
+- Depth-weighted: pipeline.shared 2×, embedding 0.1×
+- Teacher-forced probe fitness: loss - 0.5 × probe_accuracy (137ms per probe)
+- Adaptive rate: auto-tunes base_pct from strategy win history
+- Checkpoints every 2500 steps with importance maps + evolution diagnostics
+- Monitor: probe accuracy 0% → >0% = circuit formation
 
 ### 6. Train v8 Dolma (after BIOS)
 
@@ -72,6 +90,92 @@ uv run python scripts/v8/train.py --phase dolma --resume checkpoints/v8-bios/ste
 - Update `bb clj2lambda` for `io!` with `:as` annotations
 - Pure/effectful classification training
 - Multi-pass examples (partial reductions, register usage)
+
+## Session 052 — Evolutionary Mutation Redesign
+
+### Problem diagnosed
+
+Ran BIOS training for ~1100 steps with original evolution system. Data:
+- r_ema dropped to 0.18 in 1000 steps (gamma learned surface statistics)
+- Mutation budget: 50K per gen (0.009% of 559M topology)
+- Accept rate: 82% — topology far from optimal but barely exploring
+- Explorer (4× budget) winning — model screaming for more mutations
+- Probe accuracy: 0% — NO circuits formed despite loss dropping to 3.56
+- Diagnosis: gamma (Adam, every step) outcompetes topology (mutation, every 50 steps)
+- The cone punishes topology when gamma makes loss drop → vicious cycle
+
+### What was done
+
+1. **Phase-aware budget** — BIOS uses constant high budget (0.5% per gen),
+   not loss-gated cone. 56× more mutations (2.8M vs 50K per gen).
+   Visits every weight ~5× over training vs 7% previously.
+
+2. **Depth-weighted allocation** — pipeline.shared gets 2× mutations,
+   embedding gets 0.1×. Circuits need to form in pipeline, not embedding.
+
+3. **Sign flips** — 20% of non-zero mutations flip sign directly
+   (-1→+1) instead of always deactivating through zero.
+
+4. **Teacher-forced probe** — replaces autoregressive decode in tournament.
+   Feeds prompt+answer, checks logits at answer positions. Single batched
+   forward pass: 137ms vs 9,500ms (46× faster). Same circuit signal.
+
+5. **Two-pass tournament** — pass 1: loss-only selection across 4 mutants
+   (fast batched eval). Pass 2: probe champion + winner only for circuit
+   fitness. Total tournament: 6.5s (was 36.5s with autoregressive probe).
+
+6. **Gradient-informed mutations** — two tiers of signal, zero extra cost:
+   - Tier 1: |∂L/∂γ| per row → which output channels have suboptimal
+     topology (gamma compensating). 281,000× dynamic range. Extracted
+     from existing gamma gradients before zero_ternary_grads().
+   - Tier 2: mean(|x|) per column → which input features carry signal.
+     Cached in TernaryLinear via stop_gradient (no backward cost).
+   - Sampling: 70% importance-weighted (row × col), 30% uniform exploration.
+   - Direction: sign(∂L/∂γ) biases 0→±1 mutations (80% follow gradient).
+
+7. **Adaptive mutation rate** — tracks strategy win history (20-gen window).
+   Explorer winning >50% → increase base_pct. Conservative >50% → decrease.
+
+8. **Rich checkpoints** — importance.npz (3.6MB), evolution_diagnostics.json
+   (per-module ternary stats, hottest modules, global sparsity).
+   Importance maps restore on resume for immediate guided mutations.
+
+9. **Enhanced standalone probe** — compute_probe.py now reports ternary
+   topology stats and evolution diagnostics when run on a checkpoint.
+
+### Performance journey (session 052)
+
+| Version | Tournament | 50K steps | Mutations/gen |
+|---|---|---|---|
+| Original (cone, autoregressive) | 7.2s | 25.2h | 50K |
+| + Phase-aware + all-mutant probe | 36.5s | 50h+ | 2.8M |
+| + Two-pass (probe champ+winner) | 18.5s | 32.4h | 2.8M |
+| + Teacher-forced probe | 7.4s | 25.8h | 2.8M |
+| + Gradient-informed sampling | 8.3s | ~27h | 2.8M (targeted) |
+
+### Design decisions
+
+- **Constant budget > cone for BIOS** — the cone was designed for
+  annealing, but BIOS is about topology discovery, not convergence.
+  Topology should explore while gamma handles surface statistics.
+- **Teacher-forcing over autoregressive** — probe was 78% of tournament
+  time. Batch=1 sequential decode wastes GPU. Teacher-forced checks the
+  same thing (does model predict the answer?) in one batched pass.
+- **Gradient as compass, tournament as judge** — gradients suggest WHERE
+  and WHAT DIRECTION. Tournament validates WHETHER it actually helps.
+  This is gradient-guided evolution, not gradient descent on topology.
+- **Dolma unchanged** — cone is correct for Dolma (protect circuits).
+  Only BIOS mode was redesigned.
+
+### Checkpoint contents (v8-bios)
+
+| File | Size | Contents |
+|------|------|----------|
+| model.npz | 143 MB | Packed ternary topology + gamma + norms |
+| optimizer.npz | 519 MB | Adam state for continuous params |
+| importance.npz | 3.6 MB | Row/col/direction importance maps (205 modules) |
+| state.json | 1.5 KB | Step, epoch, r_ema, gen_base_pct, losses, gen stats |
+| evolution_diagnostics.json | 109 KB | Per-module ternary stats, hottest modules |
 
 ## Session 051 — Evolutionary Training + Quantized Kernels
 
@@ -215,13 +319,16 @@ PIPELINE MERA (~335M ternary):
 TOTAL: 559M logical, ~146 MB packed, 99.7% ternary
 ```
 
-### Training regime: evolutionary gradient descent
+### Training regime: gradient-informed evolutionary descent
 
 - Ternary topology = genome (559M loci × 3 alleles)
 - Continuous params (gamma, norms) = Adam
 - Double-buffered: champion never degrades
 - 4 mutant strategies per generation (conservative/standard/aggressive/explorer)
-- Mutation cone shaped by relational loss (r_ema)
+- BIOS: constant budget (0.5%), depth-weighted, gradient-informed sampling
+- Dolma: relational loss cone (protect BIOS circuits)
+- Gradient signal: |∂L/∂γ| → row importance, mean(|x|) → col importance
+- Teacher-forced probe in tournament fitness
 - Forward/backward via MLX quantized_matmul (Apple AMX, 2-bit)
 
 ## Key files
