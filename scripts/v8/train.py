@@ -33,13 +33,15 @@ from mlx.utils import tree_flatten, tree_map
 sys.path.insert(0, str(Path(__file__).parent))
 from model import DualMERA, DualMERAConfig, create_model
 from ternary import (
-    accumulate_flips,
-    apply_flips,
-    compute_flip_threshold,
     zero_ternary_grads,
     restore_ternary,
     save_ternary_state,
     load_ternary_state,
+    count_ternary_weights,
+    mutation_cone,
+    save_topology,
+    load_topology,
+    mutate_topology,
     _walk_ternary_modules,
 )
 from tokenizer import VOCAB_SIZE, EOD_ID
@@ -63,9 +65,9 @@ PHASE_DEFAULTS = {
         "eval_batches": 5,
         "checkpoint_interval": 5000,
         "log_interval": 50,
-        "flip_interval": 50,
-        "flip_base_pct": 0.001,
-        "flip_cooldown": 8,
+        "gen_interval": 50,          # evolutionary generation interval
+        "gen_base_pct": 0.001,       # max mutation rate at cone's widest
+        "gen_n_mutants": 4,          # population size per generation
     },
     "dolma": {
         "data_dir": "/Users/mwhitford/data/fractal-bitnet/shards-qwen3",
@@ -80,9 +82,9 @@ PHASE_DEFAULTS = {
         "eval_batches": 10,
         "checkpoint_interval": 10000,
         "log_interval": 100,
-        "flip_interval": 200,       # slower flips — topology mostly frozen
-        "flip_base_pct": 0.0002,    # much smaller — protect BIOS circuits
-        "flip_cooldown": 16,
+        "gen_interval": 200,         # slower evolution — topology mostly frozen
+        "gen_base_pct": 0.0002,      # narrow cone — protect BIOS circuits
+        "gen_n_mutants": 4,
     },
 }
 
@@ -104,19 +106,113 @@ def relational_loss(loss: float) -> float:
 
 
 # ═══════════════════════════════════════════════════════════════════
-# Ternary flip control
+# Evolutionary tournament
 # ═══════════════════════════════════════════════════════════════════
 
-def adaptive_flip_scale(r_ema: float) -> float:
-    """Continuous flip rate modulator from relational loss.
-    r > 0.6 → scale≈2.0 (explore topology)
-    r ≈ 0.4 → scale≈1.0 (balanced)
-    r < 0.15 → scale≈0.05 (near frozen)
-    r < 0.05 → scale=0.0 (converged, no flips)
+# Mutant strategies: each scales the base budget differently.
+# Conservative explores less, aggressive explores more.
+# All strategies are evaluated and the best survives.
+MUTANT_STRATEGIES = {
+    "conservative": 0.25,
+    "standard":     1.0,
+    "aggressive":   2.0,
+    "explorer":     4.0,
+}
+
+
+def run_tournament(
+    model: DualMERA,
+    eval_loader,
+    r_ema: float,
+    total_ternary: int,
+    base_pct: float,
+    n_mutants: int,
+    n_eval_batches: int,
+    gen_seed: int,
+) -> dict:
+    """Run one evolutionary generation: mutate, evaluate, select.
+
+    1. Evaluate champion (current model)
+    2. For each mutant strategy:
+       a. Save champion topology
+       b. Mutate with strategy-scaled budget
+       c. Evaluate mutant
+       d. Keep if better, else revert
+    3. Return stats
+
+    Champion never degrades — invariant of the double-buffer.
     """
-    if r_ema < 0.05:
-        return 0.0
-    return max(0.05, 0.05 + 1.95 * min(1.0, r_ema / 0.6))
+    # Evaluate champion
+    champion_metrics = evaluate(model, eval_loader, n_batches=n_eval_batches)
+    champion_loss = champion_metrics["loss"]
+
+    # Base budget from the relational loss cone
+    base_budget = mutation_cone(r_ema, total_ternary, base_pct)
+
+    if base_budget == 0:
+        return {
+            "champion_loss": champion_loss,
+            "budget": 0,
+            "accepted": None,
+            "accepted_loss": champion_loss,
+            "mutations_tried": 0,
+            "frozen": True,
+        }
+
+    # Save champion for reversion
+    champion_snapshot = save_topology(model)
+
+    best_loss = champion_loss
+    best_strategy = None
+    best_snapshot = None
+    strategies_tried = []
+
+    strategy_names = list(MUTANT_STRATEGIES.keys())[:n_mutants]
+
+    for strategy_name in strategy_names:
+        scale = MUTANT_STRATEGIES[strategy_name]
+        budget = max(1, int(base_budget * scale))
+
+        # Mutate from champion (always start from champion, not from previous mutant)
+        load_topology(model, champion_snapshot)
+        rng = np.random.RandomState(gen_seed + hash(strategy_name) % (2**31))
+        n_applied = mutate_topology(model, budget, rng)
+
+        # Evaluate mutant
+        mutant_metrics = evaluate(model, eval_loader, n_batches=n_eval_batches)
+        mutant_loss = mutant_metrics["loss"]
+
+        strategies_tried.append({
+            "strategy": strategy_name,
+            "budget": budget,
+            "applied": n_applied,
+            "loss": mutant_loss,
+            "delta": mutant_loss - champion_loss,
+            "accepted": mutant_loss <= best_loss,
+        })
+
+        if mutant_loss <= best_loss:
+            best_loss = mutant_loss
+            best_strategy = strategy_name
+            best_snapshot = save_topology(model)
+
+    # Restore the winner
+    if best_snapshot is not None and best_strategy is not None:
+        load_topology(model, best_snapshot)
+    else:
+        # All mutants were worse — revert to champion
+        load_topology(model, champion_snapshot)
+
+    return {
+        "champion_loss": champion_loss,
+        "budget": base_budget,
+        "accepted": best_strategy,
+        "accepted_loss": best_loss,
+        "delta": best_loss - champion_loss,
+        "mutations_tried": len(strategies_tried),
+        "strategies": strategies_tried,
+        "frozen": False,
+    }
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -275,8 +371,8 @@ def save_checkpoint(
     data_pos: int,
     epoch: int,
     train_losses: list[float],
-    total_flips: int,
-    total_reversals: int,
+    total_generations: int,
+    total_accepted: int,
     r_ema: float,
     phase: str,
 ):
@@ -284,16 +380,13 @@ def save_checkpoint(
     step_dir = checkpoint_dir / f"step_{step:06d}"
     step_dir.mkdir(parents=True, exist_ok=True)
 
-    # Model weights
+    # Model weights (includes packed ternary topology)
     flat = tree_flatten(model.parameters())
     mx.savez(str(step_dir / "model.npz"), **{k: v for k, v in flat})
 
     # Optimizer state
     opt_flat = tree_flatten(optimizer.state)
     mx.savez(str(step_dir / "optimizer.npz"), **{k: v for k, v in opt_flat})
-
-    # Ternary flip state
-    save_ternary_state(model, str(step_dir / "ternary_state.npz"))
 
     # Training state JSON
     state = {
@@ -305,8 +398,8 @@ def save_checkpoint(
         "metrics": {k: float(v) if isinstance(v, (int, float, np.floating)) else v
                     for k, v in metrics.items()},
         "train_losses_last100": train_losses[-100:],
-        "total_flips": total_flips,
-        "total_reversals": total_reversals,
+        "total_generations": total_generations,
+        "total_accepted": total_accepted,
     }
     (step_dir / "state.json").write_text(json.dumps(state, indent=2))
     print(f"  💾 Checkpoint: {step_dir}", flush=True)
@@ -412,12 +505,14 @@ def train(args):
     start_step = 0
     train_losses: list[float] = []
     best_eval_loss = float("inf")
-    total_flips = 0
-    total_reversals = 0
-    last_flip_count = 0
-    last_reversal_count = 0
+    total_generations = 0
+    total_accepted = 0
+    total_rejected = 0
     r_ema = 1.0  # relational loss EMA
     ema_alpha = 0.02
+
+    # ── Ternary weight count for mutation budget ──
+    total_ternary = count_ternary_weights(model)
 
     checkpoint_dir = Path(args.checkpoint_dir)
 
@@ -441,8 +536,9 @@ def train(args):
         state = load_checkpoint(resume_dir, model, optimizer)
         start_step = state["step"]
         train_losses = state.get("train_losses_last100", [])
-        total_flips = state.get("total_flips", 0)
-        total_reversals = state.get("total_reversals", 0)
+        total_generations = state.get("total_generations", 0)
+        total_accepted = state.get("total_accepted", 0)
+        total_rejected = state.get("total_rejected", 0)
         r_ema = state.get("r_ema", 1.0)
         train_loader._pos = state.get("data_pos", 0)
         train_loader.epoch = state.get("epoch", 0)
@@ -451,7 +547,10 @@ def train(args):
     print(f"\n  Phase: {phase}")
     print(f"  LR: {args.lr}, warmup: {args.warmup}")
     print(f"  Steps: {start_step} → {args.steps}")
-    print(f"  Flip interval: {args.flip_interval}, base rate: {args.flip_base_pct*100:.2f}%")
+    print(f"  Evolution: gen_interval={args.gen_interval}, "
+          f"base_pct={args.gen_base_pct*100:.2f}%, "
+          f"mutants={args.gen_n_mutants}")
+    print(f"  Ternary: {total_ternary:,} weights")
     print(f"  Checkpoint: {checkpoint_dir}")
     print(f"\n{'='*70}\n", flush=True)
 
@@ -478,9 +577,6 @@ def train(args):
             mx.eval(loss_val, grads)
             accum_loss += float(loss_val)
 
-            # Accumulate ternary flip votes
-            accumulate_flips(model, grads)
-
             if accum_grads is None:
                 accum_grads = grads
             else:
@@ -490,7 +586,7 @@ def train(args):
         accum_grads = tree_map(lambda g: g / args.grad_accum, accum_grads)
         avg_loss = accum_loss / args.grad_accum
 
-        # Zero ternary grads (they route to flip accumulator, not optimizer)
+        # Zero ternary grads (topology evolves via mutation, not optimizer)
         accum_grads = zero_ternary_grads(model, accum_grads)
 
         # Gradient clipping
@@ -513,28 +609,23 @@ def train(args):
         r = relational_loss(avg_loss)
         r_ema = ema_alpha * r + (1 - ema_alpha) * r_ema
 
-        # ── Periodic ternary flips ──
-        if step % args.flip_interval == 0:
-            flip_scale = adaptive_flip_scale(r_ema)
-            effective_pct = args.flip_base_pct * flip_scale
-
-            if effective_pct > 0:
-                threshold = compute_flip_threshold(model, effective_pct)
-                n_flipped, n_reversals = apply_flips(
-                    model,
-                    threshold=max(1, int(threshold)),
-                    max_flip_pct=effective_pct,
-                    cooldown_intervals=args.flip_cooldown,
-                )
-                total_flips += n_flipped
-                total_reversals += n_reversals
-                last_flip_count = n_flipped
-                last_reversal_count = n_reversals
-            else:
-                last_flip_count = 0
-                last_reversal_count = 0
-                apply_flips(model, threshold=999, max_flip_pct=0.0,
-                           cooldown_intervals=args.flip_cooldown)
+        # ── Evolutionary tournament ──
+        if step % args.gen_interval == 0:
+            gen_result = run_tournament(
+                model=model,
+                eval_loader=eval_loader,
+                r_ema=r_ema,
+                total_ternary=total_ternary,
+                base_pct=args.gen_base_pct,
+                n_mutants=args.gen_n_mutants,
+                n_eval_batches=args.eval_batches,
+                gen_seed=step,
+            )
+            total_generations += 1
+            if gen_result["accepted"]:
+                total_accepted += 1
+            elif not gen_result["frozen"]:
+                total_rejected += 1
 
         train_losses.append(avg_loss)
         dt = time.time() - t0
@@ -543,7 +634,6 @@ def train(args):
         if step % args.log_interval == 0 or step == start_step + 1:
             tps = tokens_per_step / dt
             epoch = train_loader.epoch
-            rev_rate = (total_reversals / total_flips * 100) if total_flips > 0 else 0
 
             print(
                 f"step {step:>6d} │ "
@@ -554,13 +644,18 @@ def train(args):
                 flush=True,
             )
 
-            # Flip stats on flip steps
-            if step % args.flip_interval == 0:
-                fs = adaptive_flip_scale(r_ema)
+            # Evolution stats on generation steps
+            if step % args.gen_interval == 0:
+                budget = mutation_cone(r_ema, total_ternary, args.gen_base_pct)
+                accept_rate = (total_accepted / total_generations * 100
+                               if total_generations > 0 else 0)
+                status = gen_result.get("accepted", "—") or "rejected"
+                delta = gen_result.get("delta", 0)
                 print(
-                    f"         │ flips: {last_flip_count:,} (+{last_reversal_count} rev)  "
-                    f"total: {total_flips:,} ({rev_rate:.1f}% rev)  "
-                    f"scale={fs:.2f}",
+                    f"         │ 🧬 gen {total_generations}: "
+                    f"{status}  Δ={delta:+.4f}  "
+                    f"budget={budget:,}  "
+                    f"accept={total_accepted}/{total_generations} ({accept_rate:.0f}%)",
                     flush=True,
                 )
 
@@ -592,8 +687,8 @@ def train(args):
                 data_pos=train_loader._pos,
                 epoch=train_loader.epoch,
                 train_losses=train_losses,
-                total_flips=total_flips,
-                total_reversals=total_reversals,
+                total_generations=total_generations,
+                total_accepted=total_accepted,
                 r_ema=r_ema,
                 phase=phase,
             )
@@ -620,8 +715,8 @@ def train(args):
         data_pos=train_loader._pos,
         epoch=train_loader.epoch,
         train_losses=train_losses,
-        total_flips=total_flips,
-        total_reversals=total_reversals,
+        total_generations=total_generations,
+        total_accepted=total_accepted,
         r_ema=r_ema,
         phase=phase,
     )
@@ -664,9 +759,12 @@ def main():
     parser.add_argument("--eval-batches", type=int, default=None)
     parser.add_argument("--checkpoint-interval", type=int, default=None)
     parser.add_argument("--log-interval", type=int, default=None)
-    parser.add_argument("--flip-interval", type=int, default=None)
-    parser.add_argument("--flip-base-pct", type=float, default=None)
-    parser.add_argument("--flip-cooldown", type=int, default=None)
+    parser.add_argument("--gen-interval", type=int, default=None,
+                        help="Steps between evolutionary generations")
+    parser.add_argument("--gen-base-pct", type=float, default=None,
+                        help="Max mutation rate at cone's widest")
+    parser.add_argument("--gen-n-mutants", type=int, default=None,
+                        help="Number of mutants per generation")
     parser.add_argument("--resume", type=str, default=None,
                         help="Checkpoint directory to resume from")
 

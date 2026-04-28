@@ -744,34 +744,29 @@ def _ternary_linear_fwd(x: mx.array, w_packed: mx.array, gamma: mx.array) -> mx.
 
 @_ternary_linear_fwd.vjp
 def _ternary_linear_vjp(primals, cotangent, output):
-    """Backward: STE for ternary weights, packed ternary matmul for grad_x.
+    """Backward for ternary linear — evolutionary regime.
 
-    ∂L/∂x:     ternary_matmul_t_packed(grad_out * gamma, w_packed, K)  — packed Metal kernel
-    ∂L/∂w:     (grad_out * gamma).T @ x  — dense matmul → flip accumulator (unchanged)
-    ∂L/∂gamma: sum(grad_out * y_pre, reduce_dims)  — per-channel (recomputed)
+    ∂L/∂x:     ternary_matmul_t_packed(grad_out * gamma, w_packed, K)
+    ∂L/∂w:     zeros — ternary topology evolves via mutation, not gradient
+    ∂L/∂gamma: sum(grad_out * y_pre, reduce_dims) — per-channel, trained by Adam
 
-    NOTE: grad_w is still dense float32 [N, K] — the flip accumulator is
-    not packed. Only ternary_weight itself is stored packed.
+    The expensive grad_w = gs_2d.T @ x_2d matmul (442M float32 elements)
+    is eliminated entirely. Ternary weights mutate via evolutionary
+    tournament selection, not gradient-based flip accumulation.
     """
     x, w_packed, gamma = primals
     grad_out = cotangent
     K = w_packed.shape[1] * 4
 
-    # Scale grad_out by gamma once (used for both grad_x and grad_w)
-    grad_scaled = grad_out * gamma
-
     # ∂L/∂x — packed ternary matmul backward (add/sub on Metal)
+    grad_scaled = grad_out * gamma
     grad_x = ternary_matmul_t_packed(grad_scaled, w_packed, K)
 
-    # ∂L/∂w — dense matmul for flip accumulator (does NOT use w at all)
-    # Reshape to 2D for matmul: (*, N) x (*, K) → (N, K)
-    gs_2d = grad_scaled.reshape(-1, grad_scaled.shape[-1])
-    x_2d = x.reshape(-1, x.shape[-1])
-    grad_w = gs_2d.T @ x_2d
+    # ∂L/∂w — zeros (topology evolves, not optimized)
+    grad_w = mx.zeros(w_packed.shape, dtype=mx.float32)
 
-    # ∂L/∂gamma — per-channel: recompute y_pre with packed kernel
+    # ∂L/∂gamma — per-channel
     y_pre = ternary_matmul_packed(x, w_packed, K)
-    # Sum over all dims except last (output features)
     reduce_axes = tuple(range(grad_out.ndim - 1))
     grad_gamma = (grad_out * y_pre).sum(axis=reduce_axes)
 
@@ -784,14 +779,14 @@ def _ternary_linear_vjp(primals, cotangent, output):
 
 
 class TernaryLinear(nn.Module):
-    """Linear layer with learnable ternary routing via flip accumulation.
+    """Linear layer with ternary routing topology.
 
-    Forward: y = ternary_matmul(RMSNorm(x), W_int8) * gamma
+    Forward: y = ternary_matmul(RMSNorm(x), W_packed) * gamma
 
-    The ternary weights evolve through discrete flips, not continuous
-    gradient descent. Each flip moves one step: -1→0, 0→±1, ±1→0.
-    The accumulator captures gradient pressure; the threshold controls
-    how much evidence is needed before committing to a flip.
+    Ternary weights {-1, 0, +1} define routing topology. They evolve
+    via evolutionary mutation + tournament selection (not gradient
+    descent). Per-channel gamma provides continuous fine-tuning and
+    is trained normally with Adam.
 
     Args:
         in_features:  input dimension
@@ -814,44 +809,21 @@ class TernaryLinear(nn.Module):
         self.ternary_weight = w_packed
         self.gamma = gamma
 
-        # Flip accumulator — tracks gradient pressure per weight within
-        # one flip interval. Reset to zero after every flip check (not
-        # just for flipped weights) so each interval asks a fresh question:
-        # "given current topology, which weights want to flip NOW?"
-        # Int8 with saturation at ±127. Each micro-batch votes ±1.
-        self._flip_accum = mx.zeros((out_features, in_features), dtype=mx.int8)
-
-        # Cooldown: remaining flip intervals before this weight can flip again.
-        # Prevents oscillation. Decremented each flip check; weight is blocked
-        # from flipping while cooldown > 0.
-        self._flip_cooldown = mx.zeros((out_features, in_features), dtype=mx.int8)
-
-        # Last direction: direction of the most recent flip for this weight.
-        # +1 = last flip was upward, -1 = downward, 0 = never flipped.
-        self._flip_last_dir = mx.zeros((out_features, in_features), dtype=mx.int8)
-
     def __call__(self, x: mx.array) -> mx.array:
         if self.pre_norm:
             x = self.norm(x)
         return _ternary_linear_fwd(x, self.ternary_weight, self.gamma)
 
     def ternary_stats(self) -> dict[str, float]:
-        """Report ternary weight and gamma statistics.
-
-        Unpacks the packed uint8 weights before computing per-weight stats.
-        """
+        """Report ternary weight and gamma statistics."""
         w = unpack_ternary(self.ternary_weight, self.in_features)
-        total = w.size  # = out_features * in_features (logical size)
+        total = w.size
         return {
             "sparsity": (w == 0).sum().item() / total,
             "pos_frac": (w == 1).sum().item() / total,
             "neg_frac": (w == -1).sum().item() / total,
             "gamma_mean": self.gamma.mean().item(),
             "gamma_std": mx.sqrt(mx.var(self.gamma)).item(),
-            "accum_mean": mx.abs(self._flip_accum.astype(mx.float32)).mean().item(),
-            "accum_max": mx.abs(self._flip_accum.astype(mx.float32)).max().item(),
-            "cooldown_active": int((self._flip_cooldown > 0).sum().item()),
-            "ever_flipped": int((self._flip_last_dir != 0).sum().item()),
         }
 
 
@@ -873,8 +845,7 @@ class TernaryEmbedding(nn.Module):
 
     For vocab=50277, d=1024: 13.1 MB packed vs 196.4 MB float (15× smaller).
 
-    The ternary embedding participates in the flip accumulation mechanism
-    just like TernaryLinear, enabling topology evolution during training.
+    Ternary topology evolves via evolutionary mutation, not gradient descent.
     """
 
     def __init__(self, vocab_size: int, d_model: int):
@@ -886,11 +857,6 @@ class TernaryEmbedding(nn.Module):
         w_packed, gamma = _ternary_init(vocab_size, d_model)
         self.ternary_weight = w_packed   # (vocab_size, d_model//4) uint8
         self.gamma = gamma               # (vocab_size,) float32
-
-        # Flip accumulator (same as TernaryLinear)
-        self._flip_accum = mx.zeros((vocab_size, d_model), dtype=mx.int8)
-        self._flip_cooldown = mx.zeros((vocab_size, d_model), dtype=mx.int8)
-        self._flip_last_dir = mx.zeros((vocab_size, d_model), dtype=mx.int8)
 
     def __call__(self, tokens: mx.array) -> mx.array:
         """Lookup ternary embeddings for token indices.
@@ -992,19 +958,8 @@ def _ternary_embed_vjp(primals, cotangent, output):
     grad_gamma = mx.zeros((gamma.shape[0],), dtype=mx.float32)
     grad_gamma = grad_gamma.at[flat_tokens].add(grad_gamma_per_token)
 
-    # ∂L/∂w: return zeros for w_packed (shape-matched), store real grad
-    # in the module's _embed_grad_cache for the flip accumulator
+    # ∂L/∂w: zeros — topology evolves via mutation, not gradient
     grad_w_packed = mx.zeros_like(w_packed).astype(mx.float32)
-
-    # Compute and cache the STE grad for flip accumulation:
-    # Store in a module-level cache that accumulate_flips_embed reads
-    gamma_rows = gamma[flat_tokens]  # (N,)
-    grad_w_dense = grad_flat * mx.expand_dims(gamma_rows, axis=-1)  # (N, d_model)
-    # Scatter to full vocab: (vocab_size, d_model)
-    full_grad = mx.zeros((w_packed.shape[0], d_model), dtype=mx.float32)
-    full_grad = full_grad.at[flat_tokens].add(grad_w_dense)
-    # Store in global cache keyed by w_packed id
-    _EMBED_GRAD_CACHE[id(w_packed)] = full_grad
 
     # No gradient for tokens
     grad_tokens = mx.zeros(tokens.shape, dtype=mx.float32)
@@ -1012,12 +967,8 @@ def _ternary_embed_vjp(primals, cotangent, output):
     return grad_tokens, grad_w_packed, grad_gamma
 
 
-# Global cache for embedding STE gradients (consumed by accumulate_flips)
-_EMBED_GRAD_CACHE: dict[int, mx.array] = {}
-
-
 # ══════════════════════════════════════════════════════════════════════
-# Flip utilities (simplified for v8)
+# Ternary module utilities
 # ══════════════════════════════════════════════════════════════════════
 
 
@@ -1028,246 +979,14 @@ def _walk_ternary_modules(model: nn.Module):
             yield path, module
 
 
-def accumulate_flips(model: nn.Module, ternary_grads: dict[str, Any]) -> None:
-    """Accumulate gradient direction votes for ternary weight flips.
-
-    Uses sign(grad) rather than raw gradient magnitude. Each call
-    adds +1 or -1 per weight, so after N calls |accum| ≤ N. This
-    makes the accumulator scale-invariant and the threshold meaningful
-    in units of "directional consensus across micro-batches."
-
-    Accumulators are reset to zero by apply_flips after each flip check,
-    so they measure consensus within one interval only.
-
-    Call after loss backward, per micro-batch.
-
-    Args:
-        model: the model containing TernaryLinear modules
-        ternary_grads: gradient pytree (full or ternary-only)
-    """
-    def _extract_grad(tree, path_parts):
-        """Navigate the grad pytree to find the gradient at a given path."""
-        node = tree
-        for part in path_parts:
-            if isinstance(node, dict):
-                node = node.get(part)
-            elif isinstance(node, list):
-                node = node[int(part)]
-            else:
-                return None
-            if node is None:
-                return None
-        return node
-
-    accums = []
-    for path, module in _walk_ternary_modules(model):
-        # For TernaryEmbedding: retrieve cached STE grad from VJP
-        if isinstance(module, TernaryEmbedding):
-            cache_key = id(module.ternary_weight)
-            grad = _EMBED_GRAD_CACHE.pop(cache_key, None)
-        else:
-            # For TernaryLinear: extract from grad pytree
-            parts = path.split(".") if path else []
-            parts.append("ternary_weight")
-            grad = _extract_grad(ternary_grads, parts)
-
-        if grad is not None:
-            # NaN guard: don't poison the accumulator with NaN gradients
-            if mx.any(mx.isnan(grad)).item():
-                continue
-            # Sign-based accumulation: direction only, not magnitude.
-            # Each micro-batch casts a vote (+1 or -1) per weight.
-            # Int8 with saturating clip at ±127.
-            vote = mx.sign(grad).astype(mx.int8)
-            module._flip_accum = mx.clip(
-                module._flip_accum.astype(mx.int16) + vote.astype(mx.int16),
-                -127, 127,
-            ).astype(mx.int8)
-            accums.append(module._flip_accum)
-
-    # Materialize accumulators to prevent lazy graph buildup.
-    if accums:
-        mx.eval(*accums)
-
-
-def compute_flip_threshold(model: nn.Module, target_pct: float) -> float:
-    """Compute threshold to flip approximately target_pct of ternary weights.
-
-    Uses the percentile of accumulator absolute values so that exactly
-    target_pct fraction of weights exceed the threshold. This decouples
-    the flip decision from accumulator scale.
-
-    Args:
-        model: the model containing TernaryLinear modules
-        target_pct: fraction of weights to flip (e.g. 0.005 = 0.5%)
-
-    Returns:
-        Threshold value. Returns float('inf') if no valid accumulators.
-    """
-    import numpy as np
-    chunks = []
-    for _, module in _walk_ternary_modules(model):
-        mx.eval(module._flip_accum)
-        chunks.append(mx.abs(module._flip_accum).astype(mx.int16).reshape(-1))
-    if not chunks:
-        return float("inf")
-    all_abs = mx.concatenate(chunks)
-    all_np = np.array(all_abs)
-    pct = 100.0 * (1.0 - target_pct)
-    return float(np.percentile(all_np, pct))
-
-
-def apply_flips(model: nn.Module, threshold: int = 50, max_flip_pct: float = 0.001,
-                cooldown_intervals: int = 8) -> tuple[int, int]:
-    """Flip ternary weights where accumulated consensus exceeds threshold.
-
-    Like synaptic plasticity: each weight flips only when IT has
-    accumulated enough directional evidence. But capped: at most
-    max_flip_pct of total ternary weights can flip per call, to prevent
-    catastrophic mass mutation when early-training gradients are globally
-    coherent (every weight agrees because the model knows nothing).
-
-    When more weights cross the threshold than the cap allows, only the
-    strongest consensus (highest |accum|) flip.
-
-    Each flip moves one step in the gradient direction:
-      -1 + positive pressure → 0
-       0 + positive pressure → +1
-      +1 + negative pressure → 0
-       0 + negative pressure → -1
-
-    Respects per-weight cooldown: weights with _flip_cooldown > 0 are
-    skipped. After flipping, the flipped weight's cooldown is set to
-    `cooldown_intervals`. Each call decrements all cooldowns by 1.
-    This prevents oscillation: a weight that just flipped must wait
-    cooldown_intervals × flip_interval steps before it can flip again.
-
-    Args:
-        model: the model containing TernaryLinear modules
-        threshold: minimum |accumulator| to trigger a flip (vote units)
-        max_flip_pct: maximum fraction of ternary weights to flip per call
-        cooldown_intervals: intervals to lock a weight after flipping (default 8)
-
-    Returns:
-        Total number of weights flipped across all modules.
-    """
-    # Step 1: collect all accumulators that exceed threshold
-    candidates = []  # [(module, accum_abs)]
-    total_ternary = 0
-    for _, module in _walk_ternary_modules(model):
-        total_ternary += module.out_features * module.in_features
-        accum_abs = mx.abs(module._flip_accum.astype(mx.int16))
-        candidates.append((module, accum_abs))
-
-    max_flips = int(total_ternary * max_flip_pct)
-
-    def _count_at_or_above(t):
-        return sum((a >= t).sum().item() for _, a in candidates)
-
-    n_qualifying = _count_at_or_above(threshold)
-    effective_threshold = threshold
-
-    if n_qualifying > max_flips and max_flips > 0:
-        lo, hi = threshold, 127
-        while lo < hi:
-            mid = (lo + hi) // 2
-            if _count_at_or_above(mid) > max_flips:
-                lo = mid + 1
-            else:
-                hi = mid
-        effective_threshold = lo
-
-    # Step 2: re-count and apply with cooldown awareness
-    n_qualifying_final = _count_at_or_above(effective_threshold)
-    subsample = n_qualifying_final > max_flips and max_flips > 0
-    if subsample:
-        keep_prob = max_flips / n_qualifying_final
-
-    total_flipped = 0
-    total_reversals = 0
-    mutated = []
-
-    for module, accum_abs in candidates:
-        # ── Decrement cooldowns first (every flip check) ──
-        if mx.any(module._flip_cooldown > 0).item():
-            module._flip_cooldown = mx.maximum(
-                module._flip_cooldown.astype(mx.int16) - 1, 0
-            ).astype(mx.int8)
-            mutated.append(module._flip_cooldown)
-
-        mask = accum_abs >= int(effective_threshold)
-
-        # Block weights still on cooldown
-        mask = mask & (module._flip_cooldown <= 0)
-
-        if subsample:
-            rand_mask = mx.random.uniform(shape=mask.shape) < keep_prob
-            mask = mask & rand_mask
-
-        n_flipped = mask.sum().item()
-
-        if n_flipped > 0:
-            direction = mx.sign(module._flip_accum.astype(mx.int16)).astype(mx.int8)
-
-            # ── Detect reversals: flip direction ≠ last direction ──
-            # A reversal means this weight flipped, then flipped back.
-            # Only count for weights that have flipped before (last_dir ≠ 0).
-            has_history = module._flip_last_dir != 0
-            reversed_dir = direction != module._flip_last_dir
-            reversals = mask & has_history & reversed_dir
-            n_reversals = int(reversals.sum().item())
-            total_reversals += n_reversals
-
-            # Unpack → flip on unpacked int8 → repack
-            w_int8 = unpack_ternary(module.ternary_weight, module.in_features)
-            current = w_int8.astype(mx.int16)
-            new_vals = mx.clip(current + direction.astype(mx.int16), -1, 1).astype(mx.int8)
-            updated = mx.where(mask, new_vals, w_int8)
-
-            module.ternary_weight = pack_ternary(updated)
-            mutated.append(module.ternary_weight)
-
-            # ── Set cooldown on flipped weights ──
-            module._flip_cooldown = mx.where(
-                mask,
-                mx.full(mask.shape, cooldown_intervals, dtype=mx.int8),
-                module._flip_cooldown,
-            )
-            mutated.append(module._flip_cooldown)
-
-            # ── Update direction history ──
-            module._flip_last_dir = mx.where(mask, direction, module._flip_last_dir)
-            mutated.append(module._flip_last_dir)
-
-            total_flipped += int(n_flipped)
-
-    # Reset ALL accumulators — fresh question each interval
-    for module, _ in candidates:
-        module._flip_accum = mx.zeros_like(module._flip_accum)
-        mutated.append(module._flip_accum)
-
-    if mutated:
-        mx.eval(*mutated)
-
-    return total_flipped, total_reversals
-
-
 def zero_ternary_grads(model: nn.Module, grads: dict) -> dict:
     """Zero out ternary_weight gradients in the grad pytree.
 
-    Ternary weight gradients feed the flip accumulator (sign-based),
-    not the optimizer. Including them in clip_grad_norm poisons the
-    continuous parameter updates: a single large ternary gradient
-    dominates the total norm, clipping continuous params to near-zero.
-
-    The VJP produces dense [N, K] gradients for the flip accumulator,
-    but the packed parameter is [N, K/4]. The optimizer requires
-    gradient and parameter shapes to match. So we return zeros with
-    the PACKED parameter shape, not the dense gradient shape.
-
-    Call this AFTER accumulate_flips and BEFORE clip_grad_norm.
+    The VJP returns zeros for ternary grads (topology evolves via
+    mutation, not gradient), but the optimizer still requires gradient
+    shapes to match parameter shapes. This ensures no ternary gradient
+    leaks into grad norm computation or optimizer state.
     """
-    # Collect paths and packed shapes of ternary weight parameters
     ternary_info: dict[str, tuple] = {}
     for path, module in _walk_ternary_modules(model):
         key = f"{path}.ternary_weight" if path else "ternary_weight"
@@ -1285,8 +1004,6 @@ def zero_ternary_grads(model: nn.Module, grads: dict) -> dict:
                 for i, v in enumerate(tree)
             ]
         elif isinstance(tree, mx.array) and path_prefix in ternary_info:
-            # Return zeros matching the PACKED parameter shape [N, K/4],
-            # not the dense gradient shape [N, K] from the VJP.
             packed_shape = ternary_info[path_prefix]
             return mx.zeros(packed_shape, dtype=tree.dtype)
         return tree
@@ -1294,58 +1011,12 @@ def zero_ternary_grads(model: nn.Module, grads: dict) -> dict:
     return _zero("", grads)
 
 
-def save_ternary_state(model: nn.Module, path: str) -> None:
-    """Save ternary flip metadata (cooldown + direction history).
-
-    The flip accumulator is NOT saved — it must be rebuilt from fresh
-    gradient evidence after resume. Cooldown and direction history
-    are structural: they record the topology's evolution.
-    """
-    state = {}
-    for mod_path, module in _walk_ternary_modules(model):
-        state[f"{mod_path}.cooldown"] = module._flip_cooldown
-        state[f"{mod_path}.last_dir"] = module._flip_last_dir
-    if state:
-        mx.savez(path, **state)
-
-
-def load_ternary_state(model: nn.Module, path: str) -> None:
-    """Restore ternary flip metadata from checkpoint.
-
-    Restores cooldown and direction history. Resets accumulator to zero
-    (fresh gradient evidence needed after resume).
-    """
-    import os
-    if not os.path.exists(path):
-        return
-
-    state = dict(mx.load(path))
-
-    for mod_path, module in _walk_ternary_modules(model):
-        cd_key = f"{mod_path}.cooldown"
-        ld_key = f"{mod_path}.last_dir"
-
-        if cd_key in state:
-            module._flip_cooldown = state[cd_key].astype(mx.int8)
-        if ld_key in state:
-            module._flip_last_dir = state[ld_key].astype(mx.int8)
-
-        # Always reset accumulator — no stale gradient evidence
-        module._flip_accum = mx.zeros_like(module._flip_accum)
-
-    mx.eval(*[m._flip_cooldown for _, m in _walk_ternary_modules(model)],
-            *[m._flip_last_dir for _, m in _walk_ternary_modules(model)],
-            *[m._flip_accum for _, m in _walk_ternary_modules(model)])
-
-
 def restore_ternary(model: nn.Module) -> None:
     """Re-cast any ternary weights back to uint8 after optimizer update.
 
-    The optimizer may cast uint8 packed weights to float during its update
-    step. Since the packed weights should never be touched by the optimizer
-    (they are uint8 and the gradient is zeroed), this is a safety net.
-
-    Call after every optimizer.update().
+    Safety net: the optimizer may cast uint8 packed weights to float.
+    Since ternary grads are zeroed, this should be a no-op, but prevents
+    silent dtype drift.
     """
     def _walk(mod):
         if isinstance(mod, (TernaryLinear, TernaryEmbedding)):
@@ -1362,3 +1033,184 @@ def restore_ternary(model: nn.Module) -> None:
                         if isinstance(item, nn.Module):
                             _walk(item)
     _walk(model)
+
+
+# ══════════════════════════════════════════════════════════════════════
+# Evolutionary topology mutation
+# ══════════════════════════════════════════════════════════════════════
+#
+# Ternary topology = genome (559M loci × 3 alleles {-1, 0, +1}).
+# Evolution via mutation + tournament selection, not gradient descent.
+#
+# The relational loss r ∈ [0, 1] forms a cone-shaped restriction on
+# the viable mutation space:
+#
+#   r ≈ 1.0  ████████████  wide cone — explore topology freely
+#   r ≈ 0.5  ██████        moderate — refine structure
+#   r ≈ 0.1  ██            narrow — surgical mutations only
+#   r < 0.05 ·             frozen — topology crystallized
+#
+# Champion never degrades: mutations that increase loss are rejected.
+
+
+def count_ternary_weights(model: nn.Module) -> int:
+    """Count total logical ternary weight positions across all modules."""
+    total = 0
+    for _, mod in _walk_ternary_modules(model):
+        total += mod.out_features * mod.in_features
+    return total
+
+
+def mutation_cone(r_ema: float, total_weights: int, base_pct: float = 0.001) -> int:
+    """Compute mutation budget from relational loss via quadratic cone.
+
+    Args:
+        r_ema: relational loss EMA ∈ [0, 1]. 1.0 = random, 0.0 = converged.
+        total_weights: total ternary weight count
+        base_pct: maximum mutation rate at the cone's widest point
+
+    Returns:
+        Number of weights to mutate this generation.
+    """
+    if r_ema < 0.05:
+        return 0  # converged — topology frozen
+    # Quadratic cone: budget ∝ r²
+    # Full budget at r ≥ 0.6, scales quadratically below
+    scale = min(1.0, (r_ema / 0.6) ** 2)
+    return max(1, int(total_weights * base_pct * scale))
+
+
+def save_topology(model: nn.Module) -> list[tuple[str, mx.array]]:
+    """Save a snapshot of all ternary weight topologies (packed uint8).
+
+    Returns a list of (path, weight_copy) for restoring with load_topology.
+    Cheap: only copies the packed weights (~140 MB for 559M params).
+    """
+    snapshot = []
+    for path, mod in _walk_ternary_modules(model):
+        # mx.array copy via identity op
+        snapshot.append((path, mx.array(mod.ternary_weight)))
+    mx.eval(*[w for _, w in snapshot])
+    return snapshot
+
+
+def load_topology(model: nn.Module, snapshot: list[tuple[str, mx.array]]) -> None:
+    """Restore ternary weights from a topology snapshot.
+
+    Used to revert failed mutations (champion preservation).
+    """
+    mod_map = {path: mod for path, mod in _walk_ternary_modules(model)}
+    mutated = []
+    for path, saved_weight in snapshot:
+        if path in mod_map:
+            mod_map[path].ternary_weight = saved_weight
+            mutated.append(saved_weight)
+    if mutated:
+        mx.eval(*mutated)
+
+
+def mutate_topology(model: nn.Module, budget: int, rng: Any) -> int:
+    """Apply random mutations to the ternary topology.
+
+    Distributes `budget` mutations proportionally across all ternary
+    modules. Each mutation flips one weight one step:
+      -1 → 0, 0 → +1 or -1 (random), +1 → 0
+
+    Operates directly on packed uint8 representation for speed:
+    reads 2-bit field, mutates, writes back. No full unpack/repack.
+
+    Args:
+        model: the model to mutate IN PLACE
+        budget: total number of weights to mutate
+        rng: numpy RandomState for reproducible mutations
+
+    Returns:
+        Actual number of mutations applied.
+    """
+    import numpy as np
+
+    modules = list(_walk_ternary_modules(model))
+    if not modules or budget <= 0:
+        return 0
+
+    # Compute module sizes for proportional allocation
+    sizes = []
+    for _, mod in modules:
+        sizes.append(mod.out_features * mod.in_features)
+    total = sum(sizes)
+
+    total_mutated = 0
+    mutated_arrays = []
+
+    for (path, mod), n_weights in zip(modules, sizes):
+        # Proportional budget for this module
+        mod_budget = max(0, round(budget * n_weights / total))
+        if mod_budget == 0:
+            continue
+        mod_budget = min(mod_budget, n_weights)
+
+        # Work directly on packed uint8 array
+        # Encoding: -1→0b00, 0→0b01, +1→0b10
+        # Byte layout: bits {7:6, 5:4, 3:2, 1:0} for columns {4k, 4k+1, 4k+2, 4k+3}
+        packed_np = np.array(mod.ternary_weight)  # (N, K//4) uint8
+        N, K4 = packed_np.shape
+        flat_packed = packed_np.reshape(-1)  # flat bytes
+
+        # Select random LOGICAL positions
+        # Use replace=True for O(k) instead of O(n). Collision probability
+        # is budget/n_weights ≈ 0.01-0.1%, negligible for mutation quality.
+        indices = rng.randint(0, n_weights, size=mod_budget)
+
+        # Map logical index → (byte_index, bit_position)
+        byte_idx = indices // 4
+        pos_in_byte = indices % 4
+        shifts = np.array([6, 4, 2, 0], dtype=np.uint8)[pos_in_byte]
+
+        # Read current 2-bit values
+        current_encoded = (flat_packed[byte_idx] >> shifts) & 0x3  # {0,1,2}
+        current_val = current_encoded.astype(np.int8) - 1          # {-1,0,+1}
+
+        # Compute mutations
+        # -1 → 0 (encoded: 0→1), +1 → 0 (encoded: 2→1), 0 → ±1 (random)
+        new_val = np.copy(current_val)
+        new_val[current_val == -1] = 0
+        new_val[current_val == 1] = 0
+        zero_mask = current_val == 0
+        n_zeros = zero_mask.sum()
+        if n_zeros > 0:
+            new_val[zero_mask] = rng.choice([-1, 1], size=n_zeros).astype(np.int8)
+
+        new_encoded = (new_val + 1).astype(np.uint8)  # back to {0,1,2}
+
+        # Write back: clear the 2-bit field, then set new value
+        clear_masks = ~(np.uint8(0x3) << shifts)
+        flat_packed[byte_idx] = (flat_packed[byte_idx] & clear_masks) | (new_encoded << shifts)
+
+        # Write back to module
+        mod.ternary_weight = mx.array(flat_packed.reshape(N, K4))
+        mutated_arrays.append(mod.ternary_weight)
+        total_mutated += mod_budget
+
+    if mutated_arrays:
+        mx.eval(*mutated_arrays)
+
+    return total_mutated
+
+
+def save_ternary_state(model: nn.Module, path: str) -> None:
+    """Save ternary topology checkpoint. No-op placeholder for compatibility.
+
+    Ternary weights are already saved as part of model.npz via
+    tree_flatten(model.parameters()). This function exists for the
+    checkpoint protocol but has no additional state to save in the
+    evolutionary regime (no accumulators or cooldowns).
+    """
+    pass
+
+
+def load_ternary_state(model: nn.Module, path: str) -> None:
+    """Load ternary topology checkpoint. No-op placeholder for compatibility.
+
+    Ternary weights are restored as part of model.load_weights().
+    """
+    pass
