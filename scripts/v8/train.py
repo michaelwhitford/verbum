@@ -45,6 +45,7 @@ from ternary import (
     _walk_ternary_modules,
 )
 from tokenizer import VOCAB_SIZE, EOD_ID
+from compute_probe import run_computation_probe, print_probe_results
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -675,6 +676,14 @@ def train(args):
                 f"{'★ best' if is_best else ''}\n",
                 flush=True,
             )
+
+            # ── Computation probe (circuit detection) ──
+            probe_results = run_computation_probe(
+                model, seq_len=args.seq_len,
+                n_tier1=20, n_tier2=10, n_tier3=10,
+                seed=step,
+            )
+            print_probe_results(probe_results, step)
 
         # ── Checkpoint ──
         if step % args.checkpoint_interval == 0:
