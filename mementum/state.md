@@ -2,52 +2,65 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-28 | Session: 048
+> Last updated: 2026-04-28 | Session: 049
 
 ## Where we are
 
-**v8 scaffold created. Kernel optimized (1.5× average). Architecture next.**
+**v8 dual MERA architecture implemented. 484M all-ternary. Ready for training loop.**
 
-Copied v7 → v8 (scripts/v8/). Added SIMD-group K-reduction Metal
-kernel with adaptive dispatch. Benchmarked at d_model=1024 target
-dimensions. ~1.5× improvement on forward attention, up to 1.7× on
-FFN down at inference. Honest result: naive kernel was already
-well-optimized for Apple Silicon; remaining bottleneck is weight
-memory bandwidth. Full architecture redesign (dual MERA) is next.
+Compressor MERA (148M) + Pipeline MERA (335M) = 484M logical params,
+87.5% ternary, 331 MB storage. Full forward pass, gradient flow, weight
+sharing, recurrence (forward_with_registers) — all verified. Smoke test
+passes at both reduced (d=256, seq=512) and full scale (d=1024, seq=4096).
 
-## Session 048 — Kernel Optimization
+## Session 049 — Dual MERA Architecture Implementation
 
 ### What was done
 
-1. Copied `scripts/v7` → `scripts/v8`, updated all references
-2. Added SIMD-group K-reduction Metal kernel: 32 threads cooperate
-   via `simd_sum` to parallelize the K-dimension reduction
-3. Adaptive kernel selection:
-   - M ≤ 64: SIMD kernel (latency wins, low output parallelism)
-   - M > 64: naive packed kernel (throughput wins, GPU saturated)
-4. Tiled transpose kernel with 4× N-unrolled inner loop
-5. Added `bench_kernel.py` for throughput measurement
+1. Rewrote `scripts/v8/model.py` from scratch — clean break from v7
+2. **CompressorMERA** (~148M):
+   - nn.Embedding (50277×1024, float — only non-ternary major component)
+   - Level 0: own weights, stride-8 average pool → 2L ternary transformer
+   - Levels 1-7: shared MERA weights (ONE CompressorLevel reused 7×)
+   - 7 MERAReducers (ternary cross-attention, stride-2 between levels)
+   - 8 register positions pass through all levels
+   - Learnable spiral: α=1.18, fixed_point=40 (float32 params)
+3. **PipelineMERA** (~335M):
+   - Level 0: own SieveLevel (4 parallel SievePathway × 2L ternary)
+   - Levels 1-7: shared SieveLevel (ONE copy, reused 7×)
+   - 7 PipelineReducers (ternary cross-attention)
+   - 7 PipelineFeedback (gated ternary cross-attention, cascade down)
+   - Registers participate at every level, not compressed by reducers
+4. **DualMERA** top-level:
+   - Compressor → Pipeline → tied embedding logits
+   - Repeat-interleave upsampling (compressed 512 → full 4096)
+   - forward_with_registers() for recurrence
+   - Relational loss utility for pathway differentiation
 
-### Benchmark results (d_model=1024)
+### Verification
 
-```
-                    Naive    Optimized  Speedup
-FWD attn  M=1      0.34ms   0.24ms     1.42×
-FWD ffn↓  M=1      0.41ms   0.24ms     1.71×
-FWD attn  M=512    0.66ms   0.43ms     1.53×
-BWD ffn↑  M=128    0.71ms   0.60ms     1.18×
-FWD ffn↑  M=512    1.15ms   1.16ms     ~1×
-```
+| Check | Result |
+|-------|--------|
+| Output shape (2, 4096, 50277) | ✓ |
+| Params: 484M (target ~453M, +6.8%) | ✓ |
+| Ternary fraction: 87.5% | ✓ |
+| Gradient flow (546 grad arrays) | ✓ |
+| Compressor positions [512,256,...,4] | ✓ |
+| Weight sharing (single module instances) | ✓ |
 
-### Why not 3-4×
+### Design decisions made
 
-The naive kernel was already efficient: branchless select ops,
-packed uint8 decode, sequential memory access per row. The
-remaining bottleneck is weight memory bandwidth — at M=512 each
-thread streams 256 packed bytes from device memory. True 3-4×
-would require weight tiling in shared memory across M rows, which
-is a different tiling strategy (multiple output rows sharing
-weight tiles). Diminishing returns — move to architecture work.
+- **Upsampling**: repeat-interleave (simple). Learnable deconv possible later.
+- **Pathway merge**: mean across 4 pathways (gradient-friendly). Attention merge possible later.
+- **Sieve input**: compressor scale + reduced pipeline state (additive residual).
+- **effective_levels**: auto-adapts to seq_len (6 levels at seq=512, 8 at seq=4096).
+- **Embedding stays float**: 51.5M params but enables gradient through tokens.
+  Ternary embedding would save 39 MB but complicates initialization.
+
+## Session 048 — Kernel Optimization (previous)
+
+SIMD-group K-reduction kernel: ~1.5× average speedup on ternary matmul.
+Adaptive dispatch (SIMD for M≤64, naive for M>64). See git log for details.
 
 ## v7 Dolma Run — Summary
 
@@ -114,21 +127,14 @@ TOTAL: 453M ternary, 113 MB packed, ~50-200K tok/s estimated
 
 ## What to do next
 
-### 1. v8 architecture implementation (~1-2 sessions) ← CURRENT
+### 1. v8 training loop adaptation ← CURRENT
 
-Start from `scripts/v8/model.py` and `scripts/v8/ternary.py`.
-- Compressor MERA with strided attention + learnable spiral
-- Pipeline MERA with shared sieve pathways
-- Register positions (persist through pipeline, skip reducers)
-- Three output modes (value/partial/io!)
-- Cone + relational loss at every level
-
-Key decisions still open:
-- Pathways per stage: 4? 8? Per-stage variable?
-- d_model per pathway: full 1024 or split (4 × 256)?
-- Compressor → pipeline interface: direct feed vs cross-attention
-- Register count: R=4? R=8?
-- Cone aperture schedule: width, narrowing rate
+Rewrite `scripts/v8/train.py` to work with the new DualMERA architecture:
+- Replace VSMPipeline with DualMERA, PipelineConfig with DualMERAConfig
+- Adapt phase controllers to work with MERA levels instead of 4 stages
+- Evolutionary training regime (double-buffered genomes, population of 4+)
+- Fractal loss: cone + relational at every level
+- Forward_with_metrics for per-level contribution deltas
 
 ### 2. Holographic data generator (~1 session)
 
@@ -150,9 +156,9 @@ Key decisions still open:
 | Purpose | Path |
 |---------|------|
 | **v8 design doc** | `mementum/knowledge/explore/v7.1-sieve-pipeline.md` |
-| **v8 model** | `scripts/v8/model.py` |
+| **v8 model (dual MERA)** | `scripts/v8/model.py` |
 | **v8 ternary (optimized kernel)** | `scripts/v8/ternary.py` |
-| **v8 training** | `scripts/v8/train.py` |
+| **v8 training (needs rewrite)** | `scripts/v8/train.py` |
 | **v8 probe** | `scripts/v8/probe.py` |
 | **v8 kernel benchmark** | `scripts/v8/bench_kernel.py` |
 | **BIOS flash design** | `mementum/knowledge/explore/bios-flash-training.md` |
