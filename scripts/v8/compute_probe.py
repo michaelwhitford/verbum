@@ -371,6 +371,37 @@ if __name__ == "__main__":
     )
     print_probe_results(results, step)
 
+    # Ternary topology stats
+    from ternary import _walk_ternary_modules, TernaryLinear
+    print(f"\n  ── TERNARY TOPOLOGY ──")
+    total_w, total_z, total_p, total_n = 0, 0, 0, 0
+    for path, mod in _walk_ternary_modules(model):
+        if isinstance(mod, TernaryLinear):
+            s = mod.ternary_stats()
+            n = mod.out_features * mod.in_features
+            total_w += n
+            total_z += int(s["sparsity"] * n)
+            total_p += int(s["pos_frac"] * n)
+            total_n += int(s["neg_frac"] * n)
+    print(f"    total:    {total_w:>12,}")
+    print(f"    sparsity: {total_z/max(1,total_w)*100:>11.1f}%  ({total_z:,} zeros)")
+    print(f"    +1:       {total_p/max(1,total_w)*100:>11.1f}%")
+    print(f"    -1:       {total_n/max(1,total_w)*100:>11.1f}%")
+
+    # Evolution diagnostics if present
+    diag_path = ckpt / "evolution_diagnostics.json"
+    if diag_path.exists():
+        diag = json.loads(diag_path.read_text())
+        print(f"\n  ── EVOLUTION ──")
+        print(f"    generations: {diag.get('total_generations', '?')}")
+        print(f"    accept rate: {diag.get('accept_rate', 0):.0%}")
+        print(f"    r_ema:       {diag.get('r_ema', '?')}")
+        print(f"    base_pct:    {diag.get('gen_base_pct', '?')}")
+        if "hottest_modules" in diag:
+            print(f"    hottest modules:")
+            for h in diag["hottest_modules"][:5]:
+                print(f"      {h['path']:50s}  imp={h['mean_importance']:.6f}")
+
     # Save results alongside checkpoint
     out_path = ckpt / "compute_probe.json"
     if ckpt.exists():
@@ -378,5 +409,11 @@ if __name__ == "__main__":
             "step": step,
             "seed": args.seed,
             "summary": results["summary"],
+            "topology": {
+                "total": total_w,
+                "sparsity": total_z / max(1, total_w),
+                "pos_fraction": total_p / max(1, total_w),
+                "neg_fraction": total_n / max(1, total_w),
+            },
         }, indent=2))
-        print(f"  Saved: {out_path}")
+        print(f"\n  Saved: {out_path}")

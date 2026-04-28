@@ -607,6 +607,9 @@ def save_checkpoint(
     r_ema: float,
     phase: str,
     gen_base_pct: float = 0.005,
+    row_importance: dict[str, np.ndarray] | None = None,
+    col_importance: dict[str, np.ndarray] | None = None,
+    grad_direction: dict[str, np.ndarray] | None = None,
 ):
     """Save full training state."""
     step_dir = checkpoint_dir / f"step_{step:06d}"
@@ -619,6 +622,24 @@ def save_checkpoint(
     # Optimizer state
     opt_flat = tree_flatten(optimizer.state)
     mx.savez(str(step_dir / "optimizer.npz"), **{k: v for k, v in opt_flat})
+
+    # Gradient importance maps for guided mutation
+    if row_importance:
+        imp_data = {}
+        for path, arr in row_importance.items():
+            imp_data[f"row.{path}"] = arr
+        if col_importance:
+            for path, arr in col_importance.items():
+                imp_data[f"col.{path}"] = arr
+        if grad_direction:
+            for path, arr in grad_direction.items():
+                imp_data[f"dir.{path}"] = arr
+        np.savez_compressed(str(step_dir / "importance.npz"), **imp_data)
+
+    # Evolution diagnostics
+    _save_evolution_diagnostics(model, step_dir, step, total_generations,
+                                total_accepted, r_ema, gen_base_pct,
+                                row_importance)
 
     # Training state JSON
     state = {
@@ -636,6 +657,79 @@ def save_checkpoint(
     }
     (step_dir / "state.json").write_text(json.dumps(state, indent=2))
     print(f"  💾 Checkpoint: {step_dir}", flush=True)
+
+
+def _save_evolution_diagnostics(
+    model: DualMERA,
+    step_dir: Path,
+    step: int,
+    total_generations: int,
+    total_accepted: int,
+    r_ema: float,
+    gen_base_pct: float,
+    row_importance: dict[str, np.ndarray] | None,
+):
+    """Save rich evolution diagnostics alongside checkpoint."""
+    from ternary import TernaryLinear, TernaryEmbedding, unpack_ternary_mlx
+
+    diag = {
+        "step": step,
+        "total_generations": total_generations,
+        "total_accepted": total_accepted,
+        "accept_rate": total_accepted / max(1, total_generations),
+        "r_ema": r_ema,
+        "gen_base_pct": gen_base_pct,
+    }
+
+    # Per-module ternary stats
+    module_stats = {}
+    for path, mod in _walk_ternary_modules(model):
+        if isinstance(mod, TernaryLinear):
+            stats = mod.ternary_stats()
+            stats["type"] = "linear"
+            stats["shape"] = [mod.out_features, mod.in_features]
+            # Add importance stats if available
+            if row_importance and path in row_importance:
+                ri = row_importance[path]
+                stats["row_imp_mean"] = float(ri.mean())
+                stats["row_imp_max"] = float(ri.max())
+                stats["row_imp_std"] = float(ri.std())
+                # Effective dimensionality: how concentrated is the importance?
+                p = ri / (ri.sum() + 1e-10)
+                entropy = -float((p * np.log(p + 1e-10)).sum())
+                max_entropy = float(np.log(len(ri)))
+                stats["row_imp_entropy_ratio"] = entropy / max_entropy if max_entropy > 0 else 1.0
+            module_stats[path] = stats
+
+    diag["modules"] = module_stats
+
+    # Top-10 hottest modules (highest mean row importance)
+    if row_importance:
+        hottest = sorted(
+            [(p, float(ri.mean())) for p, ri in row_importance.items()],
+            key=lambda x: x[1], reverse=True,
+        )[:10]
+        diag["hottest_modules"] = [{"path": p, "mean_importance": v} for p, v in hottest]
+
+    # Global sparsity summary
+    total_weights = 0
+    total_zeros = 0
+    total_pos = 0
+    total_neg = 0
+    for path, stats in module_stats.items():
+        n = stats["shape"][0] * stats["shape"][1]
+        total_weights += n
+        total_zeros += int(stats["sparsity"] * n)
+        total_pos += int(stats["pos_frac"] * n)
+        total_neg += int(stats["neg_frac"] * n)
+    diag["global"] = {
+        "total_weights": total_weights,
+        "sparsity": total_zeros / max(1, total_weights),
+        "pos_fraction": total_pos / max(1, total_weights),
+        "neg_fraction": total_neg / max(1, total_weights),
+    }
+
+    (step_dir / "evolution_diagnostics.json").write_text(json.dumps(diag, indent=2))
 
 
 def load_checkpoint(
@@ -665,8 +759,37 @@ def load_checkpoint(
     print(f"  📂 Loaded: {checkpoint_dir}")
     print(f"     step={state['step']}  epoch={state.get('epoch', 0)}  "
           f"r_ema={state.get('r_ema', 1.0):.3f}  "
-          f"flips={state.get('total_flips', 0):,}", flush=True)
+          f"gens={state.get('total_generations', 0)}", flush=True)
     return state
+
+
+def load_importance_maps(
+    checkpoint_dir: Path,
+) -> tuple[dict[str, np.ndarray], dict[str, np.ndarray], dict[str, np.ndarray]]:
+    """Load gradient importance maps from checkpoint.
+
+    Returns (row_importance, col_importance, grad_direction) dicts.
+    Each maps module_path → numpy array.
+    """
+    imp_path = checkpoint_dir / "importance.npz"
+    if not imp_path.exists():
+        return {}, {}, {}
+
+    data = dict(np.load(str(imp_path)))
+    row_importance = {}
+    col_importance = {}
+    grad_direction = {}
+    for key, arr in data.items():
+        if key.startswith("row."):
+            row_importance[key[4:]] = arr
+        elif key.startswith("col."):
+            col_importance[key[4:]] = arr
+        elif key.startswith("dir."):
+            grad_direction[key[4:]] = arr
+
+    if row_importance:
+        print(f"     Importance maps: {len(row_importance)} modules restored", flush=True)
+    return row_importance, col_importance, grad_direction
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -787,6 +910,8 @@ def train(args):
         # Restore adaptive mutation rate if saved
         if "gen_base_pct" in state:
             args.gen_base_pct = state["gen_base_pct"]
+        # Restore gradient importance maps
+        row_importance, col_importance, grad_direction = load_importance_maps(resume_dir)
         train_loader._pos = state.get("data_pos", 0)
         train_loader.epoch = state.get("epoch", 0)
 
@@ -1011,6 +1136,9 @@ def train(args):
                 r_ema=r_ema,
                 phase=phase,
                 gen_base_pct=args.gen_base_pct,
+                row_importance=row_importance,
+                col_importance=col_importance,
+                grad_direction=grad_direction,
             )
 
     # ── Final ──
@@ -1040,6 +1168,9 @@ def train(args):
         r_ema=r_ema,
         phase=phase,
         gen_base_pct=args.gen_base_pct,
+        row_importance=row_importance,
+        col_importance=col_importance,
+        grad_direction=grad_direction,
     )
 
     # Save loss curve
