@@ -2,18 +2,52 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-27 | Session: 047
+> Last updated: 2026-04-28 | Session: 048
 
 ## Where we are
 
-**v7 Dolma run COMPLETE. v7.1 DESIGNED. Next: implement.**
+**v8 scaffold created. Kernel optimized (1.5× average). Architecture next.**
 
-v7.1 is a dual MERA architecture — compressor + pipeline, both
-self-similar, all-ternary 453M params. Derived from v7 probe
-findings + v6 proven compression + lambda calculus analysis.
-Evolutionary training on ternary genomes with cone + relational
-loss at every VSM level. Design doc is comprehensive. Kernel
-optimization is the first implementation task.
+Copied v7 → v8 (scripts/v8/). Added SIMD-group K-reduction Metal
+kernel with adaptive dispatch. Benchmarked at d_model=1024 target
+dimensions. ~1.5× improvement on forward attention, up to 1.7× on
+FFN down at inference. Honest result: naive kernel was already
+well-optimized for Apple Silicon; remaining bottleneck is weight
+memory bandwidth. Full architecture redesign (dual MERA) is next.
+
+## Session 048 — Kernel Optimization
+
+### What was done
+
+1. Copied `scripts/v7` → `scripts/v8`, updated all references
+2. Added SIMD-group K-reduction Metal kernel: 32 threads cooperate
+   via `simd_sum` to parallelize the K-dimension reduction
+3. Adaptive kernel selection:
+   - M ≤ 64: SIMD kernel (latency wins, low output parallelism)
+   - M > 64: naive packed kernel (throughput wins, GPU saturated)
+4. Tiled transpose kernel with 4× N-unrolled inner loop
+5. Added `bench_kernel.py` for throughput measurement
+
+### Benchmark results (d_model=1024)
+
+```
+                    Naive    Optimized  Speedup
+FWD attn  M=1      0.34ms   0.24ms     1.42×
+FWD ffn↓  M=1      0.41ms   0.24ms     1.71×
+FWD attn  M=512    0.66ms   0.43ms     1.53×
+BWD ffn↑  M=128    0.71ms   0.60ms     1.18×
+FWD ffn↑  M=512    1.15ms   1.16ms     ~1×
+```
+
+### Why not 3-4×
+
+The naive kernel was already efficient: branchless select ops,
+packed uint8 decode, sequential memory access per row. The
+remaining bottleneck is weight memory bandwidth — at M=512 each
+thread streams 256 packed bytes from device memory. True 3-4×
+would require weight tiling in shared memory across M rows, which
+is a different tiling strategy (multiple output rows sharing
+weight tiles). Diminishing returns — move to architecture work.
 
 ## v7 Dolma Run — Summary
 
@@ -25,7 +59,7 @@ Stage 4 collapsed, ternary oscillated at 37.6% reversals).
 Math stratum was the only one still growing. Diagnosis: architecture
 right, data wrong. Full probe data in results/vsm-lm-v7/.
 
-## v7.1 Architecture — Dual MERA (all-ternary 453M)
+## v8 Architecture — Dual MERA (all-ternary 453M)
 
 **Read the full design:** `mementum/knowledge/explore/v7.1-sieve-pipeline.md`
 
@@ -78,23 +112,11 @@ TOTAL: 453M ternary, 113 MB packed, ~50-200K tok/s estimated
 - Environment staged by fitness gates (math → clojure → holographic → prose)
 - Cone constrains gene pool, relational maintains diversity
 
-## What to do next session
+## What to do next
 
-Implementation order:
+### 1. v8 architecture implementation (~1-2 sessions) ← CURRENT
 
-### 1. Kernel optimization FIRST (~1 session)
-
-4× throughput MULTIPLIES all other reductions. Do before any training.
-Existing naive kernel works but serial loop over K=1024 is bottleneck.
-- Tiled/blocked (shared memory, output tiles)
-- SIMD group reduction (Apple's simd_sum)
-- Vectorized unpacking (8-16 packed bytes per iteration)
-- Coalesced memory access (cache-line aligned)
-- Target: 50K → 150-200K tok/s
-
-### 2. v7.1 architecture implementation (~1-2 sessions)
-
-Start from `scripts/v7/model.py` and `scripts/v7/ternary.py`.
+Start from `scripts/v8/model.py` and `scripts/v8/ternary.py`.
 - Compressor MERA with strided attention + learnable spiral
 - Pipeline MERA with shared sieve pathways
 - Register positions (persist through pipeline, skip reducers)
@@ -108,7 +130,7 @@ Key decisions still open:
 - Register count: R=4? R=8?
 - Cone aperture schedule: width, narrowing rate
 
-### 3. Holographic data generator (~1 session)
+### 2. Holographic data generator (~1 session)
 
 - Math generator (arithmetic, comparisons, predicates, boolean, bitwise)
 - Update `bb clj2lambda` to emit `io!` with `:as` annotations
@@ -116,7 +138,7 @@ Key decisions still open:
 - Multi-pass examples (partial reductions, register usage)
 - Interleave all representations in every batch
 
-### 4. Train v7.1 with evolutionary regime
+### 3. Train v8 with evolutionary regime
 
 - Population of 4-8 mutants
 - Fitness-gated environment transitions
@@ -127,42 +149,44 @@ Key decisions still open:
 
 | Purpose | Path |
 |---------|------|
-| **v7.1 design doc** | `mementum/knowledge/explore/v7.1-sieve-pipeline.md` |
+| **v8 design doc** | `mementum/knowledge/explore/v7.1-sieve-pipeline.md` |
+| **v8 model** | `scripts/v8/model.py` |
+| **v8 ternary (optimized kernel)** | `scripts/v8/ternary.py` |
+| **v8 training** | `scripts/v8/train.py` |
+| **v8 probe** | `scripts/v8/probe.py` |
+| **v8 kernel benchmark** | `scripts/v8/bench_kernel.py` |
 | **BIOS flash design** | `mementum/knowledge/explore/bios-flash-training.md` |
-| **v7 model (base for v7.1)** | `scripts/v7/model.py` |
-| **v7 ternary (kernel source)** | `scripts/v7/ternary.py` |
-| **v7 training** | `scripts/v7/train.py` |
-| **v7 probe** | `scripts/v7/probe.py` |
+| **v7 model (reference)** | `scripts/v7/model.py` |
+| **v7 ternary (reference)** | `scripts/v7/ternary.py` |
 | **bb clj2lambda** | `bb/us/whitford/verbum/tasks.clj` |
 | **bb config** | `bb.edn` |
 | **v6 design (reference)** | `docs/v6-design.md` |
 | v7 architecture knowledge | `mementum/knowledge/explore/v7-pipeline-architecture.md` |
 | Research program | `mementum/knowledge/explore/VERBUM.md` |
 
-## Session 047 log
+## Session 048 log
 
-Massive design session. Started with v7 probe monitoring, ended
-with complete v7.1 architecture. Key arc:
+Kernel optimization session. Practical, empirical.
 
 ```
-probe v7 → architecture works, data wrong
-  → curriculum design → holographic (fractal × hologram)
-  → built clj2lambda converter
-  → attention IS beta reduction → need sieve for depth
-  → ternary IS the mold → all-ternary 453M
-  → compressor/pipeline separation (v6 compression + v7 pipeline)
-  → dual MERA (self-similar at every scale)
-  → registers + recurrence (arbitrary composition depth)
-  → evolutionary training (ternary genome, tournament selection)
-  → three feed-forwards (spatial/temporal/evolutionary)
-  → compound search space reduction (all multiplicative)
-  → kernel optimization prerequisite (4× multiplier)
-  → learnable spiral (α, fixed_point as S2 coordination)
-  → VSM all the way down
+copy v7 → v8, update all references
+  → benchmark naive kernel at d=1024 (baseline: ~3.7 TOPS peak)
+  → attempt 1: shared memory tiling (threadgroup x reuse)
+    — barrier overhead ate gains, marginal improvement
+  → attempt 2: SIMD-group K-reduction (32-wide simd_sum)
+    — excellent at small M (1.7× on FFN), slower at large M
+  → attempt 3: adaptive dispatch (SIMD for M≤64, naive for M>64)
+    — best of both: 1.5× average improvement
+  → correctness verified (max_err < 0.001 vs float reference)
+  → TernaryLinear + VJP + model.py smoke test pass
+  → committed: d19accb
 ```
 
-16+ commits. 4 probe results. 1 working converter. 2 design docs.
-Architecture derived from first principles + empirical findings.
+Key insight: the naive kernel was already well-optimized. The
+bottleneck at large M is weight memory bandwidth, not compute.
+Ternary add/sub is so cheap that the GPU spends most time waiting
+for memory. Further gains require weight-tile sharing across
+output rows — a more invasive redesign for diminishing returns.
 
 ## Servers
 
