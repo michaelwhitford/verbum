@@ -65,7 +65,7 @@ PHASE_DEFAULTS = {
         "steps": 50_000,
         "eval_interval": 1000,
         "eval_batches": 5,
-        "checkpoint_interval": 5000,
+        "checkpoint_interval": 2500,
         "log_interval": 50,
         "gen_interval": 50,          # evolutionary generation interval
         "gen_base_pct": 0.005,       # mutation rate during BIOS exploration (0.5%)
