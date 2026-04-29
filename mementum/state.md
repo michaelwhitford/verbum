@@ -36,22 +36,23 @@ the kernel (products exceeding int32 range), not model failures.
 
 10,240 ternary weights. Trains to convergence in ~100 generations.
 
-**Kernel expanded to 18 ops (session 055).** After proving v3's
-pass-through architecture, expanded the kernel from 3 arithmetic ops
-to 18 ops across 6 categories: arithmetic binary (7), comparison (5),
-boolean binary (2), boolean unary (1), arithmetic unary (2), and
-conditional `if` (1, ternary). Mixed types (INT + BOOL), variable
-arity (unary/binary/ternary). 100% op accuracy on all categories.
-Converges in 100 generations, 6 seconds. 8K ternary weights.
+**Lambda primitives proven (session 055).** Extended from 18 ops to 22
+with partial application, function application, and composition.
+Function-typed values (compound: op_code + bound_arg) flow through the
+tree. Type-dependent dispatch in apply-fn works — unpacks the function,
+dispatches the right kernel op. Composed functions chain two kernel
+calls. 100% op accuracy across all 22 ops. 100 gens, 7s, 8K weights.
 
-**The remaining challenge is not the VSM node — it's tree discovery.**
-For S-expressions, tree structure is given (match parens). For prose,
-the ascending arm must discover it. That's the next frontier.
+Example: `(apply (comp (partial max 9) (partial <= 7)) (* 1 4))` → 9
 
-**See:** `scripts/v9/vsm_tree_v4.py` (18-op expanded kernel),
+**The remaining challenge is tree discovery.** For S-expressions, tree
+structure is given (match parens). For prose, the ascending arm must
+discover it. That's the next frontier.
+
+**See:** `scripts/v9/vsm_tree_v5.py` (lambda primitives),
+`scripts/v9/vsm_tree_v4.py` (18-op expanded kernel),
 `scripts/v9/vsm_tree_v3.py` (pass-through architecture),
-`scripts/v9/vsm_tree_v2.py` (bottleneck diagnosis experiments),
-`mementum/knowledge/explore/v9-architecture-speculation.md`
+`scripts/v9/vsm_tree_v2.py` (bottleneck diagnosis experiments)
 
 ## What to do next
 
@@ -181,15 +182,15 @@ failures had all ops correct.
 
 | File | Purpose |
 |------|---------|
-| `scripts/v9/vsm_tree_v4.py` | **18-op kernel: mixed types, variable arity** |
+| `scripts/v9/vsm_tree_v5.py` | **Lambda primitives: partial/apply/compose** |
+| `scripts/v9/vsm_tree_v4.py` | 18-op kernel: mixed types, variable arity |
 | `scripts/v9/vsm_tree_v3.py` | Pass-through arch proof (3 ops) |
 | `scripts/v9/vsm_tree_v2.py` | Bottleneck diagnosis experiments |
 | `scripts/v9/vsm_tree.py` | v1 (superseded) |
 
-### Kernel expanded: 18 ops, mixed types, variable arity
+### Kernel expanded: 18 ops → 22 ops with lambda primitives
 
-After proving v3's pass-through architecture, expanded the kernel.
-v4 results (100 generations, 6s, 8K ternary weights):
+**v4** (18 ops, 100 gens, 6s, 8K weights):
 
 | Category | Ops | Op% | Result% |
 |---|---|---|---|
@@ -200,15 +201,24 @@ v4 results (100 generations, 6s, 8K ternary weights):
 | Arith unary | abs, neg | 100% | 100% |
 | Conditional | if (ternary node) | 100% | 100% |
 
-Architecture changes from v3:
-- Op + type projection heads use nn.Linear with op embedding residual
-  (same insight as v2's value residual — identity must short-circuit
-  the ternary bottleneck)
-- Variable arity via padding + arity embedding + masking
-- Mixed type values (INT + BOOL as 0/1) flow through the tree
+Architecture: op + type residual, variable arity, mixed types (INT+BOOL).
 
-Scales to depth 5, max_val 100. All tree-level imperfections are
-integer overflow, not model failures.
+**v5** (22 ops, 100 gens, 7s, 8K weights):
+
+Added lambda primitives:
+
+| Category | Ops | Op% | Result% |
+|---|---|---|---|
+| Partial | create function from op + bound arg | 100% | 100% |
+| Apply-fn | dispatch function on argument | 100% | 99.3% |
+| Compose | chain two functions | 100% | 100% |
+
+Compound values: FN type = (op_code, bound_arg) pair flowing through
+the tree. Composed FN = (outer_packed, inner_packed). Type-dependent
+dispatch in apply-fn: unpacks the function value, determines which
+kernel op to call, chains calls for composed functions.
+
+Example: `(apply (comp (partial max 9) (partial <= 7)) (* 1 4))` → 9
 
 ### What this means for the project
 
@@ -621,7 +631,8 @@ TOTAL: 559M logical, ~146 MB packed, 99.7% ternary
 
 | Purpose | Path |
 |---------|------|
-| **v9 VSM tree v4 (18 ops, mixed types)** | `scripts/v9/vsm_tree_v4.py` |
+| **v9 VSM tree v5 (lambda primitives)** | `scripts/v9/vsm_tree_v5.py` |
+| v9 VSM tree v4 (18 ops, mixed types) | `scripts/v9/vsm_tree_v4.py` |
 | v9 VSM tree v3 (pass-through proof) | `scripts/v9/vsm_tree_v3.py` |
 | v9 VSM tree v2 (bottleneck diag) | `scripts/v9/vsm_tree_v2.py` |
 | v9 VSM tree v1 (superseded) | `scripts/v9/vsm_tree.py` |
