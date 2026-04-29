@@ -1,0 +1,506 @@
+{
+  "numbers": {
+    "compute": {
+      "sentence": "Calculate the numbers in the equation.",
+      "target_indices": [
+        2
+      ]
+    },
+    "summarize": {
+      "sentence": "Summarize the numbers in the report.",
+      "target_indices": [
+        4
+      ]
+    },
+    "translate": {
+      "sentence": "Translate the numbers into percentages.",
+      "target_indices": [
+        2
+      ]
+    },
+    "analyze": {
+      "sentence": "Analyze the numbers for any patterns.",
+      "target_indices": [
+        3
+      ]
+    },
+    "verify": {
+      "sentence": "Verify the numbers are all correct.",
+      "target_indices": [
+        2
+      ]
+    },
+    "sort": {
+      "sentence": "Sort the numbers from smallest to largest.",
+      "target_indices": [
+        2
+      ]
+    },
+    "compare": {
+      "sentence": "Compare the numbers across both tables.",
+      "target_indices": [
+        2
+      ]
+    },
+    "find": {
+      "sentence": "Find the numbers that exceed the threshold.",
+      "target_indices": [
+        2
+      ]
+    }
+  },
+  "results": {
+    "compute": {
+      "sentence": "Calculate the results of each experiment.",
+      "target_indices": [
+        2
+      ]
+    },
+    "summarize": {
+      "sentence": "Summarize the results for the committee.",
+      "target_indices": [
+        4
+      ]
+    },
+    "translate": {
+      "sentence": "Translate the results into plain language.",
+      "target_indices": [
+        2
+      ]
+    },
+    "analyze": {
+      "sentence": "Analyze the results to find the cause.",
+      "target_indices": [
+        3
+      ]
+    },
+    "verify": {
+      "sentence": "Verify the results match the prediction.",
+      "target_indices": [
+        2
+      ]
+    },
+    "create": {
+      "sentence": "Create the results table for publication.",
+      "target_indices": [
+        2
+      ]
+    },
+    "compare": {
+      "sentence": "Compare the results with the baseline.",
+      "target_indices": [
+        2
+      ]
+    },
+    "plan": {
+      "sentence": "Plan the results presentation for Friday.",
+      "target_indices": [
+        2
+      ]
+    }
+  },
+  "data": {
+    "compute": {
+      "sentence": "Calculate the data average for each group.",
+      "target_indices": [
+        2
+      ]
+    },
+    "summarize": {
+      "sentence": "Summarize the data into a brief overview.",
+      "target_indices": [
+        4
+      ]
+    },
+    "transform": {
+      "sentence": "Sort the data by relevance and priority.",
+      "target_indices": [
+        2
+      ]
+    },
+    "analyze": {
+      "sentence": "Analyze the data for statistical significance.",
+      "target_indices": [
+        3
+      ]
+    },
+    "verify": {
+      "sentence": "Verify the data integrity before processing.",
+      "target_indices": [
+        2
+      ]
+    },
+    "find": {
+      "sentence": "Find the data points that are outliers.",
+      "target_indices": [
+        2
+      ]
+    },
+    "create": {
+      "sentence": "Generate the data visualization for review.",
+      "target_indices": [
+        2
+      ]
+    },
+    "simplify": {
+      "sentence": "Simplify the data into three key metrics.",
+      "target_indices": [
+        3
+      ]
+    }
+  },
+  "exceeds": {
+    "compute": {
+      "sentence": "Calculate whether the total exceeds the budget.",
+      "target_indices": [
+        4
+      ]
+    },
+    "verify": {
+      "sentence": "Verify that performance exceeds the minimum.",
+      "target_indices": [
+        3
+      ]
+    },
+    "analyze": {
+      "sentence": "Analyze why the cost exceeds the estimate.",
+      "target_indices": [
+        5
+      ]
+    },
+    "summarize": {
+      "sentence": "Summarize how revenue exceeds projections.",
+      "target_indices": [
+        5
+      ]
+    },
+    "find": {
+      "sentence": "Find every case where usage exceeds limits.",
+      "target_indices": [
+        5
+      ]
+    },
+    "compare": {
+      "sentence": "Compare which metric exceeds the threshold.",
+      "target_indices": [
+        3
+      ]
+    }
+  },
+  "contains": {
+    "compute": {
+      "sentence": "Calculate how much the container contains.",
+      "target_indices": [
+        5
+      ]
+    },
+    "verify": {
+      "sentence": "Verify the list contains all required items.",
+      "target_indices": [
+        3
+      ]
+    },
+    "analyze": {
+      "sentence": "Analyze what the dataset contains exactly.",
+      "target_indices": [
+        5
+      ]
+    },
+    "summarize": {
+      "sentence": "Summarize what this section contains.",
+      "target_indices": [
+        6
+      ]
+    },
+    "find": {
+      "sentence": "Find which file contains the configuration.",
+      "target_indices": [
+        3
+      ]
+    },
+    "translate": {
+      "sentence": "Translate what this package contains.",
+      "target_indices": [
+        4
+      ]
+    }
+  },
+  "largest": {
+    "compute": {
+      "sentence": "Calculate the largest value in the set.",
+      "target_indices": [
+        2
+      ]
+    },
+    "find": {
+      "sentence": "Find the largest element in the array.",
+      "target_indices": [
+        2
+      ]
+    },
+    "verify": {
+      "sentence": "Verify the largest number is correct.",
+      "target_indices": [
+        2
+      ]
+    },
+    "summarize": {
+      "sentence": "Summarize the largest trends this quarter.",
+      "target_indices": [
+        4
+      ]
+    },
+    "compare": {
+      "sentence": "Compare the largest values across groups.",
+      "target_indices": [
+        2
+      ]
+    },
+    "sort": {
+      "sentence": "Sort by the largest contributing factor.",
+      "target_indices": [
+        3
+      ]
+    }
+  },
+  "incorrect": {
+    "compute": {
+      "sentence": "Calculate which entries are incorrect.",
+      "target_indices": [
+        4
+      ]
+    },
+    "find": {
+      "sentence": "Find the incorrect values in this table.",
+      "target_indices": [
+        2
+      ]
+    },
+    "verify": {
+      "sentence": "Verify nothing here is incorrect.",
+      "target_indices": [
+        4
+      ]
+    },
+    "analyze": {
+      "sentence": "Analyze why these predictions are incorrect.",
+      "target_indices": [
+        6
+      ]
+    },
+    "summarize": {
+      "sentence": "Summarize which assumptions were incorrect.",
+      "target_indices": [
+        6
+      ]
+    },
+    "translate": {
+      "sentence": "Rephrase the incorrect statement properly.",
+      "target_indices": [
+        3
+      ]
+    }
+  },
+  "the": {
+    "compute": {
+      "sentence": "Calculate the total cost of operations.",
+      "target_indices": [
+        1
+      ]
+    },
+    "summarize": {
+      "sentence": "Summarize the main findings of the study.",
+      "target_indices": [
+        3
+      ]
+    },
+    "translate": {
+      "sentence": "Translate the original text into English.",
+      "target_indices": [
+        1
+      ]
+    },
+    "analyze": {
+      "sentence": "Analyze the root cause of this failure.",
+      "target_indices": [
+        2
+      ]
+    },
+    "verify": {
+      "sentence": "Verify the output matches the expected.",
+      "target_indices": [
+        1
+      ]
+    },
+    "find": {
+      "sentence": "Find the source of this performance issue.",
+      "target_indices": [
+        1
+      ]
+    },
+    "create": {
+      "sentence": "Create the documentation for this feature.",
+      "target_indices": [
+        1
+      ]
+    },
+    "plan": {
+      "sentence": "Plan the deployment schedule for next week.",
+      "target_indices": [
+        1
+      ]
+    }
+  },
+  "each": {
+    "compute": {
+      "sentence": "Calculate the cost of each component.",
+      "target_indices": [
+        4
+      ]
+    },
+    "summarize": {
+      "sentence": "Summarize each section of the report.",
+      "target_indices": [
+        3
+      ]
+    },
+    "analyze": {
+      "sentence": "Analyze each variable for significance.",
+      "target_indices": [
+        2
+      ]
+    },
+    "verify": {
+      "sentence": "Verify each step produces correct output.",
+      "target_indices": [
+        1
+      ]
+    },
+    "compare": {
+      "sentence": "Compare each approach on all metrics.",
+      "target_indices": [
+        1
+      ]
+    },
+    "find": {
+      "sentence": "Find each instance of this pattern.",
+      "target_indices": [
+        1
+      ]
+    }
+  },
+  "sum": {
+    "compute": {
+      "sentence": "Calculate the sum of all the values.",
+      "target_indices": [
+        2
+      ]
+    },
+    "summarize": {
+      "sentence": "Summarize the sum total of expenses.",
+      "target_indices": [
+        4
+      ]
+    },
+    "verify": {
+      "sentence": "Verify the sum is calculated correctly.",
+      "target_indices": [
+        2
+      ]
+    },
+    "analyze": {
+      "sentence": "Analyze the sum across all departments.",
+      "target_indices": [
+        3
+      ]
+    },
+    "compare": {
+      "sentence": "Compare the sum against last quarter.",
+      "target_indices": [
+        2
+      ]
+    },
+    "find": {
+      "sentence": "Find the sum of the remaining entries.",
+      "target_indices": [
+        2
+      ]
+    }
+  },
+  "difference": {
+    "compute": {
+      "sentence": "Calculate the difference between the groups.",
+      "target_indices": [
+        2
+      ]
+    },
+    "summarize": {
+      "sentence": "Summarize the difference in their approaches.",
+      "target_indices": [
+        4
+      ]
+    },
+    "analyze": {
+      "sentence": "Analyze the difference between predictions.",
+      "target_indices": [
+        3
+      ]
+    },
+    "compare": {
+      "sentence": "Compare the difference across all trials.",
+      "target_indices": [
+        2
+      ]
+    },
+    "find": {
+      "sentence": "Find the difference that caused this bug.",
+      "target_indices": [
+        2
+      ]
+    },
+    "verify": {
+      "sentence": "Verify the difference is statistically valid.",
+      "target_indices": [
+        2
+      ]
+    }
+  },
+  "greater": {
+    "compute": {
+      "sentence": "Calculate which value is greater overall.",
+      "target_indices": [
+        4
+      ]
+    },
+    "verify": {
+      "sentence": "Verify the result is greater than zero.",
+      "target_indices": [
+        4
+      ]
+    },
+    "find": {
+      "sentence": "Find items with greater priority rating.",
+      "target_indices": [
+        3
+      ]
+    },
+    "analyze": {
+      "sentence": "Analyze why the error is greater here.",
+      "target_indices": [
+        6
+      ]
+    },
+    "compare": {
+      "sentence": "Compare which factor has greater impact.",
+      "target_indices": [
+        4
+      ]
+    },
+    "summarize": {
+      "sentence": "Summarize the greater implications of this.",
+      "target_indices": [
+        4
+      ]
+    }
+  }
+}
