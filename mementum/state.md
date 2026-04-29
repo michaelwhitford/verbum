@@ -36,11 +36,20 @@ the kernel (products exceeding int32 range), not model failures.
 
 10,240 ternary weights. Trains to convergence in ~100 generations.
 
+**Kernel expanded to 18 ops (session 055).** After proving v3's
+pass-through architecture, expanded the kernel from 3 arithmetic ops
+to 18 ops across 6 categories: arithmetic binary (7), comparison (5),
+boolean binary (2), boolean unary (1), arithmetic unary (2), and
+conditional `if` (1, ternary). Mixed types (INT + BOOL), variable
+arity (unary/binary/ternary). 100% op accuracy on all categories.
+Converges in 100 generations, 6 seconds. 8K ternary weights.
+
 **The remaining challenge is not the VSM node — it's tree discovery.**
 For S-expressions, tree structure is given (match parens). For prose,
 the ascending arm must discover it. That's the next frontier.
 
-**See:** `scripts/v9/vsm_tree_v3.py` (pass-through architecture),
+**See:** `scripts/v9/vsm_tree_v4.py` (18-op expanded kernel),
+`scripts/v9/vsm_tree_v3.py` (pass-through architecture),
 `scripts/v9/vsm_tree_v2.py` (bottleneck diagnosis experiments),
 `mementum/knowledge/explore/v9-architecture-speculation.md`
 
@@ -172,25 +181,49 @@ failures had all ops correct.
 
 | File | Purpose |
 |------|---------|
-| `scripts/v9/vsm_tree_v3.py` | **Pass-through arch: 100% accuracy** |
+| `scripts/v9/vsm_tree_v4.py` | **18-op kernel: mixed types, variable arity** |
+| `scripts/v9/vsm_tree_v3.py` | Pass-through arch proof (3 ops) |
 | `scripts/v9/vsm_tree_v2.py` | Bottleneck diagnosis experiments |
-| `scripts/v9/vsm_tree.py` | v1 (superseded by v3) |
+| `scripts/v9/vsm_tree.py` | v1 (superseded) |
+
+### Kernel expanded: 18 ops, mixed types, variable arity
+
+After proving v3's pass-through architecture, expanded the kernel.
+v4 results (100 generations, 6s, 8K ternary weights):
+
+| Category | Ops | Op% | Result% |
+|---|---|---|---|
+| Arith binary | +, -, *, //, %, min, max | 100% | 99.2% |
+| Comparison | =, <, >, <=, >= | 100% | 100% |
+| Bool binary | and, or | 100% | 100% |
+| Bool unary | not | 100% | 100% |
+| Arith unary | abs, neg | 100% | 100% |
+| Conditional | if (ternary node) | 100% | 100% |
+
+Architecture changes from v3:
+- Op + type projection heads use nn.Linear with op embedding residual
+  (same insight as v2's value residual — identity must short-circuit
+  the ternary bottleneck)
+- Variable arity via padding + arity embedding + masking
+- Mixed type values (INT + BOOL as 0/1) flow through the tree
+
+Scales to depth 5, max_val 100. All tree-level imperfections are
+integer overflow, not model failures.
 
 ### What this means for the project
 
-1. **The VSM tree node works.** Op routing is trivially learnable.
-   Values pass through the tree structure. Exact computation via kernel.
+1. **The VSM tree node is solved for S-expressions.** Op routing at
+   100% across 18 ops, 6 categories, 3 arities, 2 types. Values pass
+   through. Exact computation via kernel.
 
-2. **The hard problem is now tree discovery.** For S-expressions, the
-   tree is given (match parens). For prose, the ascending arm must
-   discover constituent boundaries and output a tree structure for the
-   VSM nodes to execute on.
+2. **The kernel can grow further.** The architecture handles N ops,
+   mixed types, and variable arity trivially. Next: lambda primitives
+   (abstraction, application, β-reduction, composition).
 
-3. **The kernel needs expansion.** Currently 3 ops (+, -, *). The
-   kernel must grow to lambda calculus primitives (abstraction,
-   application, β-reduction, type inference, composition). The op
-   classification mechanism scales trivially — it's an N-class problem
-   where the model already achieves 100% at N=3.
+3. **The hard problem is tree discovery.** For S-expressions, the tree
+   is given (match parens). For prose, the ascending arm must discover
+   constituent boundaries and output a tree structure for the VSM nodes
+   to execute on. This is the next frontier.
 
 ## Session 054 — Kernel Routing Viability Exploration
 
@@ -588,8 +621,9 @@ TOTAL: 559M logical, ~146 MB packed, 99.7% ternary
 
 | Purpose | Path |
 |---------|------|
-| **v9 VSM tree v3 (100% accuracy)** | `scripts/v9/vsm_tree_v3.py` |
-| **v9 VSM tree v2 (bottleneck diag)** | `scripts/v9/vsm_tree_v2.py` |
+| **v9 VSM tree v4 (18 ops, mixed types)** | `scripts/v9/vsm_tree_v4.py` |
+| v9 VSM tree v3 (pass-through proof) | `scripts/v9/vsm_tree_v3.py` |
+| v9 VSM tree v2 (bottleneck diag) | `scripts/v9/vsm_tree_v2.py` |
 | v9 VSM tree v1 (superseded) | `scripts/v9/vsm_tree.py` |
 | v9 kernel primitives | `scripts/v9/kernel.py` |
 | v9 query router (50% route) | `scripts/v9/kernel_model.py` |
