@@ -1,0 +1,2434 @@
+{
+  "0": {
+    "within_mean": 0.6675889102617899,
+    "between_mean": 0.6501940745795887,
+    "ratio": 1.0267532977648999,
+    "separation": 0.017394835682201237,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.7083316644032797,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.6551418006420135,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.6688110748926799,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.6819304823875427,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.6947319706281027,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.6323464989662171,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.6841497222582499,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.6477483352025349,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.6287228047847748,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.6966119448343913,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.6513452212015788,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.6828916311264038,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.681977371374766,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.6483660737673441,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.6352769255638122,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.6782439827919007,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.641093647480011,
+        "n_pairs": 15
+      }
+    }
+  },
+  "2": {
+    "within_mean": 0.7363172698020936,
+    "between_mean": 0.7209322470144692,
+    "ratio": 1.0213404558491272,
+    "separation": 0.015385022787624325,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.8290343761444092,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.7313536882400513,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.5770203371842703,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.81744304895401,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.7920038064320882,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.7524021565914154,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.6944891671339671,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.6843402107556661,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.7424435019493103,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.7839818874994914,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.7168059706687927,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.7996141831080119,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.7810879548390707,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.7054810365041096,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.6842637658119202,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.8048054933547973,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.6590923468271891,
+        "n_pairs": 15
+      }
+    }
+  },
+  "4": {
+    "within_mean": 0.8012393209669325,
+    "between_mean": 0.7861638714491702,
+    "ratio": 1.0191759632631974,
+    "separation": 0.015075449517762296,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.8919751644134521,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.8401456415653229,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.6065611561139425,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.8137919545173645,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.8702631990114847,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.722555959224701,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.7331461906433105,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.7784252643585206,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.8321818947792053,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.7962480664253235,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.7892343918482463,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.8576140681902568,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.8720781167348226,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.7999797026316325,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.7328186929225922,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.8754430770874023,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.8117730140686035,
+        "n_pairs": 15
+      }
+    }
+  },
+  "6": {
+    "within_mean": 0.9999204585287306,
+    "between_mean": 0.9999143475617229,
+    "ratio": 1.0000061114904717,
+    "separation": 6.110967007644241e-06,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9999481320381165,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9999265074729919,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9998754580815633,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9999054968357086,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9999551892280578,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.9998614668846131,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9998941620190939,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9998988032341003,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.9999197840690612,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9999006946881612,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9999392946561177,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.9999393065770467,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.9999413609504699,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.9999293764432271,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9999043941497803,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9999447762966156,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.999943482875824,
+        "n_pairs": 15
+      }
+    }
+  },
+  "8": {
+    "within_mean": 0.999919917318556,
+    "between_mean": 0.9999136424119635,
+    "ratio": 1.000006275448525,
+    "separation": 6.274906592551588e-06,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9999488870302836,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9999253630638123,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9998737812042237,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9999073326587677,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9999555349349976,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.9998594701290131,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9998912215232849,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9998919486999511,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.9999190092086792,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.999900750319163,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9999394019444784,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.999941086769104,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.9999423185984294,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.99992915391922,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.999904727935791,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9999452471733093,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.9999439080556234,
+        "n_pairs": 15
+      }
+    }
+  },
+  "10": {
+    "within_mean": 0.9999091664950053,
+    "between_mean": 0.9999014166124689,
+    "ratio": 1.0000077506466214,
+    "separation": 7.74988253637865e-06,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9999459584554037,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9999142587184906,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9998541394869487,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9998972594738007,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9999525745709738,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.9998323738574981,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9998711903889974,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9998701214790344,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.9999061107635498,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9998842676480612,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9999347607294718,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.9999398827552796,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.999937911828359,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.9999179363250732,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9998902261257172,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.999940425157547,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.9999416510264079,
+        "n_pairs": 15
+      }
+    }
+  },
+  "12": {
+    "within_mean": 0.9999055695533753,
+    "between_mean": 0.9998974785672752,
+    "ratio": 1.0000080918156846,
+    "separation": 8.090986100106612e-06,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9999443014462789,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9999113023281098,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9998477180798848,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9998925447463989,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9999508817990621,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.9998257398605347,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9998671611150106,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9998626748720805,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.999900472164154,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9998778223991394,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9999333063761393,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.9999391833941141,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.9999364296595256,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.999914840857188,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9998844683170318,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.999937105178833,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.9999414682388306,
+        "n_pairs": 15
+      }
+    }
+  },
+  "14": {
+    "within_mean": 0.9999002430174085,
+    "between_mean": 0.9998914172492638,
+    "ratio": 1.000008826726575,
+    "separation": 8.825768144760104e-06,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9999403953552246,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9999077141284942,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9998355547587077,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.999889874458313,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9999492049217225,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.9998146295547485,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9998500903447469,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9998550653457642,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.9998954474925995,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9998731096585591,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9999304970105489,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.9999382177988688,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.9999350269635519,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.999910028775533,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9998756885528565,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9999355494976043,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.9999405185381571,
+        "n_pairs": 15
+      }
+    }
+  },
+  "16": {
+    "within_mean": 0.9998969271447924,
+    "between_mean": 0.9998878372719269,
+    "ratio": 1.0000090908925248,
+    "separation": 9.089872865519766e-06,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9999355038007101,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.999904602766037,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9998297333717346,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9998883664608001,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9999483982721965,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.9998085141181946,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9998403588930765,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9998507738113404,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.9998929917812347,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9998697598775228,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9999283631642659,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.9999374230702718,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.9999342362085978,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.9999064087867737,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.999871027469635,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9999348819255829,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.9999393582344055,
+        "n_pairs": 15
+      }
+    }
+  },
+  "18": {
+    "within_mean": 0.9998953199386597,
+    "between_mean": 0.9998860914539438,
+    "ratio": 1.000009229536039,
+    "separation": 9.228484715850804e-06,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9999319314956665,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9999030947685241,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9998268644014995,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9998864650726318,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9999483545621236,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.99980508685112,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9998368620872498,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9998479048411052,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.9998914122581481,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9998687545458476,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9999273180961609,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.9999366323153178,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.9999339501063029,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.9999054988225301,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9998694717884063,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9999343037605286,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.9999391714731852,
+        "n_pairs": 15
+      }
+    }
+  },
+  "20": {
+    "within_mean": 0.999891070789761,
+    "between_mean": 0.999881356975199,
+    "ratio": 1.0000097149671752,
+    "separation": 9.713814562051226e-06,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.999925450483958,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9999006628990174,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9998164733250936,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9998816430568696,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9999471584955851,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.9997995674610138,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9998310327529907,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.99984104235967,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.9998864233493805,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9998638192812602,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9999246835708618,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.9999343156814575,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.9999317685763042,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.9999028444290161,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9998655200004578,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9999298512935638,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.9999383608500163,
+        "n_pairs": 15
+      }
+    }
+  },
+  "22": {
+    "within_mean": 0.9998887973361545,
+    "between_mean": 0.9998788087288264,
+    "ratio": 1.0000099898180068,
+    "separation": 9.988607328148547e-06,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9999228040377299,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9998989164829254,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9998095989227295,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9998774826526642,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9999462485313415,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.9997965514659881,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9998294552167256,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9998372236887614,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.9998845994472504,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9998624364535014,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9999239166577657,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.9999330917994181,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.9999307076136271,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.9998997847239176,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9998633861541748,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9999264240264892,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.999938452243805,
+        "n_pairs": 15
+      }
+    }
+  },
+  "24": {
+    "within_mean": 0.9998849251535203,
+    "between_mean": 0.9998745753415865,
+    "ratio": 1.0000103511102183,
+    "separation": 1.0349811933818565e-05,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9999188303947448,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9998963892459869,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9998041033744812,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9998697996139526,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9999450127283732,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.9997920632362366,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9998249411582947,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9998305320739747,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.9998819649219512,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9998569250106811,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9999192396799723,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.9999310294787089,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.9999280055363973,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.9998988270759582,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9998583436012268,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9999246656894684,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.9999342799186707,
+        "n_pairs": 15
+      }
+    }
+  },
+  "26": {
+    "within_mean": 0.9998769270049201,
+    "between_mean": 0.9998658944578732,
+    "ratio": 1.0000110340267712,
+    "separation": 1.1032547046929686e-05,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9999113361040751,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9998934209346771,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9997929334640503,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9998576521873475,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9999440868695577,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.9997802257537842,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.999816878636678,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9998188734054565,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.9998617529869079,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9998336871465047,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.999916426340739,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.9999262968699137,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.9999226411183675,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.9998960892359415,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9998548328876495,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9999168217182159,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.999931518236796,
+        "n_pairs": 15
+      }
+    }
+  },
+  "28": {
+    "within_mean": 0.9998578662342495,
+    "between_mean": 0.9998456312298363,
+    "ratio": 1.0000122368934075,
+    "separation": 1.223500441327463e-05,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9999019066492717,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9998833060264587,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9997575124104817,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9998367249965667,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9999375303586324,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.9997579514980316,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9997734944025676,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9997818072636923,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.9998446881771088,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9998145341873169,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9999068379402161,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.9999219377835592,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.9999158263206482,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.9998611172040304,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9998249590396882,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9999018609523773,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.9999291618665059,
+        "n_pairs": 15
+      }
+    }
+  },
+  "30": {
+    "within_mean": 0.9998484452565511,
+    "between_mean": 0.999835619244471,
+    "ratio": 1.0000128281207763,
+    "separation": 1.2826012080191518e-05,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9998962998390197,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9998786747455597,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9997422456741333,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9998258173465728,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9999309142430624,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.9997432231903076,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9997647086779277,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9997649868329366,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.9998300194740295,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9997982422510783,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9999030669530232,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.9999160448710124,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.9999086856842041,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.9998548785845439,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9998089253902436,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9998924016952515,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.9999272306760152,
+        "n_pairs": 15
+      }
+    }
+  },
+  "32": {
+    "within_mean": 0.9998577486144172,
+    "between_mean": 0.9998453958911742,
+    "ratio": 1.0000123546333202,
+    "separation": 1.2352723243069796e-05,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9999027331670125,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9998828947544098,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9997594237327576,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9998353481292724,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9999336083730062,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.99976367354393,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9997799237569173,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9997828324635823,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.999835079908371,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9998184045155843,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9999066551526388,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.9999185164769491,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.9999134182929993,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.9998628735542298,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9998221576213837,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9998967289924622,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.9999305844306946,
+        "n_pairs": 15
+      }
+    }
+  },
+  "34": {
+    "within_mean": 0.9998520098792182,
+    "between_mean": 0.9998384549406023,
+    "ratio": 1.000013557128703,
+    "separation": 1.355493861587842e-05,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9998984177907307,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9998772025108338,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9997431437174479,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9998280346393585,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9999337514241536,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.9997498035430908,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9997713645299275,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9997777342796326,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.9998287618160248,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9998096545537313,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9999028881390889,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.9999157945315044,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.999911097685496,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.9998586098353068,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9998122990131378,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9998960256576538,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.9999296069145203,
+        "n_pairs": 15
+      }
+    }
+  },
+  "36": {
+    "within_mean": 0.9998514435026381,
+    "between_mean": 0.9998380563663364,
+    "ratio": 1.0000133893046144,
+    "separation": 1.3387136301723501e-05,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9998953819274903,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9998760879039764,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9997390588124593,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9998249650001526,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9999340852101644,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.99975546002388,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9997758587201436,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9997732202212016,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.9998283386230469,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.999809201558431,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9999022324879964,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.9999165177345276,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.9999111970265706,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.9998590151468912,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9998086392879486,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9998963177204132,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.9999293446540832,
+        "n_pairs": 15
+      }
+    }
+  },
+  "38": {
+    "within_mean": 0.9998563697603013,
+    "between_mean": 0.999843257191272,
+    "ratio": 1.0000131146246525,
+    "separation": 1.3112569029360976e-05,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9998943289120992,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9998793780803681,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9997496287027995,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9998342096805573,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.999934995174408,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.9997669279575347,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9997815410296123,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9997813463211059,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.9998344361782074,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9998223662376404,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.999905812740326,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.9999161799748738,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.9999138832092285,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.999861494700114,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9998159289360047,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9998997271060943,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.9999302307764689,
+        "n_pairs": 15
+      }
+    }
+  },
+  "40": {
+    "within_mean": 0.9998523200882806,
+    "between_mean": 0.999839329925788,
+    "ratio": 1.0000129922499585,
+    "separation": 1.2990162492676482e-05,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9998874147733052,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9998782634735107,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9997529625892639,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9998311460018158,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.999932861328125,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.9997445106506347,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9997823437054952,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9997725009918212,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.9998355031013488,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9998159567515056,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9998952706654867,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.9999177773793538,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.9999102671941121,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.999860680103302,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9998081028461456,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9998922228813172,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.9999302665392558,
+        "n_pairs": 15
+      }
+    }
+  },
+  "42": {
+    "within_mean": 0.9998453317748176,
+    "between_mean": 0.9998325479759339,
+    "ratio": 1.0000127859399153,
+    "separation": 1.2783798883697628e-05,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9998794078826905,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9998783111572266,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9997430284818013,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9998169302940368,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9999247590700785,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.9997332096099854,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9997813542683919,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9997592409451802,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.9998359084129333,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9998059829076131,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9998876214027405,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.9999172170956929,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.9999016523361206,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.9998554189999899,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9997973322868348,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9998795330524445,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.9999301433563232,
+        "n_pairs": 15
+      }
+    }
+  },
+  "44": {
+    "within_mean": 0.9998615211910672,
+    "between_mean": 0.9998483453517417,
+    "ratio": 1.0000131778378059,
+    "separation": 1.3175839325474392e-05,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9998840610186259,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9998873174190521,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9997652729352315,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9998387277126313,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9999384204546611,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.9997764527797699,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9997882048288981,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9997858047485352,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.99984290599823,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9998323281606039,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9999096949895223,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.9999207973480224,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.9999180396397909,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.9998701453208924,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9998201489448547,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9998963117599488,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.9999354720115662,
+        "n_pairs": 15
+      }
+    }
+  },
+  "46": {
+    "within_mean": 0.9998228083716498,
+    "between_mean": 0.9998097650732548,
+    "ratio": 1.0000130457801581,
+    "separation": 1.3043298395021274e-05,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9998667756716411,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9998792052268982,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9996849576632182,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.999761563539505,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9999071637789408,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.999681681394577,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9997716744740804,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.999729061126709,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.9998266518115997,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9997753063837688,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9998673478762309,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.999915627638499,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.9998721837997436,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.999848194917043,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9997719287872314,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9998351156711578,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.9999330679575602,
+        "n_pairs": 15
+      }
+    }
+  },
+  "48": {
+    "within_mean": 0.999803540441725,
+    "between_mean": 0.9997890355677753,
+    "ratio": 1.0000145079346079,
+    "separation": 1.4504873949716668e-05,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9998469233512879,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9998678803443909,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9996530254681905,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9997337996959687,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9998989899953207,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.9996517181396485,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9997480829556783,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9996982852617899,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.9998068988323212,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9997479557991028,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9998539964358012,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.999907386302948,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.999858820438385,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.9998358289400736,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9997386574745178,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9998185813426972,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.999925454457601,
+        "n_pairs": 15
+      }
+    }
+  },
+  "50": {
+    "within_mean": 0.999759501086341,
+    "between_mean": 0.99974086226889,
+    "ratio": 1.000018643648724,
+    "separation": 1.8638817451011036e-05,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9997985124588012,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9998368620872498,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9995795726776123,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9996833384037018,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9998861114184062,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.9995830833911896,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9996864398320516,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9996327996253968,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.9997297406196595,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.999682879447937,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9998314619064331,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.9998840252558391,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.999833595752716,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.9998036066691081,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9996819853782654,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9997778475284577,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.9999116063117981,
+        "n_pairs": 15
+      }
+    }
+  },
+  "52": {
+    "within_mean": 0.9996820539898342,
+    "between_mean": 0.9996511194395221,
+    "ratio": 1.000030945346542,
+    "separation": 3.0934550312111675e-05,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9997370560963948,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9997587263584137,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9994078834851583,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9996343731880188,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9998916705449422,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.9994813978672028,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9994688868522644,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9995054086049397,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.999595183134079,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9996071815490722,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9998318433761597,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.9998554031054179,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.9998288949330648,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.9996828873952229,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9995644569396973,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9997611701488495,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.9998834888140361,
+        "n_pairs": 15
+      }
+    }
+  },
+  "54": {
+    "within_mean": 0.9995039709409078,
+    "between_mean": 0.9994608835228037,
+    "ratio": 1.0000431106597711,
+    "separation": 4.30874181041041e-05,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9996518492698669,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9996137499809266,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9991037487983704,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9994634211063385,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9998392224311828,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.9991508424282074,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9991336186726888,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9991589705149333,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.9993340253829956,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9992910822232565,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9997453610102336,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.9998057961463929,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.9997520287831624,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.9995688676834107,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9992913663387298,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9996694087982178,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.9998271425565084,
+        "n_pairs": 15
+      }
+    }
+  },
+  "56": {
+    "within_mean": 0.9993236655659146,
+    "between_mean": 0.9992683984554075,
+    "ratio": 1.0000553075736134,
+    "separation": 5.526711050707345e-05,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9995298663775126,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9994871199131012,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9988051732381185,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9992308974266052,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9997917056083679,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.9988486647605896,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9988077123959859,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9988335490226745,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.9990304350852967,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9990086754163107,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9996614416440328,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.9997408747673034,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.999657913049062,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.9994532426198324,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9990526437759399,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9995534777641296,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.9997626701990764,
+        "n_pairs": 15
+      }
+    }
+  },
+  "58": {
+    "within_mean": 0.9991296699311998,
+    "between_mean": 0.9990648272540743,
+    "ratio": 1.000064903372991,
+    "separation": 6.48426771254762e-05,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9993438005447388,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.999367868900299,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9984602093696594,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9989934742450715,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9997301816940307,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.9985460102558136,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.998467481136322,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.998516297340393,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.9987653076648713,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9986607313156128,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9995611031850179,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.999667489528656,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.9995596369107564,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.9993473370869954,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9988121330738068,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9993968904018402,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.9997096578280131,
+        "n_pairs": 15
+      }
+    }
+  },
+  "60": {
+    "within_mean": 0.9988630358378092,
+    "between_mean": 0.9987868829719473,
+    "ratio": 1.0000762453604068,
+    "separation": 7.61528658619337e-05,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9990915815035503,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9991699099540711,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9979396303494771,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9986153483390808,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9996203184127808,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.9981853306293488,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9980177442232768,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9980677922566732,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.9984035193920135,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9982389648755391,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9994274973869324,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.9995706121126811,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.9994245012601216,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.999211589495341,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9985119104385376,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9991780340671539,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.9996259371439616,
+        "n_pairs": 15
+      }
+    }
+  },
+  "62": {
+    "within_mean": 0.9968083384301928,
+    "between_mean": 0.9965767122744964,
+    "ratio": 1.0002324218023997,
+    "separation": 0.000231626155696385,
+    "per_group": {
+      "compute": {
+        "within_mean": 0.9967796524365743,
+        "n_pairs": 15
+      },
+      "count": {
+        "within_mean": 0.9974410831928253,
+        "n_pairs": 10
+      },
+      "summarize": {
+        "within_mean": 0.9948418180147807,
+        "n_pairs": 15
+      },
+      "simplify": {
+        "within_mean": 0.9956322371959686,
+        "n_pairs": 10
+      },
+      "create": {
+        "within_mean": 0.9986628890037537,
+        "n_pairs": 15
+      },
+      "expand": {
+        "within_mean": 0.9953563928604126,
+        "n_pairs": 10
+      },
+      "translate": {
+        "within_mean": 0.9954488078753153,
+        "n_pairs": 15
+      },
+      "transform_data": {
+        "within_mean": 0.9956360975901286,
+        "n_pairs": 15
+      },
+      "compare": {
+        "within_mean": 0.9957507312297821,
+        "n_pairs": 10
+      },
+      "analyze": {
+        "within_mean": 0.9955686688423157,
+        "n_pairs": 15
+      },
+      "judge": {
+        "within_mean": 0.9980769276618957,
+        "n_pairs": 15
+      },
+      "verify": {
+        "within_mean": 0.9979803919792175,
+        "n_pairs": 15
+      },
+      "find": {
+        "within_mean": 0.9978821436564128,
+        "n_pairs": 15
+      },
+      "compile": {
+        "within_mean": 0.9978862643241883,
+        "n_pairs": 15
+      },
+      "decompose_formal": {
+        "within_mean": 0.9962478339672088,
+        "n_pairs": 10
+      },
+      "decide": {
+        "within_mean": 0.9969489812850952,
+        "n_pairs": 10
+      },
+      "plan": {
+        "within_mean": 0.9984432419141134,
+        "n_pairs": 15
+      }
+    }
+  }
+}

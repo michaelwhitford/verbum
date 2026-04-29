@@ -1,0 +1,1153 @@
+{
+  "compute": {
+    "behavior": "behavior:calculate",
+    "items": {
+      "Calculate_4574": {
+        "word": "Calculate",
+        "sentence": "Calculate the total cost of these items.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Calculate"
+        ]
+      },
+      "Compute_8837": {
+        "word": "Compute",
+        "sentence": "Compute the average of these numbers.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Compute"
+        ]
+      },
+      "Evaluate_5350": {
+        "word": "Evaluate",
+        "sentence": "Evaluate this expression for x equals five.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Evaluate"
+        ]
+      },
+      "Solve_9096": {
+        "word": "Solve",
+        "sentence": "Solve this equation for the unknown variable.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "S",
+          "olve"
+        ]
+      },
+      "Work_8844": {
+        "word": "Work",
+        "sentence": "Work out the answer to this problem.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Work"
+        ]
+      },
+      "Figure_6003": {
+        "word": "Figure",
+        "sentence": "Figure out how much this costs.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Figure"
+        ]
+      }
+    }
+  },
+  "count": {
+    "behavior": "behavior:enumerate",
+    "items": {
+      "Count_7066": {
+        "word": "Count",
+        "sentence": "Count the number of items in the list.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Count"
+        ]
+      },
+      "Tally_8626": {
+        "word": "Tally",
+        "sentence": "Tally up all the votes cast today.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "T",
+          "ally"
+        ]
+      },
+      "Number_0284": {
+        "word": "Number",
+        "sentence": "Number the items in the collection.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Number"
+        ]
+      },
+      "Enumerate_9655": {
+        "word": "Enumerate",
+        "sentence": "Enumerate all possible outcomes here.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Enumer",
+          "ate"
+        ]
+      },
+      "Total_0769": {
+        "word": "Total",
+        "sentence": "Total the entries in this column.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Total"
+        ]
+      }
+    }
+  },
+  "summarize": {
+    "behavior": "behavior:compress",
+    "items": {
+      "Summarize_8256": {
+        "word": "Summarize",
+        "sentence": "Summarize the main points of this article.",
+        "token_indices": [
+          0,
+          1,
+          2
+        ],
+        "tokens": [
+          "Sum",
+          "mar",
+          "ize"
+        ]
+      },
+      "Condense_2714": {
+        "word": "Condense",
+        "sentence": "Condense this report into key findings.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Cond",
+          "ense"
+        ]
+      },
+      "Brief_1351": {
+        "word": "Brief",
+        "sentence": "Brief the team on the current situation.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Brief"
+        ]
+      },
+      "Distill_3975": {
+        "word": "Distill",
+        "sentence": "Distill the essence of this argument.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Dist",
+          "ill"
+        ]
+      },
+      "Recap_3178": {
+        "word": "Recap",
+        "sentence": "Recap what happened in the meeting.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Rec",
+          "ap"
+        ]
+      },
+      "Abbreviate_9132": {
+        "word": "Abbreviate",
+        "sentence": "Abbreviate this lengthy description please.",
+        "token_indices": [
+          0,
+          1,
+          2
+        ],
+        "tokens": [
+          "Abb",
+          "rev",
+          "iate"
+        ]
+      }
+    }
+  },
+  "simplify": {
+    "behavior": "behavior:reduce_complexity",
+    "items": {
+      "Simplify_9497": {
+        "word": "Simplify",
+        "sentence": "Simplify this explanation for a beginner.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "S",
+          "implify"
+        ]
+      },
+      "Clarify_6675": {
+        "word": "Clarify",
+        "sentence": "Clarify what this paragraph means exactly.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Clar",
+          "ify"
+        ]
+      },
+      "Explain_9841": {
+        "word": "Explain",
+        "sentence": "Explain this concept in simple terms.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Ex",
+          "plain"
+        ]
+      },
+      "Unpack_4557": {
+        "word": "Unpack",
+        "sentence": "Unpack this dense technical passage.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Un",
+          "pack"
+        ]
+      },
+      "Break_4541": {
+        "word": "Break",
+        "sentence": "Break this down into simpler parts.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Break"
+        ]
+      }
+    }
+  },
+  "create": {
+    "behavior": "behavior:generate",
+    "items": {
+      "Create_0205": {
+        "word": "Create",
+        "sentence": "Create a new function that sorts data.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Create"
+        ]
+      },
+      "Generate_4141": {
+        "word": "Generate",
+        "sentence": "Generate a list of test cases.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Generate"
+        ]
+      },
+      "Write_8831": {
+        "word": "Write",
+        "sentence": "Write a function to parse this format.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Write"
+        ]
+      },
+      "Build_8608": {
+        "word": "Build",
+        "sentence": "Build a solution for this problem.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Build"
+        ]
+      },
+      "Produce_0592": {
+        "word": "Produce",
+        "sentence": "Produce a report from this data.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Pro",
+          "duce"
+        ]
+      },
+      "Compose_5871": {
+        "word": "Compose",
+        "sentence": "Compose a response to this inquiry.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Compose"
+        ]
+      }
+    }
+  },
+  "expand": {
+    "behavior": "behavior:elaborate",
+    "items": {
+      "Expand_4368": {
+        "word": "Expand",
+        "sentence": "Expand on this idea with more detail.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Expand"
+        ]
+      },
+      "Elaborate_7235": {
+        "word": "Elaborate",
+        "sentence": "Elaborate on the implications of this.",
+        "token_indices": [
+          0,
+          1,
+          2
+        ],
+        "tokens": [
+          "El",
+          "abor",
+          "ate"
+        ]
+      },
+      "Detail_9158": {
+        "word": "Detail",
+        "sentence": "Detail the steps required for this.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Detail"
+        ]
+      },
+      "Develop_3877": {
+        "word": "Develop",
+        "sentence": "Develop this concept further please.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Develop"
+        ]
+      },
+      "Flesh_4448": {
+        "word": "Flesh",
+        "sentence": "Flesh out the outline with content.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "F",
+          "lesh"
+        ]
+      }
+    }
+  },
+  "translate": {
+    "behavior": "behavior:transform_language",
+    "items": {
+      "Translate_7974": {
+        "word": "Translate",
+        "sentence": "Translate this sentence into French.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Translate"
+        ]
+      },
+      "Convert_0337": {
+        "word": "Convert",
+        "sentence": "Convert this text to formal language.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Convert"
+        ]
+      },
+      "Rephrase_2528": {
+        "word": "Rephrase",
+        "sentence": "Rephrase this in more professional terms.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Re",
+          "phrase"
+        ]
+      },
+      "Rewrite_7819": {
+        "word": "Rewrite",
+        "sentence": "Rewrite this paragraph more concisely.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Rew",
+          "rite"
+        ]
+      },
+      "Paraphrase_4668": {
+        "word": "Paraphrase",
+        "sentence": "Paraphrase the key argument here.",
+        "token_indices": [
+          0,
+          1,
+          2
+        ],
+        "tokens": [
+          "Par",
+          "aph",
+          "rase"
+        ]
+      },
+      "Reformulate_5158": {
+        "word": "Reformulate",
+        "sentence": "Reformulate this as a question.",
+        "token_indices": [
+          0,
+          1,
+          2
+        ],
+        "tokens": [
+          "Re",
+          "form",
+          "ulate"
+        ]
+      }
+    }
+  },
+  "transform_data": {
+    "behavior": "behavior:transform_structure",
+    "items": {
+      "Sort_7270": {
+        "word": "Sort",
+        "sentence": "Sort these items by their priority.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Sort"
+        ]
+      },
+      "Filter_8625": {
+        "word": "Filter",
+        "sentence": "Filter out the irrelevant entries.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Filter"
+        ]
+      },
+      "Organize_6212": {
+        "word": "Organize",
+        "sentence": "Organize this data by category.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Organ",
+          "ize"
+        ]
+      },
+      "Restructure_1902": {
+        "word": "Restructure",
+        "sentence": "Restructure the code for clarity.",
+        "token_indices": [
+          0,
+          1,
+          2
+        ],
+        "tokens": [
+          "Restr",
+          "uct",
+          "ure"
+        ]
+      },
+      "Rearrange_2487": {
+        "word": "Rearrange",
+        "sentence": "Rearrange the sections logically.",
+        "token_indices": [
+          0,
+          1,
+          2
+        ],
+        "tokens": [
+          "R",
+          "ear",
+          "range"
+        ]
+      },
+      "Format_6089": {
+        "word": "Format",
+        "sentence": "Format this output as a table.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Format"
+        ]
+      }
+    }
+  },
+  "compare": {
+    "behavior": "behavior:contrast",
+    "items": {
+      "Compare_5640": {
+        "word": "Compare",
+        "sentence": "Compare these two approaches carefully.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Compare"
+        ]
+      },
+      "Contrast_8032": {
+        "word": "Contrast",
+        "sentence": "Contrast the advantages and disadvantages.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Contr",
+          "ast"
+        ]
+      },
+      "Differentiate_7520": {
+        "word": "Differentiate",
+        "sentence": "Differentiate between these two methods.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Different",
+          "iate"
+        ]
+      },
+      "Distinguish_6008": {
+        "word": "Distinguish",
+        "sentence": "Distinguish the key differences here.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "D",
+          "istinguish"
+        ]
+      },
+      "Weigh_5265": {
+        "word": "Weigh",
+        "sentence": "Weigh the pros and cons of each.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "We",
+          "igh"
+        ]
+      }
+    }
+  },
+  "analyze": {
+    "behavior": "behavior:decompose",
+    "items": {
+      "Analyze_4644": {
+        "word": "Analyze",
+        "sentence": "Analyze the root cause of this failure.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "An",
+          "alyze"
+        ]
+      },
+      "Examine_9732": {
+        "word": "Examine",
+        "sentence": "Examine the evidence for this claim.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Ex",
+          "amine"
+        ]
+      },
+      "Investigate_2408": {
+        "word": "Investigate",
+        "sentence": "Investigate why this test is failing.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Invest",
+          "igate"
+        ]
+      },
+      "Diagnose_3713": {
+        "word": "Diagnose",
+        "sentence": "Diagnose the problem in this system.",
+        "token_indices": [
+          0,
+          1,
+          2
+        ],
+        "tokens": [
+          "Di",
+          "agn",
+          "ose"
+        ]
+      },
+      "Inspect_8553": {
+        "word": "Inspect",
+        "sentence": "Inspect the output for any errors.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Inspect"
+        ]
+      },
+      "Dissect_8081": {
+        "word": "Dissect",
+        "sentence": "Dissect the argument into its parts.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Dis",
+          "sect"
+        ]
+      }
+    }
+  },
+  "judge": {
+    "behavior": "behavior:evaluate_quality",
+    "items": {
+      "Judge_8610": {
+        "word": "Judge",
+        "sentence": "Judge the quality of this solution.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Judge"
+        ]
+      },
+      "Assess_7782": {
+        "word": "Assess",
+        "sentence": "Assess the risk of this approach.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Ass",
+          "ess"
+        ]
+      },
+      "Rate_0769": {
+        "word": "Rate",
+        "sentence": "Rate the effectiveness of this method.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Rate"
+        ]
+      },
+      "Review_3174": {
+        "word": "Review",
+        "sentence": "Review the code for potential issues.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Review"
+        ]
+      },
+      "Critique_1716": {
+        "word": "Critique",
+        "sentence": "Critique the design of this system.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Crit",
+          "ique"
+        ]
+      },
+      "Evaluate_7196": {
+        "word": "Evaluate",
+        "sentence": "Evaluate the performance of the model.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Evaluate"
+        ]
+      }
+    }
+  },
+  "verify": {
+    "behavior": "behavior:check_correctness",
+    "items": {
+      "Verify_5651": {
+        "word": "Verify",
+        "sentence": "Verify that this answer is correct.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Verify"
+        ]
+      },
+      "Check_4810": {
+        "word": "Check",
+        "sentence": "Check the output against expected results.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Check"
+        ]
+      },
+      "Validate_4499": {
+        "word": "Validate",
+        "sentence": "Validate the input data before processing.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Validate"
+        ]
+      },
+      "Confirm_4107": {
+        "word": "Confirm",
+        "sentence": "Confirm that the test passes correctly.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Confirm"
+        ]
+      },
+      "Test_3949": {
+        "word": "Test",
+        "sentence": "Test whether this function handles edge cases.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Test"
+        ]
+      },
+      "Prove_4780": {
+        "word": "Prove",
+        "sentence": "Prove that this invariant always holds.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Pro",
+          "ve"
+        ]
+      }
+    }
+  },
+  "find": {
+    "behavior": "behavior:search",
+    "items": {
+      "Find_5561": {
+        "word": "Find",
+        "sentence": "Find the error in this code.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Find"
+        ]
+      },
+      "Locate_4564": {
+        "word": "Locate",
+        "sentence": "Locate the source of this bug.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Loc",
+          "ate"
+        ]
+      },
+      "Search_5004": {
+        "word": "Search",
+        "sentence": "Search for patterns matching this criteria.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Search"
+        ]
+      },
+      "Identify_3464": {
+        "word": "Identify",
+        "sentence": "Identify which component is failing.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Ident",
+          "ify"
+        ]
+      },
+      "Detect_6988": {
+        "word": "Detect",
+        "sentence": "Detect any anomalies in this data.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Detect"
+        ]
+      },
+      "Discover_4203": {
+        "word": "Discover",
+        "sentence": "Discover the underlying cause of this.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Discover"
+        ]
+      }
+    }
+  },
+  "compile": {
+    "behavior": "behavior:formalize",
+    "items": {
+      "Formalize_9385": {
+        "word": "Formalize",
+        "sentence": "Formalize this natural language statement.",
+        "token_indices": [
+          0,
+          1,
+          2
+        ],
+        "tokens": [
+          "Form",
+          "al",
+          "ize"
+        ]
+      },
+      "Encode_8388": {
+        "word": "Encode",
+        "sentence": "Encode this meaning as a logical form.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Encode"
+        ]
+      },
+      "Express_8685": {
+        "word": "Express",
+        "sentence": "Express this constraint mathematically.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Express"
+        ]
+      },
+      "Represent_2365": {
+        "word": "Represent",
+        "sentence": "Represent this relationship formally.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Represent"
+        ]
+      },
+      "Define_9582": {
+        "word": "Define",
+        "sentence": "Define this concept precisely and formally.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Define"
+        ]
+      },
+      "Specify_8458": {
+        "word": "Specify",
+        "sentence": "Specify the requirements in formal notation.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Specify"
+        ]
+      }
+    }
+  },
+  "decompose_formal": {
+    "behavior": "behavior:decompile",
+    "items": {
+      "Interpret_8811": {
+        "word": "Interpret",
+        "sentence": "Interpret this formula in plain language.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Inter",
+          "pret"
+        ]
+      },
+      "Decode_0792": {
+        "word": "Decode",
+        "sentence": "Decode this notation into readable text.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Decode"
+        ]
+      },
+      "Describe_2493": {
+        "word": "Describe",
+        "sentence": "Describe what this function does.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Describe"
+        ]
+      },
+      "Narrate_5087": {
+        "word": "Narrate",
+        "sentence": "Narrate the steps of this algorithm.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Narr",
+          "ate"
+        ]
+      },
+      "Verbalize_1695": {
+        "word": "Verbalize",
+        "sentence": "Verbalize the meaning of this expression.",
+        "token_indices": [
+          0,
+          1,
+          2
+        ],
+        "tokens": [
+          "Ver",
+          "bal",
+          "ize"
+        ]
+      }
+    }
+  },
+  "decide": {
+    "behavior": "behavior:branch",
+    "items": {
+      "Decide_7054": {
+        "word": "Decide",
+        "sentence": "Decide which approach to take here.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Dec",
+          "ide"
+        ]
+      },
+      "Choose_7567": {
+        "word": "Choose",
+        "sentence": "Choose the best option available now.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Choose"
+        ]
+      },
+      "Select_2121": {
+        "word": "Select",
+        "sentence": "Select the appropriate method for this.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Select"
+        ]
+      },
+      "Pick_6324": {
+        "word": "Pick",
+        "sentence": "Pick the most efficient algorithm.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Pick"
+        ]
+      },
+      "Determine_6636": {
+        "word": "Determine",
+        "sentence": "Determine the correct course of action.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "D",
+          "etermine"
+        ]
+      }
+    }
+  },
+  "plan": {
+    "behavior": "behavior:sequence",
+    "items": {
+      "Plan_3753": {
+        "word": "Plan",
+        "sentence": "Plan the steps to complete this task.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Plan"
+        ]
+      },
+      "Outline_9346": {
+        "word": "Outline",
+        "sentence": "Outline the approach for this project.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Outline"
+        ]
+      },
+      "Design_3759": {
+        "word": "Design",
+        "sentence": "Design a strategy to solve this.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Design"
+        ]
+      },
+      "Architect_1333": {
+        "word": "Architect",
+        "sentence": "Architect a solution for scalability.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Arch",
+          "itect"
+        ]
+      },
+      "Map_7034": {
+        "word": "Map",
+        "sentence": "Map out the dependencies between tasks.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Map"
+        ]
+      },
+      "Sequence_9449": {
+        "word": "Sequence",
+        "sentence": "Sequence the operations in the right order.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Sequence"
+        ]
+      }
+    }
+  }
+}
