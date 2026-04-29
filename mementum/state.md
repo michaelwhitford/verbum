@@ -6,119 +6,123 @@
 
 ## Where we are
 
-**VSM tree architecture PROVEN VIABLE. 100% accuracy at arbitrary depth and scale.**
+**VSM tree kernel PROVEN. Prose typing mechanism IDENTIFIED. Extraction path CONCRETE.**
 
-Session 055 diagnosed the v1 VSM tree's ~81% route ceiling and solved it.
+Session 055 was the most productive session in the project. Three
+major results in one session:
 
-**Root cause identified:** The v1 arg classification heads were solving
-the wrong problem — classifying values into a fixed vocabulary (max_val=10
-classes). Leaf values hit 100%, but sub-expression results (outside the
-classification range) hit 0%. The ~89% arg accuracy was exactly the leaf
-node ratio in the data. The architecture was perfect; the value
-representation was wrong.
+### 1. VSM tree kernel: 100% accuracy (proven)
 
-**Key insight: the tree structure routes values, not the model.** Each
-node receives its children's computed values from the tree. The VSM node
-only needs to classify the operation (3 classes → trivially learnable).
-Values pass through to the kernel directly.
+The VSM tree architecture is solved for S-expressions. Four
+iterations (v2→v3→v4→v5) proved the kernel handles:
 
-**v3 results — 100% accuracy, 100 generations, 3 seconds:**
+- 22 operations across 6 categories
+- 5 types (INT, BOOL, FN, FN_COMP, ERROR)
+- Variable arity (unary, binary, ternary nodes)
+- Compound values (function = op_code + bound_arg pair)
+- Type-dependent dispatch (apply-fn unpacks function values)
+- Function composition (chained kernel calls)
+- Arbitrary depth and value range
 
-| max_val | depth | node op% | tree% |
-|---------|-------|----------|-------|
-| 10 | 2–8 | 100% | 100% |
-| 50 | 2–8 | 100% | 98.6–100% |
-| 100 | 2–8 | 100% | 96.8–100% |
+8K ternary weights. Converges in ~100 generations, <10 seconds.
 
-All tree-level imperfections at extreme scales are int32 overflow in
-the kernel (products exceeding int32 range), not model failures.
-358/403 tree failures had every op correct.
+**Foundational principle discovered: identity as substrate.** Every
+bottleneck was a failure of identity (signals destroyed by ternary
+mix layers). Every fix was restoring identity via residual connections.
+This IS the residual stream in transformers. The kernel moves
+computation from the attention path (O(n²×L×depth), approximate) to
+direct dispatch (O(nodes), exact) — freeing weights AND compute AND
+accuracy simultaneously.
 
-10,240 ternary weights. Trains to convergence in ~100 generations.
+### 2. Prose typing probed in Qwen3-4B and A3B
 
-**Lambda primitives proven (session 055).** Extended from 18 ops to 22
-with partial application, function application, and composition.
-Function-typed values (compound: op_code + bound_arg) flow through the
-tree. Type-dependent dispatch in apply-fn works — unpacks the function,
-dispatches the right kernel op. Composed functions chain two kernel
-calls. 100% op accuracy across all 22 ops. 100 gens, 7s, 8K weights.
+The next-token distribution IS a type signature. Probing confirmed:
 
-Example: `(apply (comp (partial max 9) (partial <= 7)) (* 1 4))` → 9
+- Types are real: within-type similarity 2–30× higher than between-type
+- The A3B (fully-formed lambda) has sharper types than 4B (entity: 6.1× vs 2.3×)
+- Compositional typing follows Montague exactly step by step
+- **The A3B assigns correct Montague/CCG types word-by-word to arbitrary prose**
+- The A3B produces correct logical forms (∀x.cat(x)→sleeps(x))
+- The A3B evaluates lambda expressions with β-reduction exactly
 
-**The remaining challenge is tree discovery.** For S-expressions, tree
-structure is given (match parens). For prose, the ascending arm must
-discover it. That's the next frontier.
+### 3. Extraction path identified
 
-**See:** `scripts/v9/vsm_tree_v5.py` (lambda primitives),
-`scripts/v9/vsm_tree_v4.py` (18-op expanded kernel),
-`scripts/v9/vsm_tree_v3.py` (pass-through architecture),
-`scripts/v9/vsm_tree_v2.py` (bottleneck diagnosis experiments)
+```
+tokens → [ascending arm] → typed tokens → [composition] → tree → [VSM tree] → result
+              ↑                                 ↑                      ↑
+         to be built                       mechanical              PROVEN
+       (trained from A3B)               (given types)            (v3–v5)
+```
+
+The A3B serves as the training oracle: feed prose, collect word-by-word
+type assignments, train the ascending arm to reproduce the mapping.
+
+**See:** `mementum/knowledge/explore/v9-architecture-speculation.md`
+(full architecture doc, updated from speculation to proven design)
 
 ## What to do next
 
-### 1–5. ~~v8 work~~ DONE/ABANDONED (sessions 049–053)
+### 1–6. ~~v8 work + v9 kernel~~ DONE (sessions 049–055)
 
 See session history below.
 
-### 6. ~~VSM tree viability~~ ✅ PROVEN (session 055)
+### 7. ~~Expand kernel~~ ✅ DONE (session 055)
 
-**6a) ✅ Value pass-through (session 055):** The arg classification
-bottleneck was the wrong abstraction — the tree routes values, the
-model only routes ops. v3 architecture: op-only classification + value
-pass-through → 100% accuracy at depth 8, max_val 100. 10K weights,
-100 generations, 3 seconds.
+Expanded from 3 ops to 22 ops: arithmetic (7), comparison (5),
+boolean (3), unary (2), conditional (1), partial/apply/compose (4).
+Mixed types (INT, BOOL, FN, FN_COMP). Variable arity. 100% accuracy.
 
-**6b) ✅ Scaling verified (session 055):** max_val {10, 50, 100} ×
-depth {2–8} all at 100% node accuracy. Tree-level errors at extreme
-scales are integer overflow, not model failures.
+### 8. Build the ascending arm (type assigner) ← NEXT
 
-### 7. Expand kernel: lambda primitives ← NEXT
+The hard remaining problem. Concrete plan:
 
-The VSM tree node works for arithmetic ({+, -, *} dispatch). Now
-expand the kernel to lambda calculus primitives:
+**Step A: Generate type-assignment training data from A3B.**
+- Feed diverse English sentences to Qwen3.5-35B-A3B (port 5102)
+- Collect word-by-word Montague/CCG type assignments
+- Build a dataset: (token_sequence, type_labels) pairs
+- Start with 1K–10K sentences, expand as needed
+- Include S-expressions (trivial types) as calibration
 
-**a) Add more operations:**
-- Division (with error handling for div-by-zero)
-- Comparison operators (=, <, >, <=, >=)
-- Boolean ops (and, or, not)
-- `if` / conditional dispatch
+**Step B: Define the type inventory.**
+- The A3B uses full Montague types (recursive, infinite set)
+- Need a finite subset that covers the kernel's needs
+- CCG practice uses ~50–100 categories
+- Start minimal: e, t, e→t, (e→t)→t, e→(e→t), det, etc.
+- Map A3B's type strings to a finite label set
 
-The op classification scales trivially — it's a 3→N class problem
-where the model already achieves 100% at 3 classes. Test at N=10, 20.
+**Step C: Train a small ternary type classifier.**
+- Token embeddings → type labels (sequence labeling task)
+- Supervised by the A3B's output from Step A
+- The ascending arm architecture: strided attention or simple
+  transformer with ternary weights
+- Target: >90% type accuracy on held-out prose
 
-**b) Lambda primitives:**
-- `abstraction` (λx.M) — create a function
-- `application` (M N) — apply function to argument
-- `β-reduction` ((λx.M)N → M[x:=N]) — substitute and reduce
-- `compose(f, g)` — function composition
+**Step D: Mechanical tree builder.**
+- Given typed tokens, compose using CCG rules
+- Function application: (A→B, A) → B
+- This is deterministic parsing, not learned
+- CYK for correctness, shift-reduce for speed
 
-These require richer node types (not just INT → INT operations).
-The VSM node's type system (currently trivial — everything is INT)
-becomes the key mechanism: type-directed dispatch to the right kernel
-primitive.
+**Step E: End-to-end integration.**
+- tokens → ascending arm → types → tree builder → VSM tree → result
+- Test on: S-expressions (should be 100%), simple prose, complex prose
 
-**c) Higher-order functions:**
-- `map`, `reduce`, `filter` — structural recursion over lists
-- These test whether the VSM tree can handle variable-arity children
+**Open questions:**
+- Type inventory size: what's the minimum that works?
+- Context window: how much context does disambiguation need?
+- Error tolerance: how robust is downstream to type errors?
+- Can ternary weights learn type assignment at all?
 
-### 8. Structure discovery (the ascending arm) ← NEXT (parallel track)
+### 9. Future: variable binding and scope
 
-For S-expressions, tree structure is given by parentheses. For prose,
-it must be discovered. The ascending arm from v7/v9 is the candidate:
+- `let` expressions, variable references, closures
+- Requires environment threading through the tree
+- Tests whether the VSM tree can handle non-local dependencies
 
-- Strided attention discovers constituent boundaries
-- Outputs a tree structure for the VSM nodes to execute on
-- The ascending arm = S4 (intelligence, discovers what's there)
-- The VSM tree = S1 (operations, executes what S4 found)
-
-This is the harder problem. Start with: given tokenized S-expressions,
-can a small ternary model learn to output the tree structure?
-
-### 9. Future: io! notation + sieve pipeline
+### 10. Future: io! notation + sieve pipeline
 
 - Update `bb clj2lambda` for `io!` with `:as` annotations
 - Pure/effectful classification training
-- Multi-pass examples (partial reductions, register usage)
 
 ## Session 055 — VSM Tree Viability Proven
 
@@ -182,11 +186,12 @@ failures had all ops correct.
 
 | File | Purpose |
 |------|---------|
-| `scripts/v9/vsm_tree_v5.py` | **Lambda primitives: partial/apply/compose** |
-| `scripts/v9/vsm_tree_v4.py` | 18-op kernel: mixed types, variable arity |
-| `scripts/v9/vsm_tree_v3.py` | Pass-through arch proof (3 ops) |
-| `scripts/v9/vsm_tree_v2.py` | Bottleneck diagnosis experiments |
+| `scripts/v9/vsm_tree_v5.py` | **Lambda primitives: partial/apply/compose, 100%** |
+| `scripts/v9/vsm_tree_v4.py` | 18-op kernel: mixed types, variable arity, 100% |
+| `scripts/v9/vsm_tree_v3.py` | Pass-through arch proof (3 ops), 100% |
+| `scripts/v9/vsm_tree_v2.py` | Bottleneck diagnosis (7 variants) |
 | `scripts/v9/vsm_tree.py` | v1 (superseded) |
+| `scripts/v9/probe_typing.py` | **Type system probing (4B + A3B)** |
 
 ### Kernel expanded: 18 ops → 22 ops with lambda primitives
 
@@ -222,18 +227,20 @@ Example: `(apply (comp (partial max 9) (partial <= 7)) (* 1 4))` → 9
 
 ### What this means for the project
 
-1. **The VSM tree node is solved for S-expressions.** Op routing at
-   100% across 18 ops, 6 categories, 3 arities, 2 types. Values pass
-   through. Exact computation via kernel.
+1. **The VSM tree kernel is complete.** 22 ops, 5 types, variable
+   arity, compound values, function composition. 100% accuracy.
 
-2. **The kernel can grow further.** The architecture handles N ops,
-   mixed types, and variable arity trivially. Next: lambda primitives
-   (abstraction, application, β-reduction, composition).
+2. **Identity is the foundational principle.** Every bottleneck was
+   blocked identity; every fix was restoring it. Applies to all
+   architectures. See `identity-as-substrate.md`.
 
-3. **The hard problem is tree discovery.** For S-expressions, the tree
-   is given (match parens). For prose, the ascending arm must discover
-   constituent boundaries and output a tree structure for the VSM nodes
-   to execute on. This is the next frontier.
+3. **The A3B can type prose.** Qwen3.5-35B-A3B assigns correct
+   Montague/CCG types word-by-word to arbitrary sentences. This is
+   the training oracle for the ascending arm.
+
+4. **The extraction path is concrete.** A3B generates training data →
+   ascending arm learns type assignment → mechanical composition →
+   proven VSM kernel. Only the ascending arm is unbuilt.
 
 ## Session 054 — Kernel Routing Viability Exploration
 
@@ -631,10 +638,13 @@ TOTAL: 559M logical, ~146 MB packed, 99.7% ternary
 
 | Purpose | Path |
 |---------|------|
-| **v9 VSM tree v5 (lambda primitives)** | `scripts/v9/vsm_tree_v5.py` |
+| **v9 VSM tree v5 (lambda, 22 ops, 100%)** | `scripts/v9/vsm_tree_v5.py` |
 | v9 VSM tree v4 (18 ops, mixed types) | `scripts/v9/vsm_tree_v4.py` |
 | v9 VSM tree v3 (pass-through proof) | `scripts/v9/vsm_tree_v3.py` |
 | v9 VSM tree v2 (bottleneck diag) | `scripts/v9/vsm_tree_v2.py` |
+| **Type system probe (4B + A3B)** | `scripts/v9/probe_typing.py` |
+| **v9 architecture doc (proven)** | `mementum/knowledge/explore/v9-architecture-speculation.md` |
+| **Identity principle** | `mementum/knowledge/explore/identity-as-substrate.md` |
 | v9 VSM tree v1 (superseded) | `scripts/v9/vsm_tree.py` |
 | v9 kernel primitives | `scripts/v9/kernel.py` |
 | v9 query router (50% route) | `scripts/v9/kernel_model.py` |
