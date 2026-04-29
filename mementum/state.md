@@ -2,11 +2,54 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-29 | Session: 055
+> Last updated: 2026-04-29 | Session: 056
 
 ## Where we are
 
-**VSM tree kernel PROVEN. Prose typing mechanism IDENTIFIED. Extraction path CONCRETE.**
+**TYPE BASINS DISCOVERED. Kernel dispatch via activation geometry CONFIRMED.**
+
+Session 056 probed Qwen3-32B with instrumented inference (GGUF→PyTorch
+hooks on all 64 layers). Three probes, one conclusion: types are
+geometric basins in activation space, not symbolic labels.
+
+### Session 056 results
+
+#### 1. Typing zone: layers 27-36 (middle third)
+
+Loaded Qwen3-32B-Q8_0.gguf via `transformers` `gguf_file=` param
+(auto-dequant to fp16, MPS device). 81 probe words across 15 semantic
+groups, hooked residual stream output at all 64 layers.
+
+- Peak separation at **L28** (within/between ratio **3.9×**)
+- Broad plateau L26-37 — the **typing zone**
+- 7 natural HDBSCAN clusters at L28: predicate, cognition, reduction,
+  property, entity, comparison, referent basins
+- Clusters are **semantic-functional**, not purely syntactic
+  (cognition verbs separate from motion verbs, unlike Montague)
+
+#### 2. Kernel operations form semantic basins
+
+94 operator words across 19 kernel ops. Higher-order ops cluster
+tightest: apply (1.000), compose (0.999), partial (0.642). Arithmetic
+ops weaker (add=0.28) — too semantically diverse in natural language.
+
+#### 3. Cross-notation expression convergence (the big result)
+
+54 expressions: same computation in S-expr, math, and prose notation.
+Extracted activation at last token ("=" position where result composes).
+
+- **53/54 cross-notation pairs exceed 0.5 cosine similarity**
+- Same-notation invariance: S-expr `(* 2 3)` ↔ `(* 7 8)` = 0.95
+  (model extracts the OPERATION, not the operands)
+- S-expr ↔ math: 0.55-0.69 | math ↔ prose: 0.65-0.72
+- Nested composition clusters: `(+ 3 (* 4 5))` ↔ `3 + 4 * 5` = 0.69
+
+**Key insight:** The ascending arm should target activation geometry
+at L28-37, not CCG type labels. The basins ARE the dispatch table.
+Training data = `(token_in_context, L28_hidden_state)` pairs from
+the 32B model.
+
+### Prior results (sessions 049-055)
 
 Session 055 was the most productive session in the project. Three
 major results in one session:
@@ -74,44 +117,45 @@ Mixed types (INT, BOOL, FN, FN_COMP). Variable arity. 100% accuracy.
 
 ### 8. Build the ascending arm (type assigner) ← NEXT
 
-The hard remaining problem. Concrete plan:
+The hard remaining problem. **Reframed by session 056 findings:**
 
-**Step A: Generate type-assignment training data from A3B.**
-- Feed diverse English sentences to Qwen3.5-35B-A3B (port 5102)
-- Collect word-by-word Montague/CCG type assignments
-- Build a dataset: (token_sequence, type_labels) pairs
-- Start with 1K–10K sentences, expand as needed
-- Include S-expressions (trivial types) as calibration
+Types are NOT symbolic labels (CCG categories). Types are **geometric
+basins** in activation space. The ascending arm learns to project
+tokens into the same basin geometry the 32B model uses at L28-37.
 
-**Step B: Define the type inventory.**
-- The A3B uses full Montague types (recursive, infinite set)
-- Need a finite subset that covers the kernel's needs
-- CCG practice uses ~50–100 categories
-- Start minimal: e, t, e→t, (e→t)→t, e→(e→t), det, etc.
-- Map A3B's type strings to a finite label set
+**Step A: Map inter-op basin structure.** ← CURRENT
+- Which kernel ops share basins vs have distinct basins?
+- How do the 22 ops organize relative to each other?
+- Does the basin structure suggest a natural hierarchy?
+- Do prose descriptions of computation land in op basins?
 
-**Step C: Train a small ternary type classifier.**
-- Token embeddings → type labels (sequence labeling task)
-- Supervised by the A3B's output from Step A
-- The ascending arm architecture: strided attention or simple
-  transformer with ternary weights
-- Target: >90% type accuracy on held-out prose
+**Step B: Generate basin-targeted training data from Qwen3-32B.**
+- Feed diverse text through the 32B model
+- Extract activation vectors at L28-37 (the typing zone)
+- These vectors ARE the training targets (not text labels)
+- Dataset: (token_sequence, L28_hidden_state) pairs
+- Include S-expressions (trivial routing) as calibration
+
+**Step C: Train small ternary basin projector.**
+- Token embeddings → basin vectors (regression, not classification)
+- Or: embeddings → cluster assignments (classification over ~7-20 basins)
+- Supervised by the 32B's activation geometry
+- The ascending arm IS the dimensionality reducer
 
 **Step D: Mechanical tree builder.**
-- Given typed tokens, compose using CCG rules
-- Function application: (A→B, A) → B
-- This is deterministic parsing, not learned
+- Given basin-typed tokens, compose using type compatibility
+- Basin proximity determines composability
 - CYK for correctness, shift-reduce for speed
 
 **Step E: End-to-end integration.**
-- tokens → ascending arm → types → tree builder → VSM tree → result
+- tokens → ascending arm → basin vectors → tree builder → VSM tree → result
 - Test on: S-expressions (should be 100%), simple prose, complex prose
 
-**Open questions:**
-- Type inventory size: what's the minimum that works?
-- Context window: how much context does disambiguation need?
-- Error tolerance: how robust is downstream to type errors?
-- Can ternary weights learn type assignment at all?
+**Open questions (updated by session 056):**
+- Basin count: 7 at L28 for general language — how many for kernel ops?
+- Cross-notation gap: S-expr↔prose is 0.55-0.70 — can ternary close it?
+- Basin granularity: do we need per-op basins or per-category?
+- Error tolerance: how robust is downstream to basin misassignment?
 
 ### 9. Future: variable binding and scope
 
@@ -634,6 +678,46 @@ TOTAL: 559M logical, ~146 MB packed, 99.7% ternary
 - Teacher-forced probe in tournament fitness
 - Forward/backward via MLX quantized_matmul (Apple AMX, 2-bit)
 
+## Session 056 — Type Basins Discovered
+
+### What was done
+
+Loaded Qwen3-32B-Q8_0.gguf in PyTorch via `transformers` `gguf_file=`
+parameter (auto-dequant Q8→fp16, MPS device, ~62s load time on M3 Ultra).
+Registered forward hooks on all 64 transformer layers to capture residual
+stream hidden states. Ran three probes:
+
+1. **General type clustering** (probe_clusters.py): 81 words in 15
+   semantic groups. Identified typing zone L26-37, peak at L28 (3.9×
+   within/between ratio). 7 natural clusters = semantic-functional basins.
+
+2. **Kernel operator words** (probe_kernel_basins.py level 1): 94 words
+   across 19 kernel ops. Higher-order ops form perfect basins (apply=1.0,
+   compose=0.999). Arithmetic ops weaker — "add/plus/sum/combine" too
+   semantically diverse (0.28).
+
+3. **Cross-notation expressions** (probe_kernel_basins.py level 2): 54
+   expressions — same computation in S-expr, math, and prose. 53/54 cross-
+   notation pairs >0.5 cosine sim. Same-notation op-invariance: 0.85-0.95.
+   Model extracts the OPERATION, not the operands.
+
+### Key insight
+
+Types are geometric basins in activation space, not symbolic labels.
+The ascending arm should learn to project into basin geometry, supervised
+by the 32B model's L28-37 activations. Training data = activation vectors,
+not CCG type strings. The basins ARE the kernel dispatch table.
+
+### Key files (session 056)
+
+| File | Purpose |
+|------|---------|
+| `scripts/v9/probe_clusters.py` | General type basin probe (GGUF→PyTorch) |
+| `scripts/v9/analyze_clusters.py` | UMAP + HDBSCAN cluster analysis |
+| `scripts/v9/probe_kernel_basins.py` | Kernel op basins + expression convergence |
+| `results/cluster-probe/` | Activations, clusters, UMAP plots, similarity maps |
+| `results/kernel-basins/` | Operator + expression activations and scores |
+
 ## Key files
 
 | Purpose | Path |
@@ -643,6 +727,9 @@ TOTAL: 559M logical, ~146 MB packed, 99.7% ternary
 | v9 VSM tree v3 (pass-through proof) | `scripts/v9/vsm_tree_v3.py` |
 | v9 VSM tree v2 (bottleneck diag) | `scripts/v9/vsm_tree_v2.py` |
 | **Type system probe (4B + A3B)** | `scripts/v9/probe_typing.py` |
+| **Type basin probe (32B GGUF)** | `scripts/v9/probe_clusters.py` |
+| **Kernel basin probe (32B ops+exprs)** | `scripts/v9/probe_kernel_basins.py` |
+| **Basin cluster analysis (UMAP+HDBSCAN)** | `scripts/v9/analyze_clusters.py` |
 | **v9 architecture doc (proven)** | `mementum/knowledge/explore/v9-architecture-speculation.md` |
 | **Identity principle** | `mementum/knowledge/explore/identity-as-substrate.md` |
 | v9 VSM tree v1 (superseded) | `scripts/v9/vsm_tree.py` |
