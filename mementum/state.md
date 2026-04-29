@@ -2,22 +2,26 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-28 | Session: 052
+> Last updated: 2026-04-29 | Session: 053
 
 ## Where we are
 
-**v8 evolution redesigned. Ready to re-launch BIOS training.**
+**v8 BIOS training completed to step 32.5K. Architecture under review.**
 
-DualMERA (559M, 99.7% ternary, d=1024) with Qwen3 BBPE tokenizer.
-Training loop uses **redesigned evolutionary mutation** with phase-aware
-budget, depth-weighted allocation, probe-aware fitness, sign flips,
-and adaptive mutation rate. MLX quantized_matmul on Apple AMX.
+v8 DualMERA (559M) trained 32.5K/50K steps. 14 of 16 MERA levels are
+dead — only compressor.level0 and pipeline.level0 activated. Loss
+plateaued at ~3.11, probe accuracy 0% throughout. The architecture
+is the wrong shape for the task, not a training dynamics issue.
 
-**Problem identified in session 052:** Original cone-based evolution was
-starved — gamma (continuous, Adam) learned surface statistics in ~1K steps,
-driving loss down → r_ema down → cone narrow → topology frozen at 0.009%
-mutation rate. 82% acceptance proved the topology was nowhere near optimal.
-Probe accuracy was 0% — no circuits formed.
+**Session 053 produced a design reexamination** that may lead to v9.
+Key insights: the compressor can't compress already-dense math/code,
+fixed strides don't align with expression boundaries, flat attention
+forces encoding overhead that strided attention eliminates, and the
+Pythia-160M circuit is Montague-shaped (distributed three-phase) while
+Qwen3-4B's is concentrated (3 heads). For our small model, Pythia's
+shape is more informative.
+
+**See:** `mementum/knowledge/explore/v9-architecture-speculation.md`
 
 ## What to do next
 
@@ -90,6 +94,58 @@ uv run python scripts/v8/train.py --phase dolma --resume checkpoints/v8-bios/ste
 - Update `bb clj2lambda` for `io!` with `:as` annotations
 - Pure/effectful classification training
 - Multi-pass examples (partial reductions, register usage)
+
+## Session 053 — Architecture Reexamination
+
+### v8 training data (13 checkpoints, steps 2500–32500)
+
+Loss plateaued at ~3.11 from step 12.5K. Gamma saturated (r_ema=0.139).
+Adaptive mutation rate collapsed to floor (0.1% vs designed 0.5%).
+Accept rate inverted from 16% → 66% (tiny mutations, easy to accept,
+barely exploring). Probe accuracy: 0% throughout.
+
+14/16 MERA levels dead. Only compressor.level0 and pipeline.level0 active.
+52% of 559M params doing nothing. Shared levels, reducers, feedbacks 1-7
+all dormant. The model is a shallow 2-level system.
+
+### Architecture insights
+
+1. **Compressor can't compress math** — code/math is already dense,
+   no redundancy for multi-scale compression to exploit.
+
+2. **Fixed strides vs expression boundaries** — stride-8 windows split
+   expressions arbitrarily. The hierarchy needs to follow expression
+   structure, not a spatial grid.
+
+3. **Flat attention = beta reduction** — LLMs encode tree structure as
+   fractal spiral through the residual stream (1,149 heads of encoding
+   in Qwen3-4B). Strided attention represents trees directly, eliminating
+   this overhead.
+
+4. **v7 ascending arm worked** — ~23M params, self-similar wavelet
+   compression, spread from smallest stride upward. The descending arm
+   (pipeline) couldn't find its shape and had to stop.
+
+5. **Compiler/compressor share 92% of heads** (Qwen3-4B) but are not
+   identical. Lambda function and compression function are substrate
+   and operator, not one circuit.
+
+6. **Pythia-160M circuit is Montague-shaped** — distributed three-phase
+   (accumulate→plateau→collapse = type→parse→apply), no individual head
+   essential. More informative for small model design than Qwen's
+   concentrated 3-head circuit.
+
+### Speculative design direction (v9)
+
+- Much smaller than 559M (v7=23M, CompressorLM=17M)
+- Self-similar operation at every level (wavelet, proven by v7)
+- Dynamic/expression-guided attention (not fixed strides)
+- Bottom-up training with dynamic babashka corpus (infinite fresh data)
+- Montague three-phase structure as organizing principle
+- Possibly unified compress-reduce operation
+- More top-down probing needed before committing
+
+**Document:** `mementum/knowledge/explore/v9-architecture-speculation.md`
 
 ## Session 052 — Evolutionary Mutation Redesign
 
