@@ -33,7 +33,29 @@ groups, hooked residual stream output at all 64 layers.
 tightest: apply (1.000), compose (0.999), partial (0.642). Arithmetic
 ops weaker (add=0.28) — too semantically diverse in natural language.
 
-#### 3. Cross-notation expression convergence (the big result)
+#### 3. Kernel ops form 3-level dispatch hierarchy
+
+19 kernel ops at L28-37 form 3 stable super-basins:
+- Super-basin 1 (12 ops): all functional ops at cos>0.99 (add/sub/mul/
+  div/and/or/not/if/apply/compose/partial/negate) — one "do something" basin
+- Basin 2 (3 ops): comparison (eq/lt/gt) — separate
+- Basin 3 (4 ops): extremum/unary (abs/min/max/mod) — separate
+
+Implication: ascending arm dispatches to 3 coarse basins. Fine-grained
+op dispatch comes from token identity (value pass-through), not basin geometry.
+
+#### 4. Behaviors reach DEEP — context reshapes type basins
+
+Behavioral frame (Calculate/Summarize/Analyze) IS NOT surface:
+- Same content word in different frames: only 0.42-0.57 cosine sim at L28
+- Relative shift 0.75-0.96 — behaviors reshape geometry to the typing zone
+- Invariance drops: L0 (0.96) → L28 (0.50) → L32 (0.51) → L62 (0.74)
+- ALL 12 tested words marked DEEP (rel_shift > 0.15)
+
+Implication: training data MUST include diverse behavioral contexts.
+Cannot train on isolated words — the frame is part of the type assignment.
+
+#### 5. Cross-notation expression convergence (the big result)
 
 54 expressions: same computation in S-expr, math, and prose notation.
 Extracted activation at last token ("=" position where result composes).
@@ -123,7 +145,7 @@ Types are NOT symbolic labels (CCG categories). Types are **geometric
 basins** in activation space. The ascending arm learns to project
 tokens into the same basin geometry the 32B model uses at L28-37.
 
-**Step A: Map inter-op basin structure.** ← CURRENT
+**Step A: Map inter-op basin structure.** ← DONE (session 056)
 - Which kernel ops share basins vs have distinct basins?
 - How do the 22 ops organize relative to each other?
 - Does the basin structure suggest a natural hierarchy?
@@ -152,10 +174,12 @@ tokens into the same basin geometry the 32B model uses at L28-37.
 - Test on: S-expressions (should be 100%), simple prose, complex prose
 
 **Open questions (updated by session 056):**
-- Basin count: 7 at L28 for general language — how many for kernel ops?
+- Context sensitivity: behavioral frame shifts basins 0.75-0.96 relative
+  — how much context does the ascending arm need?
 - Cross-notation gap: S-expr↔prose is 0.55-0.70 — can ternary close it?
-- Basin granularity: do we need per-op basins or per-category?
-- Error tolerance: how robust is downstream to basin misassignment?
+- Training data volume: how many (word, context, activation) triples needed?
+- 3-basin vs finer dispatch: is 3 coarse basins enough or need sub-basins?
+- Invariance recovery: basins reconverge at L48-62 — what happens there?
 
 ### 9. Future: variable binding and scope
 
@@ -730,6 +754,9 @@ not CCG type strings. The basins ARE the kernel dispatch table.
 | **Type basin probe (32B GGUF)** | `scripts/v9/probe_clusters.py` |
 | **Kernel basin probe (32B ops+exprs)** | `scripts/v9/probe_kernel_basins.py` |
 | **Basin cluster analysis (UMAP+HDBSCAN)** | `scripts/v9/analyze_clusters.py` |
+| **Kernel op topology probe** | `scripts/v9/probe_op_topology.py` |
+| **Behavior basin probe** | `scripts/v9/probe_behaviors.py` |
+| **Behavior depth probe** | `scripts/v9/probe_behavior_depth.py` |
 | **v9 architecture doc (proven)** | `mementum/knowledge/explore/v9-architecture-speculation.md` |
 | **Identity principle** | `mementum/knowledge/explore/identity-as-substrate.md` |
 | v9 VSM tree v1 (superseded) | `scripts/v9/vsm_tree.py` |
