@@ -2,24 +2,32 @@
 
 > Bootloader. Read in ~30 seconds. Step 1 of every session.
 >
-> Last updated: 2026-04-29 | Session: 053
+> Last updated: 2026-04-29 | Session: 054
 
 ## Where we are
 
-**v8 BIOS training completed to step 32.5K. Architecture under review.**
+**v8 abandoned. v9 kernel routing prototype VIABLE. Architecture identified.**
 
-v8 DualMERA (559M) trained 32.5K/50K steps. 14 of 16 MERA levels are
-dead — only compressor.level0 and pipeline.level0 activated. Loss
-plateaued at ~3.11, probe accuracy 0% throughout. The architecture
-is the wrong shape for the task, not a training dynamics issue.
+v8 DualMERA (559M) abandoned at session 053 — 14/16 levels dead,
+architecture wrong for the task. Session 053 produced the v9
+speculation: hybrid ternary routing + exact lambda kernel.
 
-**Session 053 produced a design reexamination** that may lead to v9.
-Key insights: the compressor can't compress already-dense math/code,
-fixed strides don't align with expression boundaries, flat attention
-forces encoding overhead that strided attention eliminates, and the
-Pythia-160M circuit is Montague-shaped (distributed three-phase) while
-Qwen3-4B's is concentrated (3 heads). For our small model, Pythia's
-shape is more informative.
+**Session 054 built and tested the v9 kernel routing prototype.**
+Seven files in `scripts/v9/`. Key result: ternary evolution CAN route
+from token embeddings to exact computation primitives. 50% route
+accuracy, 100% op accuracy, 52% exact results. Evolution contributes
++47pp over Adam-only. Type system (type/parse/apply Montague
+primitives) converges to 100% immediately.
+
+The integrated architecture (ascending arm + type/parse/apply + kernel)
+identified a critical gradient flow issue: ternary attention in the
+ascending arm blocks gradient, requiring a skip connection from raw
+embeddings. With skip: arg1 accuracy 10% → 51%.
+
+**Architecture:** skip + ascending arm (self-similar ternary attention)
++ type/parse/apply heads + exact kernel. Training curriculum: phase 1
+skip-dominant, phase 2 evolution finds ascending topology, phase 3
+ascending dominant.
 
 **See:** `mementum/knowledge/explore/v9-architecture-speculation.md`
 
@@ -63,37 +71,116 @@ Replaced custom Metal ternary kernels with `mx.quantized_matmul(bits=2)`:
 - Integrated into train.py at eval_interval
 - Accuracy 0% → >0% = circuit formation signal
 
-### 5. Train v8 BIOS flash ← NEXT
+### 5. ~~Train v8 BIOS flash~~ ❌ ABANDONED (session 053)
 
-```bash
-uv run python scripts/v8/train.py --phase bios
-```
+v8 architecture is the wrong shape. 14/16 MERA levels dead at 32.5K
+steps, 0% probe accuracy throughout. See session 053 notes below.
 
-- 559M all-ternary DualMERA on 1 shard (49.75M tokens, ~16 epochs)
-- 50K steps, ~27 hours
-- **Gradient-informed** mutations: |∂L/∂γ| guides row selection, mean(|x|) guides columns
-- Budget: 2.8M mutations/gen, constant for 40K steps, then linear decay
-- Depth-weighted: pipeline.shared 2×, embedding 0.1×
-- Teacher-forced probe fitness: loss - 0.5 × probe_accuracy (137ms per probe)
-- Adaptive rate: auto-tunes base_pct from strategy win history
-- Checkpoints every 2500 steps with importance maps + evolution diagnostics
-- Monitor: probe accuracy 0% → >0% = circuit formation
+### 6. Build v9 kernel-routed architecture ← NEXT
 
-### 6. Train v8 Dolma (after BIOS)
+The v9 prototype (session 054) proved kernel routing works. Next steps:
 
-```bash
-uv run python scripts/v8/train.py --phase dolma --resume checkpoints/v8-bios/step_050000
-```
+**a) Fix the remaining routing issues:**
+- Op routing stuck at 33% in integrated model (ternary mix between
+  query attention and projection blocks gradient). Fix: direct
+  projection from attended representation, no intermediate ternary.
+- Arg2 asymmetry: arg1 learns (51%), arg2 doesn't (8%). Queries
+  need architectural differentiation.
 
-- Resume from BIOS checkpoint, narrow cone (protect BIOS circuits)
-- 60 shards, 3B tokens, seq_len=4096
-- Deep circuits should resist overwriting by prose
+**b) Training curriculum (3 phases):**
+- Phase 1: Skip-dominant. Queries learn to route from raw token
+  embeddings (already proven: 50% route accuracy). Ascending arm
+  ternary topology doesn't contribute yet.
+- Phase 2: Evolution finds ascending arm topology that IMPROVES on
+  skip-only baseline. Multi-scale representations add value.
+- Phase 3: Ascending arm carries most information. Skip = safety net.
+
+**c) Scale up once routing converges:**
+- Expand from max_val=10 to max_val=100
+- Test nested expressions (depth 2-3)
+- Expand kernel beyond arithmetic: lambda primitives (abstraction,
+  application, β-reduction, composition)
 
 ### 7. Future: io! notation + sieve pipeline
 
 - Update `bb clj2lambda` for `io!` with `:as` annotations
 - Pure/effectful classification training
 - Multi-pass examples (partial reductions, register usage)
+
+## Session 054 — Kernel Routing Viability Exploration
+
+### What was done
+
+Built and tested 7 files in `scripts/v9/` exploring whether ternary
+evolution can route from token embeddings to exact kernel primitives.
+
+### Experiment results
+
+| Architecture | Op% | Arg1% | Arg2% | Route% | Result% |
+|---|---|---|---|---|---|
+| **Query-based + evolution** | **100%** | **59%** | **75%** | **50%** | **52%** |
+| Query-based, Adam only | 68% | 18% | 21% | 3% | 6% |
+| Strided (value embed) | 100% | 47% | 46% | 23% | 34% |
+| Strided (token+pool) | 31% | 9% | 30% | 1% | 5% |
+| Integrated (no skip) | 34% | 14% | 10% | 1% | 5% |
+| **Integrated (with skip)** | 34% | **51%** | 8% | 2% | 4% |
+
+### Key findings
+
+1. **Ternary evolution CAN route to exact kernel primitives.** The
+   query-based router achieves 50% route accuracy with evolution vs
+   2.8% without. Evolution contributes +47 percentage points.
+
+2. **Type system is trivially learnable.** Expression type, arg types,
+   and dispatch gating all converge to 100% on every run. The Montague
+   TYPE primitive works immediately.
+
+3. **Strided attention with pooling fails.** Mean pooling and crude
+   attention pooling destroy positional information. Need real Q/K/V
+   self-attention within windows.
+
+4. **Ascending arm blocks gradient.** Ternary attention projections
+   have zero gradient on topology (by design). Gamma alone can't shape
+   attention patterns. Loss flat at 5.7 without skip connection.
+
+5. **Skip connection is essential for bootstrap.** Raw token embeddings
+   concatenated with ascending arm output give parse queries gradient
+   access to positional token info. Arg1 accuracy: 10% → 51%.
+
+6. **Reduction before routing is necessary.** Stride windows split
+   expressions at arbitrary boundaries. Multiple levels of reduction
+   build up enough context for routing. The ascending arm IS the
+   reduction. Routing happens AFTER reduction, not at each window.
+
+### Architecture identified
+
+```
+tokens → float embeddings ──────────────────┐ (skip: gradient highway)
+       → ascending arm (ternary, shared) ───┤ (multi-scale structure)
+                                            ↓
+                                    [concatenated multi-scale]
+                                            ↓
+                                    TYPE  (classify semantic type)
+                                    PARSE (query-based routing)
+                                    APPLY (type-checked kernel dispatch)
+```
+
+Training curriculum:
+- Phase 1: Skip-dominant (queries route from raw tokens)
+- Phase 2: Evolution finds ascending arm topology
+- Phase 3: Ascending arm carries most information
+
+### Key files
+
+| File | Purpose |
+|------|---------|
+| `scripts/v9/kernel.py` | Exact arithmetic primitives + decode/encode |
+| `scripts/v9/kernel_model.py` | Query-based router (50% route accuracy) |
+| `scripts/v9/train_kernel.py` | Evolution + gradient hybrid training |
+| `scripts/v9/strided_kernel.py` | Strided variants (parser + token models) |
+| `scripts/v9/train_strided.py` | Strided training loop |
+| `scripts/v9/v9_model.py` | Integrated: ascending arm + type/parse/apply |
+| `scripts/v9/train_v9.py` | Integrated training loop |
 
 ## Session 053 — Architecture Reexamination
 
@@ -391,22 +478,23 @@ TOTAL: 559M logical, ~146 MB packed, 99.7% ternary
 
 | Purpose | Path |
 |---------|------|
-| **v8 design doc** | `mementum/knowledge/explore/v7.1-sieve-pipeline.md` |
-| **v8 model (dual MERA)** | `scripts/v8/model.py` |
-| **v8 ternary (quantized_matmul)** | `scripts/v8/ternary.py` |
-| **v8 tokenizer (Qwen3 BBPE)** | `scripts/v8/tokenizer.py` |
-| **v8 training loop** | `scripts/v8/train.py` |
-| **v8 computation probe** | `scripts/v8/compute_probe.py` |
-| **v8 kernel benchmark** | `scripts/v8/bench_kernel.py` |
-| **BIOS data generator (bb)** | `bb/us/whitford/verbum/bios.clj` |
-| **BIOS shard packer** | `scripts/v8/pack_bios.py` |
-| **Dolma re-tokenizer** | `scripts/v8/retokenize_dolma.py` |
-| **BIOS flash design** | `mementum/knowledge/explore/bios-flash-training.md` |
-| **BIOS shards** | `/Users/mwhitford/data/fractal-bitnet/shards-bios/` |
-| **Dolma Qwen3 shards** | `/Users/mwhitford/data/fractal-bitnet/shards-qwen3/` |
-| **v7 model (reference)** | `scripts/v7/model.py` |
-| **bb clj2lambda** | `bb/us/whitford/verbum/tasks.clj` |
-| **bb config** | `bb.edn` |
+| **v9 kernel primitives** | `scripts/v9/kernel.py` |
+| **v9 query router (50% route)** | `scripts/v9/kernel_model.py` |
+| **v9 router training** | `scripts/v9/train_kernel.py` |
+| **v9 strided variants** | `scripts/v9/strided_kernel.py` |
+| **v9 integrated model** | `scripts/v9/v9_model.py` |
+| **v9 integrated training** | `scripts/v9/train_v9.py` |
+| **v9 architecture spec** | `mementum/knowledge/explore/v9-architecture-speculation.md` |
+| v8 model (dual MERA) | `scripts/v8/model.py` |
+| v8 ternary (quantized_matmul) | `scripts/v8/ternary.py` |
+| v8 tokenizer (Qwen3 BBPE) | `scripts/v8/tokenizer.py` |
+| v8 training loop | `scripts/v8/train.py` |
+| BIOS data generator (bb) | `bb/us/whitford/verbum/bios.clj` |
+| BIOS shard packer | `scripts/v8/pack_bios.py` |
+| Dolma re-tokenizer | `scripts/v8/retokenize_dolma.py` |
+| v7 model (reference) | `scripts/v7/model.py` |
+| bb clj2lambda | `bb/us/whitford/verbum/tasks.clj` |
+| bb config | `bb.edn` |
 | Research program | `mementum/knowledge/explore/VERBUM.md` |
 
 ## Servers
