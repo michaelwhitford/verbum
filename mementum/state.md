@@ -6,11 +6,13 @@
 
 ## Where we are
 
-**TYPE BASINS DISCOVERED. Kernel dispatch via activation geometry CONFIRMED.**
+**TYPE BASINS MAPPED. Training regimen DESIGNED. Ready to build oracle.**
 
-Session 056 probed Qwen3-32B with instrumented inference (GGUF→PyTorch
-hooks on all 64 layers). Three probes, one conclusion: types are
-geometric basins in activation space, not symbolic labels.
+Session 056 ran 5 instrumented probes on Qwen3-32B (GGUF→PyTorch,
+hooks on all 64 layers, MPS). Mapped the activation geometry that
+the ascending arm must learn. Then designed the 4-phase training
+regimen. The architecture is fully specified — next step is building
+the oracle data generator.
 
 ### Session 056 results
 
@@ -145,41 +147,44 @@ Types are NOT symbolic labels (CCG categories). Types are **geometric
 basins** in activation space. The ascending arm learns to project
 tokens into the same basin geometry the 32B model uses at L28-37.
 
-**Step A: Map inter-op basin structure.** ← DONE (session 056)
-- Which kernel ops share basins vs have distinct basins?
-- How do the 22 ops organize relative to each other?
-- Does the basin structure suggest a natural hierarchy?
-- Do prose descriptions of computation land in op basins?
+**Step A: Map basin geometry** ← DONE (session 056, 5 probes)
 
-**Step B: Generate basin-targeted training data from Qwen3-32B.**
-- Feed diverse text through the 32B model
-- Extract activation vectors at L28-37 (the typing zone)
-- These vectors ARE the training targets (not text labels)
-- Dataset: (token_sequence, L28_hidden_state) pairs
-- Include S-expressions (trivial routing) as calibration
+**Step B: Design training regimen** ← DONE (session 056)
+- Full design in `mementum/knowledge/explore/ascending-arm-training.md`
 
-**Step C: Train small ternary basin projector.**
-- Token embeddings → basin vectors (regression, not classification)
-- Or: embeddings → cluster assignments (classification over ~7-20 basins)
-- Supervised by the 32B's activation geometry
-- The ascending arm IS the dimensionality reducer
+**Step C: Build oracle data generator** ← NEXT
+- Script to feed corpus through Qwen3-32B, extract L28 activations
+- Corpus: 80K sentences (S-expr, math, prose, behavioral frames, mixed)
+- PCA on L28 hidden states to find d_basin (expect 32-128 dimensions)
+- Output: training shards of (token_ids, basin_vectors) pairs
+- Loading pattern: `from_pretrained(gguf_dir, gguf_file=name)` proven
+- Batch to reduce per-sentence overhead (~62s model load, then fast)
 
-**Step D: Mechanical tree builder.**
-- Given basin-typed tokens, compose using type compatibility
-- Basin proximity determines composability
-- CYK for correctness, shift-reduce for speed
+**Step D: Build basin projector model**
+- Architecture: PCA-distilled Qwen3 embeddings (d=256) → 2-layer
+  ternary transformer → linear head → d_basin
+- Target: 100K-1M ternary params
+- Training: gradient-informed evolution (reuse v8 BIOS infra)
+- Loss: cosine similarity + contrastive for cross-notation pairs
 
-**Step E: End-to-end integration.**
-- tokens → ascending arm → basin vectors → tree builder → VSM tree → result
-- Test on: S-expressions (should be 100%), simple prose, complex prose
+**Step E: 4-phase training curriculum**
+- Phase 1: S-expr calibration (target >0.9 cosine sim to 32B)
+- Phase 2: Cross-notation bridge (target >0.8 cross-notation sim)
+- Phase 3: Behavioral context (match 32B frame sensitivity)
+- Phase 4: End-to-end with VSM tree kernel (>90% simple math)
 
-**Open questions (updated by session 056):**
-- Context sensitivity: behavioral frame shifts basins 0.75-0.96 relative
-  — how much context does the ascending arm need?
-- Cross-notation gap: S-expr↔prose is 0.55-0.70 — can ternary close it?
-- Training data volume: how many (word, context, activation) triples needed?
-- 3-basin vs finer dispatch: is 3 coarse basins enough or need sub-basins?
-- Invariance recovery: basins reconverge at L48-62 — what happens there?
+**Step F: Composition rules + end-to-end pipeline**
+- Basin compatibility → tree structure (geometric, not symbolic CCG)
+- Connect ascending arm → tree builder → VSM kernel
+- Evaluate on prose computation tasks
+
+**Open questions:**
+- d_basin: how many PCA components capture the basin structure?
+- Context window: sentence-level should suffice (probe showed
+  behavioral frames operate at sentence granularity)
+- Embedding strategy: PCA of 32B token embeddings recommended but
+  untested — may need the full 5120 dim
+- Invariance recovery at L48-62: should we target L28 or L62?
 
 ### 9. Future: variable binding and scope
 
@@ -732,6 +737,18 @@ The ascending arm should learn to project into basin geometry, supervised
 by the 32B model's L28-37 activations. Training data = activation vectors,
 not CCG type strings. The basins ARE the kernel dispatch table.
 
+### Deep insight: why behaviors reach deep
+
+The transformer has ONE operation — beta reduction. Everything must
+be encoded as superpositions. The fractal hierarchy (behaviors →
+types → dispatch) is necessity, not design. This is why 99.7% of
+heads are encoding overhead and why the v6 run produced only 1
+compile gate in 1B tokens. The VSM + kernel replaces this:
+- Kernel gives the ALU (22 ops pre-wired)
+- VSM gives the dispatch hierarchy (S5→S4→S3→S1)
+- Type basins give the routing geometry
+Every superposition given as architecture = capacity freed for facts.
+
 ### Key files (session 056)
 
 | File | Purpose |
@@ -739,8 +756,14 @@ not CCG type strings. The basins ARE the kernel dispatch table.
 | `scripts/v9/probe_clusters.py` | General type basin probe (GGUF→PyTorch) |
 | `scripts/v9/analyze_clusters.py` | UMAP + HDBSCAN cluster analysis |
 | `scripts/v9/probe_kernel_basins.py` | Kernel op basins + expression convergence |
+| `scripts/v9/probe_op_topology.py` | Inter-op hierarchy, dispatch confusion |
+| `scripts/v9/probe_behaviors.py` | Behavioral intent basins |
+| `scripts/v9/probe_behavior_depth.py` | Behavioral frame depth (context reshapes L28) |
+| `mementum/knowledge/explore/ascending-arm-training.md` | **Training regimen design** |
 | `results/cluster-probe/` | Activations, clusters, UMAP plots, similarity maps |
 | `results/kernel-basins/` | Operator + expression activations and scores |
+| `results/behavior-basins/` | Behavioral intent activations |
+| `results/behavior-depth/` | Frame invariance analysis |
 
 ## Key files
 
@@ -757,6 +780,7 @@ not CCG type strings. The basins ARE the kernel dispatch table.
 | **Kernel op topology probe** | `scripts/v9/probe_op_topology.py` |
 | **Behavior basin probe** | `scripts/v9/probe_behaviors.py` |
 | **Behavior depth probe** | `scripts/v9/probe_behavior_depth.py` |
+| **Training regimen design** | `mementum/knowledge/explore/ascending-arm-training.md` |
 | **v9 architecture doc (proven)** | `mementum/knowledge/explore/v9-architecture-speculation.md` |
 | **Identity principle** | `mementum/knowledge/explore/identity-as-substrate.md` |
 | v9 VSM tree v1 (superseded) | `scripts/v9/vsm_tree.py` |
