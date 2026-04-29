@@ -1,0 +1,1338 @@
+{
+  "layer": 32,
+  "n_clusters": 18,
+  "points": [
+    {
+      "text": "add",
+      "label": "add",
+      "type": "op",
+      "kernel_op": "kernel:add",
+      "cluster": 2,
+      "umap_x": 11.075321197509766,
+      "umap_y": 5.059183120727539
+    },
+    {
+      "text": "plus",
+      "label": "add",
+      "type": "op",
+      "kernel_op": "kernel:add",
+      "cluster": 3,
+      "umap_x": 9.778068542480469,
+      "umap_y": 2.453416109085083
+    },
+    {
+      "text": "sum",
+      "label": "add",
+      "type": "op",
+      "kernel_op": "kernel:add",
+      "cluster": 9,
+      "umap_x": 12.469396591186523,
+      "umap_y": 4.702915668487549
+    },
+    {
+      "text": "combine",
+      "label": "add",
+      "type": "op",
+      "kernel_op": "kernel:add",
+      "cluster": 16,
+      "umap_x": 14.301481246948242,
+      "umap_y": 2.0645270347595215
+    },
+    {
+      "text": "increase",
+      "label": "add",
+      "type": "op",
+      "kernel_op": "kernel:add",
+      "cluster": 17,
+      "umap_x": 14.182148933410645,
+      "umap_y": 2.4961435794830322
+    },
+    {
+      "text": "addition",
+      "label": "add",
+      "type": "op",
+      "kernel_op": "kernel:add",
+      "cluster": 9,
+      "umap_x": 11.80433177947998,
+      "umap_y": 5.175695419311523
+    },
+    {
+      "text": "subtract",
+      "label": "subtract",
+      "type": "op",
+      "kernel_op": "kernel:sub",
+      "cluster": 2,
+      "umap_x": 11.227095603942871,
+      "umap_y": 5.234652042388916
+    },
+    {
+      "text": "minus",
+      "label": "subtract",
+      "type": "op",
+      "kernel_op": "kernel:sub",
+      "cluster": 3,
+      "umap_x": 10.109875679016113,
+      "umap_y": 2.6266744136810303
+    },
+    {
+      "text": "difference",
+      "label": "subtract",
+      "type": "op",
+      "kernel_op": "kernel:sub",
+      "cluster": 9,
+      "umap_x": 12.685522079467773,
+      "umap_y": 4.206051349639893
+    },
+    {
+      "text": "decrease",
+      "label": "subtract",
+      "type": "op",
+      "kernel_op": "kernel:sub",
+      "cluster": -1,
+      "umap_x": 13.540898323059082,
+      "umap_y": 2.4879448413848877
+    },
+    {
+      "text": "reduce",
+      "label": "subtract",
+      "type": "op",
+      "kernel_op": "kernel:sub",
+      "cluster": 17,
+      "umap_x": 14.162444114685059,
+      "umap_y": 2.2969508171081543
+    },
+    {
+      "text": "deduct",
+      "label": "subtract",
+      "type": "op",
+      "kernel_op": "kernel:sub",
+      "cluster": -1,
+      "umap_x": 13.586906433105469,
+      "umap_y": 3.2538909912109375
+    },
+    {
+      "text": "multiply",
+      "label": "multiply",
+      "type": "op",
+      "kernel_op": "kernel:mul",
+      "cluster": 2,
+      "umap_x": 11.198769569396973,
+      "umap_y": 5.182736873626709
+    },
+    {
+      "text": "times",
+      "label": "multiply",
+      "type": "op",
+      "kernel_op": "kernel:mul",
+      "cluster": -1,
+      "umap_x": 10.360636711120605,
+      "umap_y": 2.5741195678710938
+    },
+    {
+      "text": "product",
+      "label": "multiply",
+      "type": "op",
+      "kernel_op": "kernel:mul",
+      "cluster": 9,
+      "umap_x": 12.525659561157227,
+      "umap_y": 4.592556476593018
+    },
+    {
+      "text": "double",
+      "label": "multiply",
+      "type": "op",
+      "kernel_op": "kernel:mul",
+      "cluster": 17,
+      "umap_x": 14.383334159851074,
+      "umap_y": 2.7648634910583496
+    },
+    {
+      "text": "scale",
+      "label": "multiply",
+      "type": "op",
+      "kernel_op": "kernel:mul",
+      "cluster": -1,
+      "umap_x": 14.89245319366455,
+      "umap_y": 2.290531873703003
+    },
+    {
+      "text": "divide",
+      "label": "divide",
+      "type": "op",
+      "kernel_op": "kernel:div",
+      "cluster": 2,
+      "umap_x": 11.094499588012695,
+      "umap_y": 5.115051746368408
+    },
+    {
+      "text": "divided",
+      "label": "divide",
+      "type": "op",
+      "kernel_op": "kernel:div",
+      "cluster": 3,
+      "umap_x": 9.801047325134277,
+      "umap_y": 2.683730363845825
+    },
+    {
+      "text": "quotient",
+      "label": "divide",
+      "type": "op",
+      "kernel_op": "kernel:div",
+      "cluster": 9,
+      "umap_x": 12.994588851928711,
+      "umap_y": 4.347831726074219
+    },
+    {
+      "text": "split",
+      "label": "divide",
+      "type": "op",
+      "kernel_op": "kernel:div",
+      "cluster": 17,
+      "umap_x": 14.830397605895996,
+      "umap_y": 2.614301919937134
+    },
+    {
+      "text": "halve",
+      "label": "divide",
+      "type": "op",
+      "kernel_op": "kernel:div",
+      "cluster": -1,
+      "umap_x": 14.29364013671875,
+      "umap_y": 3.069004535675049
+    },
+    {
+      "text": "remainder",
+      "label": "modulo",
+      "type": "op",
+      "kernel_op": "kernel:mod",
+      "cluster": 9,
+      "umap_x": 12.965646743774414,
+      "umap_y": 4.492403030395508
+    },
+    {
+      "text": "modulo",
+      "label": "modulo",
+      "type": "op",
+      "kernel_op": "kernel:mod",
+      "cluster": -1,
+      "umap_x": 9.215683937072754,
+      "umap_y": 2.3356988430023193
+    },
+    {
+      "text": "leftover",
+      "label": "modulo",
+      "type": "op",
+      "kernel_op": "kernel:mod",
+      "cluster": 9,
+      "umap_x": 12.036706924438477,
+      "umap_y": 4.957076549530029
+    },
+    {
+      "text": "mod",
+      "label": "modulo",
+      "type": "op",
+      "kernel_op": "kernel:mod",
+      "cluster": 3,
+      "umap_x": 9.341451644897461,
+      "umap_y": 2.471204996109009
+    },
+    {
+      "text": "minimum",
+      "label": "minimum",
+      "type": "op",
+      "kernel_op": "kernel:min",
+      "cluster": 9,
+      "umap_x": 12.477080345153809,
+      "umap_y": 3.9701013565063477
+    },
+    {
+      "text": "smallest",
+      "label": "minimum",
+      "type": "op",
+      "kernel_op": "kernel:min",
+      "cluster": 9,
+      "umap_x": 12.153769493103027,
+      "umap_y": 4.006509780883789
+    },
+    {
+      "text": "least",
+      "label": "minimum",
+      "type": "op",
+      "kernel_op": "kernel:min",
+      "cluster": 9,
+      "umap_x": 11.561576843261719,
+      "umap_y": 4.0622453689575195
+    },
+    {
+      "text": "lowest",
+      "label": "minimum",
+      "type": "op",
+      "kernel_op": "kernel:min",
+      "cluster": 9,
+      "umap_x": 11.86538314819336,
+      "umap_y": 4.323314666748047
+    },
+    {
+      "text": "min",
+      "label": "minimum",
+      "type": "op",
+      "kernel_op": "kernel:min",
+      "cluster": 9,
+      "umap_x": 12.27031421661377,
+      "umap_y": 4.8459553718566895
+    },
+    {
+      "text": "maximum",
+      "label": "maximum",
+      "type": "op",
+      "kernel_op": "kernel:max",
+      "cluster": 9,
+      "umap_x": 12.520162582397461,
+      "umap_y": 4.073291778564453
+    },
+    {
+      "text": "largest",
+      "label": "maximum",
+      "type": "op",
+      "kernel_op": "kernel:max",
+      "cluster": 9,
+      "umap_x": 11.944494247436523,
+      "umap_y": 3.9383790493011475
+    },
+    {
+      "text": "greatest",
+      "label": "maximum",
+      "type": "op",
+      "kernel_op": "kernel:max",
+      "cluster": 9,
+      "umap_x": 11.66911506652832,
+      "umap_y": 3.9860129356384277
+    },
+    {
+      "text": "highest",
+      "label": "maximum",
+      "type": "op",
+      "kernel_op": "kernel:max",
+      "cluster": 9,
+      "umap_x": 11.762499809265137,
+      "umap_y": 4.287426948547363
+    },
+    {
+      "text": "max",
+      "label": "maximum",
+      "type": "op",
+      "kernel_op": "kernel:max",
+      "cluster": 9,
+      "umap_x": 12.268091201782227,
+      "umap_y": 4.717944145202637
+    },
+    {
+      "text": "equal",
+      "label": "equal",
+      "type": "op",
+      "kernel_op": "kernel:eq",
+      "cluster": 13,
+      "umap_x": 12.133894920349121,
+      "umap_y": 3.0098166465759277
+    },
+    {
+      "text": "equals",
+      "label": "equal",
+      "type": "op",
+      "kernel_op": "kernel:eq",
+      "cluster": -1,
+      "umap_x": 8.373194694519043,
+      "umap_y": 1.6630843877792358
+    },
+    {
+      "text": "same",
+      "label": "equal",
+      "type": "op",
+      "kernel_op": "kernel:eq",
+      "cluster": 13,
+      "umap_x": 11.882351875305176,
+      "umap_y": 2.9979195594787598
+    },
+    {
+      "text": "identical",
+      "label": "equal",
+      "type": "op",
+      "kernel_op": "kernel:eq",
+      "cluster": 13,
+      "umap_x": 11.854935646057129,
+      "umap_y": 2.7776756286621094
+    },
+    {
+      "text": "matches",
+      "label": "equal",
+      "type": "op",
+      "kernel_op": "kernel:eq",
+      "cluster": 13,
+      "umap_x": 11.70511245727539,
+      "umap_y": 2.6913673877716064
+    },
+    {
+      "text": "less",
+      "label": "less_than",
+      "type": "op",
+      "kernel_op": "kernel:lt",
+      "cluster": 4,
+      "umap_x": 10.724722862243652,
+      "umap_y": 3.1383347511291504
+    },
+    {
+      "text": "smaller",
+      "label": "less_than",
+      "type": "op",
+      "kernel_op": "kernel:lt",
+      "cluster": 4,
+      "umap_x": 10.728506088256836,
+      "umap_y": 3.2238688468933105
+    },
+    {
+      "text": "below",
+      "label": "less_than",
+      "type": "op",
+      "kernel_op": "kernel:lt",
+      "cluster": 12,
+      "umap_x": 11.27547836303711,
+      "umap_y": 2.780099868774414
+    },
+    {
+      "text": "under",
+      "label": "less_than",
+      "type": "op",
+      "kernel_op": "kernel:lt",
+      "cluster": 12,
+      "umap_x": 11.03555679321289,
+      "umap_y": 2.6532812118530273
+    },
+    {
+      "text": "fewer",
+      "label": "less_than",
+      "type": "op",
+      "kernel_op": "kernel:lt",
+      "cluster": 4,
+      "umap_x": 10.903905868530273,
+      "umap_y": 3.4538745880126953
+    },
+    {
+      "text": "greater",
+      "label": "greater_than",
+      "type": "op",
+      "kernel_op": "kernel:gt",
+      "cluster": 4,
+      "umap_x": 10.626490592956543,
+      "umap_y": 3.078157663345337
+    },
+    {
+      "text": "larger",
+      "label": "greater_than",
+      "type": "op",
+      "kernel_op": "kernel:gt",
+      "cluster": 4,
+      "umap_x": 10.76765251159668,
+      "umap_y": 3.1555192470550537
+    },
+    {
+      "text": "above",
+      "label": "greater_than",
+      "type": "op",
+      "kernel_op": "kernel:gt",
+      "cluster": 12,
+      "umap_x": 11.092612266540527,
+      "umap_y": 2.5461206436157227
+    },
+    {
+      "text": "exceeds",
+      "label": "greater_than",
+      "type": "op",
+      "kernel_op": "kernel:gt",
+      "cluster": 12,
+      "umap_x": 11.157516479492188,
+      "umap_y": 2.6974754333496094
+    },
+    {
+      "text": "more",
+      "label": "greater_than",
+      "type": "op",
+      "kernel_op": "kernel:gt",
+      "cluster": 4,
+      "umap_x": 11.040243148803711,
+      "umap_y": 3.6021950244903564
+    },
+    {
+      "text": "and",
+      "label": "and_op",
+      "type": "op",
+      "kernel_op": "kernel:and",
+      "cluster": 10,
+      "umap_x": 12.911444664001465,
+      "umap_y": 2.6678531169891357
+    },
+    {
+      "text": "both",
+      "label": "and_op",
+      "type": "op",
+      "kernel_op": "kernel:and",
+      "cluster": 14,
+      "umap_x": 13.793578147888184,
+      "umap_y": 2.9918618202209473
+    },
+    {
+      "text": "conjunction",
+      "label": "and_op",
+      "type": "op",
+      "kernel_op": "kernel:and",
+      "cluster": 9,
+      "umap_x": 12.424426078796387,
+      "umap_y": 5.241650581359863
+    },
+    {
+      "text": "together",
+      "label": "and_op",
+      "type": "op",
+      "kernel_op": "kernel:and",
+      "cluster": -1,
+      "umap_x": 12.203163146972656,
+      "umap_y": 2.579868793487549
+    },
+    {
+      "text": "or",
+      "label": "or_op",
+      "type": "op",
+      "kernel_op": "kernel:or",
+      "cluster": 10,
+      "umap_x": 13.196304321289062,
+      "umap_y": 2.78402042388916
+    },
+    {
+      "text": "either",
+      "label": "or_op",
+      "type": "op",
+      "kernel_op": "kernel:or",
+      "cluster": -1,
+      "umap_x": 13.810962677001953,
+      "umap_y": 2.560724973678589
+    },
+    {
+      "text": "disjunction",
+      "label": "or_op",
+      "type": "op",
+      "kernel_op": "kernel:or",
+      "cluster": 9,
+      "umap_x": 12.19078540802002,
+      "umap_y": 5.450786113739014
+    },
+    {
+      "text": "alternatively",
+      "label": "or_op",
+      "type": "op",
+      "kernel_op": "kernel:or",
+      "cluster": 14,
+      "umap_x": 14.045263290405273,
+      "umap_y": 2.904470682144165
+    },
+    {
+      "text": "not",
+      "label": "not_op",
+      "type": "op",
+      "kernel_op": "kernel:not",
+      "cluster": 12,
+      "umap_x": 11.554269790649414,
+      "umap_y": 2.474881172180176
+    },
+    {
+      "text": "negation",
+      "label": "not_op",
+      "type": "op",
+      "kernel_op": "kernel:not",
+      "cluster": 9,
+      "umap_x": 12.363401412963867,
+      "umap_y": 5.360856056213379
+    },
+    {
+      "text": "negate",
+      "label": "not_op",
+      "type": "op",
+      "kernel_op": "kernel:not",
+      "cluster": 10,
+      "umap_x": 12.979784965515137,
+      "umap_y": 3.12886643409729
+    },
+    {
+      "text": "opposite",
+      "label": "not_op",
+      "type": "op",
+      "kernel_op": "kernel:not",
+      "cluster": 9,
+      "umap_x": 12.107335090637207,
+      "umap_y": 4.181424617767334
+    },
+    {
+      "text": "false",
+      "label": "not_op",
+      "type": "op",
+      "kernel_op": "kernel:not",
+      "cluster": 10,
+      "umap_x": 12.637919425964355,
+      "umap_y": 2.832185745239258
+    },
+    {
+      "text": "absolute",
+      "label": "absolute",
+      "type": "op",
+      "kernel_op": "kernel:abs",
+      "cluster": 9,
+      "umap_x": 12.7847261428833,
+      "umap_y": 4.634376525878906
+    },
+    {
+      "text": "magnitude",
+      "label": "absolute",
+      "type": "op",
+      "kernel_op": "kernel:abs",
+      "cluster": 9,
+      "umap_x": 12.624122619628906,
+      "umap_y": 4.853975772857666
+    },
+    {
+      "text": "abs",
+      "label": "absolute",
+      "type": "op",
+      "kernel_op": "kernel:abs",
+      "cluster": 9,
+      "umap_x": 12.676690101623535,
+      "umap_y": 5.12291955947876
+    },
+    {
+      "text": "distance",
+      "label": "absolute",
+      "type": "op",
+      "kernel_op": "kernel:abs",
+      "cluster": 9,
+      "umap_x": 13.022869110107422,
+      "umap_y": 3.901634693145752
+    },
+    {
+      "text": "negate",
+      "label": "negate_num",
+      "type": "op",
+      "kernel_op": "kernel:neg",
+      "cluster": 10,
+      "umap_x": 12.927149772644043,
+      "umap_y": 2.9385416507720947
+    },
+    {
+      "text": "negative",
+      "label": "negate_num",
+      "type": "op",
+      "kernel_op": "kernel:neg",
+      "cluster": -1,
+      "umap_x": 12.088388442993164,
+      "umap_y": 3.3950603008270264
+    },
+    {
+      "text": "invert",
+      "label": "negate_num",
+      "type": "op",
+      "kernel_op": "kernel:neg",
+      "cluster": -1,
+      "umap_x": 13.569796562194824,
+      "umap_y": 3.460425853729248
+    },
+    {
+      "text": "flip",
+      "label": "negate_num",
+      "type": "op",
+      "kernel_op": "kernel:neg",
+      "cluster": 17,
+      "umap_x": 14.84317398071289,
+      "umap_y": 2.3608288764953613
+    },
+    {
+      "text": "reverse",
+      "label": "negate_num",
+      "type": "op",
+      "kernel_op": "kernel:neg",
+      "cluster": 17,
+      "umap_x": 14.714278221130371,
+      "umap_y": 2.4970812797546387
+    },
+    {
+      "text": "if",
+      "label": "conditional",
+      "type": "op",
+      "kernel_op": "kernel:if",
+      "cluster": 14,
+      "umap_x": 13.95850944519043,
+      "umap_y": 3.105985403060913
+    },
+    {
+      "text": "when",
+      "label": "conditional",
+      "type": "op",
+      "kernel_op": "kernel:if",
+      "cluster": 14,
+      "umap_x": 14.007867813110352,
+      "umap_y": 3.2008230686187744
+    },
+    {
+      "text": "condition",
+      "label": "conditional",
+      "type": "op",
+      "kernel_op": "kernel:if",
+      "cluster": 9,
+      "umap_x": 12.900114059448242,
+      "umap_y": 4.023863792419434
+    },
+    {
+      "text": "conditional",
+      "label": "conditional",
+      "type": "op",
+      "kernel_op": "kernel:if",
+      "cluster": 9,
+      "umap_x": 12.526126861572266,
+      "umap_y": 5.446465015411377
+    },
+    {
+      "text": "whether",
+      "label": "conditional",
+      "type": "op",
+      "kernel_op": "kernel:if",
+      "cluster": 9,
+      "umap_x": 12.859265327453613,
+      "umap_y": 3.7908682823181152
+    },
+    {
+      "text": "choose",
+      "label": "conditional",
+      "type": "op",
+      "kernel_op": "kernel:if",
+      "cluster": 17,
+      "umap_x": 14.323097229003906,
+      "umap_y": 2.651562213897705
+    },
+    {
+      "text": "partial",
+      "label": "partial_app",
+      "type": "op",
+      "kernel_op": "kernel:partial",
+      "cluster": 9,
+      "umap_x": 12.45657730102539,
+      "umap_y": 5.507238864898682
+    },
+    {
+      "text": "bind",
+      "label": "partial_app",
+      "type": "op",
+      "kernel_op": "kernel:partial",
+      "cluster": 11,
+      "umap_x": 14.621926307678223,
+      "umap_y": 1.715696930885315
+    },
+    {
+      "text": "fix",
+      "label": "partial_app",
+      "type": "op",
+      "kernel_op": "kernel:partial",
+      "cluster": 17,
+      "umap_x": 14.4613618850708,
+      "umap_y": 2.5416224002838135
+    },
+    {
+      "text": "curry",
+      "label": "partial_app",
+      "type": "op",
+      "kernel_op": "kernel:partial",
+      "cluster": -1,
+      "umap_x": 13.637419700622559,
+      "umap_y": 2.7889692783355713
+    },
+    {
+      "text": "preset",
+      "label": "partial_app",
+      "type": "op",
+      "kernel_op": "kernel:partial",
+      "cluster": -1,
+      "umap_x": 13.861409187316895,
+      "umap_y": 3.3803040981292725
+    },
+    {
+      "text": "compose",
+      "label": "compose",
+      "type": "op",
+      "kernel_op": "kernel:compose",
+      "cluster": 16,
+      "umap_x": 14.451104164123535,
+      "umap_y": 2.115694999694824
+    },
+    {
+      "text": "chain",
+      "label": "compose",
+      "type": "op",
+      "kernel_op": "kernel:compose",
+      "cluster": 15,
+      "umap_x": 15.119897842407227,
+      "umap_y": 2.450972080230713
+    },
+    {
+      "text": "pipe",
+      "label": "compose",
+      "type": "op",
+      "kernel_op": "kernel:compose",
+      "cluster": 15,
+      "umap_x": 15.195831298828125,
+      "umap_y": 2.5392794609069824
+    },
+    {
+      "text": "combine",
+      "label": "compose",
+      "type": "op",
+      "kernel_op": "kernel:compose",
+      "cluster": 16,
+      "umap_x": 14.275055885314941,
+      "umap_y": 2.0157036781311035
+    },
+    {
+      "text": "sequence",
+      "label": "compose",
+      "type": "op",
+      "kernel_op": "kernel:compose",
+      "cluster": 15,
+      "umap_x": 15.139656066894531,
+      "umap_y": 2.4857001304626465
+    },
+    {
+      "text": "apply",
+      "label": "apply",
+      "type": "op",
+      "kernel_op": "kernel:apply",
+      "cluster": 16,
+      "umap_x": 14.127083778381348,
+      "umap_y": 1.8935834169387817
+    },
+    {
+      "text": "call",
+      "label": "apply",
+      "type": "op",
+      "kernel_op": "kernel:apply",
+      "cluster": 11,
+      "umap_x": 14.709095001220703,
+      "umap_y": 1.8616279363632202
+    },
+    {
+      "text": "invoke",
+      "label": "apply",
+      "type": "op",
+      "kernel_op": "kernel:apply",
+      "cluster": 11,
+      "umap_x": 14.451839447021484,
+      "umap_y": 1.655639410018921
+    },
+    {
+      "text": "execute",
+      "label": "apply",
+      "type": "op",
+      "kernel_op": "kernel:apply",
+      "cluster": 11,
+      "umap_x": 14.558527946472168,
+      "umap_y": 1.7507667541503906
+    },
+    {
+      "text": "evaluate",
+      "label": "apply",
+      "type": "op",
+      "kernel_op": "kernel:apply",
+      "cluster": 17,
+      "umap_x": 13.912229537963867,
+      "umap_y": 2.327772378921509
+    },
+    {
+      "text": "(+ 3 4)",
+      "label": "EXPR:expr_add_7",
+      "type": "expr",
+      "kernel_op": "result:7",
+      "cluster": 1,
+      "umap_x": 3.4804649353027344,
+      "umap_y": 1.3488245010375977
+    },
+    {
+      "text": "3 + 4",
+      "label": "EXPR:expr_add_7",
+      "type": "expr",
+      "kernel_op": "result:7",
+      "cluster": 0,
+      "umap_x": 7.041137218475342,
+      "umap_y": -2.974667549133301
+    },
+    {
+      "text": "three plus four",
+      "label": "EXPR:expr_add_7",
+      "type": "expr",
+      "kernel_op": "result:7",
+      "cluster": 6,
+      "umap_x": 8.20557975769043,
+      "umap_y": 1.4307641983032227
+    },
+    {
+      "text": "the sum of three and four",
+      "label": "EXPR:expr_add_7",
+      "type": "expr",
+      "kernel_op": "result:7",
+      "cluster": 5,
+      "umap_x": 7.430656433105469,
+      "umap_y": 1.2195961475372314
+    },
+    {
+      "text": "add(3, 4)",
+      "label": "EXPR:expr_add_7",
+      "type": "expr",
+      "kernel_op": "result:7",
+      "cluster": 1,
+      "umap_x": 3.822160243988037,
+      "umap_y": 1.3033967018127441
+    },
+    {
+      "text": "3 added to 4",
+      "label": "EXPR:expr_add_7",
+      "type": "expr",
+      "kernel_op": "result:7",
+      "cluster": -1,
+      "umap_x": 7.737509727478027,
+      "umap_y": 0.3795517086982727
+    },
+    {
+      "text": "(+ 7 3)",
+      "label": "EXPR:expr_add_10",
+      "type": "expr",
+      "kernel_op": "result:10",
+      "cluster": 1,
+      "umap_x": 3.4790847301483154,
+      "umap_y": 1.1290700435638428
+    },
+    {
+      "text": "7 + 3",
+      "label": "EXPR:expr_add_10",
+      "type": "expr",
+      "kernel_op": "result:10",
+      "cluster": 0,
+      "umap_x": 6.927754878997803,
+      "umap_y": -2.9729723930358887
+    },
+    {
+      "text": "seven plus three",
+      "label": "EXPR:expr_add_10",
+      "type": "expr",
+      "kernel_op": "result:10",
+      "cluster": 6,
+      "umap_x": 8.280993461608887,
+      "umap_y": 1.3008300065994263
+    },
+    {
+      "text": "the sum of seven and three",
+      "label": "EXPR:expr_add_10",
+      "type": "expr",
+      "kernel_op": "result:10",
+      "cluster": 5,
+      "umap_x": 7.535510540008545,
+      "umap_y": 1.3362152576446533
+    },
+    {
+      "text": "(- 7 3)",
+      "label": "EXPR:expr_sub_4",
+      "type": "expr",
+      "kernel_op": "result:4",
+      "cluster": 1,
+      "umap_x": 2.927776575088501,
+      "umap_y": 1.1391223669052124
+    },
+    {
+      "text": "7 - 3",
+      "label": "EXPR:expr_sub_4",
+      "type": "expr",
+      "kernel_op": "result:4",
+      "cluster": 0,
+      "umap_x": 7.0902252197265625,
+      "umap_y": -2.8882737159729004
+    },
+    {
+      "text": "seven minus three",
+      "label": "EXPR:expr_sub_4",
+      "type": "expr",
+      "kernel_op": "result:4",
+      "cluster": 6,
+      "umap_x": 8.003955841064453,
+      "umap_y": 1.3856042623519897
+    },
+    {
+      "text": "the difference between seven and three",
+      "label": "EXPR:expr_sub_4",
+      "type": "expr",
+      "kernel_op": "result:4",
+      "cluster": 5,
+      "umap_x": 7.345801830291748,
+      "umap_y": 1.2824742794036865
+    },
+    {
+      "text": "subtract 3 from 7",
+      "label": "EXPR:expr_sub_4",
+      "type": "expr",
+      "kernel_op": "result:4",
+      "cluster": -1,
+      "umap_x": 7.558530807495117,
+      "umap_y": 0.5798903703689575
+    },
+    {
+      "text": "(* 4 5)",
+      "label": "EXPR:expr_mul_20",
+      "type": "expr",
+      "kernel_op": "result:20",
+      "cluster": 1,
+      "umap_x": 2.9963278770446777,
+      "umap_y": 1.62987220287323
+    },
+    {
+      "text": "4 * 5",
+      "label": "EXPR:expr_mul_20",
+      "type": "expr",
+      "kernel_op": "result:20",
+      "cluster": 0,
+      "umap_x": 7.376526355743408,
+      "umap_y": -2.664417028427124
+    },
+    {
+      "text": "four times five",
+      "label": "EXPR:expr_mul_20",
+      "type": "expr",
+      "kernel_op": "result:20",
+      "cluster": 6,
+      "umap_x": 8.03520679473877,
+      "umap_y": 1.1526453495025635
+    },
+    {
+      "text": "the product of four and five",
+      "label": "EXPR:expr_mul_20",
+      "type": "expr",
+      "kernel_op": "result:20",
+      "cluster": 5,
+      "umap_x": 7.2703447341918945,
+      "umap_y": 1.1075646877288818
+    },
+    {
+      "text": "multiply 4 by 5",
+      "label": "EXPR:expr_mul_20",
+      "type": "expr",
+      "kernel_op": "result:20",
+      "cluster": -1,
+      "umap_x": 7.667059421539307,
+      "umap_y": 0.08873508870601654
+    },
+    {
+      "text": "(/ 10 2)",
+      "label": "EXPR:expr_div_5",
+      "type": "expr",
+      "kernel_op": "result:5",
+      "cluster": 1,
+      "umap_x": 2.823148727416992,
+      "umap_y": 1.1839077472686768
+    },
+    {
+      "text": "10 / 2",
+      "label": "EXPR:expr_div_5",
+      "type": "expr",
+      "kernel_op": "result:5",
+      "cluster": 0,
+      "umap_x": 7.349096775054932,
+      "umap_y": -2.768169641494751
+    },
+    {
+      "text": "ten divided by two",
+      "label": "EXPR:expr_div_5",
+      "type": "expr",
+      "kernel_op": "result:5",
+      "cluster": 6,
+      "umap_x": 8.14172649383545,
+      "umap_y": 1.1564607620239258
+    },
+    {
+      "text": "half of ten",
+      "label": "EXPR:expr_div_5",
+      "type": "expr",
+      "kernel_op": "result:5",
+      "cluster": 6,
+      "umap_x": 8.200433731079102,
+      "umap_y": 1.2971378564834595
+    },
+    {
+      "text": "(> 5 3)",
+      "label": "EXPR:expr_gt_true",
+      "type": "expr",
+      "kernel_op": "result:true",
+      "cluster": 1,
+      "umap_x": 2.8811075687408447,
+      "umap_y": 1.2536259889602661
+    },
+    {
+      "text": "5 > 3",
+      "label": "EXPR:expr_gt_true",
+      "type": "expr",
+      "kernel_op": "result:true",
+      "cluster": 8,
+      "umap_x": 6.003188133239746,
+      "umap_y": 1.4034548997879028
+    },
+    {
+      "text": "five is greater than three",
+      "label": "EXPR:expr_gt_true",
+      "type": "expr",
+      "kernel_op": "result:true",
+      "cluster": 7,
+      "umap_x": 6.611995220184326,
+      "umap_y": 1.4435760974884033
+    },
+    {
+      "text": "five exceeds three",
+      "label": "EXPR:expr_gt_true",
+      "type": "expr",
+      "kernel_op": "result:true",
+      "cluster": -1,
+      "umap_x": 7.086461067199707,
+      "umap_y": 1.6298497915267944
+    },
+    {
+      "text": "(< 2 7)",
+      "label": "EXPR:expr_lt_true",
+      "type": "expr",
+      "kernel_op": "result:true",
+      "cluster": 1,
+      "umap_x": 2.7307288646698,
+      "umap_y": 1.0452090501785278
+    },
+    {
+      "text": "2 < 7",
+      "label": "EXPR:expr_lt_true",
+      "type": "expr",
+      "kernel_op": "result:true",
+      "cluster": 8,
+      "umap_x": 5.776741981506348,
+      "umap_y": 1.1811025142669678
+    },
+    {
+      "text": "two is less than seven",
+      "label": "EXPR:expr_lt_true",
+      "type": "expr",
+      "kernel_op": "result:true",
+      "cluster": 7,
+      "umap_x": 6.6786417961120605,
+      "umap_y": 1.5032116174697876
+    },
+    {
+      "text": "two is smaller than seven",
+      "label": "EXPR:expr_lt_true",
+      "type": "expr",
+      "kernel_op": "result:true",
+      "cluster": 7,
+      "umap_x": 6.688398838043213,
+      "umap_y": 1.541390061378479
+    },
+    {
+      "text": "(+ 3 (* 4 5))",
+      "label": "EXPR:expr_nested_23",
+      "type": "expr",
+      "kernel_op": "result:23",
+      "cluster": 1,
+      "umap_x": 3.768975257873535,
+      "umap_y": 1.6153305768966675
+    },
+    {
+      "text": "3 + 4 * 5",
+      "label": "EXPR:expr_nested_23",
+      "type": "expr",
+      "kernel_op": "result:23",
+      "cluster": 0,
+      "umap_x": 7.145710468292236,
+      "umap_y": -2.1620287895202637
+    },
+    {
+      "text": "three plus the product of four and five",
+      "label": "EXPR:expr_nested_23",
+      "type": "expr",
+      "kernel_op": "result:23",
+      "cluster": 5,
+      "umap_x": 7.5103936195373535,
+      "umap_y": 1.1318086385726929
+    },
+    {
+      "text": "three plus four times five",
+      "label": "EXPR:expr_nested_23",
+      "type": "expr",
+      "kernel_op": "result:23",
+      "cluster": 5,
+      "umap_x": 7.666561603546143,
+      "umap_y": 1.0224190950393677
+    },
+    {
+      "text": "(+ (* 2 3) (* 2 4))",
+      "label": "EXPR:expr_nested_14",
+      "type": "expr",
+      "kernel_op": "result:14",
+      "cluster": 1,
+      "umap_x": 3.914283275604248,
+      "umap_y": 1.325333833694458
+    },
+    {
+      "text": "2*3 + 2*4",
+      "label": "EXPR:expr_nested_14",
+      "type": "expr",
+      "kernel_op": "result:14",
+      "cluster": 0,
+      "umap_x": 7.003681659698486,
+      "umap_y": -2.2074239253997803
+    },
+    {
+      "text": "two times three plus two times four",
+      "label": "EXPR:expr_nested_14",
+      "type": "expr",
+      "kernel_op": "result:14",
+      "cluster": 6,
+      "umap_x": 7.981640338897705,
+      "umap_y": 1.0387465953826904
+    },
+    {
+      "text": "(if (> 5 3) 10 0)",
+      "label": "EXPR:expr_if_yes",
+      "type": "expr",
+      "kernel_op": "result:10",
+      "cluster": 1,
+      "umap_x": 3.975403308868408,
+      "umap_y": 1.6046985387802124
+    },
+    {
+      "text": "if 5 > 3 then 10 else 0",
+      "label": "EXPR:expr_if_yes",
+      "type": "expr",
+      "kernel_op": "result:10",
+      "cluster": 8,
+      "umap_x": 5.794260501861572,
+      "umap_y": 1.5590921640396118
+    },
+    {
+      "text": "ten if five exceeds three otherwise zero",
+      "label": "EXPR:expr_if_yes",
+      "type": "expr",
+      "kernel_op": "result:10",
+      "cluster": 7,
+      "umap_x": 6.413267612457275,
+      "umap_y": 1.4996055364608765
+    },
+    {
+      "text": "(+ 1 2)",
+      "label": "EXPR:expr_add_various",
+      "type": "expr",
+      "kernel_op": "op:add",
+      "cluster": 1,
+      "umap_x": 3.1515164375305176,
+      "umap_y": 1.495082974433899
+    },
+    {
+      "text": "(+ 5 5)",
+      "label": "EXPR:expr_add_various",
+      "type": "expr",
+      "kernel_op": "op:add",
+      "cluster": 1,
+      "umap_x": 3.519787549972534,
+      "umap_y": 1.215272307395935
+    },
+    {
+      "text": "(+ 100 200)",
+      "label": "EXPR:expr_add_various",
+      "type": "expr",
+      "kernel_op": "op:add",
+      "cluster": 1,
+      "umap_x": 3.5892598628997803,
+      "umap_y": 1.311645269393921
+    },
+    {
+      "text": "1 + 2",
+      "label": "EXPR:expr_add_various",
+      "type": "expr",
+      "kernel_op": "op:add",
+      "cluster": 0,
+      "umap_x": 7.091732501983643,
+      "umap_y": -3.0416338443756104
+    },
+    {
+      "text": "5 + 5",
+      "label": "EXPR:expr_add_various",
+      "type": "expr",
+      "kernel_op": "op:add",
+      "cluster": 0,
+      "umap_x": 7.01661491394043,
+      "umap_y": -3.129054069519043
+    },
+    {
+      "text": "100 + 200",
+      "label": "EXPR:expr_add_various",
+      "type": "expr",
+      "kernel_op": "op:add",
+      "cluster": 0,
+      "umap_x": 6.887985706329346,
+      "umap_y": -3.2250633239746094
+    },
+    {
+      "text": "(* 2 3)",
+      "label": "EXPR:expr_mul_various",
+      "type": "expr",
+      "kernel_op": "op:mul",
+      "cluster": 1,
+      "umap_x": 2.9804184436798096,
+      "umap_y": 1.4796479940414429
+    },
+    {
+      "text": "(* 7 8)",
+      "label": "EXPR:expr_mul_various",
+      "type": "expr",
+      "kernel_op": "op:mul",
+      "cluster": 1,
+      "umap_x": 3.0497992038726807,
+      "umap_y": 1.3970341682434082
+    },
+    {
+      "text": "(* 10 10)",
+      "label": "EXPR:expr_mul_various",
+      "type": "expr",
+      "kernel_op": "op:mul",
+      "cluster": 1,
+      "umap_x": 3.214352607727051,
+      "umap_y": 1.1447484493255615
+    },
+    {
+      "text": "2 * 3",
+      "label": "EXPR:expr_mul_various",
+      "type": "expr",
+      "kernel_op": "op:mul",
+      "cluster": 0,
+      "umap_x": 7.266815185546875,
+      "umap_y": -2.538370370864868
+    },
+    {
+      "text": "7 * 8",
+      "label": "EXPR:expr_mul_various",
+      "type": "expr",
+      "kernel_op": "op:mul",
+      "cluster": 0,
+      "umap_x": 7.466826915740967,
+      "umap_y": -2.625667095184326
+    },
+    {
+      "text": "10 * 10",
+      "label": "EXPR:expr_mul_various",
+      "type": "expr",
+      "kernel_op": "op:mul",
+      "cluster": 0,
+      "umap_x": 7.48802375793457,
+      "umap_y": -2.8003711700439453
+    }
+  ]
+}

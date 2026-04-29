@@ -1,0 +1,1202 @@
+{
+  "layer": 28,
+  "pairs": [
+    {
+      "op_a": "apply",
+      "op_b": "compose",
+      "kernel_a": "kernel:apply",
+      "kernel_b": "kernel:compose",
+      "similarity": 0.9999822378158569
+    },
+    {
+      "op_a": "apply",
+      "op_b": "partial_app",
+      "kernel_a": "kernel:apply",
+      "kernel_b": "kernel:partial",
+      "similarity": 0.9999696612358093
+    },
+    {
+      "op_a": "compose",
+      "op_b": "partial_app",
+      "kernel_a": "kernel:compose",
+      "kernel_b": "kernel:partial",
+      "similarity": 0.9999655485153198
+    },
+    {
+      "op_a": "compose",
+      "op_b": "negate_num",
+      "kernel_a": "kernel:compose",
+      "kernel_b": "kernel:neg",
+      "similarity": 0.999965250492096
+    },
+    {
+      "op_a": "negate_num",
+      "op_b": "partial_app",
+      "kernel_a": "kernel:neg",
+      "kernel_b": "kernel:partial",
+      "similarity": 0.9999629855155945
+    },
+    {
+      "op_a": "apply",
+      "op_b": "negate_num",
+      "kernel_a": "kernel:apply",
+      "kernel_b": "kernel:neg",
+      "similarity": 0.999961793422699
+    },
+    {
+      "op_a": "apply",
+      "op_b": "conditional",
+      "kernel_a": "kernel:apply",
+      "kernel_b": "kernel:if",
+      "similarity": 0.999949038028717
+    },
+    {
+      "op_a": "conditional",
+      "op_b": "partial_app",
+      "kernel_a": "kernel:if",
+      "kernel_b": "kernel:partial",
+      "similarity": 0.9999465942382812
+    },
+    {
+      "op_a": "compose",
+      "op_b": "conditional",
+      "kernel_a": "kernel:compose",
+      "kernel_b": "kernel:if",
+      "similarity": 0.9999443292617798
+    },
+    {
+      "op_a": "conditional",
+      "op_b": "negate_num",
+      "kernel_a": "kernel:if",
+      "kernel_b": "kernel:neg",
+      "similarity": 0.99994295835495
+    },
+    {
+      "op_a": "apply",
+      "op_b": "or_op",
+      "kernel_a": "kernel:apply",
+      "kernel_b": "kernel:or",
+      "similarity": 0.999937117099762
+    },
+    {
+      "op_a": "conditional",
+      "op_b": "or_op",
+      "kernel_a": "kernel:if",
+      "kernel_b": "kernel:or",
+      "similarity": 0.9999351501464844
+    },
+    {
+      "op_a": "compose",
+      "op_b": "or_op",
+      "kernel_a": "kernel:compose",
+      "kernel_b": "kernel:or",
+      "similarity": 0.9999328851699829
+    },
+    {
+      "op_a": "negate_num",
+      "op_b": "or_op",
+      "kernel_a": "kernel:neg",
+      "kernel_b": "kernel:or",
+      "similarity": 0.9999305009841919
+    },
+    {
+      "op_a": "or_op",
+      "op_b": "partial_app",
+      "kernel_a": "kernel:or",
+      "kernel_b": "kernel:partial",
+      "similarity": 0.9999294877052307
+    },
+    {
+      "op_a": "add",
+      "op_b": "subtract",
+      "kernel_a": "kernel:add",
+      "kernel_b": "kernel:sub",
+      "similarity": 0.9999236464500427
+    },
+    {
+      "op_a": "multiply",
+      "op_b": "negate_num",
+      "kernel_a": "kernel:mul",
+      "kernel_b": "kernel:neg",
+      "similarity": 0.9999212622642517
+    },
+    {
+      "op_a": "compose",
+      "op_b": "multiply",
+      "kernel_a": "kernel:compose",
+      "kernel_b": "kernel:mul",
+      "similarity": 0.9999175071716309
+    },
+    {
+      "op_a": "multiply",
+      "op_b": "partial_app",
+      "kernel_a": "kernel:mul",
+      "kernel_b": "kernel:partial",
+      "similarity": 0.9999171495437622
+    },
+    {
+      "op_a": "apply",
+      "op_b": "multiply",
+      "kernel_a": "kernel:apply",
+      "kernel_b": "kernel:mul",
+      "similarity": 0.9999140501022339
+    },
+    {
+      "op_a": "add",
+      "op_b": "multiply",
+      "kernel_a": "kernel:add",
+      "kernel_b": "kernel:mul",
+      "similarity": 0.9999099373817444
+    },
+    {
+      "op_a": "negate_num",
+      "op_b": "subtract",
+      "kernel_a": "kernel:neg",
+      "kernel_b": "kernel:sub",
+      "similarity": 0.9999039173126221
+    },
+    {
+      "op_a": "add",
+      "op_b": "compose",
+      "kernel_a": "kernel:add",
+      "kernel_b": "kernel:compose",
+      "similarity": 0.9999027252197266
+    },
+    {
+      "op_a": "conditional",
+      "op_b": "multiply",
+      "kernel_a": "kernel:if",
+      "kernel_b": "kernel:mul",
+      "similarity": 0.999902606010437
+    },
+    {
+      "op_a": "add",
+      "op_b": "apply",
+      "kernel_a": "kernel:add",
+      "kernel_b": "kernel:apply",
+      "similarity": 0.9998981356620789
+    },
+    {
+      "op_a": "multiply",
+      "op_b": "subtract",
+      "kernel_a": "kernel:mul",
+      "kernel_b": "kernel:sub",
+      "similarity": 0.9998981356620789
+    },
+    {
+      "op_a": "add",
+      "op_b": "conditional",
+      "kernel_a": "kernel:add",
+      "kernel_b": "kernel:if",
+      "similarity": 0.9998978972434998
+    },
+    {
+      "op_a": "add",
+      "op_b": "negate_num",
+      "kernel_a": "kernel:add",
+      "kernel_b": "kernel:neg",
+      "similarity": 0.9998976588249207
+    },
+    {
+      "op_a": "conditional",
+      "op_b": "subtract",
+      "kernel_a": "kernel:if",
+      "kernel_b": "kernel:sub",
+      "similarity": 0.9998970031738281
+    },
+    {
+      "op_a": "add",
+      "op_b": "partial_app",
+      "kernel_a": "kernel:add",
+      "kernel_b": "kernel:partial",
+      "similarity": 0.9998933672904968
+    },
+    {
+      "op_a": "partial_app",
+      "op_b": "subtract",
+      "kernel_a": "kernel:partial",
+      "kernel_b": "kernel:sub",
+      "similarity": 0.9998931884765625
+    },
+    {
+      "op_a": "multiply",
+      "op_b": "or_op",
+      "kernel_a": "kernel:mul",
+      "kernel_b": "kernel:or",
+      "similarity": 0.9998917579650879
+    },
+    {
+      "op_a": "add",
+      "op_b": "or_op",
+      "kernel_a": "kernel:add",
+      "kernel_b": "kernel:or",
+      "similarity": 0.9998859167098999
+    },
+    {
+      "op_a": "apply",
+      "op_b": "subtract",
+      "kernel_a": "kernel:apply",
+      "kernel_b": "kernel:sub",
+      "similarity": 0.9998852014541626
+    },
+    {
+      "op_a": "divide",
+      "op_b": "subtract",
+      "kernel_a": "kernel:div",
+      "kernel_b": "kernel:sub",
+      "similarity": 0.9998829960823059
+    },
+    {
+      "op_a": "compose",
+      "op_b": "subtract",
+      "kernel_a": "kernel:compose",
+      "kernel_b": "kernel:sub",
+      "similarity": 0.9998823404312134
+    },
+    {
+      "op_a": "or_op",
+      "op_b": "subtract",
+      "kernel_a": "kernel:or",
+      "kernel_b": "kernel:sub",
+      "similarity": 0.9998805522918701
+    },
+    {
+      "op_a": "divide",
+      "op_b": "multiply",
+      "kernel_a": "kernel:div",
+      "kernel_b": "kernel:mul",
+      "similarity": 0.9998743534088135
+    },
+    {
+      "op_a": "divide",
+      "op_b": "negate_num",
+      "kernel_a": "kernel:div",
+      "kernel_b": "kernel:neg",
+      "similarity": 0.999859631061554
+    },
+    {
+      "op_a": "add",
+      "op_b": "divide",
+      "kernel_a": "kernel:add",
+      "kernel_b": "kernel:div",
+      "similarity": 0.9998564720153809
+    },
+    {
+      "op_a": "divide",
+      "op_b": "partial_app",
+      "kernel_a": "kernel:div",
+      "kernel_b": "kernel:partial",
+      "similarity": 0.9998540878295898
+    },
+    {
+      "op_a": "conditional",
+      "op_b": "divide",
+      "kernel_a": "kernel:if",
+      "kernel_b": "kernel:div",
+      "similarity": 0.9998438954353333
+    },
+    {
+      "op_a": "compose",
+      "op_b": "divide",
+      "kernel_a": "kernel:compose",
+      "kernel_b": "kernel:div",
+      "similarity": 0.999840259552002
+    },
+    {
+      "op_a": "apply",
+      "op_b": "divide",
+      "kernel_a": "kernel:apply",
+      "kernel_b": "kernel:div",
+      "similarity": 0.9998354315757751
+    },
+    {
+      "op_a": "and_op",
+      "op_b": "or_op",
+      "kernel_a": "kernel:and",
+      "kernel_b": "kernel:or",
+      "similarity": 0.9998342394828796
+    },
+    {
+      "op_a": "divide",
+      "op_b": "or_op",
+      "kernel_a": "kernel:div",
+      "kernel_b": "kernel:or",
+      "similarity": 0.9998313188552856
+    },
+    {
+      "op_a": "and_op",
+      "op_b": "conditional",
+      "kernel_a": "kernel:and",
+      "kernel_b": "kernel:if",
+      "similarity": 0.9998028874397278
+    },
+    {
+      "op_a": "and_op",
+      "op_b": "partial_app",
+      "kernel_a": "kernel:and",
+      "kernel_b": "kernel:partial",
+      "similarity": 0.999783456325531
+    },
+    {
+      "op_a": "and_op",
+      "op_b": "negate_num",
+      "kernel_a": "kernel:and",
+      "kernel_b": "kernel:neg",
+      "similarity": 0.9997808933258057
+    },
+    {
+      "op_a": "and_op",
+      "op_b": "apply",
+      "kernel_a": "kernel:and",
+      "kernel_b": "kernel:apply",
+      "similarity": 0.9997703433036804
+    },
+    {
+      "op_a": "and_op",
+      "op_b": "compose",
+      "kernel_a": "kernel:and",
+      "kernel_b": "kernel:compose",
+      "similarity": 0.9997680187225342
+    },
+    {
+      "op_a": "add",
+      "op_b": "and_op",
+      "kernel_a": "kernel:add",
+      "kernel_b": "kernel:and",
+      "similarity": 0.9997648596763611
+    },
+    {
+      "op_a": "and_op",
+      "op_b": "subtract",
+      "kernel_a": "kernel:and",
+      "kernel_b": "kernel:sub",
+      "similarity": 0.9997583031654358
+    },
+    {
+      "op_a": "and_op",
+      "op_b": "multiply",
+      "kernel_a": "kernel:and",
+      "kernel_b": "kernel:mul",
+      "similarity": 0.9997564554214478
+    },
+    {
+      "op_a": "and_op",
+      "op_b": "divide",
+      "kernel_a": "kernel:and",
+      "kernel_b": "kernel:div",
+      "similarity": 0.9997203350067139
+    },
+    {
+      "op_a": "not_op",
+      "op_b": "subtract",
+      "kernel_a": "kernel:not",
+      "kernel_b": "kernel:sub",
+      "similarity": 0.9987025260925293
+    },
+    {
+      "op_a": "and_op",
+      "op_b": "not_op",
+      "kernel_a": "kernel:and",
+      "kernel_b": "kernel:not",
+      "similarity": 0.9986748099327087
+    },
+    {
+      "op_a": "negate_num",
+      "op_b": "not_op",
+      "kernel_a": "kernel:neg",
+      "kernel_b": "kernel:not",
+      "similarity": 0.9986428022384644
+    },
+    {
+      "op_a": "not_op",
+      "op_b": "or_op",
+      "kernel_a": "kernel:not",
+      "kernel_b": "kernel:or",
+      "similarity": 0.9986226558685303
+    },
+    {
+      "op_a": "divide",
+      "op_b": "not_op",
+      "kernel_a": "kernel:div",
+      "kernel_b": "kernel:not",
+      "similarity": 0.998620331287384
+    },
+    {
+      "op_a": "add",
+      "op_b": "not_op",
+      "kernel_a": "kernel:add",
+      "kernel_b": "kernel:not",
+      "similarity": 0.9986042976379395
+    },
+    {
+      "op_a": "conditional",
+      "op_b": "not_op",
+      "kernel_a": "kernel:if",
+      "kernel_b": "kernel:not",
+      "similarity": 0.998593270778656
+    },
+    {
+      "op_a": "multiply",
+      "op_b": "not_op",
+      "kernel_a": "kernel:mul",
+      "kernel_b": "kernel:not",
+      "similarity": 0.9985841512680054
+    },
+    {
+      "op_a": "not_op",
+      "op_b": "partial_app",
+      "kernel_a": "kernel:not",
+      "kernel_b": "kernel:partial",
+      "similarity": 0.9985328912734985
+    },
+    {
+      "op_a": "apply",
+      "op_b": "not_op",
+      "kernel_a": "kernel:apply",
+      "kernel_b": "kernel:not",
+      "similarity": 0.9984390139579773
+    },
+    {
+      "op_a": "compose",
+      "op_b": "not_op",
+      "kernel_a": "kernel:compose",
+      "kernel_b": "kernel:not",
+      "similarity": 0.9984309077262878
+    },
+    {
+      "op_a": "maximum",
+      "op_b": "minimum",
+      "kernel_a": "kernel:max",
+      "kernel_b": "kernel:min",
+      "similarity": 0.8050380945205688
+    },
+    {
+      "op_a": "greater_than",
+      "op_b": "less_than",
+      "kernel_a": "kernel:gt",
+      "kernel_b": "kernel:lt",
+      "similarity": 0.7769636511802673
+    },
+    {
+      "op_a": "absolute",
+      "op_b": "maximum",
+      "kernel_a": "kernel:abs",
+      "kernel_b": "kernel:max",
+      "similarity": 0.5201961994171143
+    },
+    {
+      "op_a": "absolute",
+      "op_b": "minimum",
+      "kernel_a": "kernel:abs",
+      "kernel_b": "kernel:min",
+      "similarity": 0.48062434792518616
+    },
+    {
+      "op_a": "equal",
+      "op_b": "greater_than",
+      "kernel_a": "kernel:eq",
+      "kernel_b": "kernel:gt",
+      "similarity": 0.4741979241371155
+    },
+    {
+      "op_a": "absolute",
+      "op_b": "not_op",
+      "kernel_a": "kernel:abs",
+      "kernel_b": "kernel:not",
+      "similarity": 0.45401880145072937
+    },
+    {
+      "op_a": "absolute",
+      "op_b": "modulo",
+      "kernel_a": "kernel:abs",
+      "kernel_b": "kernel:mod",
+      "similarity": 0.44717007875442505
+    },
+    {
+      "op_a": "absolute",
+      "op_b": "subtract",
+      "kernel_a": "kernel:abs",
+      "kernel_b": "kernel:sub",
+      "similarity": 0.4392634630203247
+    },
+    {
+      "op_a": "absolute",
+      "op_b": "divide",
+      "kernel_a": "kernel:abs",
+      "kernel_b": "kernel:div",
+      "similarity": 0.4389802813529968
+    },
+    {
+      "op_a": "greater_than",
+      "op_b": "maximum",
+      "kernel_a": "kernel:gt",
+      "kernel_b": "kernel:max",
+      "similarity": 0.43831396102905273
+    },
+    {
+      "op_a": "absolute",
+      "op_b": "add",
+      "kernel_a": "kernel:abs",
+      "kernel_b": "kernel:add",
+      "similarity": 0.43804627656936646
+    },
+    {
+      "op_a": "absolute",
+      "op_b": "and_op",
+      "kernel_a": "kernel:abs",
+      "kernel_b": "kernel:and",
+      "similarity": 0.4376790225505829
+    },
+    {
+      "op_a": "absolute",
+      "op_b": "multiply",
+      "kernel_a": "kernel:abs",
+      "kernel_b": "kernel:mul",
+      "similarity": 0.4368222951889038
+    },
+    {
+      "op_a": "absolute",
+      "op_b": "conditional",
+      "kernel_a": "kernel:abs",
+      "kernel_b": "kernel:if",
+      "similarity": 0.4360252022743225
+    },
+    {
+      "op_a": "absolute",
+      "op_b": "or_op",
+      "kernel_a": "kernel:abs",
+      "kernel_b": "kernel:or",
+      "similarity": 0.4357486963272095
+    },
+    {
+      "op_a": "absolute",
+      "op_b": "negate_num",
+      "kernel_a": "kernel:abs",
+      "kernel_b": "kernel:neg",
+      "similarity": 0.4350641667842865
+    },
+    {
+      "op_a": "absolute",
+      "op_b": "partial_app",
+      "kernel_a": "kernel:abs",
+      "kernel_b": "kernel:partial",
+      "similarity": 0.4347510039806366
+    },
+    {
+      "op_a": "absolute",
+      "op_b": "apply",
+      "kernel_a": "kernel:abs",
+      "kernel_b": "kernel:apply",
+      "similarity": 0.4334130585193634
+    },
+    {
+      "op_a": "absolute",
+      "op_b": "compose",
+      "kernel_a": "kernel:abs",
+      "kernel_b": "kernel:compose",
+      "similarity": 0.43327596783638
+    },
+    {
+      "op_a": "equal",
+      "op_b": "less_than",
+      "kernel_a": "kernel:eq",
+      "kernel_b": "kernel:lt",
+      "similarity": 0.4156527519226074
+    },
+    {
+      "op_a": "minimum",
+      "op_b": "modulo",
+      "kernel_a": "kernel:min",
+      "kernel_b": "kernel:mod",
+      "similarity": 0.40631699562072754
+    },
+    {
+      "op_a": "maximum",
+      "op_b": "modulo",
+      "kernel_a": "kernel:max",
+      "kernel_b": "kernel:mod",
+      "similarity": 0.39600569009780884
+    },
+    {
+      "op_a": "less_than",
+      "op_b": "minimum",
+      "kernel_a": "kernel:lt",
+      "kernel_b": "kernel:min",
+      "similarity": 0.3854540288448334
+    },
+    {
+      "op_a": "greater_than",
+      "op_b": "modulo",
+      "kernel_a": "kernel:gt",
+      "kernel_b": "kernel:mod",
+      "similarity": 0.3560485243797302
+    },
+    {
+      "op_a": "greater_than",
+      "op_b": "minimum",
+      "kernel_a": "kernel:gt",
+      "kernel_b": "kernel:min",
+      "similarity": 0.35217079520225525
+    },
+    {
+      "op_a": "absolute",
+      "op_b": "greater_than",
+      "kernel_a": "kernel:abs",
+      "kernel_b": "kernel:gt",
+      "similarity": 0.3435329794883728
+    },
+    {
+      "op_a": "equal",
+      "op_b": "maximum",
+      "kernel_a": "kernel:eq",
+      "kernel_b": "kernel:max",
+      "similarity": 0.3329935073852539
+    },
+    {
+      "op_a": "less_than",
+      "op_b": "modulo",
+      "kernel_a": "kernel:lt",
+      "kernel_b": "kernel:mod",
+      "similarity": 0.3257278501987457
+    },
+    {
+      "op_a": "absolute",
+      "op_b": "equal",
+      "kernel_a": "kernel:abs",
+      "kernel_b": "kernel:eq",
+      "similarity": 0.3214172124862671
+    },
+    {
+      "op_a": "less_than",
+      "op_b": "maximum",
+      "kernel_a": "kernel:lt",
+      "kernel_b": "kernel:max",
+      "similarity": 0.3137604296207428
+    },
+    {
+      "op_a": "equal",
+      "op_b": "modulo",
+      "kernel_a": "kernel:eq",
+      "kernel_b": "kernel:mod",
+      "similarity": 0.30855903029441833
+    },
+    {
+      "op_a": "equal",
+      "op_b": "minimum",
+      "kernel_a": "kernel:eq",
+      "kernel_b": "kernel:min",
+      "similarity": 0.3040672838687897
+    },
+    {
+      "op_a": "modulo",
+      "op_b": "not_op",
+      "kernel_a": "kernel:mod",
+      "kernel_b": "kernel:not",
+      "similarity": 0.29948705434799194
+    },
+    {
+      "op_a": "divide",
+      "op_b": "modulo",
+      "kernel_a": "kernel:div",
+      "kernel_b": "kernel:mod",
+      "similarity": 0.2890658676624298
+    },
+    {
+      "op_a": "modulo",
+      "op_b": "subtract",
+      "kernel_a": "kernel:mod",
+      "kernel_b": "kernel:sub",
+      "similarity": 0.28818756341934204
+    },
+    {
+      "op_a": "add",
+      "op_b": "modulo",
+      "kernel_a": "kernel:add",
+      "kernel_b": "kernel:mod",
+      "similarity": 0.28685522079467773
+    },
+    {
+      "op_a": "and_op",
+      "op_b": "modulo",
+      "kernel_a": "kernel:and",
+      "kernel_b": "kernel:mod",
+      "similarity": 0.28636524081230164
+    },
+    {
+      "op_a": "modulo",
+      "op_b": "multiply",
+      "kernel_a": "kernel:mod",
+      "kernel_b": "kernel:mul",
+      "similarity": 0.2855101525783539
+    },
+    {
+      "op_a": "modulo",
+      "op_b": "or_op",
+      "kernel_a": "kernel:mod",
+      "kernel_b": "kernel:or",
+      "similarity": 0.2843729555606842
+    },
+    {
+      "op_a": "conditional",
+      "op_b": "modulo",
+      "kernel_a": "kernel:if",
+      "kernel_b": "kernel:mod",
+      "similarity": 0.2841028571128845
+    },
+    {
+      "op_a": "modulo",
+      "op_b": "negate_num",
+      "kernel_a": "kernel:mod",
+      "kernel_b": "kernel:neg",
+      "similarity": 0.2835892140865326
+    },
+    {
+      "op_a": "modulo",
+      "op_b": "partial_app",
+      "kernel_a": "kernel:mod",
+      "kernel_b": "kernel:partial",
+      "similarity": 0.2833808958530426
+    },
+    {
+      "op_a": "apply",
+      "op_b": "modulo",
+      "kernel_a": "kernel:apply",
+      "kernel_b": "kernel:mod",
+      "similarity": 0.28202828764915466
+    },
+    {
+      "op_a": "compose",
+      "op_b": "modulo",
+      "kernel_a": "kernel:compose",
+      "kernel_b": "kernel:mod",
+      "similarity": 0.281938374042511
+    },
+    {
+      "op_a": "absolute",
+      "op_b": "less_than",
+      "kernel_a": "kernel:abs",
+      "kernel_b": "kernel:lt",
+      "similarity": 0.28091245889663696
+    },
+    {
+      "op_a": "maximum",
+      "op_b": "not_op",
+      "kernel_a": "kernel:max",
+      "kernel_b": "kernel:not",
+      "similarity": 0.27521106600761414
+    },
+    {
+      "op_a": "divide",
+      "op_b": "maximum",
+      "kernel_a": "kernel:div",
+      "kernel_b": "kernel:max",
+      "similarity": 0.26114457845687866
+    },
+    {
+      "op_a": "maximum",
+      "op_b": "subtract",
+      "kernel_a": "kernel:max",
+      "kernel_b": "kernel:sub",
+      "similarity": 0.2610388398170471
+    },
+    {
+      "op_a": "add",
+      "op_b": "maximum",
+      "kernel_a": "kernel:add",
+      "kernel_b": "kernel:max",
+      "similarity": 0.26053550839424133
+    },
+    {
+      "op_a": "and_op",
+      "op_b": "maximum",
+      "kernel_a": "kernel:and",
+      "kernel_b": "kernel:max",
+      "similarity": 0.2599288821220398
+    },
+    {
+      "op_a": "maximum",
+      "op_b": "multiply",
+      "kernel_a": "kernel:max",
+      "kernel_b": "kernel:mul",
+      "similarity": 0.25921958684921265
+    },
+    {
+      "op_a": "conditional",
+      "op_b": "maximum",
+      "kernel_a": "kernel:if",
+      "kernel_b": "kernel:max",
+      "similarity": 0.257854700088501
+    },
+    {
+      "op_a": "maximum",
+      "op_b": "or_op",
+      "kernel_a": "kernel:max",
+      "kernel_b": "kernel:or",
+      "similarity": 0.25781166553497314
+    },
+    {
+      "op_a": "maximum",
+      "op_b": "negate_num",
+      "kernel_a": "kernel:max",
+      "kernel_b": "kernel:neg",
+      "similarity": 0.2571227550506592
+    },
+    {
+      "op_a": "maximum",
+      "op_b": "partial_app",
+      "kernel_a": "kernel:max",
+      "kernel_b": "kernel:partial",
+      "similarity": 0.2569313049316406
+    },
+    {
+      "op_a": "apply",
+      "op_b": "maximum",
+      "kernel_a": "kernel:apply",
+      "kernel_b": "kernel:max",
+      "similarity": 0.25559428334236145
+    },
+    {
+      "op_a": "compose",
+      "op_b": "maximum",
+      "kernel_a": "kernel:compose",
+      "kernel_b": "kernel:max",
+      "similarity": 0.2555142641067505
+    },
+    {
+      "op_a": "minimum",
+      "op_b": "not_op",
+      "kernel_a": "kernel:min",
+      "kernel_b": "kernel:not",
+      "similarity": 0.21350687742233276
+    },
+    {
+      "op_a": "minimum",
+      "op_b": "subtract",
+      "kernel_a": "kernel:min",
+      "kernel_b": "kernel:sub",
+      "similarity": 0.19841217994689941
+    },
+    {
+      "op_a": "divide",
+      "op_b": "minimum",
+      "kernel_a": "kernel:div",
+      "kernel_b": "kernel:min",
+      "similarity": 0.19823747873306274
+    },
+    {
+      "op_a": "add",
+      "op_b": "minimum",
+      "kernel_a": "kernel:add",
+      "kernel_b": "kernel:min",
+      "similarity": 0.19737784564495087
+    },
+    {
+      "op_a": "and_op",
+      "op_b": "minimum",
+      "kernel_a": "kernel:and",
+      "kernel_b": "kernel:min",
+      "similarity": 0.19667790830135345
+    },
+    {
+      "op_a": "minimum",
+      "op_b": "multiply",
+      "kernel_a": "kernel:min",
+      "kernel_b": "kernel:mul",
+      "similarity": 0.19603654742240906
+    },
+    {
+      "op_a": "conditional",
+      "op_b": "minimum",
+      "kernel_a": "kernel:if",
+      "kernel_b": "kernel:min",
+      "similarity": 0.1951039880514145
+    },
+    {
+      "op_a": "minimum",
+      "op_b": "or_op",
+      "kernel_a": "kernel:min",
+      "kernel_b": "kernel:or",
+      "similarity": 0.19496528804302216
+    },
+    {
+      "op_a": "minimum",
+      "op_b": "negate_num",
+      "kernel_a": "kernel:min",
+      "kernel_b": "kernel:neg",
+      "similarity": 0.19418366253376007
+    },
+    {
+      "op_a": "minimum",
+      "op_b": "partial_app",
+      "kernel_a": "kernel:min",
+      "kernel_b": "kernel:partial",
+      "similarity": 0.19395580887794495
+    },
+    {
+      "op_a": "apply",
+      "op_b": "minimum",
+      "kernel_a": "kernel:apply",
+      "kernel_b": "kernel:min",
+      "similarity": 0.19262009859085083
+    },
+    {
+      "op_a": "compose",
+      "op_b": "minimum",
+      "kernel_a": "kernel:compose",
+      "kernel_b": "kernel:min",
+      "similarity": 0.1925230175256729
+    },
+    {
+      "op_a": "equal",
+      "op_b": "not_op",
+      "kernel_a": "kernel:eq",
+      "kernel_b": "kernel:not",
+      "similarity": 0.18815714120864868
+    },
+    {
+      "op_a": "and_op",
+      "op_b": "equal",
+      "kernel_a": "kernel:and",
+      "kernel_b": "kernel:eq",
+      "similarity": 0.17250993847846985
+    },
+    {
+      "op_a": "divide",
+      "op_b": "equal",
+      "kernel_a": "kernel:div",
+      "kernel_b": "kernel:eq",
+      "similarity": 0.17160747945308685
+    },
+    {
+      "op_a": "equal",
+      "op_b": "subtract",
+      "kernel_a": "kernel:eq",
+      "kernel_b": "kernel:sub",
+      "similarity": 0.17151455581188202
+    },
+    {
+      "op_a": "add",
+      "op_b": "equal",
+      "kernel_a": "kernel:add",
+      "kernel_b": "kernel:eq",
+      "similarity": 0.17093545198440552
+    },
+    {
+      "op_a": "equal",
+      "op_b": "multiply",
+      "kernel_a": "kernel:eq",
+      "kernel_b": "kernel:mul",
+      "similarity": 0.17002341151237488
+    },
+    {
+      "op_a": "equal",
+      "op_b": "or_op",
+      "kernel_a": "kernel:eq",
+      "kernel_b": "kernel:or",
+      "similarity": 0.16925278306007385
+    },
+    {
+      "op_a": "conditional",
+      "op_b": "equal",
+      "kernel_a": "kernel:if",
+      "kernel_b": "kernel:eq",
+      "similarity": 0.1685393899679184
+    },
+    {
+      "op_a": "equal",
+      "op_b": "negate_num",
+      "kernel_a": "kernel:eq",
+      "kernel_b": "kernel:neg",
+      "similarity": 0.16826704144477844
+    },
+    {
+      "op_a": "equal",
+      "op_b": "partial_app",
+      "kernel_a": "kernel:eq",
+      "kernel_b": "kernel:partial",
+      "similarity": 0.16764719784259796
+    },
+    {
+      "op_a": "apply",
+      "op_b": "equal",
+      "kernel_a": "kernel:apply",
+      "kernel_b": "kernel:eq",
+      "similarity": 0.16661177575588226
+    },
+    {
+      "op_a": "compose",
+      "op_b": "equal",
+      "kernel_a": "kernel:compose",
+      "kernel_b": "kernel:eq",
+      "similarity": 0.16648893058300018
+    },
+    {
+      "op_a": "greater_than",
+      "op_b": "not_op",
+      "kernel_a": "kernel:gt",
+      "kernel_b": "kernel:not",
+      "similarity": 0.15866753458976746
+    },
+    {
+      "op_a": "greater_than",
+      "op_b": "subtract",
+      "kernel_a": "kernel:gt",
+      "kernel_b": "kernel:sub",
+      "similarity": 0.1437128782272339
+    },
+    {
+      "op_a": "and_op",
+      "op_b": "greater_than",
+      "kernel_a": "kernel:and",
+      "kernel_b": "kernel:gt",
+      "similarity": 0.1436784416437149
+    },
+    {
+      "op_a": "divide",
+      "op_b": "greater_than",
+      "kernel_a": "kernel:div",
+      "kernel_b": "kernel:gt",
+      "similarity": 0.14348624646663666
+    },
+    {
+      "op_a": "add",
+      "op_b": "greater_than",
+      "kernel_a": "kernel:add",
+      "kernel_b": "kernel:gt",
+      "similarity": 0.1425730586051941
+    },
+    {
+      "op_a": "greater_than",
+      "op_b": "multiply",
+      "kernel_a": "kernel:gt",
+      "kernel_b": "kernel:mul",
+      "similarity": 0.14162038266658783
+    },
+    {
+      "op_a": "greater_than",
+      "op_b": "or_op",
+      "kernel_a": "kernel:gt",
+      "kernel_b": "kernel:or",
+      "similarity": 0.14090828597545624
+    },
+    {
+      "op_a": "conditional",
+      "op_b": "greater_than",
+      "kernel_a": "kernel:if",
+      "kernel_b": "kernel:gt",
+      "similarity": 0.14032475650310516
+    },
+    {
+      "op_a": "greater_than",
+      "op_b": "negate_num",
+      "kernel_a": "kernel:gt",
+      "kernel_b": "kernel:neg",
+      "similarity": 0.13980886340141296
+    },
+    {
+      "op_a": "greater_than",
+      "op_b": "partial_app",
+      "kernel_a": "kernel:gt",
+      "kernel_b": "kernel:partial",
+      "similarity": 0.13936762511730194
+    },
+    {
+      "op_a": "apply",
+      "op_b": "greater_than",
+      "kernel_a": "kernel:apply",
+      "kernel_b": "kernel:gt",
+      "similarity": 0.13829605281352997
+    },
+    {
+      "op_a": "compose",
+      "op_b": "greater_than",
+      "kernel_a": "kernel:compose",
+      "kernel_b": "kernel:gt",
+      "similarity": 0.13817742466926575
+    },
+    {
+      "op_a": "less_than",
+      "op_b": "not_op",
+      "kernel_a": "kernel:lt",
+      "kernel_b": "kernel:not",
+      "similarity": 0.10154367238283157
+    },
+    {
+      "op_a": "less_than",
+      "op_b": "subtract",
+      "kernel_a": "kernel:lt",
+      "kernel_b": "kernel:sub",
+      "similarity": 0.08664127439260483
+    },
+    {
+      "op_a": "and_op",
+      "op_b": "less_than",
+      "kernel_a": "kernel:and",
+      "kernel_b": "kernel:lt",
+      "similarity": 0.08637350797653198
+    },
+    {
+      "op_a": "divide",
+      "op_b": "less_than",
+      "kernel_a": "kernel:div",
+      "kernel_b": "kernel:lt",
+      "similarity": 0.08602172136306763
+    },
+    {
+      "op_a": "add",
+      "op_b": "less_than",
+      "kernel_a": "kernel:add",
+      "kernel_b": "kernel:lt",
+      "similarity": 0.08498681336641312
+    },
+    {
+      "op_a": "less_than",
+      "op_b": "multiply",
+      "kernel_a": "kernel:lt",
+      "kernel_b": "kernel:mul",
+      "similarity": 0.08412397652864456
+    },
+    {
+      "op_a": "less_than",
+      "op_b": "or_op",
+      "kernel_a": "kernel:lt",
+      "kernel_b": "kernel:or",
+      "similarity": 0.08370186388492584
+    },
+    {
+      "op_a": "conditional",
+      "op_b": "less_than",
+      "kernel_a": "kernel:if",
+      "kernel_b": "kernel:lt",
+      "similarity": 0.08337356150150299
+    },
+    {
+      "op_a": "less_than",
+      "op_b": "negate_num",
+      "kernel_a": "kernel:lt",
+      "kernel_b": "kernel:neg",
+      "similarity": 0.08275040239095688
+    },
+    {
+      "op_a": "less_than",
+      "op_b": "partial_app",
+      "kernel_a": "kernel:lt",
+      "kernel_b": "kernel:partial",
+      "similarity": 0.08248572796583176
+    },
+    {
+      "op_a": "apply",
+      "op_b": "less_than",
+      "kernel_a": "kernel:apply",
+      "kernel_b": "kernel:lt",
+      "similarity": 0.08125749975442886
+    },
+    {
+      "op_a": "compose",
+      "op_b": "less_than",
+      "kernel_a": "kernel:compose",
+      "kernel_b": "kernel:lt",
+      "similarity": 0.08114337176084518
+    }
+  ]
+}
