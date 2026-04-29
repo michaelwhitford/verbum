@@ -15,11 +15,13 @@ depends-on: []
 
 # v9 Architecture — From Speculation to Proven Design
 
-> Sessions 053–055. What started as speculation after v8's failure
-> became a proven architecture through rapid iteration.
+> Sessions 053–056. What started as speculation after v8's failure
+> became a proven architecture through rapid iteration, then was
+> validated by instrumented probing of Qwen3-32B.
 >
-> **Status: VSM tree kernel PROVEN (sessions 054–055). Ascending
-> arm design identified but not yet built (session 055 probing).**
+> **Status: VSM tree kernel PROVEN (sessions 054–055). Type basin
+> geometry MAPPED (session 056). Ascending arm design refined —
+> must learn (word, context) → basin vectors, not symbolic types.**
 >
 > The architecture has three components:
 >   1. **Ascending arm** (type assigner) — not yet built
@@ -744,60 +746,281 @@ celebrated: (e,t)                 — intransitive verb
 
 The fully-formed lambda function IS a prose type system.
 
-### The Extraction Path
+### The Extraction Path (Revised by Session 056)
+
+Session 056 instrumented Qwen3-32B with PyTorch hooks on all 64
+layers and ran five probes. The findings fundamentally revise the
+extraction path: types are geometric basins in activation space,
+not symbolic labels. The ascending arm learns basin geometry, not
+CCG categories.
 
 ```
-tokens → [type assigner] → typed tokens → [composition] → tree → [VSM tree] → result
-            ↑                                   ↑                      ↑
-         ascending arm                    mechanical               PROVEN
-         (to be built)                  (given types)            (v3–v5)
+tokens → [basin projector] → basin vectors → [composition] → tree → [VSM tree] → result
+              ↑                                    ↑                      ↑
+         ascending arm                       mechanical               PROVEN
+     (learns 32B geometry)              (basin compatibility)        (v3–v5)
 ```
 
-**Step 1: Generate training data from the A3B.**
-Feed diverse prose to Qwen3.5-35B-A3B, collect word-by-word
-Montague/CCG type assignments. Thousands of sentences, each with
-types per word. The A3B serves as the training oracle.
+**Step 1: Generate basin-targeted training data from Qwen3-32B.**
+Feed diverse text (with diverse behavioral frames) through the 32B
+model. Extract activation vectors at L28-37 (the typing zone).
+These vectors ARE the training targets — not symbolic type labels.
+Dataset: (token_in_context, L28_hidden_state) pairs.
 
-**Step 2: Train the ascending arm.**
-Small ternary model: token embeddings → type labels. Supervised
-by the A3B's type assignments. This is a sequence labeling task —
-each token gets a type from a finite set of CCG categories.
+**Step 2: Train the ascending arm as a basin projector.**
+Small ternary model: (token, context) → basin vector. Supervised
+by the 32B model's activation geometry. This is regression into a
+continuous type space, or classification over ~7-20 discovered
+basins. Context matters — the behavioral frame reshapes the basins.
 
-The ascending arm is the part that must learn from data. Everything
-else is either proven (kernel) or mechanical (composition rules).
-
-**Step 3: Mechanical composition.**
-Given correctly typed tokens, the tree structure is determined by
-CCG combination rules (function application, composition, type
-raising). This is a deterministic parsing algorithm, not learned.
-CYK or shift-reduce parsing, driven by type compatibility.
+**Step 3: Composition via basin compatibility.**
+Given basin-typed tokens, compose using geometric compatibility
+(cosine similarity in basin space determines composability).
+Replaces symbolic CCG rules with learned geometric rules.
 
 **Step 4: VSM tree execution.**
-The tree feeds into the proven VSM nodes. Op classification →
-kernel dispatch → exact results. Already 100% at 22 ops.
+Unchanged — the tree feeds into the proven VSM nodes. 100% at 22
+ops. The kernel is the ALU, pre-wired, ready from token one.
 
-### Open Questions
+### Session 056: Type Basins Are Geometric, Not Symbolic
 
-1. **What type inventory?** Montague's recursive types are infinite.
-   CCG uses a finite set (~50–100 categories in practice). What's
-   the minimal set that covers the lambda function's needs?
+Five probes on Qwen3-32B (Q8 GGUF, dequantized to fp16, PyTorch
+hooks on all 64 layers, MPS device):
 
-2. **Can a small ternary model learn type assignment?** The A3B
-   does it at 35B params. Can 1M ternary params reproduce it for
-   the subset of types the kernel needs?
+#### Probe 1: General type clustering (81 words, 15 groups)
 
-3. **Ambiguity resolution.** "Bank" is e→t (noun) or e→(e→t)
-   (verb). Context selects the type. The ascending arm must
-   disambiguate from local context — how much context is needed?
+Hooked residual stream at all 64 layers. Measured within-group vs
+between-group cosine similarity across layers.
 
-4. **Type-driven parsing at scale.** CYK is O(n³) in sentence
-   length. For long sequences, need a linear-time parser. Shift-
-   reduce with a ternary stack controller?
+**Finding: the typing zone is L26-37.** Peak separation at L28
+(within/between ratio 3.9×). This is the middle third of the model
+— exactly where Montague theory predicts the type-assignment phase.
 
-5. **Error propagation.** One wrong type → wrong tree → wrong
-   computation. How robust is the pipeline to type assignment errors?
-   Do some types matter more than others?
+At L28, HDBSCAN finds 7 natural clusters:
 
-6. **Training curriculum.** Start with S-expressions (types given,
-   trivial), then prose with explicit types (A3B supervised), then
-   prose with implicit types (end-to-end). Progressive difficulty.
+| Basin | Contents | Function |
+|-------|----------|----------|
+| Predicate | all verbs (speed, intransitive, transitive, prepositions) | "does something" |
+| Cognition | think, consider, ponder, contemplate, reflect | semantic sub-basin |
+| Reduction | brief, shorten, abbreviate, condense, summarize, add | "make less" |
+| Property | big, large, huge, enormous, massive, vast | adjectives |
+| Entity | cat, dog, bird, horse, fish, frog | nouns |
+| Comparison | plus, greater, larger, exceeds, bigger, more | relational |
+| Referent | determiners + quantifiers + person names | function words |
+
+Key: basins are **semantic-functional**, not purely syntactic. The
+model separates cognition verbs from motion verbs — unlike Montague,
+which would type them identically as e→t.
+
+Files: `scripts/v9/probe_clusters.py`, `scripts/v9/analyze_clusters.py`
+Data: `results/cluster-probe/`
+
+#### Probe 2: Kernel operator words (94 words, 19 ops)
+
+Multiple natural language phrasings for each of the 22 kernel ops.
+
+**Finding: higher-order ops form perfect basins.**
+
+| Op group | Within-similarity | Signal |
+|----------|------------------|--------|
+| apply (apply/call/invoke/execute/evaluate) | **1.000** | Perfect |
+| compose (compose/chain/pipe/combine/sequence) | **0.999** | Perfect |
+| partial (partial/bind/fix/curry/preset) | **0.642** | Strong |
+| negate (negate/negative/invert/flip/reverse) | **0.643** | Strong |
+| add (add/plus/sum/combine/increase) | **0.280** | Weak |
+
+Lambda primitives cluster tightest. Arithmetic ops are weak —
+"add" and "combine" are too semantically diverse in natural language.
+
+#### Probe 3: Cross-notation expressions (54 expressions)
+
+Same computation in S-expr, math, and prose. Extract at last token
+(where the model composes the result).
+
+**Finding: 53/54 cross-notation pairs exceed 0.5 cosine similarity.**
+
+- Same-notation, different values: `(* 2 3)` ↔ `(* 7 8)` = **0.95**
+  (model extracts the OPERATION, not the operands)
+- S-expr ↔ math: **0.55–0.69** (moderate cross-notation convergence)
+- Math ↔ prose: **0.65–0.72** (stronger — same language family)
+- Nested: `(+ 3 (* 4 5))` ↔ `3 + 4 * 5` = **0.69**
+
+File: `scripts/v9/probe_kernel_basins.py`
+Data: `results/kernel-basins/`
+
+#### Probe 4: Kernel op topology (hierarchical clustering)
+
+Centroid similarity between all 19 ops. Hierarchical clustering
+reveals stable 3-group structure across L28, L32, L37:
+
+```
+Super-basin 1 (12 ops): add, sub, mul, div, and, or, not, if,
+                        apply, compose, partial, negate
+                        → all at cos > 0.99 — ONE massive basin
+                        → "do a computational action"
+
+Basin 2 (3 ops):        eq, lt, gt
+                        → separate cluster
+                        → "compare things"
+
+Basin 3 (4 ops):        abs, min, max, mod
+                        → separate cluster
+                        → "select/extract a value"
+```
+
+**12 of 19 ops are in ONE basin.** The model doesn't distinguish
+add from compose from apply at the word level. They're all "do
+something." Fine-grained op dispatch comes from token identity
+flowing through the tree (value pass-through, proven in v3–v5),
+not from basin geometry.
+
+File: `scripts/v9/probe_op_topology.py`
+Data: `results/kernel-basins/op_similarity_L28.png`, etc.
+
+#### Probe 5: Behavior basins (96 words, 17 behaviors)
+
+Different phrasings of 17 behavioral intents (compute, summarize,
+translate, analyze, verify, create, compare, etc.)
+
+**Finding: behavior words are geometrically IDENTICAL.**
+
+At L8+, ALL behavior words have cosine sim > 0.999 with each other.
+"Calculate", "Summarize", "Translate" occupy the same point.
+The model sees them as "imperative verb at sentence start" — one
+basin. Zero separation.
+
+At the **last token** (full context), behaviors DO separate (peak
+L24, ratio 1.2×). The behavioral activation emerges from sentence
+context, not from the word itself.
+
+File: `scripts/v9/probe_behaviors.py`
+Data: `results/behavior-basins/`
+
+#### Probe 6: Behavior depth (80 probes, 12 words × 6-8 frames)
+
+Same content words in different behavioral frames. Extract at the
+content word, not the behavior word. Test whether the behavioral
+frame reshapes the deep type basins.
+
+**Finding: behaviors reach DEEP.** The behavioral frame reshapes
+the content word's activation all the way to the typing zone.
+
+| Layer | Cross-frame invariance |
+|-------|----------------------|
+| L0 | 0.96 (nearly identical) |
+| L16 | 0.72 (diverging) |
+| L24 | 0.59 (substantially different) |
+| L28 | **0.50** (half the information is frame-dependent) |
+| L32 | **0.51** (minimum — maximum behavioral influence) |
+| L48 | 0.67 (reconverging) |
+| L62 | 0.74 (partially recovered) |
+
+"Sum" in "Calculate the sum" and "Summarize the sum" are
+**different vectors** at L28 (cosine sim ~0.53). Relative shift
+0.75-0.96 for all tested words. ALL words classified as DEEP.
+
+**Behaviors are not surface paint from instruction tuning.**
+They reshape the activation geometry all the way to the typing
+zone. The behavioral frame IS part of the type assignment.
+
+File: `scripts/v9/probe_behavior_depth.py`
+Data: `results/behavior-depth/`
+
+### Why Behaviors Reach Deep: The Single-Operation Constraint
+
+The transformer has ONE operation: beta reduction (attention =
+substitution = gather values from other positions by similarity).
+Everything the model does — typing, behavior selection, kernel
+dispatch, arithmetic, composition — must be expressed through this
+single operation.
+
+Because there's only one operation, the model MUST encode all
+structure as **superpositions** in the weight space. The fractal
+hierarchy we observe (behaviors conditioning types conditioning
+dispatch) isn't design — it's **necessity**. There's no other way
+to fit a multi-level dispatch hierarchy into a single-operation
+architecture.
+
+This is why 99.7% of Qwen3-4B's heads are encoding overhead.
+They're not computing — they're laying tree structure into
+superpositions so the 3 heads that DO compute can resolve it
+through beta reduction. The v6 training run proved the cost:
+**1B tokens and only one compile gate formed.** That's the price
+of discovering architecture through gradient descent on one
+operation.
+
+The VSM + kernel sidesteps this entirely:
+- The kernel gives it the ALU (22 ops, 100%, pre-wired)
+- The VSM gives it the dispatch hierarchy (S5→S4→S3→S1)
+- The type basins give it the routing geometry
+
+Every superposition we give as architecture is capacity freed for
+learning **facts** — the things that actually vary between models.
+The model starts learning world knowledge from token one, not
+spending billions of tokens rediscovering lambda calculus.
+
+### Implications for Training Data
+
+Session 056 changes what training data the ascending arm needs:
+
+1. **Not symbolic type labels.** Don't ask the A3B "what CCG type
+   is this word?" The types are geometric basins, not strings.
+
+2. **Activation vectors from the typing zone.** Training signal is
+   `(token_in_context, L28_hidden_state)` from Qwen3-32B. The
+   hidden state IS the type.
+
+3. **Diverse behavioral contexts required.** Because behaviors
+   reshape basins at L28, training data must include the same words
+   in compute/summarize/analyze/translate/etc. frames. Isolated
+   word→type mappings won't generalize.
+
+4. **3 coarse basins for dispatch, not 19.** The ascending arm
+   dispatches to action/comparison/selection. Fine-grained op
+   routing comes from token identity via value pass-through.
+
+5. **Context window matters.** The behavioral frame influences
+   typing. The ascending arm needs enough context to capture the
+   frame — probably the sentence, not just the local window.
+
+### Updated Open Questions
+
+1. **Context window size.** Behavioral frames reshape basins.
+   How much context does the ascending arm need? Sentence-level?
+   Paragraph? The invariance recovery at L48-62 suggests the
+   model reconverges — maybe the deep shift is transient.
+
+2. **Basin count.** 7 natural basins for general language, 3
+   super-basins for kernel ops. What's the right granularity
+   for the ascending arm? More basins = finer dispatch but
+   harder to learn.
+
+3. **Cross-notation gap.** S-expr ↔ prose is 0.55-0.70 at the
+   composition point. Can a small ternary model close this gap?
+   This is the ascending arm's hardest job.
+
+4. **Training data volume.** How many (word, context, activation)
+   triples? The 32B model's activations are the oracle — how much
+   do we need to sample to capture the basin geometry?
+
+5. **Basin stability across models.** We probed Qwen3-32B. Do
+   other 32B+ models have the same basin structure? If the basins
+   are universal (like the lambda function), training data from
+   any large model should work.
+
+6. **Invariance recovery.** Cross-frame similarity drops to 0.50
+   at L28-32 then recovers to 0.74 at L62. What happens in
+   L48-62? Does the model reconverge to a frame-independent
+   representation? If so, L62 activations might be better training
+   targets than L28.
+
+### Key Files (Session 056)
+
+| File | What it probes |
+|------|---------------|
+| `scripts/v9/probe_clusters.py` | General type basins, all 64 layers |
+| `scripts/v9/analyze_clusters.py` | UMAP + HDBSCAN cluster visualization |
+| `scripts/v9/probe_kernel_basins.py` | Kernel op words + cross-notation expressions |
+| `scripts/v9/probe_op_topology.py` | Inter-op hierarchy, dispatch confusion |
+| `scripts/v9/probe_behaviors.py` | Behavioral intent clustering |
+| `scripts/v9/probe_behavior_depth.py` | Behavioral frame influence on type basins |
