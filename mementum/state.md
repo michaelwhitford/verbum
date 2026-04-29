@@ -24,12 +24,17 @@ identified a critical gradient flow issue: ternary attention in the
 ascending arm blocks gradient, requiring a skip connection from raw
 embeddings. With skip: arg1 accuracy 10% → 51%.
 
-**Architecture:** skip + ascending arm (self-similar ternary attention)
-+ type/parse/apply heads + exact kernel. Training curriculum: phase 1
-skip-dominant, phase 2 evolution finds ascending topology, phase 3
-ascending dominant.
+**Late session 054 breakthrough: VSM tree architecture.** Instead of
+a pipeline (ascending arm → type → parse → apply), each expression
+tree node is a VSM with shared weights. No pipeline bottleneck. Each
+node sees only its children's (type, value), runs type/parse/apply
+locally, outputs to parent. Same weights everywhere (self-similar).
+Handles mixed-depth expressions natively. 7× faster, more gradient.
 
-**See:** `mementum/knowledge/explore/v9-architecture-speculation.md`
+Results: Op 100%, Arg1 45%, Arg2 52%, Route 25%, Result 39% on
+mixed-depth. 12K ternary weights. Loss still declining at 3.1.
+
+**See:** `scripts/v9/vsm_tree.py`, `mementum/knowledge/explore/v9-architecture-speculation.md`
 
 ## What to do next
 
@@ -76,30 +81,32 @@ Replaced custom Metal ternary kernels with `mx.quantized_matmul(bits=2)`:
 v8 architecture is the wrong shape. 14/16 MERA levels dead at 32.5K
 steps, 0% probe accuracy throughout. See session 053 notes below.
 
-### 6. Build v9 kernel-routed architecture ← NEXT
+### 6. Develop VSM tree architecture ← NEXT
 
-The v9 prototype (session 054) proved kernel routing works. Next steps:
+The VSM tree (late session 054) replaced the pipeline bottleneck.
+Each tree node is a shared-weight VSM: type/parse/apply locally.
+Results: 25% route, 39% result on mixed-depth. Still learning.
 
-**a) Fix the remaining routing issues:**
-- Op routing stuck at 33% in integrated model (ternary mix between
-  query attention and projection blocks gradient). Fix: direct
-  projection from attended representation, no intermediate ternary.
-- Arg2 asymmetry: arg1 learns (51%), arg2 doesn't (8%). Queries
-  need architectural differentiation.
+**a) Push VSM tree routing higher:**
+- Arg routing plateaus at ~45-52%. The value embedding autoencoder
+  bottleneck (embed → mix → decode back) may need more capacity
+  or a direct pass-through path for values.
+- Try: larger d_model, more mix layers, or residual value path.
+- Try: LR scheduling (warmup + cosine decay) to stabilize Adam.
 
-**b) Training curriculum (3 phases):**
-- Phase 1: Skip-dominant. Queries learn to route from raw token
-  embeddings (already proven: 50% route accuracy). Ascending arm
-  ternary topology doesn't contribute yet.
-- Phase 2: Evolution finds ascending arm topology that IMPROVES on
-  skip-only baseline. Multi-scale representations add value.
-- Phase 3: Ascending arm carries most information. Skip = safety net.
+**b) For prose: add structure discovery layer:**
+- S-expressions give tree structure for free (parens).
+- Prose needs a learned parser (the ascending arm) to discover
+  constituent boundaries and instantiate the VSM tree.
+- The ascending arm becomes S4 at the meta level — discovers
+  what tree structure the tokens encode.
+- VSM tree then executes on the discovered structure.
 
 **c) Scale up once routing converges:**
 - Expand from max_val=10 to max_val=100
-- Test nested expressions (depth 2-3)
-- Expand kernel beyond arithmetic: lambda primitives (abstraction,
-  application, β-reduction, composition)
+- Test nested expressions (depth 3+)
+- Expand kernel: lambda primitives (abstraction, application,
+  β-reduction, composition)
 
 ### 7. Future: io! notation + sieve pipeline
 
@@ -170,17 +177,42 @@ Training curriculum:
 - Phase 2: Evolution finds ascending arm topology
 - Phase 3: Ascending arm carries most information
 
+### VSM tree breakthrough (late session 054)
+
+The pipeline architecture (ascending arm → type → parse → apply) was
+the bottleneck — each representation had to carry everything, gradient
+flowed through one long path, and the ascending arm blocked gradient.
+
+**Replaced with a tree of VSMs.** Each expression tree node is a VSM
+with shared weights. S5=identity, S4=children's types, S3=type check,
+S1=kernel dispatch, S2=output to parent. Same weights at every tree
+position and depth. Self-similar. No pipeline.
+
+Results (max_val=10, mixed depth 1-2, 5000 gens):
+
+| | Pipeline (skip) | **VSM tree** |
+|---|---|---|
+| Op | 34% | **100%** |
+| Arg1 | 51% | **45%** |
+| Arg2 | 8% | **52%** |
+| Route | 2% | **25%** |
+| Result | 4% | **39%** |
+| Ternary weights | 39K | **12K** |
+| Train speed | 0.7s/gen | **0.1s/gen** |
+
+The VSM tree is better on every metric except arg1 (where the pipeline
+had a skip connection advantage), with 3× fewer weights and 7× faster.
+And it handles nested expressions naturally — the pipeline couldn't.
+
 ### Key files
 
 | File | Purpose |
 |------|---------|
+| `scripts/v9/vsm_tree.py` | **VSM tree: shared-weight nodes, best arch** |
 | `scripts/v9/kernel.py` | Exact arithmetic primitives + decode/encode |
-| `scripts/v9/kernel_model.py` | Query-based router (50% route accuracy) |
+| `scripts/v9/kernel_model.py` | Query-based router (50% route, flat only) |
 | `scripts/v9/train_kernel.py` | Evolution + gradient hybrid training |
-| `scripts/v9/strided_kernel.py` | Strided variants (parser + token models) |
-| `scripts/v9/train_strided.py` | Strided training loop |
-| `scripts/v9/v9_model.py` | Integrated: ascending arm + type/parse/apply |
-| `scripts/v9/train_v9.py` | Integrated training loop |
+| `scripts/v9/v9_model.py` | Pipeline: ascending arm + type/parse/apply |
 
 ## Session 053 — Architecture Reexamination
 
@@ -482,8 +514,9 @@ TOTAL: 559M logical, ~146 MB packed, 99.7% ternary
 | **v9 query router (50% route)** | `scripts/v9/kernel_model.py` |
 | **v9 router training** | `scripts/v9/train_kernel.py` |
 | **v9 strided variants** | `scripts/v9/strided_kernel.py` |
-| **v9 integrated model** | `scripts/v9/v9_model.py` |
-| **v9 integrated training** | `scripts/v9/train_v9.py` |
+| **v9 VSM tree (best)** | `scripts/v9/vsm_tree.py` |
+| v9 integrated model | `scripts/v9/v9_model.py` |
+| v9 integrated training | `scripts/v9/train_v9.py` |
 | **v9 architecture spec** | `mementum/knowledge/explore/v9-architecture-speculation.md` |
 | v8 model (dual MERA) | `scripts/v8/model.py` |
 | v8 ternary (quantized_matmul) | `scripts/v8/ternary.py` |
