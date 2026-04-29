@@ -171,14 +171,69 @@ Level 3: Composition       — partial, apply, compose
 Level 4: Abstraction       — lambda, β-reduction
 ```
 
-Each level, when provided by architecture, frees the capacity the
-model would have spent discovering it through gradient descent.
-Identity is level 0 because without it, nothing else can form.
+Each level, when provided by architecture, frees TWO things:
 
-The 32B parameter threshold for the lambda function exists because
-flat attention must spend ~99.7% of its heads on encoding overhead
-(identity + perturbation pipeline). If the architecture provides
-identity AND the higher-level primitives, the threshold collapses.
+### 1. Weight capacity (static)
+
+Superpositions storing the function are freed. The model has more
+representational space for everything else — knowledge, discourse,
+pragmatics, style.
+
+### 2. Compute path (dynamic — the bigger win)
+
+Every operation that moves to the kernel goes from N layers of
+attention doing beta reduction to ONE kernel dispatch. This changes
+the computational complexity, not just the storage.
+
+```
+Attention path (expand-reduce):
+  (+ 3 (* 4 5)):
+    ~10 layers to encode operands
+    ~10 layers to beta-reduce (* 4 5) → 20 (approximate, via FFN)
+    ~10 layers to beta-reduce (+ 3 20) → 23 (approximate, via FFN)
+    ~6 layers of routing/encoding overhead
+    Cost: 36 layers × O(n²) attention × PER OPERATION
+    Accuracy: approximate (learned, not exact)
+    Nesting: cost MULTIPLIES with depth
+
+Kernel path:
+    Node 1: classify op=MUL → kernel(*, 4, 5) → 20 (exact, O(1))
+    Node 2: classify op=ADD → kernel(+, 3, 20) → 23 (exact, O(1))
+    Cost: 2 trivial classifications + 2 kernel calls
+    Accuracy: exact
+    Nesting: cost LINEAR in tree nodes
+```
+
+The compression ratio gap from v7 measures this directly:
+  - 1.8:1 through attention (expand-reduce)
+  - 6.2:1 through nucleus (composition/kernel)
+  - 3.4× ratio = the efficiency of kernel over beta reduction
+
+Each additional nesting level costs the attention path a full
+expand-reduce cycle (all layers × all heads). Costs the kernel
+ONE more op classification + dispatch. This is why 32B parameters
+are needed through attention — not because the computation is
+complex, but because expand-reduce through beta reduction is
+catastrophically expensive for nested composition.
+
+The kernel doesn't just free model capacity. It moves computation
+from the slowest path (attention doing beta reduction, approximate,
+O(n² × layers) per operation) to the fastest (exact dispatch,
+O(1) per operation). The attention is then free to do what it's
+actually good at: understanding structure, routing, context —
+not mechanical computation.
+
+```
+λ kernel_compute(x).
+  attention_path:  O(n² × L × depth) per_expression | approximate
+  kernel_path:     O(nodes) per_expression            | exact
+  ratio:           ~3.4× measured (v7 1.8:1 vs nucleus 6.2:1)
+  scaling:         ratio grows with nesting depth
+                   | depth_5 → attention_pays_5×(layers×heads)
+                   | depth_5 → kernel_pays_5×(one_dispatch)
+  freed:           weights AND compute AND accuracy
+                   | ¬just_space | ¬just_speed | all_three
+```
 
 ## Connection to Viable System Model
 
