@@ -1,0 +1,4354 @@
+{
+  "0": {
+    "within_mean": 0.6044263185993317,
+    "between_mean": 0.4215016788129098,
+    "ratio": 1.4339831819925346,
+    "separation": 0.18292463978642193,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6083146174748738,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.5990902125835419,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5953680952390035,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5883627812067668,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5765826344490051,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5310050169626872,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.6810042897860209,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.6515233675638835,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.48383273283640543,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.9668784141540527,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.9246339797973633,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.5260892897844315,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.5777145266532898,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.6521477103233337,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.6308657725652059,
+        "n_pairs": 15
+      }
+    }
+  },
+  "1": {
+    "within_mean": 0.587593874463471,
+    "between_mean": 0.42532875394227854,
+    "ratio": 1.3815051745671856,
+    "separation": 0.16226512052119246,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.49941898584365846,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.5110364615917206,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5722669064998627,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5714001675446828,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5230768899122874,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5141490618387858,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.5612119913101197,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.7249025901158651,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.5598994632562001,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.9692458113034567,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.8990187048912048,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.5062939405441285,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.576668632030487,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.6897498846054078,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.6933403174082439,
+        "n_pairs": 15
+      }
+    }
+  },
+  "2": {
+    "within_mean": 0.6040420615544884,
+    "between_mean": 0.3964315898784759,
+    "ratio": 1.523698103220418,
+    "separation": 0.2076104716760125,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.5137253801027933,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.5329056302706401,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.47461336851119995,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5336300770441691,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.49136373003323874,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5604023496309917,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.5363864998022715,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8545329848925273,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.5812056879202525,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.9672525922457377,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.7997148831685384,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.46678819358348844,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6129159152507782,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.7625420689582825,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.8297982414563497,
+        "n_pairs": 15
+      }
+    }
+  },
+  "3": {
+    "within_mean": 0.5865752668150009,
+    "between_mean": 0.36009761030446025,
+    "ratio": 1.6289340724006895,
+    "separation": 0.2264776565105407,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.4533921202023824,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.5109950363636017,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.42551233172416686,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.487877764304479,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5161304732163747,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5228474497795105,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.47118133505185444,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8631076137224833,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.6207647124926249,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.9617201089859009,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.7911036809285482,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.48204154074192046,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6246194839477539,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.6935954093933105,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.850988757610321,
+        "n_pairs": 15
+      }
+    }
+  },
+  "4": {
+    "within_mean": 0.6233471885163296,
+    "between_mean": 0.3862039739828369,
+    "ratio": 1.6140361842678281,
+    "separation": 0.23714321453349274,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.47173063158988954,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.5249206999937693,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.4833488126595815,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.47552465200424193,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5509152630964915,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5749214231967926,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.52530717253685,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8980773846308391,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.6627896229426066,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.9196883837381998,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.7557885050773621,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.528343141078949,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6342487752437591,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.8082729816436768,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9129641652107239,
+        "n_pairs": 15
+      }
+    }
+  },
+  "5": {
+    "within_mean": 0.6155159010361599,
+    "between_mean": 0.36943038482250695,
+    "ratio": 1.6661214841109644,
+    "separation": 0.246085516213653,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.49874399503072103,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.5512006481488546,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.47067158023516337,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.4736001988252004,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5396600405375163,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5614535729090373,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.5272126853466034,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8959708174069723,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.613916528224945,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.915097177028656,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.7256446878115336,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.46807598769664766,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.599069133400917,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.7983660221099853,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.928144637743632,
+        "n_pairs": 15
+      }
+    }
+  },
+  "6": {
+    "within_mean": 0.6335230367158049,
+    "between_mean": 0.35570681977043683,
+    "ratio": 1.781025837864629,
+    "separation": 0.27781621694536807,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.5216011166572571,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.5767898778120677,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.45369056264559426,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.47727643450101215,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.46819889545440674,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5462703247865041,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.5648273070653279,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.9425727923711141,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.6041269342104594,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.9190313816070557,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.714796801408132,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.47640312910079957,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.5840802431106568,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9999121069908142,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999687870343527,
+        "n_pairs": 15
+      }
+    }
+  },
+  "7": {
+    "within_mean": 0.6639600479474632,
+    "between_mean": 0.4081911627364584,
+    "ratio": 1.6265909420879296,
+    "separation": 0.2557688852110048,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.5794501940409342,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6170416951179505,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.4475449025630951,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.4888074338436127,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5137617071469625,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5497966607411703,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.640095055103302,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.9483721693356831,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.6398911356925965,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.8085933327674866,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.704228401184082,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.6021015584468842,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6566980719566345,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.999914801120758,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999696731567382,
+        "n_pairs": 15
+      }
+    }
+  },
+  "8": {
+    "within_mean": 0.7052397620613857,
+    "between_mean": 0.4673653447533364,
+    "ratio": 1.508968882649169,
+    "separation": 0.2378744173080493,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6416534940401714,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6750398437182109,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5020770072937012,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5456432322661082,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5699838777383168,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.6108601927757263,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.6852139115333558,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.9520574649175008,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.6971127986907959,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.8202720085779825,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.7077850500742594,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.6397764265537262,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6999359041452408,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9999127268791199,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999697764714559,
+        "n_pairs": 15
+      }
+    }
+  },
+  "9": {
+    "within_mean": 0.704083512066513,
+    "between_mean": 0.4481459957448072,
+    "ratio": 1.5711029859730068,
+    "separation": 0.2559375163217058,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6441723426183065,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.682884414990743,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.523122251033783,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5433114806811015,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5662481129169464,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.6019678632418315,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.6985705971717835,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.9570517381032307,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.678242043654124,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.8131777842839559,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.6902714967727661,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.6282317817211152,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.673471212387085,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9999040186405181,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999701738357544,
+        "n_pairs": 15
+      }
+    }
+  },
+  "10": {
+    "within_mean": 0.6912618580684867,
+    "between_mean": 0.40489543054177235,
+    "ratio": 1.7072602107253725,
+    "separation": 0.2863664275267144,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.632888666788737,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6755964835484822,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5069312830766042,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5333448112010956,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.564569358030955,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5893305937449137,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.6921840985616048,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.9537134567896525,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.6405791878700257,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.7791363596916199,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.6586218078931173,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.6049310147762299,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.637648731470108,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9999010682106018,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999702572822571,
+        "n_pairs": 15
+      }
+    }
+  },
+  "11": {
+    "within_mean": 0.6752536795953269,
+    "between_mean": 0.3413437209393983,
+    "ratio": 1.9782220623159215,
+    "separation": 0.3339099586559286,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6335191130638123,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6458706418673198,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5170363783836365,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5087484369675318,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5359507938226064,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5724259138107299,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.6746484518051148,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.9426856795946758,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.6030150572458903,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.7429741819699606,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.6182132164637247,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.572542330622673,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6281140118837356,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.999899560213089,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999704122543335,
+        "n_pairs": 15
+      }
+    }
+  },
+  "12": {
+    "within_mean": 0.6758814684005194,
+    "between_mean": 0.34538356332778053,
+    "ratio": 1.9569010808979503,
+    "separation": 0.3304979050727389,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6366130193074544,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6432329654693604,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5192032098770142,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5097927818695704,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5296406030654908,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5855756779511769,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.6724462032318115,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.9399761954943339,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.5989217201868693,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.7468833923339844,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.6070037285486857,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.5824914187192917,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6297810167074204,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998974025249481,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999705155690511,
+        "n_pairs": 15
+      }
+    }
+  },
+  "13": {
+    "within_mean": 0.6858392544491316,
+    "between_mean": 0.36317529117892244,
+    "ratio": 1.88845241156906,
+    "separation": 0.3226639632702092,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6525908390680949,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6628003875414531,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5320268412431081,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5226140330235164,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5357299824555715,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5935292561848958,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.6809749086697896,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.9414299209912618,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.61956228017807,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.7449416120847067,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.6034175157546997,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.602846410870552,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6375175356864929,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998949527740478,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.999970547358195,
+        "n_pairs": 15
+      }
+    }
+  },
+  "14": {
+    "within_mean": 0.6944564004098216,
+    "between_mean": 0.3774953837986467,
+    "ratio": 1.8396420995183336,
+    "separation": 0.3169610166111749,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6617497762044271,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6729581157366434,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.549228060245514,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5260371188322703,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.551160438855489,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.6006885409355164,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.6893849690755208,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.9405991673469544,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.639329210917155,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.7549355228741964,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.6096299886703491,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.6159399271011352,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6450261503458024,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998941957950592,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999706824620564,
+        "n_pairs": 15
+      }
+    }
+  },
+  "15": {
+    "within_mean": 0.6984702137208754,
+    "between_mean": 0.38385393407583707,
+    "ratio": 1.8196249972076106,
+    "separation": 0.3146162796450383,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6632911602656046,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.677917230129242,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5584024310111999,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5340770463148753,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5587609608968099,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5977919101715088,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.6946628212928772,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.9388910531997681,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.6536297043164571,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.757397472858429,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5990100304285685,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.6170378595590591,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6516000807285309,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998932123184204,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999707301457723,
+        "n_pairs": 15
+      }
+    }
+  },
+  "16": {
+    "within_mean": 0.7076968823068885,
+    "between_mean": 0.39024302864492366,
+    "ratio": 1.8134773214637268,
+    "separation": 0.3174538536619649,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6767145991325378,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.694006872177124,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5626415948073069,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.57133709192276,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5663412233193715,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.6052134553591411,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.708858323097229,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.9361685633659362,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.6598750432332356,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.762060542901357,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5963117976983389,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.6242921710014343,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6597751706838608,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998916864395142,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999707539876302,
+        "n_pairs": 15
+      }
+    }
+  },
+  "17": {
+    "within_mean": 0.704448174244614,
+    "between_mean": 0.38031915693587154,
+    "ratio": 1.8522553003118807,
+    "separation": 0.3241290173087425,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.668764324982961,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6933360934257508,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5636038402716319,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5637525538603465,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5693041245142619,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.6000051021575927,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.7094284017880758,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.9307577013969421,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.6548838257789612,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.757067879041036,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5840609769026438,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.6064695715904236,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6633266508579254,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998909771442414,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.999970821539561,
+        "n_pairs": 15
+      }
+    }
+  },
+  "18": {
+    "within_mean": 0.7034644343519724,
+    "between_mean": 0.3737143131989081,
+    "ratio": 1.882358821984846,
+    "separation": 0.3297501211530643,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6686687191327413,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6872948050498963,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5682940443356832,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5612469673156738,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5741143345832824,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5999677757422129,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.7072193662325541,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.9260583678881328,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.6556945443153381,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.7562034328778585,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5783363779385885,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.5979602783918381,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6634303271770478,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998910784721374,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999709765116374,
+        "n_pairs": 15
+      }
+    }
+  },
+  "19": {
+    "within_mean": 0.7033677016214658,
+    "between_mean": 0.3702403161072153,
+    "ratio": 1.8997598884336044,
+    "separation": 0.3331273855142505,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6709204316139221,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6847050984700521,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5789164781570435,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.56284854610761,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5798483947912852,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.6014867564042409,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.7087060054143269,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.9220251599947612,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.6539173285166423,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.7546063860257467,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5738294720649719,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.5859259843826294,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6532737135887146,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998908400535583,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999711036682128,
+        "n_pairs": 15
+      }
+    }
+  },
+  "20": {
+    "within_mean": 0.7046744704887431,
+    "between_mean": 0.36982328373726553,
+    "ratio": 1.905435653936183,
+    "separation": 0.33485118675147757,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6717787822087605,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6957638740539551,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5825216432412466,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5696539560953776,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5743777672449748,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5925082921981811,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.7163866758346558,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.9238918701807658,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.6546314318974813,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.7543672919273376,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5779207746187845,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.5839613944292068,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6511795520782471,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998894810676575,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999712427457174,
+        "n_pairs": 15
+      }
+    }
+  },
+  "21": {
+    "within_mean": 0.7003775312695452,
+    "between_mean": 0.35967239323508216,
+    "ratio": 1.947265190330518,
+    "separation": 0.340705138034463,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6595354517300923,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6923344612121582,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5855604489644368,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5779284556706746,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5695547719796499,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.575787091255188,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.7180027008056641,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.9220194260279337,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.6468141357103984,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.7573745449384054,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5758944352467855,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.5662803620100021,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6396088600158691,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998900413513183,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999711394309998,
+        "n_pairs": 15
+      }
+    }
+  },
+  "22": {
+    "within_mean": 0.6930549498847736,
+    "between_mean": 0.33209170026859586,
+    "ratio": 2.0869384851359745,
+    "separation": 0.3609632496161777,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6752182642618815,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6811264077822368,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.577427210410436,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5781877835591634,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5641483942667643,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5764817972977956,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.6989474574724833,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.9112865090370178,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.6359470407168071,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.7451000809669495,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5408381223678589,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.5301018327474594,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6269359052181244,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998896718025208,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999712665875753,
+        "n_pairs": 15
+      }
+    }
+  },
+  "23": {
+    "within_mean": 0.682376582616119,
+    "between_mean": 0.2942872780174524,
+    "ratio": 2.318743056829155,
+    "separation": 0.3880893045986666,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6638440211613973,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6748946905136108,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5618234634399414,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5709861775239309,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.550107870499293,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5665113230546316,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.6828659653663636,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.9052553653717041,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.6262183705965678,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.7266790072123209,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5153690377871195,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.5054298877716065,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6105519592761993,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998902261257172,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999713857968648,
+        "n_pairs": 15
+      }
+    }
+  },
+  "24": {
+    "within_mean": 0.6741329643034166,
+    "between_mean": 0.2807626626890375,
+    "ratio": 2.4010776854971696,
+    "separation": 0.39337030161437914,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6641751170158386,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6838379581769307,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5499564826488494,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5744270066420237,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5327802141507466,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5504162192344666,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.657572889328003,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.903618844350179,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.6052418192227681,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.7301705082257589,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5058121085166931,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.4932273656129837,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.5919640153646469,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998901903629303,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999713023503621,
+        "n_pairs": 15
+      }
+    }
+  },
+  "25": {
+    "within_mean": 0.6601675976348179,
+    "between_mean": 0.2548029548735568,
+    "ratio": 2.5908945913222197,
+    "separation": 0.4053646427612611,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6575993657112121,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.676144520441691,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5422210097312927,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5681106090545655,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5114296992619832,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.533187476793925,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.6139569322268168,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8900601784388225,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.5852582097053528,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.7301419576009115,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5114458898703257,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.48225957453250884,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.5575827538967133,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998895585536957,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999713818232219,
+        "n_pairs": 15
+      }
+    }
+  },
+  "26": {
+    "within_mean": 0.6487280116767011,
+    "between_mean": 0.22833617699035436,
+    "ratio": 2.841109193590928,
+    "separation": 0.4203918346863468,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6438544114430745,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6549436986446381,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5308252453804017,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5577272554238637,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5064102371533712,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5265794614950816,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.6070366144180298,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8727758129437765,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.575870402654012,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.715011477470398,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.48764432470003766,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.4625985249876976,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.5290660381317138,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998879134654999,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999713937441508,
+        "n_pairs": 15
+      }
+    }
+  },
+  "27": {
+    "within_mean": 0.6294414171127862,
+    "between_mean": 0.18045421477288656,
+    "ratio": 3.4880948494607313,
+    "separation": 0.44898720233989964,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6200179696083069,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6260399917761484,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5142176588376363,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5438713093598684,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.48248260815938315,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.4903736710548401,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.5996291240056356,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8503350297609965,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.5479671021302541,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.7116079529126486,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5326144794623057,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.4034398391842842,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.5186591386795044,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998857498168945,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999714692433676,
+        "n_pairs": 15
+      }
+    }
+  },
+  "28": {
+    "within_mean": 0.6200175698726408,
+    "between_mean": 0.15912726240813482,
+    "ratio": 3.8963629518265663,
+    "separation": 0.460890307464506,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6005607604980469,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6153562545776368,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5228784302870433,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5372071087360382,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.49866351087888083,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.4851072132587433,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.5835673173268636,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8279746274153391,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.5197259326775868,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.6837613383928934,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5189122756322225,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.37559456527233126,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.5095286279916763,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998825371265412,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999715010325114,
+        "n_pairs": 15
+      }
+    }
+  },
+  "29": {
+    "within_mean": 0.616343059446863,
+    "between_mean": 0.16356449369272855,
+    "ratio": 3.7681959301309123,
+    "separation": 0.45277856575413444,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.605658753712972,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6041118303934733,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5006666382153829,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5440011521180471,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5092187623182932,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.47864020665486656,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.552936993042628,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8219582974910736,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.5280518154303233,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.6640941898028055,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5126637319723765,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.3939431682229042,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.49930740892887115,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998787939548492,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999716560045878,
+        "n_pairs": 15
+      }
+    }
+  },
+  "30": {
+    "within_mean": 0.6098368161067527,
+    "between_mean": 0.16797976121811878,
+    "ratio": 3.6304184009101563,
+    "separation": 0.4418570548886339,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.5968718727429708,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6000230729579925,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.4861373484134674,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5455916245778402,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.48987289468447365,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.4735860725243886,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.5399339437484741,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8274671653906505,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.5151116251945496,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.632883608341217,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5173655351003011,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.392383997887373,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.4937793880701065,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998756647109985,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999717036883037,
+        "n_pairs": 15
+      }
+    }
+  },
+  "31": {
+    "within_mean": 0.6049787653309684,
+    "between_mean": 0.1741551845680114,
+    "ratio": 3.4737913018874895,
+    "separation": 0.430823580762957,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.5907791058222452,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.5937139372030894,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.4674112637837728,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5323634564876556,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.4675265848636627,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.46876387000083924,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.5424873530864716,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8546565135320028,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.49984146157900494,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.6157526771227518,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5314892530441284,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.3952968530356884,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.4869795650243759,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998823702335358,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999722321828206,
+        "n_pairs": 15
+      }
+    }
+  },
+  "32": {
+    "within_mean": 0.6162591345848576,
+    "between_mean": 0.1887171801950606,
+    "ratio": 3.26551686469607,
+    "separation": 0.42754195438979703,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6071967244148254,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6113302946090698,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.4736815651257833,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5572573681672414,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.4795828104019165,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.4728416363398234,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.5622477491696676,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8582427700360616,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.5141927540302277,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.6193748712539673,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5333988467852274,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.40923888683319093,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.502645879983902,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998839437961579,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999723792076111,
+        "n_pairs": 15
+      }
+    }
+  },
+  "33": {
+    "within_mean": 0.6207895844533879,
+    "between_mean": 0.213021995545517,
+    "ratio": 2.914204154663184,
+    "separation": 0.4077675889078709,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.62418452501297,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6394624769687652,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.4707937737305959,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5624068717161814,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.4855657875537872,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.47942816416422523,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.5498723705609639,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8585989276568095,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.5080602208773295,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.6368670264879862,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5118647813796997,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.42337613701820376,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.5112896174192428,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998827278614044,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999723792076111,
+        "n_pairs": 15
+      }
+    }
+  },
+  "34": {
+    "within_mean": 0.6145977022186402,
+    "between_mean": 0.20662948609748003,
+    "ratio": 2.974394960885186,
+    "separation": 0.4079682161211602,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6275582710901896,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6375252783298493,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.4610192139943441,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5598590254783631,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.48042217691739403,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.47588098247845967,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.536453107992808,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8473956187566122,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.4873223086198171,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.627923846244812,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.500682532787323,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.4198321461677551,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.5031083822250366,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998821914196014,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999724348386129,
+        "n_pairs": 15
+      }
+    }
+  },
+  "35": {
+    "within_mean": 0.6087496799807395,
+    "between_mean": 0.17572610100384986,
+    "ratio": 3.464196135367522,
+    "separation": 0.4330235789768896,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6386307080586752,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6251576920350392,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.47469514807065327,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5437343279520671,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.4726348102092743,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.4646546026070913,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.5320554812749226,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8315392831961314,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.47988307873408,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.6164218584696451,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.49481143554051715,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.39439052939414976,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.5006637006998063,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998832881450653,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999725619951884,
+        "n_pairs": 15
+      }
+    }
+  },
+  "36": {
+    "within_mean": 0.6082044139664661,
+    "between_mean": 0.1671049192199996,
+    "ratio": 3.639655952711621,
+    "separation": 0.4410994947464665,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6383491357167562,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6186440547307333,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.4842681566874186,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5330874105294545,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.4718117197354635,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.4857725938161214,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.5340828001499176,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8192582488059997,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.4817143758138021,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.6091276407241821,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.4890214800834656,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.3844781547784805,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.4983546495437622,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998827695846557,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999726970990499,
+        "n_pairs": 15
+      }
+    }
+  },
+  "37": {
+    "within_mean": 0.6241293527105803,
+    "between_mean": 0.19258937144204644,
+    "ratio": 3.240725840877423,
+    "separation": 0.4315399812685339,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6561790784200032,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6480745792388916,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.4935016095638275,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5502087593078613,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.48348618547121686,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5052616635958354,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.5635644733905792,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8270938396453857,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.4972404936949412,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.6348894635836283,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5058617095152537,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.4212499618530273,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.5085690170526505,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998864889144897,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999727447827657,
+        "n_pairs": 15
+      }
+    }
+  },
+  "38": {
+    "within_mean": 0.6371760497330338,
+    "between_mean": 0.2198027601455977,
+    "ratio": 2.8988537237247036,
+    "separation": 0.4173732895874361,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6776147524515788,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6625499904155732,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5065471053123474,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5705801129341126,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.48984336058298744,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5137251039346059,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.5885218302408854,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8373648802439372,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.5055500149726868,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.6431912779808044,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5189149876435598,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.4532758429646492,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.5212731093168259,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998887717723847,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999727964401245,
+        "n_pairs": 15
+      }
+    }
+  },
+  "39": {
+    "within_mean": 0.6421327110259764,
+    "between_mean": 0.24182593627340637,
+    "ratio": 2.65535087311721,
+    "separation": 0.40030677475257,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6757899522781372,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6702237168947855,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.507085653146108,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5828993419806162,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.4999519149462382,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5145394126574199,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.595958924293518,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8488053838411967,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.5075326899687449,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.6574193636576334,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5135946869850159,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.46804174184799197,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.5202930927276611,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998896300792695,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999728401501974,
+        "n_pairs": 15
+      }
+    }
+  },
+  "40": {
+    "within_mean": 0.655781689350323,
+    "between_mean": 0.2656029656594953,
+    "ratio": 2.4690299964159257,
+    "separation": 0.3901787236908277,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6751837929089864,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6924210627873738,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5198270340760549,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.604336925347646,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5232685645421346,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5348048945267995,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.6257656693458558,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8330414116382598,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.5316899756590525,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.6823539535204569,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5293799738089243,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.4901204317808151,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.5335418373346329,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998888671398163,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999727408091227,
+        "n_pairs": 15
+      }
+    }
+  },
+  "41": {
+    "within_mean": 0.6682894749026145,
+    "between_mean": 0.29910427234736325,
+    "ratio": 2.23430267196752,
+    "separation": 0.3691852025552512,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6821570754051208,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.704084845383962,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5282191812992096,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.618577100833257,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.552364190419515,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5465973695119222,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.6352807720502217,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8442241867383321,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.5491676549116771,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.7074790795644125,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5433587431907654,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.5020158588886261,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.5620604902505875,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998887598514556,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999728083610535,
+        "n_pairs": 15
+      }
+    }
+  },
+  "42": {
+    "within_mean": 0.6592420885960261,
+    "between_mean": 0.28630974419663835,
+    "ratio": 2.3025485578418063,
+    "separation": 0.3729323443993877,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6585854291915894,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6896254976590475,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5210249344507853,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.6041928986708324,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5459550599257151,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5405324419339498,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.63558855454127,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8147322634855906,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.547691426674525,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.7152945597966512,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5431661903858185,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.4814425498247147,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.5661816388368607,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998881936073303,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999729871749878,
+        "n_pairs": 15
+      }
+    }
+  },
+  "43": {
+    "within_mean": 0.6659551477560433,
+    "between_mean": 0.31338131503682626,
+    "ratio": 2.1250633519033677,
+    "separation": 0.352573832719217,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6815547982851664,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6857974449793498,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.518977024157842,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.6182922085126241,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5631961146990458,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.545537664492925,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.6551366885503133,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.819501503308614,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.547930504878362,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.7248837550481161,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5642907520135244,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.47566611766815187,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.5705956757068634,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9999013304710388,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999762296676635,
+        "n_pairs": 15
+      }
+    }
+  },
+  "44": {
+    "within_mean": 0.7001473291586804,
+    "between_mean": 0.3843042532856666,
+    "ratio": 1.8218568313326389,
+    "separation": 0.3158430758730138,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.7139267643292745,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.7331282615661621,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5584977090358734,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.6474613706270854,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5985544641812642,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5722683330376943,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.6847190737724305,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8971812725067139,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.5677527805169423,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.7529412508010864,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.6264591217041016,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.5425924360752106,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6062303751707077,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998977482318878,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999764045079549,
+        "n_pairs": 15
+      }
+    }
+  },
+  "45": {
+    "within_mean": 0.6530184274719607,
+    "between_mean": 0.3264339210786855,
+    "ratio": 2.0004613041257846,
+    "separation": 0.3265845063932752,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6245108842849731,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6390077332655589,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5552586694558461,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5462465842564901,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5605021337668101,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5555829564730327,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.6826790531476339,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.751916108528773,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.5618008196353912,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.7548227310180664,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.6105066339174906,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.42374418675899506,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.5966836392879487,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998940765857697,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999764164288839,
+        "n_pairs": 15
+      }
+    }
+  },
+  "46": {
+    "within_mean": 0.659597056046609,
+    "between_mean": 0.3447359171365039,
+    "ratio": 1.9133401054507198,
+    "separation": 0.3148611389101051,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6417988002300262,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6351440489292145,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5618067781130472,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5487006366252899,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5777332127094269,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5695157627264659,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.6893738627433776,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.754666660229365,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.5817501684029897,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.7671071290969849,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.5988796750704447,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.4158805787563324,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6022423088550568,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998867332935333,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999764561653137,
+        "n_pairs": 15
+      }
+    }
+  },
+  "47": {
+    "within_mean": 0.6713896520355697,
+    "between_mean": 0.38677763542771515,
+    "ratio": 1.7358543786874296,
+    "separation": 0.2846120166078545,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6584611674149831,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6351490219434103,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5841553449630738,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5464740673700968,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5962529877821604,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5854046980539958,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.7311658143997193,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.7327711045742035,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.6016674319903056,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.7889653642972311,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.6472736398379008,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.4245916694402695,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6252837508916855,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998830497264862,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999765992164612,
+        "n_pairs": 15
+      }
+    }
+  },
+  "48": {
+    "within_mean": 0.6598256998645362,
+    "between_mean": 0.36811291945753005,
+    "ratio": 1.7924546110386155,
+    "separation": 0.29171278040700616,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6471297820409139,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6298894087473551,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5771728058656057,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5424817681312561,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.580218106508255,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5594134271144867,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.7051074385643006,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.7256121635437012,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.5828848878542582,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.7864330013593038,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.6191918055216471,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.40789490193128586,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6184677809476853,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998784184455871,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999765276908874,
+        "n_pairs": 15
+      }
+    }
+  },
+  "49": {
+    "within_mean": 0.6705015459528534,
+    "between_mean": 0.39616197281283494,
+    "ratio": 1.692493454614406,
+    "separation": 0.27433957314001844,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6741408983866374,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6588554481665293,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5817727188269297,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5719834119081497,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5957172989845276,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.550398854414622,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.6845755577087402,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.7627196133136749,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.5719491203625997,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.8096597989400228,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.6306599974632263,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.4360789000988007,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6251514196395874,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998683512210846,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999765078226726,
+        "n_pairs": 15
+      }
+    }
+  },
+  "50": {
+    "within_mean": 0.6664979418599477,
+    "between_mean": 0.3964010992483251,
+    "ratio": 1.6813725873207548,
+    "separation": 0.2700968426116226,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6674896438916524,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6416157086690267,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5833729863166809,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.5705302486817042,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5837886452674865,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5313090602556865,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.6829624096552531,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.7632979055245718,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.5833889365196228,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.8093128403027853,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.6306591828664144,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.4373729437589645,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6160593003034591,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9998398542404174,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999764641125997,
+        "n_pairs": 15
+      }
+    }
+  },
+  "51": {
+    "within_mean": 0.6971498067660998,
+    "between_mean": 0.4173034482392206,
+    "ratio": 1.6706063889662766,
+    "separation": 0.2798463585268792,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.7367142756779989,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.7358068823814392,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.56850892106692,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.669402676820755,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5992891808350881,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.4955271999041239,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.6989851474761963,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8890299240748087,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.560668925444285,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.8207025726636251,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.653570274511973,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.49171537458896636,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6023183703422547,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.99980628490448,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999765475591024,
+        "n_pairs": 15
+      }
+    }
+  },
+  "52": {
+    "within_mean": 0.6753554018915341,
+    "between_mean": 0.39170337606467837,
+    "ratio": 1.7241500665034322,
+    "separation": 0.2836520258268557,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.7160488923390707,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.7248311440149943,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5537213106950124,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.6588513930638631,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5774002412954966,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.453230228026708,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.6660129388173421,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8674850066502889,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.5153713425000509,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.812558631102244,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.6324266592661539,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.4482389628887177,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.5807251095771789,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9997573792934418,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999764601389567,
+        "n_pairs": 15
+      }
+    }
+  },
+  "53": {
+    "within_mean": 0.6569825455706607,
+    "between_mean": 0.3722447000844032,
+    "ratio": 1.7649211538047305,
+    "separation": 0.2847378454862575,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.7033268809318542,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6911325335502625,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5380145291487376,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.6542404214541118,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5604988634586334,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.4210877180099487,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.6241283814112345,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8588964978853861,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.49010614554087323,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.8142574628194174,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.6264329751332601,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.42024277448654174,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.5556202113628388,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9996927440166473,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999763528505962,
+        "n_pairs": 15
+      }
+    }
+  },
+  "54": {
+    "within_mean": 0.6393140780348932,
+    "between_mean": 0.36526957513918806,
+    "ratio": 1.7502527490587707,
+    "separation": 0.2740445028957051,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6851398984591166,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6923984229564667,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5132335086663564,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.6582673947016399,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5145184258619945,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.38458357453346254,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.5728554010391236,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8419077873229981,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.4778810818990072,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.8137545784314474,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.6199349761009216,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.3928738355636597,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.5575655728578568,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9995528221130371,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999763409296671,
+        "n_pairs": 15
+      }
+    }
+  },
+  "55": {
+    "within_mean": 0.6330011547893606,
+    "between_mean": 0.3705851533941504,
+    "ratio": 1.7081125592640982,
+    "separation": 0.2624160013952102,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.6883523305257161,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6831709464391073,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5187039911746979,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.6705511132876079,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.49274181326230365,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.3504037062327067,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.5581678887208302,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8395507017771403,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.46716928283373516,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.8135148088137308,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.6224683324495951,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.3775495648384094,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.5628293991088867,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9994656026363373,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999762058258057,
+        "n_pairs": 15
+      }
+    }
+  },
+  "56": {
+    "within_mean": 0.629943878980734,
+    "between_mean": 0.3831853450267152,
+    "ratio": 1.6439665220934143,
+    "separation": 0.2467585339540188,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.7047792792320251,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.6983506302038829,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5313917676607768,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.6913532813390096,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.47518882552782693,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.34239427745342255,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.4923328439394633,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8247305115063985,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.4523598750432332,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.8078121741612753,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.6460874875386556,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.37551761865615846,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.5866005271673203,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9993818819522857,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999761899312337,
+        "n_pairs": 15
+      }
+    }
+  },
+  "57": {
+    "within_mean": 0.6300619475303157,
+    "between_mean": 0.40488610689930404,
+    "ratio": 1.5561461279949855,
+    "separation": 0.2251758406310117,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.7045974175135294,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.7094964603583018,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5345314065615336,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.699951966603597,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.47243293722470603,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.3288695236047109,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.46644654671351116,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8173824667930603,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.44714072545369465,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.8128349184989929,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.6697690486907959,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.3862780034542084,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6175461679697036,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9993085384368896,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999760985374451,
+        "n_pairs": 15
+      }
+    }
+  },
+  "58": {
+    "within_mean": 0.6271299082505447,
+    "between_mean": 0.4163620366080443,
+    "ratio": 1.5062129904050632,
+    "separation": 0.21076787164250044,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.7176415721575419,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.7181707739830017,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.538148961464564,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.7147242347399394,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.45119393269220986,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.307322862247626,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.44102768500645956,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8160302102565765,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.42944554090499876,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.818150798479716,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.6987029910087585,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.3849913477897644,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6248486369848252,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9991973876953125,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999760826428731,
+        "n_pairs": 15
+      }
+    }
+  },
+  "59": {
+    "within_mean": 0.6420800772004871,
+    "between_mean": 0.4523151560354074,
+    "ratio": 1.4195413720565773,
+    "separation": 0.1897649211650797,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.7377821683883667,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.7289562582969665,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.5670741538206736,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.7515760858853658,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.4600310931603114,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.3222575729091962,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.438692440589269,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8066935241222382,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.44402451515197755,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.8297982215881348,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.7345330913861593,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.4231080383062363,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.665632551908493,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9990539789199829,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.999975836277008,
+        "n_pairs": 15
+      }
+    }
+  },
+  "60": {
+    "within_mean": 0.6623018734878109,
+    "between_mean": 0.49622936257464323,
+    "ratio": 1.3346688516203773,
+    "separation": 0.16607251091316766,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.7453180154164633,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.7348567684491475,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.612050990263621,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.7737106204032898,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5013715744018554,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.3477043529351552,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.4495449165503184,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.823513905207316,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.4770482142766317,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.8409225940704346,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.7460510730743408,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.44764812886714933,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.6985379517078399,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.998894339799881,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999755263328552,
+        "n_pairs": 15
+      }
+    }
+  },
+  "61": {
+    "within_mean": 0.7022194189410056,
+    "between_mean": 0.5627299726604634,
+    "ratio": 1.2478798945452767,
+    "separation": 0.13948944628054216,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.7726781646410624,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.7429852843284607,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.6968767603238424,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.8044955571492513,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5927417933940887,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.40131739576657616,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.4962979634602865,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8343881169954935,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.5235857983430227,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.8669254382451376,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.7715324958165487,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.5140885144472123,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.7589820086956024,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9986611187458039,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9999746123949687,
+        "n_pairs": 15
+      }
+    }
+  },
+  "62": {
+    "within_mean": 0.7675391996419558,
+    "between_mean": 0.6547263716667715,
+    "ratio": 1.1723053062426534,
+    "separation": 0.11281282797518433,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.8217109640439352,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.8016584316889445,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.77083899974823,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.8250048398971558,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.6943100214004516,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.5027299245198568,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.6243703802426656,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8789189378420512,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.628303591410319,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.8876032630602518,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.7878098686536154,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.6445549607276917,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.8110462009906769,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.9970049858093262,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9994865934054057,
+        "n_pairs": 15
+      }
+    }
+  },
+  "63": {
+    "within_mean": 0.6175843847249585,
+    "between_mean": 0.29133431284348765,
+    "ratio": 2.119847740203334,
+    "separation": 0.3262500718814708,
+    "per_group": {
+      "shorten_verbs": {
+        "within_mean": 0.5256309270858764,
+        "n_pairs": 15
+      },
+      "size_adjectives": {
+        "within_mean": 0.7868333061536154,
+        "n_pairs": 15
+      },
+      "speed_verbs": {
+        "within_mean": 0.7145922621091206,
+        "n_pairs": 15
+      },
+      "think_verbs": {
+        "within_mean": 0.4112631286183993,
+        "n_pairs": 15
+      },
+      "intransitive_verbs": {
+        "within_mean": 0.5696279227733612,
+        "n_pairs": 15
+      },
+      "transitive_verbs": {
+        "within_mean": 0.3465363691250483,
+        "n_pairs": 15
+      },
+      "common_nouns": {
+        "within_mean": 0.5318941175937653,
+        "n_pairs": 15
+      },
+      "determiners": {
+        "within_mean": 0.8419968167940776,
+        "n_pairs": 15
+      },
+      "prepositions": {
+        "within_mean": 0.5727446854114533,
+        "n_pairs": 15
+      },
+      "run_verb": {
+        "within_mean": 0.6922102173169454,
+        "n_pairs": 3
+      },
+      "run_noun": {
+        "within_mean": 0.3951369325319926,
+        "n_pairs": 3
+      },
+      "addition_words": {
+        "within_mean": 0.26433130106888714,
+        "n_pairs": 10
+      },
+      "comparison_words": {
+        "within_mean": 0.49338011592626574,
+        "n_pairs": 10
+      },
+      "person_names": {
+        "within_mean": 0.959735757112503,
+        "n_pairs": 10
+      },
+      "quantifiers": {
+        "within_mean": 0.9944926222165426,
+        "n_pairs": 15
+      }
+    }
+  }
+}

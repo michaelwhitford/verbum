@@ -1,0 +1,903 @@
+{
+  "shorten_verbs": {
+    "type_label": "action:reduce_length",
+    "items": {
+      "brief_9358": {
+        "word": "brief",
+        "sentence": "Please brief the team on the situation.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120brief"
+        ]
+      },
+      "shorten_2676": {
+        "word": "shorten",
+        "sentence": "Please shorten the report before submitting.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120shorten"
+        ]
+      },
+      "abbreviate_7536": {
+        "word": "abbreviate",
+        "sentence": "Please abbreviate the long description.",
+        "token_indices": [
+          1,
+          2
+        ],
+        "tokens": [
+          "\u0120abbrev",
+          "iate"
+        ]
+      },
+      "condense_3135": {
+        "word": "condense",
+        "sentence": "Please condense the document into key points.",
+        "token_indices": [
+          1,
+          2
+        ],
+        "tokens": [
+          "\u0120cond",
+          "ense"
+        ]
+      },
+      "summarize_2509": {
+        "word": "summarize",
+        "sentence": "Please summarize the findings for the board.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120summarize"
+        ]
+      },
+      "truncate_3960": {
+        "word": "truncate",
+        "sentence": "Please truncate the output to fit the screen.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120truncate"
+        ]
+      }
+    }
+  },
+  "size_adjectives": {
+    "type_label": "property:large",
+    "items": {
+      "big_7777": {
+        "word": "big",
+        "sentence": "The big problem is resource allocation.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120big"
+        ]
+      },
+      "large_9176": {
+        "word": "large",
+        "sentence": "The large problem is resource allocation.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120large"
+        ]
+      },
+      "huge_2921": {
+        "word": "huge",
+        "sentence": "The huge problem is resource allocation.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120huge"
+        ]
+      },
+      "enormous_1750": {
+        "word": "enormous",
+        "sentence": "The enormous problem is resource allocation.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120enormous"
+        ]
+      },
+      "massive_6862": {
+        "word": "massive",
+        "sentence": "The massive problem is resource allocation.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120massive"
+        ]
+      },
+      "vast_3165": {
+        "word": "vast",
+        "sentence": "The vast problem is resource allocation.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120vast"
+        ]
+      }
+    }
+  },
+  "speed_verbs": {
+    "type_label": "action:move_fast",
+    "items": {
+      "run_7938": {
+        "word": "run",
+        "sentence": "The dog will run across the field.",
+        "token_indices": [
+          3
+        ],
+        "tokens": [
+          "\u0120run"
+        ]
+      },
+      "sprint_9141": {
+        "word": "sprint",
+        "sentence": "The dog will sprint across the field.",
+        "token_indices": [
+          3
+        ],
+        "tokens": [
+          "\u0120sprint"
+        ]
+      },
+      "dash_1879": {
+        "word": "dash",
+        "sentence": "The dog will dash across the field.",
+        "token_indices": [
+          3
+        ],
+        "tokens": [
+          "\u0120dash"
+        ]
+      },
+      "rush_3682": {
+        "word": "rush",
+        "sentence": "The dog will rush across the field.",
+        "token_indices": [
+          3
+        ],
+        "tokens": [
+          "\u0120rush"
+        ]
+      },
+      "race_6365": {
+        "word": "race",
+        "sentence": "The dog will race across the field.",
+        "token_indices": [
+          3
+        ],
+        "tokens": [
+          "\u0120race"
+        ]
+      },
+      "bolt_3169": {
+        "word": "bolt",
+        "sentence": "The dog will bolt across the field.",
+        "token_indices": [
+          3
+        ],
+        "tokens": [
+          "\u0120bolt"
+        ]
+      }
+    }
+  },
+  "think_verbs": {
+    "type_label": "action:cognition",
+    "items": {
+      "think_8037": {
+        "word": "think",
+        "sentence": "I think about the implications carefully.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120think"
+        ]
+      },
+      "consider_2670": {
+        "word": "consider",
+        "sentence": "I consider the implications carefully.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120consider"
+        ]
+      },
+      "ponder_0390": {
+        "word": "ponder",
+        "sentence": "I ponder the implications carefully.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120ponder"
+        ]
+      },
+      "contemplate_2744": {
+        "word": "contemplate",
+        "sentence": "I contemplate the implications carefully.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120contemplate"
+        ]
+      },
+      "reflect_9198": {
+        "word": "reflect",
+        "sentence": "I reflect on the implications carefully.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120reflect"
+        ]
+      },
+      "deliberate_0148": {
+        "word": "deliberate",
+        "sentence": "I deliberate on the implications carefully.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120deliberate"
+        ]
+      }
+    }
+  },
+  "intransitive_verbs": {
+    "type_label": "type:e\u2192t",
+    "items": {
+      "sleeps_8983": {
+        "word": "sleeps",
+        "sentence": "The cat sleeps on the mat.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120sleeps"
+        ]
+      },
+      "runs_0063": {
+        "word": "runs",
+        "sentence": "The cat runs on the mat.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120runs"
+        ]
+      },
+      "sits_7030": {
+        "word": "sits",
+        "sentence": "The cat sits on the mat.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120sits"
+        ]
+      },
+      "breathes_3964": {
+        "word": "breathes",
+        "sentence": "The cat breathes on the mat.",
+        "token_indices": [
+          2,
+          3
+        ],
+        "tokens": [
+          "\u0120breath",
+          "es"
+        ]
+      },
+      "waits_4045": {
+        "word": "waits",
+        "sentence": "The cat waits on the mat.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120waits"
+        ]
+      },
+      "rests_5095": {
+        "word": "rests",
+        "sentence": "The cat rests on the mat.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120rests"
+        ]
+      }
+    }
+  },
+  "transitive_verbs": {
+    "type_label": "type:e\u2192(e\u2192t)",
+    "items": {
+      "chased_4285": {
+        "word": "chased",
+        "sentence": "The dog chased the rabbit through the forest.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120chased"
+        ]
+      },
+      "ate_6814": {
+        "word": "ate",
+        "sentence": "The dog ate the rabbit through the forest.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120ate"
+        ]
+      },
+      "found_5352": {
+        "word": "found",
+        "sentence": "The dog found the rabbit through the forest.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120found"
+        ]
+      },
+      "watched_1558": {
+        "word": "watched",
+        "sentence": "The dog watched the rabbit through the forest.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120watched"
+        ]
+      },
+      "followed_1472": {
+        "word": "followed",
+        "sentence": "The dog followed the rabbit through the forest.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120followed"
+        ]
+      },
+      "caught_3253": {
+        "word": "caught",
+        "sentence": "The dog caught the rabbit through the forest.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120caught"
+        ]
+      }
+    }
+  },
+  "common_nouns": {
+    "type_label": "type:e\u2192t_noun",
+    "items": {
+      "cat_7944": {
+        "word": "cat",
+        "sentence": "The cat is sitting quietly.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120cat"
+        ]
+      },
+      "dog_5183": {
+        "word": "dog",
+        "sentence": "The dog is sitting quietly.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120dog"
+        ]
+      },
+      "bird_0885": {
+        "word": "bird",
+        "sentence": "The bird is sitting quietly.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120bird"
+        ]
+      },
+      "horse_9441": {
+        "word": "horse",
+        "sentence": "The horse is sitting quietly.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120horse"
+        ]
+      },
+      "fish_4220": {
+        "word": "fish",
+        "sentence": "The fish is sitting quietly.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120fish"
+        ]
+      },
+      "frog_6511": {
+        "word": "frog",
+        "sentence": "The frog is sitting quietly.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120frog"
+        ]
+      }
+    }
+  },
+  "determiners": {
+    "type_label": "type:(e\u2192t)\u2192e",
+    "items": {
+      "the_7964": {
+        "word": "the",
+        "sentence": "The cat sat on the mat.",
+        "token_indices": [
+          4
+        ],
+        "tokens": [
+          "\u0120the"
+        ]
+      },
+      "a_9506": {
+        "word": "a",
+        "sentence": "A cat sat on the mat.",
+        "token_indices": [
+          0,
+          1,
+          2,
+          5
+        ],
+        "tokens": [
+          "A",
+          "\u0120cat",
+          "\u0120sat",
+          "\u0120mat"
+        ]
+      },
+      "every_6413": {
+        "word": "every",
+        "sentence": "Every cat sat on the mat.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Every"
+        ]
+      },
+      "some_0141": {
+        "word": "some",
+        "sentence": "Some cat sat on the mat.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Some"
+        ]
+      },
+      "no_8898": {
+        "word": "no",
+        "sentence": "No cat sat on the mat.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "No"
+        ]
+      },
+      "each_2353": {
+        "word": "each",
+        "sentence": "Each cat sat on the mat.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Each"
+        ]
+      }
+    }
+  },
+  "prepositions": {
+    "type_label": "type:e\u2192(e\u2192t)\u2192(e\u2192t)",
+    "items": {
+      "on_6436": {
+        "word": "on",
+        "sentence": "The cat sat on the big mat.",
+        "token_indices": [
+          3
+        ],
+        "tokens": [
+          "\u0120on"
+        ]
+      },
+      "under_0952": {
+        "word": "under",
+        "sentence": "The cat sat under the big mat.",
+        "token_indices": [
+          3
+        ],
+        "tokens": [
+          "\u0120under"
+        ]
+      },
+      "near_7855": {
+        "word": "near",
+        "sentence": "The cat sat near the big mat.",
+        "token_indices": [
+          3
+        ],
+        "tokens": [
+          "\u0120near"
+        ]
+      },
+      "beside_5292": {
+        "word": "beside",
+        "sentence": "The cat sat beside the big mat.",
+        "token_indices": [
+          3
+        ],
+        "tokens": [
+          "\u0120beside"
+        ]
+      },
+      "behind_3461": {
+        "word": "behind",
+        "sentence": "The cat sat behind the big mat.",
+        "token_indices": [
+          3
+        ],
+        "tokens": [
+          "\u0120behind"
+        ]
+      },
+      "above_7871": {
+        "word": "above",
+        "sentence": "The cat sat above the big mat.",
+        "token_indices": [
+          3
+        ],
+        "tokens": [
+          "\u0120above"
+        ]
+      }
+    }
+  },
+  "run_verb": {
+    "type_label": "type:e\u2192t_verb_usage",
+    "items": {
+      "run_2410": {
+        "word": "run",
+        "sentence": "The children run in the park every morning.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120run"
+        ]
+      },
+      "run_8643": {
+        "word": "run",
+        "sentence": "The athletes run the marathon together.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120run"
+        ]
+      },
+      "run_9504": {
+        "word": "run",
+        "sentence": "The horses run around the paddock.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120run"
+        ]
+      }
+    }
+  },
+  "run_noun": {
+    "type_label": "type:e_noun_usage",
+    "items": {
+      "run_4859": {
+        "word": "run",
+        "sentence": "That was an excellent run this morning.",
+        "token_indices": [
+          4
+        ],
+        "tokens": [
+          "\u0120run"
+        ]
+      },
+      "run_2142": {
+        "word": "run",
+        "sentence": "She completed her daily run before breakfast.",
+        "token_indices": [
+          4
+        ],
+        "tokens": [
+          "\u0120run"
+        ]
+      },
+      "run_8823": {
+        "word": "run",
+        "sentence": "The morning run was particularly refreshing.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120run"
+        ]
+      }
+    }
+  },
+  "addition_words": {
+    "type_label": "kernel:add",
+    "items": {
+      "add_3168": {
+        "word": "add",
+        "sentence": "Please add three and four together.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120add"
+        ]
+      },
+      "plus_4965": {
+        "word": "plus",
+        "sentence": "Three plus four equals seven.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120plus"
+        ]
+      },
+      "sum_0491": {
+        "word": "sum",
+        "sentence": "The sum of three and four is seven.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120sum"
+        ]
+      },
+      "combine_6926": {
+        "word": "combine",
+        "sentence": "Combine three and four to get seven.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Combine"
+        ]
+      },
+      "total_3712": {
+        "word": "total",
+        "sentence": "The total of three and four is seven.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120total"
+        ]
+      }
+    }
+  },
+  "comparison_words": {
+    "type_label": "kernel:compare",
+    "items": {
+      "greater_4992": {
+        "word": "greater",
+        "sentence": "Three is greater than two.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120greater"
+        ]
+      },
+      "larger_5842": {
+        "word": "larger",
+        "sentence": "Three is larger than two.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120larger"
+        ]
+      },
+      "exceeds_0461": {
+        "word": "exceeds",
+        "sentence": "Three exceeds two by one.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120exceeds"
+        ]
+      },
+      "bigger_3931": {
+        "word": "bigger",
+        "sentence": "Three is bigger than two.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120bigger"
+        ]
+      },
+      "more_4004": {
+        "word": "more",
+        "sentence": "Three is more than two.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120more"
+        ]
+      }
+    }
+  },
+  "person_names": {
+    "type_label": "type:e_person",
+    "items": {
+      "Alice_7176": {
+        "word": "Alice",
+        "sentence": "Alice walked through the garden quietly.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Alice"
+        ]
+      },
+      "Bob_5750": {
+        "word": "Bob",
+        "sentence": "Bob walked through the garden quietly.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Bob"
+        ]
+      },
+      "Charlie_9231": {
+        "word": "Charlie",
+        "sentence": "Charlie walked through the garden quietly.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Charlie"
+        ]
+      },
+      "Diana_0360": {
+        "word": "Diana",
+        "sentence": "Diana walked through the garden quietly.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "D",
+          "iana"
+        ]
+      },
+      "Eve_2569": {
+        "word": "Eve",
+        "sentence": "Eve walked through the garden quietly.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "E",
+          "ve"
+        ]
+      }
+    }
+  },
+  "quantifiers": {
+    "type_label": "type:(e\u2192t)\u2192t",
+    "items": {
+      "every_8464": {
+        "word": "every",
+        "sentence": "Every student passed the exam.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Every"
+        ]
+      },
+      "all_8889": {
+        "word": "all",
+        "sentence": "All students passed the exam.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "All"
+        ]
+      },
+      "some_3558": {
+        "word": "some",
+        "sentence": "Some students passed the exam.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Some"
+        ]
+      },
+      "most_3365": {
+        "word": "most",
+        "sentence": "Most students passed the exam.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Most"
+        ]
+      },
+      "few_9502": {
+        "word": "few",
+        "sentence": "Few students passed the exam.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Few"
+        ]
+      },
+      "many_7142": {
+        "word": "many",
+        "sentence": "Many students passed the exam.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Many"
+        ]
+      }
+    }
+  }
+}

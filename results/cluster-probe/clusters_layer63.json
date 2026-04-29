@@ -1,0 +1,1035 @@
+{
+  "layer": 63,
+  "n_clusters": 8,
+  "n_noise": 3,
+  "points": [
+    {
+      "word": "brief",
+      "group": "shorten_verbs",
+      "type_label": "action:reduce_length",
+      "cluster_id": 3,
+      "umap_x": 3.1840813159942627,
+      "umap_y": -0.4680243134498596
+    },
+    {
+      "word": "shorten",
+      "group": "shorten_verbs",
+      "type_label": "action:reduce_length",
+      "cluster_id": 0,
+      "umap_x": 2.8522286415100098,
+      "umap_y": 7.193274021148682
+    },
+    {
+      "word": "abbreviate",
+      "group": "shorten_verbs",
+      "type_label": "action:reduce_length",
+      "cluster_id": 3,
+      "umap_x": 2.78792405128479,
+      "umap_y": -0.3093005418777466
+    },
+    {
+      "word": "condense",
+      "group": "shorten_verbs",
+      "type_label": "action:reduce_length",
+      "cluster_id": -1,
+      "umap_x": 5.072154998779297,
+      "umap_y": -1.3436766862869263
+    },
+    {
+      "word": "summarize",
+      "group": "shorten_verbs",
+      "type_label": "action:reduce_length",
+      "cluster_id": 2,
+      "umap_x": 1.440981149673462,
+      "umap_y": 0.40526410937309265
+    },
+    {
+      "word": "truncate",
+      "group": "shorten_verbs",
+      "type_label": "action:reduce_length",
+      "cluster_id": 0,
+      "umap_x": 2.7979023456573486,
+      "umap_y": 6.8824310302734375
+    },
+    {
+      "word": "big",
+      "group": "size_adjectives",
+      "type_label": "property:large",
+      "cluster_id": 2,
+      "umap_x": 0.49507272243499756,
+      "umap_y": 0.573882520198822
+    },
+    {
+      "word": "large",
+      "group": "size_adjectives",
+      "type_label": "property:large",
+      "cluster_id": 2,
+      "umap_x": 0.3498404324054718,
+      "umap_y": 0.45326459407806396
+    },
+    {
+      "word": "huge",
+      "group": "size_adjectives",
+      "type_label": "property:large",
+      "cluster_id": 2,
+      "umap_x": 0.5938062071800232,
+      "umap_y": 0.5654590725898743
+    },
+    {
+      "word": "enormous",
+      "group": "size_adjectives",
+      "type_label": "property:large",
+      "cluster_id": 2,
+      "umap_x": 0.7619664072990417,
+      "umap_y": 0.39720824360847473
+    },
+    {
+      "word": "massive",
+      "group": "size_adjectives",
+      "type_label": "property:large",
+      "cluster_id": 2,
+      "umap_x": 0.37431401014328003,
+      "umap_y": 0.9360589385032654
+    },
+    {
+      "word": "vast",
+      "group": "size_adjectives",
+      "type_label": "property:large",
+      "cluster_id": 2,
+      "umap_x": 0.3053745627403259,
+      "umap_y": 0.5921129584312439
+    },
+    {
+      "word": "run",
+      "group": "speed_verbs",
+      "type_label": "action:move_fast",
+      "cluster_id": 0,
+      "umap_x": 1.8259944915771484,
+      "umap_y": 7.335709571838379
+    },
+    {
+      "word": "sprint",
+      "group": "speed_verbs",
+      "type_label": "action:move_fast",
+      "cluster_id": 0,
+      "umap_x": 1.6292389631271362,
+      "umap_y": 8.220023155212402
+    },
+    {
+      "word": "dash",
+      "group": "speed_verbs",
+      "type_label": "action:move_fast",
+      "cluster_id": 0,
+      "umap_x": 1.7673225402832031,
+      "umap_y": 7.9965033531188965
+    },
+    {
+      "word": "rush",
+      "group": "speed_verbs",
+      "type_label": "action:move_fast",
+      "cluster_id": 0,
+      "umap_x": 1.8280653953552246,
+      "umap_y": 7.928630352020264
+    },
+    {
+      "word": "race",
+      "group": "speed_verbs",
+      "type_label": "action:move_fast",
+      "cluster_id": 0,
+      "umap_x": 1.3573997020721436,
+      "umap_y": 7.535323143005371
+    },
+    {
+      "word": "bolt",
+      "group": "speed_verbs",
+      "type_label": "action:move_fast",
+      "cluster_id": 0,
+      "umap_x": 2.0116660594940186,
+      "umap_y": 7.694740295410156
+    },
+    {
+      "word": "think",
+      "group": "think_verbs",
+      "type_label": "action:cognition",
+      "cluster_id": 2,
+      "umap_x": 1.545647382736206,
+      "umap_y": 0.4621104598045349
+    },
+    {
+      "word": "consider",
+      "group": "think_verbs",
+      "type_label": "action:cognition",
+      "cluster_id": 2,
+      "umap_x": 2.1522717475891113,
+      "umap_y": -0.03032965585589409
+    },
+    {
+      "word": "ponder",
+      "group": "think_verbs",
+      "type_label": "action:cognition",
+      "cluster_id": 0,
+      "umap_x": 2.426537036895752,
+      "umap_y": 7.412628173828125
+    },
+    {
+      "word": "contemplate",
+      "group": "think_verbs",
+      "type_label": "action:cognition",
+      "cluster_id": 2,
+      "umap_x": 1.3486958742141724,
+      "umap_y": 0.807391345500946
+    },
+    {
+      "word": "reflect",
+      "group": "think_verbs",
+      "type_label": "action:cognition",
+      "cluster_id": 0,
+      "umap_x": 2.5377109050750732,
+      "umap_y": 7.4023895263671875
+    },
+    {
+      "word": "deliberate",
+      "group": "think_verbs",
+      "type_label": "action:cognition",
+      "cluster_id": 2,
+      "umap_x": 1.2227362394332886,
+      "umap_y": 0.8152509331703186
+    },
+    {
+      "word": "sleeps",
+      "group": "intransitive_verbs",
+      "type_label": "type:e\u2192t",
+      "cluster_id": 0,
+      "umap_x": 1.1399919986724854,
+      "umap_y": 7.8791117668151855
+    },
+    {
+      "word": "runs",
+      "group": "intransitive_verbs",
+      "type_label": "type:e\u2192t",
+      "cluster_id": 0,
+      "umap_x": 1.6988664865493774,
+      "umap_y": 7.5045061111450195
+    },
+    {
+      "word": "sits",
+      "group": "intransitive_verbs",
+      "type_label": "type:e\u2192t",
+      "cluster_id": 0,
+      "umap_x": 1.024410367012024,
+      "umap_y": 7.952620506286621
+    },
+    {
+      "word": "breathes",
+      "group": "intransitive_verbs",
+      "type_label": "type:e\u2192t",
+      "cluster_id": 3,
+      "umap_x": 3.4699580669403076,
+      "umap_y": -0.0958002433180809
+    },
+    {
+      "word": "waits",
+      "group": "intransitive_verbs",
+      "type_label": "type:e\u2192t",
+      "cluster_id": 0,
+      "umap_x": 1.2676348686218262,
+      "umap_y": 8.114574432373047
+    },
+    {
+      "word": "rests",
+      "group": "intransitive_verbs",
+      "type_label": "type:e\u2192t",
+      "cluster_id": 0,
+      "umap_x": 1.2450997829437256,
+      "umap_y": 7.853959083557129
+    },
+    {
+      "word": "chased",
+      "group": "transitive_verbs",
+      "type_label": "type:e\u2192(e\u2192t)",
+      "cluster_id": 0,
+      "umap_x": 3.977505922317505,
+      "umap_y": 6.425673961639404
+    },
+    {
+      "word": "ate",
+      "group": "transitive_verbs",
+      "type_label": "type:e\u2192(e\u2192t)",
+      "cluster_id": 0,
+      "umap_x": 3.0235157012939453,
+      "umap_y": 6.258306980133057
+    },
+    {
+      "word": "found",
+      "group": "transitive_verbs",
+      "type_label": "type:e\u2192(e\u2192t)",
+      "cluster_id": 0,
+      "umap_x": 3.3061139583587646,
+      "umap_y": 6.306285381317139
+    },
+    {
+      "word": "watched",
+      "group": "transitive_verbs",
+      "type_label": "type:e\u2192(e\u2192t)",
+      "cluster_id": 2,
+      "umap_x": 1.601650357246399,
+      "umap_y": 0.6529762744903564
+    },
+    {
+      "word": "followed",
+      "group": "transitive_verbs",
+      "type_label": "type:e\u2192(e\u2192t)",
+      "cluster_id": 0,
+      "umap_x": 4.204714298248291,
+      "umap_y": 6.275886058807373
+    },
+    {
+      "word": "caught",
+      "group": "transitive_verbs",
+      "type_label": "type:e\u2192(e\u2192t)",
+      "cluster_id": 0,
+      "umap_x": 3.0218446254730225,
+      "umap_y": 6.303405284881592
+    },
+    {
+      "word": "cat",
+      "group": "common_nouns",
+      "type_label": "type:e\u2192t_noun",
+      "cluster_id": 1,
+      "umap_x": 3.2922418117523193,
+      "umap_y": 0.8282662034034729
+    },
+    {
+      "word": "dog",
+      "group": "common_nouns",
+      "type_label": "type:e\u2192t_noun",
+      "cluster_id": 1,
+      "umap_x": 3.352329969406128,
+      "umap_y": 1.0504543781280518
+    },
+    {
+      "word": "bird",
+      "group": "common_nouns",
+      "type_label": "type:e\u2192t_noun",
+      "cluster_id": 1,
+      "umap_x": 3.4513401985168457,
+      "umap_y": 0.964747965335846
+    },
+    {
+      "word": "horse",
+      "group": "common_nouns",
+      "type_label": "type:e\u2192t_noun",
+      "cluster_id": 1,
+      "umap_x": 3.530362844467163,
+      "umap_y": 1.11282479763031
+    },
+    {
+      "word": "fish",
+      "group": "common_nouns",
+      "type_label": "type:e\u2192t_noun",
+      "cluster_id": 1,
+      "umap_x": 3.1659669876098633,
+      "umap_y": 1.1598604917526245
+    },
+    {
+      "word": "frog",
+      "group": "common_nouns",
+      "type_label": "type:e\u2192t_noun",
+      "cluster_id": 1,
+      "umap_x": 3.5244624614715576,
+      "umap_y": 0.939913272857666
+    },
+    {
+      "word": "the",
+      "group": "determiners",
+      "type_label": "type:(e\u2192t)\u2192e",
+      "cluster_id": 5,
+      "umap_x": 4.071165084838867,
+      "umap_y": -0.9195286631584167
+    },
+    {
+      "word": "a",
+      "group": "determiners",
+      "type_label": "type:(e\u2192t)\u2192e",
+      "cluster_id": 5,
+      "umap_x": 4.068467617034912,
+      "umap_y": -0.6654595732688904
+    },
+    {
+      "word": "every",
+      "group": "determiners",
+      "type_label": "type:(e\u2192t)\u2192e",
+      "cluster_id": 7,
+      "umap_x": 4.281153678894043,
+      "umap_y": -1.947345495223999
+    },
+    {
+      "word": "some",
+      "group": "determiners",
+      "type_label": "type:(e\u2192t)\u2192e",
+      "cluster_id": 6,
+      "umap_x": 4.20798397064209,
+      "umap_y": -1.53985595703125
+    },
+    {
+      "word": "no",
+      "group": "determiners",
+      "type_label": "type:(e\u2192t)\u2192e",
+      "cluster_id": 5,
+      "umap_x": 3.900132656097412,
+      "umap_y": -1.0379960536956787
+    },
+    {
+      "word": "each",
+      "group": "determiners",
+      "type_label": "type:(e\u2192t)\u2192e",
+      "cluster_id": 7,
+      "umap_x": 4.457707405090332,
+      "umap_y": -2.2798211574554443
+    },
+    {
+      "word": "on",
+      "group": "prepositions",
+      "type_label": "type:e\u2192(e\u2192t)\u2192(e\u2192t)",
+      "cluster_id": 0,
+      "umap_x": 3.5262551307678223,
+      "umap_y": 6.027568817138672
+    },
+    {
+      "word": "under",
+      "group": "prepositions",
+      "type_label": "type:e\u2192(e\u2192t)\u2192(e\u2192t)",
+      "cluster_id": 0,
+      "umap_x": 3.7589104175567627,
+      "umap_y": 6.290128231048584
+    },
+    {
+      "word": "near",
+      "group": "prepositions",
+      "type_label": "type:e\u2192(e\u2192t)\u2192(e\u2192t)",
+      "cluster_id": 0,
+      "umap_x": 3.8744635581970215,
+      "umap_y": 5.954594135284424
+    },
+    {
+      "word": "beside",
+      "group": "prepositions",
+      "type_label": "type:e\u2192(e\u2192t)\u2192(e\u2192t)",
+      "cluster_id": 0,
+      "umap_x": 4.157746315002441,
+      "umap_y": 5.774703502655029
+    },
+    {
+      "word": "behind",
+      "group": "prepositions",
+      "type_label": "type:e\u2192(e\u2192t)\u2192(e\u2192t)",
+      "cluster_id": 0,
+      "umap_x": 3.878032922744751,
+      "umap_y": 6.18358039855957
+    },
+    {
+      "word": "above",
+      "group": "prepositions",
+      "type_label": "type:e\u2192(e\u2192t)\u2192(e\u2192t)",
+      "cluster_id": 0,
+      "umap_x": 3.750328779220581,
+      "umap_y": 5.854299068450928
+    },
+    {
+      "word": "run",
+      "group": "run_verb",
+      "type_label": "type:e\u2192t_verb_usage",
+      "cluster_id": 0,
+      "umap_x": 1.3139846324920654,
+      "umap_y": 8.603777885437012
+    },
+    {
+      "word": "run",
+      "group": "run_verb",
+      "type_label": "type:e\u2192t_verb_usage",
+      "cluster_id": 0,
+      "umap_x": 1.5603221654891968,
+      "umap_y": 7.38100528717041
+    },
+    {
+      "word": "run",
+      "group": "run_verb",
+      "type_label": "type:e\u2192t_verb_usage",
+      "cluster_id": 0,
+      "umap_x": 1.5312485694885254,
+      "umap_y": 8.456181526184082
+    },
+    {
+      "word": "run",
+      "group": "run_noun",
+      "type_label": "type:e_noun_usage",
+      "cluster_id": -1,
+      "umap_x": 1.4639228582382202,
+      "umap_y": 1.713243007659912
+    },
+    {
+      "word": "run",
+      "group": "run_noun",
+      "type_label": "type:e_noun_usage",
+      "cluster_id": 0,
+      "umap_x": 1.385428786277771,
+      "umap_y": 7.19995641708374
+    },
+    {
+      "word": "run",
+      "group": "run_noun",
+      "type_label": "type:e_noun_usage",
+      "cluster_id": 2,
+      "umap_x": 1.5179469585418701,
+      "umap_y": 1.2759355306625366
+    },
+    {
+      "word": "add",
+      "group": "addition_words",
+      "type_label": "kernel:add",
+      "cluster_id": 3,
+      "umap_x": 2.942885398864746,
+      "umap_y": -0.5295509696006775
+    },
+    {
+      "word": "plus",
+      "group": "addition_words",
+      "type_label": "kernel:add",
+      "cluster_id": 0,
+      "umap_x": 2.367434024810791,
+      "umap_y": 6.544892311096191
+    },
+    {
+      "word": "sum",
+      "group": "addition_words",
+      "type_label": "kernel:add",
+      "cluster_id": 0,
+      "umap_x": 2.160630702972412,
+      "umap_y": 6.601926803588867
+    },
+    {
+      "word": "combine",
+      "group": "addition_words",
+      "type_label": "kernel:add",
+      "cluster_id": 4,
+      "umap_x": 5.174445152282715,
+      "umap_y": -1.9897065162658691
+    },
+    {
+      "word": "total",
+      "group": "addition_words",
+      "type_label": "kernel:add",
+      "cluster_id": 2,
+      "umap_x": 0.13901188969612122,
+      "umap_y": 0.2920306921005249
+    },
+    {
+      "word": "greater",
+      "group": "comparison_words",
+      "type_label": "kernel:compare",
+      "cluster_id": 0,
+      "umap_x": 2.2872581481933594,
+      "umap_y": 6.8152642250061035
+    },
+    {
+      "word": "larger",
+      "group": "comparison_words",
+      "type_label": "kernel:compare",
+      "cluster_id": 0,
+      "umap_x": 2.1326780319213867,
+      "umap_y": 6.9279704093933105
+    },
+    {
+      "word": "exceeds",
+      "group": "comparison_words",
+      "type_label": "kernel:compare",
+      "cluster_id": 3,
+      "umap_x": 3.5934090614318848,
+      "umap_y": -0.5100586414337158
+    },
+    {
+      "word": "bigger",
+      "group": "comparison_words",
+      "type_label": "kernel:compare",
+      "cluster_id": 0,
+      "umap_x": 2.3747751712799072,
+      "umap_y": 7.005529880523682
+    },
+    {
+      "word": "more",
+      "group": "comparison_words",
+      "type_label": "kernel:compare",
+      "cluster_id": 2,
+      "umap_x": 1.0977504253387451,
+      "umap_y": 0.45580625534057617
+    },
+    {
+      "word": "Alice",
+      "group": "person_names",
+      "type_label": "type:e_person",
+      "cluster_id": 4,
+      "umap_x": 5.187662124633789,
+      "umap_y": -1.8521902561187744
+    },
+    {
+      "word": "Bob",
+      "group": "person_names",
+      "type_label": "type:e_person",
+      "cluster_id": 4,
+      "umap_x": 5.1530914306640625,
+      "umap_y": -1.9957655668258667
+    },
+    {
+      "word": "Charlie",
+      "group": "person_names",
+      "type_label": "type:e_person",
+      "cluster_id": 4,
+      "umap_x": 5.0347580909729,
+      "umap_y": -1.9166268110275269
+    },
+    {
+      "word": "Diana",
+      "group": "person_names",
+      "type_label": "type:e_person",
+      "cluster_id": -1,
+      "umap_x": 3.75956392288208,
+      "umap_y": -1.49442720413208
+    },
+    {
+      "word": "Eve",
+      "group": "person_names",
+      "type_label": "type:e_person",
+      "cluster_id": 5,
+      "umap_x": 3.761786460876465,
+      "umap_y": -1.437889575958252
+    },
+    {
+      "word": "every",
+      "group": "quantifiers",
+      "type_label": "type:(e\u2192t)\u2192t",
+      "cluster_id": 7,
+      "umap_x": 4.210848808288574,
+      "umap_y": -2.0283730030059814
+    },
+    {
+      "word": "all",
+      "group": "quantifiers",
+      "type_label": "type:(e\u2192t)\u2192t",
+      "cluster_id": 6,
+      "umap_x": 4.207626819610596,
+      "umap_y": -1.3449468612670898
+    },
+    {
+      "word": "some",
+      "group": "quantifiers",
+      "type_label": "type:(e\u2192t)\u2192t",
+      "cluster_id": 6,
+      "umap_x": 4.381565570831299,
+      "umap_y": -1.2398755550384521
+    },
+    {
+      "word": "most",
+      "group": "quantifiers",
+      "type_label": "type:(e\u2192t)\u2192t",
+      "cluster_id": 6,
+      "umap_x": 4.426064968109131,
+      "umap_y": -1.4660707712173462
+    },
+    {
+      "word": "few",
+      "group": "quantifiers",
+      "type_label": "type:(e\u2192t)\u2192t",
+      "cluster_id": 4,
+      "umap_x": 4.759428024291992,
+      "umap_y": -1.813839077949524
+    },
+    {
+      "word": "many",
+      "group": "quantifiers",
+      "type_label": "type:(e\u2192t)\u2192t",
+      "cluster_id": 6,
+      "umap_x": 4.65778112411499,
+      "umap_y": -1.3913365602493286
+    }
+  ],
+  "cluster_summary": {
+    "-1": {
+      "size": 3,
+      "members": [
+        {
+          "word": "condense",
+          "group": "shorten_verbs"
+        },
+        {
+          "word": "run",
+          "group": "run_noun"
+        },
+        {
+          "word": "Diana",
+          "group": "person_names"
+        }
+      ],
+      "dominant_group": "shorten_verbs"
+    },
+    "0": {
+      "size": 35,
+      "members": [
+        {
+          "word": "shorten",
+          "group": "shorten_verbs"
+        },
+        {
+          "word": "truncate",
+          "group": "shorten_verbs"
+        },
+        {
+          "word": "run",
+          "group": "speed_verbs"
+        },
+        {
+          "word": "sprint",
+          "group": "speed_verbs"
+        },
+        {
+          "word": "dash",
+          "group": "speed_verbs"
+        },
+        {
+          "word": "rush",
+          "group": "speed_verbs"
+        },
+        {
+          "word": "race",
+          "group": "speed_verbs"
+        },
+        {
+          "word": "bolt",
+          "group": "speed_verbs"
+        },
+        {
+          "word": "ponder",
+          "group": "think_verbs"
+        },
+        {
+          "word": "reflect",
+          "group": "think_verbs"
+        },
+        {
+          "word": "sleeps",
+          "group": "intransitive_verbs"
+        },
+        {
+          "word": "runs",
+          "group": "intransitive_verbs"
+        },
+        {
+          "word": "sits",
+          "group": "intransitive_verbs"
+        },
+        {
+          "word": "waits",
+          "group": "intransitive_verbs"
+        },
+        {
+          "word": "rests",
+          "group": "intransitive_verbs"
+        },
+        {
+          "word": "chased",
+          "group": "transitive_verbs"
+        },
+        {
+          "word": "ate",
+          "group": "transitive_verbs"
+        },
+        {
+          "word": "found",
+          "group": "transitive_verbs"
+        },
+        {
+          "word": "followed",
+          "group": "transitive_verbs"
+        },
+        {
+          "word": "caught",
+          "group": "transitive_verbs"
+        },
+        {
+          "word": "on",
+          "group": "prepositions"
+        },
+        {
+          "word": "under",
+          "group": "prepositions"
+        },
+        {
+          "word": "near",
+          "group": "prepositions"
+        },
+        {
+          "word": "beside",
+          "group": "prepositions"
+        },
+        {
+          "word": "behind",
+          "group": "prepositions"
+        },
+        {
+          "word": "above",
+          "group": "prepositions"
+        },
+        {
+          "word": "run",
+          "group": "run_verb"
+        },
+        {
+          "word": "run",
+          "group": "run_verb"
+        },
+        {
+          "word": "run",
+          "group": "run_verb"
+        },
+        {
+          "word": "run",
+          "group": "run_noun"
+        },
+        {
+          "word": "plus",
+          "group": "addition_words"
+        },
+        {
+          "word": "sum",
+          "group": "addition_words"
+        },
+        {
+          "word": "greater",
+          "group": "comparison_words"
+        },
+        {
+          "word": "larger",
+          "group": "comparison_words"
+        },
+        {
+          "word": "bigger",
+          "group": "comparison_words"
+        }
+      ],
+      "dominant_group": "speed_verbs"
+    },
+    "1": {
+      "size": 6,
+      "members": [
+        {
+          "word": "cat",
+          "group": "common_nouns"
+        },
+        {
+          "word": "dog",
+          "group": "common_nouns"
+        },
+        {
+          "word": "bird",
+          "group": "common_nouns"
+        },
+        {
+          "word": "horse",
+          "group": "common_nouns"
+        },
+        {
+          "word": "fish",
+          "group": "common_nouns"
+        },
+        {
+          "word": "frog",
+          "group": "common_nouns"
+        }
+      ],
+      "dominant_group": "common_nouns"
+    },
+    "2": {
+      "size": 15,
+      "members": [
+        {
+          "word": "summarize",
+          "group": "shorten_verbs"
+        },
+        {
+          "word": "big",
+          "group": "size_adjectives"
+        },
+        {
+          "word": "large",
+          "group": "size_adjectives"
+        },
+        {
+          "word": "huge",
+          "group": "size_adjectives"
+        },
+        {
+          "word": "enormous",
+          "group": "size_adjectives"
+        },
+        {
+          "word": "massive",
+          "group": "size_adjectives"
+        },
+        {
+          "word": "vast",
+          "group": "size_adjectives"
+        },
+        {
+          "word": "think",
+          "group": "think_verbs"
+        },
+        {
+          "word": "consider",
+          "group": "think_verbs"
+        },
+        {
+          "word": "contemplate",
+          "group": "think_verbs"
+        },
+        {
+          "word": "deliberate",
+          "group": "think_verbs"
+        },
+        {
+          "word": "watched",
+          "group": "transitive_verbs"
+        },
+        {
+          "word": "run",
+          "group": "run_noun"
+        },
+        {
+          "word": "total",
+          "group": "addition_words"
+        },
+        {
+          "word": "more",
+          "group": "comparison_words"
+        }
+      ],
+      "dominant_group": "size_adjectives"
+    },
+    "3": {
+      "size": 5,
+      "members": [
+        {
+          "word": "brief",
+          "group": "shorten_verbs"
+        },
+        {
+          "word": "abbreviate",
+          "group": "shorten_verbs"
+        },
+        {
+          "word": "breathes",
+          "group": "intransitive_verbs"
+        },
+        {
+          "word": "add",
+          "group": "addition_words"
+        },
+        {
+          "word": "exceeds",
+          "group": "comparison_words"
+        }
+      ],
+      "dominant_group": "shorten_verbs"
+    },
+    "4": {
+      "size": 5,
+      "members": [
+        {
+          "word": "combine",
+          "group": "addition_words"
+        },
+        {
+          "word": "Alice",
+          "group": "person_names"
+        },
+        {
+          "word": "Bob",
+          "group": "person_names"
+        },
+        {
+          "word": "Charlie",
+          "group": "person_names"
+        },
+        {
+          "word": "few",
+          "group": "quantifiers"
+        }
+      ],
+      "dominant_group": "person_names"
+    },
+    "5": {
+      "size": 4,
+      "members": [
+        {
+          "word": "the",
+          "group": "determiners"
+        },
+        {
+          "word": "a",
+          "group": "determiners"
+        },
+        {
+          "word": "no",
+          "group": "determiners"
+        },
+        {
+          "word": "Eve",
+          "group": "person_names"
+        }
+      ],
+      "dominant_group": "determiners"
+    },
+    "6": {
+      "size": 5,
+      "members": [
+        {
+          "word": "some",
+          "group": "determiners"
+        },
+        {
+          "word": "all",
+          "group": "quantifiers"
+        },
+        {
+          "word": "some",
+          "group": "quantifiers"
+        },
+        {
+          "word": "most",
+          "group": "quantifiers"
+        },
+        {
+          "word": "many",
+          "group": "quantifiers"
+        }
+      ],
+      "dominant_group": "quantifiers"
+    },
+    "7": {
+      "size": 3,
+      "members": [
+        {
+          "word": "every",
+          "group": "determiners"
+        },
+        {
+          "word": "each",
+          "group": "determiners"
+        },
+        {
+          "word": "every",
+          "group": "quantifiers"
+        }
+      ],
+      "dominant_group": "determiners"
+    }
+  }
+}

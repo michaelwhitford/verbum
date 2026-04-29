@@ -1,0 +1,1059 @@
+{
+  "add": {
+    "kernel_op": "kernel:add",
+    "items": {
+      "add_5502": {
+        "word": "add",
+        "sentence": "Please add the two numbers together.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120add"
+        ]
+      },
+      "plus_0273": {
+        "word": "plus",
+        "sentence": "The answer is three plus four.",
+        "token_indices": [
+          4
+        ],
+        "tokens": [
+          "\u0120plus"
+        ]
+      },
+      "sum_6227": {
+        "word": "sum",
+        "sentence": "Compute the sum of these values.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120sum"
+        ]
+      },
+      "combine_1423": {
+        "word": "combine",
+        "sentence": "Combine the values into a total.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Combine"
+        ]
+      },
+      "increase_0208": {
+        "word": "increase",
+        "sentence": "Increase the count by five.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Increase"
+        ]
+      },
+      "addition_3151": {
+        "word": "addition",
+        "sentence": "Perform the addition operation now.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120addition"
+        ]
+      }
+    }
+  },
+  "subtract": {
+    "kernel_op": "kernel:sub",
+    "items": {
+      "subtract_7828": {
+        "word": "subtract",
+        "sentence": "Please subtract three from seven.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120subtract"
+        ]
+      },
+      "minus_0856": {
+        "word": "minus",
+        "sentence": "The answer is seven minus three.",
+        "token_indices": [
+          4
+        ],
+        "tokens": [
+          "\u0120minus"
+        ]
+      },
+      "difference_8173": {
+        "word": "difference",
+        "sentence": "Find the difference between them.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120difference"
+        ]
+      },
+      "decrease_2333": {
+        "word": "decrease",
+        "sentence": "Decrease the total by two.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Decre",
+          "ase"
+        ]
+      },
+      "reduce_8470": {
+        "word": "reduce",
+        "sentence": "Reduce the amount by three.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Reduce"
+        ]
+      },
+      "deduct_2589": {
+        "word": "deduct",
+        "sentence": "Deduct the cost from the balance.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "D",
+          "educt"
+        ]
+      }
+    }
+  },
+  "multiply": {
+    "kernel_op": "kernel:mul",
+    "items": {
+      "multiply_4627": {
+        "word": "multiply",
+        "sentence": "Please multiply four by five.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120multiply"
+        ]
+      },
+      "times_7624": {
+        "word": "times",
+        "sentence": "The answer is four times five.",
+        "token_indices": [
+          4
+        ],
+        "tokens": [
+          "\u0120times"
+        ]
+      },
+      "product_4881": {
+        "word": "product",
+        "sentence": "Compute the product of these numbers.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120product"
+        ]
+      },
+      "double_3074": {
+        "word": "double",
+        "sentence": "Double the current value now.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Double"
+        ]
+      },
+      "scale_5647": {
+        "word": "scale",
+        "sentence": "Scale the input by three.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Scale"
+        ]
+      }
+    }
+  },
+  "divide": {
+    "kernel_op": "kernel:div",
+    "items": {
+      "divide_8633": {
+        "word": "divide",
+        "sentence": "Please divide ten by two.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120divide"
+        ]
+      },
+      "divided_5322": {
+        "word": "divided",
+        "sentence": "Ten divided by two equals five.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120divided"
+        ]
+      },
+      "quotient_7580": {
+        "word": "quotient",
+        "sentence": "Find the quotient of the division.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120quotient"
+        ]
+      },
+      "split_6816": {
+        "word": "split",
+        "sentence": "Split the total into equal parts.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Split"
+        ]
+      },
+      "halve_5911": {
+        "word": "halve",
+        "sentence": "Halve the remaining amount now.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Hal",
+          "ve"
+        ]
+      }
+    }
+  },
+  "modulo": {
+    "kernel_op": "kernel:mod",
+    "items": {
+      "remainder_0955": {
+        "word": "remainder",
+        "sentence": "Find the remainder after division.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120remainder"
+        ]
+      },
+      "modulo_7129": {
+        "word": "modulo",
+        "sentence": "Compute seven modulo three now.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120modulo"
+        ]
+      },
+      "leftover_8671": {
+        "word": "leftover",
+        "sentence": "What is the leftover after dividing.",
+        "token_indices": [
+          3
+        ],
+        "tokens": [
+          "\u0120leftover"
+        ]
+      },
+      "mod_7433": {
+        "word": "mod",
+        "sentence": "Calculate ten mod three for me.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120mod"
+        ]
+      }
+    }
+  },
+  "minimum": {
+    "kernel_op": "kernel:min",
+    "items": {
+      "minimum_9846": {
+        "word": "minimum",
+        "sentence": "Find the minimum of these values.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120minimum"
+        ]
+      },
+      "smallest_1830": {
+        "word": "smallest",
+        "sentence": "Return the smallest number here.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120smallest"
+        ]
+      },
+      "least_5360": {
+        "word": "least",
+        "sentence": "Which is the least of all.",
+        "token_indices": [
+          3
+        ],
+        "tokens": [
+          "\u0120least"
+        ]
+      },
+      "lowest_2359": {
+        "word": "lowest",
+        "sentence": "Select the lowest value available.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120lowest"
+        ]
+      },
+      "min_9391": {
+        "word": "min",
+        "sentence": "Compute the min of the set.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120min"
+        ]
+      }
+    }
+  },
+  "maximum": {
+    "kernel_op": "kernel:max",
+    "items": {
+      "maximum_5497": {
+        "word": "maximum",
+        "sentence": "Find the maximum of these values.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120maximum"
+        ]
+      },
+      "largest_5314": {
+        "word": "largest",
+        "sentence": "Return the largest number here.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120largest"
+        ]
+      },
+      "greatest_1773": {
+        "word": "greatest",
+        "sentence": "Which is the greatest of all.",
+        "token_indices": [
+          3
+        ],
+        "tokens": [
+          "\u0120greatest"
+        ]
+      },
+      "highest_3299": {
+        "word": "highest",
+        "sentence": "Select the highest value available.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120highest"
+        ]
+      },
+      "max_6415": {
+        "word": "max",
+        "sentence": "Compute the max of the set.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120max"
+        ]
+      }
+    }
+  },
+  "equal": {
+    "kernel_op": "kernel:eq",
+    "items": {
+      "equal_6770": {
+        "word": "equal",
+        "sentence": "Check if the values are equal.",
+        "token_indices": [
+          5
+        ],
+        "tokens": [
+          "\u0120equal"
+        ]
+      },
+      "equals_9203": {
+        "word": "equals",
+        "sentence": "Three plus four equals seven exactly.",
+        "token_indices": [
+          3
+        ],
+        "tokens": [
+          "\u0120equals"
+        ]
+      },
+      "same_3932": {
+        "word": "same",
+        "sentence": "Are these two numbers the same.",
+        "token_indices": [
+          5
+        ],
+        "tokens": [
+          "\u0120same"
+        ]
+      },
+      "identical_6131": {
+        "word": "identical",
+        "sentence": "The results are identical in value.",
+        "token_indices": [
+          3
+        ],
+        "tokens": [
+          "\u0120identical"
+        ]
+      },
+      "matches_5163": {
+        "word": "matches",
+        "sentence": "The output matches the expected result.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120matches"
+        ]
+      }
+    }
+  },
+  "less_than": {
+    "kernel_op": "kernel:lt",
+    "items": {
+      "less_9060": {
+        "word": "less",
+        "sentence": "Three is less than five always.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120less"
+        ]
+      },
+      "smaller_0180": {
+        "word": "smaller",
+        "sentence": "Three is smaller than five here.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120smaller"
+        ]
+      },
+      "below_3019": {
+        "word": "below",
+        "sentence": "The value is below the threshold.",
+        "token_indices": [
+          3
+        ],
+        "tokens": [
+          "\u0120below"
+        ]
+      },
+      "under_3583": {
+        "word": "under",
+        "sentence": "The count is under the limit.",
+        "token_indices": [
+          3
+        ],
+        "tokens": [
+          "\u0120under"
+        ]
+      },
+      "fewer_0949": {
+        "word": "fewer",
+        "sentence": "There are fewer items than expected.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120fewer"
+        ]
+      }
+    }
+  },
+  "greater_than": {
+    "kernel_op": "kernel:gt",
+    "items": {
+      "greater_0793": {
+        "word": "greater",
+        "sentence": "Five is greater than three always.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120greater"
+        ]
+      },
+      "larger_3736": {
+        "word": "larger",
+        "sentence": "Five is larger than three here.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120larger"
+        ]
+      },
+      "above_5943": {
+        "word": "above",
+        "sentence": "The value is above the threshold.",
+        "token_indices": [
+          3
+        ],
+        "tokens": [
+          "\u0120above"
+        ]
+      },
+      "exceeds_7504": {
+        "word": "exceeds",
+        "sentence": "The count exceeds the limit now.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120exceeds"
+        ]
+      },
+      "more_2564": {
+        "word": "more",
+        "sentence": "There are more items than expected.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120more"
+        ]
+      }
+    }
+  },
+  "and_op": {
+    "kernel_op": "kernel:and",
+    "items": {
+      "and_5653": {
+        "word": "and",
+        "sentence": "Both conditions must be true and valid.",
+        "token_indices": [
+          5
+        ],
+        "tokens": [
+          "\u0120and"
+        ]
+      },
+      "both_6721": {
+        "word": "both",
+        "sentence": "Both values must satisfy the constraint.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Both"
+        ]
+      },
+      "conjunction_7696": {
+        "word": "conjunction",
+        "sentence": "Form the conjunction of these propositions.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120conjunction"
+        ]
+      },
+      "together_4971": {
+        "word": "together",
+        "sentence": "Both conditions hold together here.",
+        "token_indices": [
+          3
+        ],
+        "tokens": [
+          "\u0120together"
+        ]
+      }
+    }
+  },
+  "or_op": {
+    "kernel_op": "kernel:or",
+    "items": {
+      "or_1097": {
+        "word": "or",
+        "sentence": "Either condition can be true or false.",
+        "token_indices": [
+          5
+        ],
+        "tokens": [
+          "\u0120or"
+        ]
+      },
+      "either_3745": {
+        "word": "either",
+        "sentence": "Either value satisfies the requirement here.",
+        "token_indices": [
+          0,
+          3
+        ],
+        "tokens": [
+          "Either",
+          "\u0120the"
+        ]
+      },
+      "disjunction_7611": {
+        "word": "disjunction",
+        "sentence": "Form the disjunction of the propositions.",
+        "token_indices": [
+          2,
+          3
+        ],
+        "tokens": [
+          "\u0120dis",
+          "junction"
+        ]
+      },
+      "alternatively_4467": {
+        "word": "alternatively",
+        "sentence": "Alternatively the second condition holds.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Alternatively"
+        ]
+      }
+    }
+  },
+  "not_op": {
+    "kernel_op": "kernel:not",
+    "items": {
+      "not_7425": {
+        "word": "not",
+        "sentence": "The condition is not satisfied here.",
+        "token_indices": [
+          3
+        ],
+        "tokens": [
+          "\u0120not"
+        ]
+      },
+      "negation_5484": {
+        "word": "negation",
+        "sentence": "Apply the negation to the result.",
+        "token_indices": [
+          2,
+          3
+        ],
+        "tokens": [
+          "\u0120neg",
+          "ation"
+        ]
+      },
+      "negate_5394": {
+        "word": "negate",
+        "sentence": "Negate the boolean value entirely.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Neg",
+          "ate"
+        ]
+      },
+      "opposite_2978": {
+        "word": "opposite",
+        "sentence": "Return the opposite of the truth.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120opposite"
+        ]
+      },
+      "false_8169": {
+        "word": "false",
+        "sentence": "The statement evaluates to false now.",
+        "token_indices": [
+          4
+        ],
+        "tokens": [
+          "\u0120false"
+        ]
+      }
+    }
+  },
+  "absolute": {
+    "kernel_op": "kernel:abs",
+    "items": {
+      "absolute_4724": {
+        "word": "absolute",
+        "sentence": "Find the absolute value of negative.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120absolute"
+        ]
+      },
+      "magnitude_9599": {
+        "word": "magnitude",
+        "sentence": "Compute the magnitude of this number.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120magnitude"
+        ]
+      },
+      "abs_8626": {
+        "word": "abs",
+        "sentence": "Take the abs of negative five.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120abs"
+        ]
+      },
+      "distance_2546": {
+        "word": "distance",
+        "sentence": "The distance from zero is five.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120distance"
+        ]
+      }
+    }
+  },
+  "negate_num": {
+    "kernel_op": "kernel:neg",
+    "items": {
+      "negate_3818": {
+        "word": "negate",
+        "sentence": "Negate the positive number to negative.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Neg",
+          "ate"
+        ]
+      },
+      "negative_7878": {
+        "word": "negative",
+        "sentence": "Make the number negative now please.",
+        "token_indices": [
+          3
+        ],
+        "tokens": [
+          "\u0120negative"
+        ]
+      },
+      "invert_4195": {
+        "word": "invert",
+        "sentence": "Invert the sign of the value.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "In",
+          "vert"
+        ]
+      },
+      "flip_2020": {
+        "word": "flip",
+        "sentence": "Flip the sign from positive here.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Flip"
+        ]
+      },
+      "reverse_5376": {
+        "word": "reverse",
+        "sentence": "Reverse the sign of the number.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Reverse"
+        ]
+      }
+    }
+  },
+  "conditional": {
+    "kernel_op": "kernel:if",
+    "items": {
+      "if_8646": {
+        "word": "if",
+        "sentence": "If the condition holds then proceed.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "If"
+        ]
+      },
+      "when_2362": {
+        "word": "when",
+        "sentence": "When the value exceeds five stop.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "When"
+        ]
+      },
+      "condition_5012": {
+        "word": "condition",
+        "sentence": "The condition determines which branch runs.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120condition"
+        ]
+      },
+      "conditional_9143": {
+        "word": "conditional",
+        "sentence": "Apply the conditional logic to decide.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120conditional"
+        ]
+      },
+      "whether_8297": {
+        "word": "whether",
+        "sentence": "Check whether the test passes first.",
+        "token_indices": [
+          1
+        ],
+        "tokens": [
+          "\u0120whether"
+        ]
+      },
+      "choose_7003": {
+        "word": "choose",
+        "sentence": "Choose the result based on truth.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Choose"
+        ]
+      }
+    }
+  },
+  "partial_app": {
+    "kernel_op": "kernel:partial",
+    "items": {
+      "partial_4302": {
+        "word": "partial",
+        "sentence": "Create a partial application of add.",
+        "token_indices": [
+          2
+        ],
+        "tokens": [
+          "\u0120partial"
+        ]
+      },
+      "bind_1148": {
+        "word": "bind",
+        "sentence": "Bind the first argument to three.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Bind"
+        ]
+      },
+      "fix_5121": {
+        "word": "fix",
+        "sentence": "Fix the first parameter to five.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Fix"
+        ]
+      },
+      "curry_5067": {
+        "word": "curry",
+        "sentence": "Curry the function with one argument.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "Cur",
+          "ry"
+        ]
+      },
+      "preset_7343": {
+        "word": "preset",
+        "sentence": "Preset the initial value to ten.",
+        "token_indices": [
+          0,
+          1
+        ],
+        "tokens": [
+          "P",
+          "reset"
+        ]
+      }
+    }
+  },
+  "compose": {
+    "kernel_op": "kernel:compose",
+    "items": {
+      "compose_4877": {
+        "word": "compose",
+        "sentence": "Compose the two functions into one.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Compose"
+        ]
+      },
+      "chain_8541": {
+        "word": "chain",
+        "sentence": "Chain the operations together sequentially.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Chain"
+        ]
+      },
+      "pipe_7108": {
+        "word": "pipe",
+        "sentence": "Pipe the output into the next.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Pipe"
+        ]
+      },
+      "combine_0000": {
+        "word": "combine",
+        "sentence": "Combine the functions into a pipeline.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Combine"
+        ]
+      },
+      "sequence_6197": {
+        "word": "sequence",
+        "sentence": "Sequence the transformations in order.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Sequence"
+        ]
+      }
+    }
+  },
+  "apply": {
+    "kernel_op": "kernel:apply",
+    "items": {
+      "apply_0948": {
+        "word": "apply",
+        "sentence": "Apply the function to the argument.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Apply"
+        ]
+      },
+      "call_8375": {
+        "word": "call",
+        "sentence": "Call the function with this value.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Call"
+        ]
+      },
+      "invoke_7222": {
+        "word": "invoke",
+        "sentence": "Invoke the operation on the input.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Invoke"
+        ]
+      },
+      "execute_2394": {
+        "word": "execute",
+        "sentence": "Execute the function on the data.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Execute"
+        ]
+      },
+      "evaluate_7198": {
+        "word": "evaluate",
+        "sentence": "Evaluate the expression to get result.",
+        "token_indices": [
+          0
+        ],
+        "tokens": [
+          "Evaluate"
+        ]
+      }
+    }
+  }
+}

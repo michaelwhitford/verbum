@@ -1,0 +1,992 @@
+{
+  "expr_add_7": {
+    "result_label": "result:7",
+    "items": {
+      "S-expr_6918": {
+        "expression": "(+ 3 4)",
+        "notation": "S-expr",
+        "prompt": "Compute: (+ 3 4) =",
+        "last_token_idx": 8,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120(+",
+          "\u0120",
+          "3",
+          "\u0120",
+          "4",
+          ")",
+          "\u0120="
+        ]
+      },
+      "math_2233": {
+        "expression": "3 + 4",
+        "notation": "math",
+        "prompt": "Compute: 3 + 4 =",
+        "last_token_idx": 7,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120",
+          "3",
+          "\u0120+",
+          "\u0120",
+          "4",
+          "\u0120="
+        ]
+      },
+      "prose_8017": {
+        "expression": "three plus four",
+        "notation": "prose",
+        "prompt": "Compute: three plus four =",
+        "last_token_idx": 5,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120three",
+          "\u0120plus",
+          "\u0120four",
+          "\u0120="
+        ]
+      },
+      "prose_verbose_1540": {
+        "expression": "the sum of three and four",
+        "notation": "prose_verbose",
+        "prompt": "Compute: the sum of three and four =",
+        "last_token_idx": 8,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120the",
+          "\u0120sum",
+          "\u0120of",
+          "\u0120three",
+          "\u0120and",
+          "\u0120four",
+          "\u0120="
+        ]
+      },
+      "function_call_3306": {
+        "expression": "add(3, 4)",
+        "notation": "function_call",
+        "prompt": "Compute: add(3, 4) =",
+        "last_token_idx": 9,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120add",
+          "(",
+          "3",
+          ",",
+          "\u0120",
+          "4",
+          ")",
+          "\u0120="
+        ]
+      },
+      "passive_2614": {
+        "expression": "3 added to 4",
+        "notation": "passive",
+        "prompt": "Compute: 3 added to 4 =",
+        "last_token_idx": 8,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120",
+          "3",
+          "\u0120added",
+          "\u0120to",
+          "\u0120",
+          "4",
+          "\u0120="
+        ]
+      }
+    }
+  },
+  "expr_add_10": {
+    "result_label": "result:10",
+    "items": {
+      "S-expr_1608": {
+        "expression": "(+ 7 3)",
+        "notation": "S-expr",
+        "prompt": "Compute: (+ 7 3) =",
+        "last_token_idx": 8,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120(+",
+          "\u0120",
+          "7",
+          "\u0120",
+          "3",
+          ")",
+          "\u0120="
+        ]
+      },
+      "math_8622": {
+        "expression": "7 + 3",
+        "notation": "math",
+        "prompt": "Compute: 7 + 3 =",
+        "last_token_idx": 7,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120",
+          "7",
+          "\u0120+",
+          "\u0120",
+          "3",
+          "\u0120="
+        ]
+      },
+      "prose_7242": {
+        "expression": "seven plus three",
+        "notation": "prose",
+        "prompt": "Compute: seven plus three =",
+        "last_token_idx": 5,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120seven",
+          "\u0120plus",
+          "\u0120three",
+          "\u0120="
+        ]
+      },
+      "prose_verbose_2523": {
+        "expression": "the sum of seven and three",
+        "notation": "prose_verbose",
+        "prompt": "Compute: the sum of seven and three =",
+        "last_token_idx": 8,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120the",
+          "\u0120sum",
+          "\u0120of",
+          "\u0120seven",
+          "\u0120and",
+          "\u0120three",
+          "\u0120="
+        ]
+      }
+    }
+  },
+  "expr_sub_4": {
+    "result_label": "result:4",
+    "items": {
+      "S-expr_9044": {
+        "expression": "(- 7 3)",
+        "notation": "S-expr",
+        "prompt": "Compute: (- 7 3) =",
+        "last_token_idx": 8,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120(-",
+          "\u0120",
+          "7",
+          "\u0120",
+          "3",
+          ")",
+          "\u0120="
+        ]
+      },
+      "math_6440": {
+        "expression": "7 - 3",
+        "notation": "math",
+        "prompt": "Compute: 7 - 3 =",
+        "last_token_idx": 7,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120",
+          "7",
+          "\u0120-",
+          "\u0120",
+          "3",
+          "\u0120="
+        ]
+      },
+      "prose_3636": {
+        "expression": "seven minus three",
+        "notation": "prose",
+        "prompt": "Compute: seven minus three =",
+        "last_token_idx": 5,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120seven",
+          "\u0120minus",
+          "\u0120three",
+          "\u0120="
+        ]
+      },
+      "prose_verbose_0318": {
+        "expression": "the difference between seven and three",
+        "notation": "prose_verbose",
+        "prompt": "Compute: the difference between seven and three =",
+        "last_token_idx": 8,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120the",
+          "\u0120difference",
+          "\u0120between",
+          "\u0120seven",
+          "\u0120and",
+          "\u0120three",
+          "\u0120="
+        ]
+      },
+      "imperative_9467": {
+        "expression": "subtract 3 from 7",
+        "notation": "imperative",
+        "prompt": "Compute: subtract 3 from 7 =",
+        "last_token_idx": 8,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120subtract",
+          "\u0120",
+          "3",
+          "\u0120from",
+          "\u0120",
+          "7",
+          "\u0120="
+        ]
+      }
+    }
+  },
+  "expr_mul_20": {
+    "result_label": "result:20",
+    "items": {
+      "S-expr_9667": {
+        "expression": "(* 4 5)",
+        "notation": "S-expr",
+        "prompt": "Compute: (* 4 5) =",
+        "last_token_idx": 8,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120(*",
+          "\u0120",
+          "4",
+          "\u0120",
+          "5",
+          ")",
+          "\u0120="
+        ]
+      },
+      "math_1601": {
+        "expression": "4 * 5",
+        "notation": "math",
+        "prompt": "Compute: 4 * 5 =",
+        "last_token_idx": 7,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120",
+          "4",
+          "\u0120*",
+          "\u0120",
+          "5",
+          "\u0120="
+        ]
+      },
+      "prose_3705": {
+        "expression": "four times five",
+        "notation": "prose",
+        "prompt": "Compute: four times five =",
+        "last_token_idx": 5,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120four",
+          "\u0120times",
+          "\u0120five",
+          "\u0120="
+        ]
+      },
+      "prose_verbose_9911": {
+        "expression": "the product of four and five",
+        "notation": "prose_verbose",
+        "prompt": "Compute: the product of four and five =",
+        "last_token_idx": 8,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120the",
+          "\u0120product",
+          "\u0120of",
+          "\u0120four",
+          "\u0120and",
+          "\u0120five",
+          "\u0120="
+        ]
+      },
+      "imperative_0171": {
+        "expression": "multiply 4 by 5",
+        "notation": "imperative",
+        "prompt": "Compute: multiply 4 by 5 =",
+        "last_token_idx": 8,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120multiply",
+          "\u0120",
+          "4",
+          "\u0120by",
+          "\u0120",
+          "5",
+          "\u0120="
+        ]
+      }
+    }
+  },
+  "expr_div_5": {
+    "result_label": "result:5",
+    "items": {
+      "S-expr_2519": {
+        "expression": "(/ 10 2)",
+        "notation": "S-expr",
+        "prompt": "Compute: (/ 10 2) =",
+        "last_token_idx": 9,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120(/",
+          "\u0120",
+          "1",
+          "0",
+          "\u0120",
+          "2",
+          ")",
+          "\u0120="
+        ]
+      },
+      "math_4265": {
+        "expression": "10 / 2",
+        "notation": "math",
+        "prompt": "Compute: 10 / 2 =",
+        "last_token_idx": 8,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120",
+          "1",
+          "0",
+          "\u0120/",
+          "\u0120",
+          "2",
+          "\u0120="
+        ]
+      },
+      "prose_9385": {
+        "expression": "ten divided by two",
+        "notation": "prose",
+        "prompt": "Compute: ten divided by two =",
+        "last_token_idx": 6,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120ten",
+          "\u0120divided",
+          "\u0120by",
+          "\u0120two",
+          "\u0120="
+        ]
+      },
+      "prose_short_6195": {
+        "expression": "half of ten",
+        "notation": "prose_short",
+        "prompt": "Compute: half of ten =",
+        "last_token_idx": 5,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120half",
+          "\u0120of",
+          "\u0120ten",
+          "\u0120="
+        ]
+      }
+    }
+  },
+  "expr_gt_true": {
+    "result_label": "result:true",
+    "items": {
+      "S-expr_4411": {
+        "expression": "(> 5 3)",
+        "notation": "S-expr",
+        "prompt": "Compute: (> 5 3) =",
+        "last_token_idx": 8,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120(>",
+          "\u0120",
+          "5",
+          "\u0120",
+          "3",
+          ")",
+          "\u0120="
+        ]
+      },
+      "math_1816": {
+        "expression": "5 > 3",
+        "notation": "math",
+        "prompt": "Compute: 5 > 3 =",
+        "last_token_idx": 7,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120",
+          "5",
+          "\u0120>",
+          "\u0120",
+          "3",
+          "\u0120="
+        ]
+      },
+      "prose_6522": {
+        "expression": "five is greater than three",
+        "notation": "prose",
+        "prompt": "Compute: five is greater than three =",
+        "last_token_idx": 7,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120five",
+          "\u0120is",
+          "\u0120greater",
+          "\u0120than",
+          "\u0120three",
+          "\u0120="
+        ]
+      },
+      "prose_alt_1340": {
+        "expression": "five exceeds three",
+        "notation": "prose_alt",
+        "prompt": "Compute: five exceeds three =",
+        "last_token_idx": 5,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120five",
+          "\u0120exceeds",
+          "\u0120three",
+          "\u0120="
+        ]
+      }
+    }
+  },
+  "expr_lt_true": {
+    "result_label": "result:true",
+    "items": {
+      "S-expr_6856": {
+        "expression": "(< 2 7)",
+        "notation": "S-expr",
+        "prompt": "Compute: (< 2 7) =",
+        "last_token_idx": 8,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120(<",
+          "\u0120",
+          "2",
+          "\u0120",
+          "7",
+          ")",
+          "\u0120="
+        ]
+      },
+      "math_7539": {
+        "expression": "2 < 7",
+        "notation": "math",
+        "prompt": "Compute: 2 < 7 =",
+        "last_token_idx": 7,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120",
+          "2",
+          "\u0120<",
+          "\u0120",
+          "7",
+          "\u0120="
+        ]
+      },
+      "prose_8634": {
+        "expression": "two is less than seven",
+        "notation": "prose",
+        "prompt": "Compute: two is less than seven =",
+        "last_token_idx": 7,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120two",
+          "\u0120is",
+          "\u0120less",
+          "\u0120than",
+          "\u0120seven",
+          "\u0120="
+        ]
+      },
+      "prose_alt_7192": {
+        "expression": "two is smaller than seven",
+        "notation": "prose_alt",
+        "prompt": "Compute: two is smaller than seven =",
+        "last_token_idx": 7,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120two",
+          "\u0120is",
+          "\u0120smaller",
+          "\u0120than",
+          "\u0120seven",
+          "\u0120="
+        ]
+      }
+    }
+  },
+  "expr_nested_23": {
+    "result_label": "result:23",
+    "items": {
+      "S-expr_6187": {
+        "expression": "(+ 3 (* 4 5))",
+        "notation": "S-expr",
+        "prompt": "Compute: (+ 3 (* 4 5)) =",
+        "last_token_idx": 11,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120(+",
+          "\u0120",
+          "3",
+          "\u0120(*",
+          "\u0120",
+          "4",
+          "\u0120",
+          "5",
+          "))",
+          "\u0120="
+        ]
+      },
+      "math_5841": {
+        "expression": "3 + 4 * 5",
+        "notation": "math",
+        "prompt": "Compute: 3 + 4 * 5 =",
+        "last_token_idx": 10,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120",
+          "3",
+          "\u0120+",
+          "\u0120",
+          "4",
+          "\u0120*",
+          "\u0120",
+          "5",
+          "\u0120="
+        ]
+      },
+      "prose_9943": {
+        "expression": "three plus the product of four and five",
+        "notation": "prose",
+        "prompt": "Compute: three plus the product of four and five =",
+        "last_token_idx": 10,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120three",
+          "\u0120plus",
+          "\u0120the",
+          "\u0120product",
+          "\u0120of",
+          "\u0120four",
+          "\u0120and",
+          "\u0120five",
+          "\u0120="
+        ]
+      },
+      "prose_short_6333": {
+        "expression": "three plus four times five",
+        "notation": "prose_short",
+        "prompt": "Compute: three plus four times five =",
+        "last_token_idx": 7,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120three",
+          "\u0120plus",
+          "\u0120four",
+          "\u0120times",
+          "\u0120five",
+          "\u0120="
+        ]
+      }
+    }
+  },
+  "expr_nested_14": {
+    "result_label": "result:14",
+    "items": {
+      "S-expr_1271": {
+        "expression": "(+ (* 2 3) (* 2 4))",
+        "notation": "S-expr",
+        "prompt": "Compute: (+ (* 2 3) (* 2 4)) =",
+        "last_token_idx": 15,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120(+",
+          "\u0120(*",
+          "\u0120",
+          "2",
+          "\u0120",
+          "3",
+          ")",
+          "\u0120(*",
+          "\u0120",
+          "2",
+          "\u0120",
+          "4",
+          "))",
+          "\u0120="
+        ]
+      },
+      "math_1728": {
+        "expression": "2*3 + 2*4",
+        "notation": "math",
+        "prompt": "Compute: 2*3 + 2*4 =",
+        "last_token_idx": 11,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120",
+          "2",
+          "*",
+          "3",
+          "\u0120+",
+          "\u0120",
+          "2",
+          "*",
+          "4",
+          "\u0120="
+        ]
+      },
+      "prose_8237": {
+        "expression": "two times three plus two times four",
+        "notation": "prose",
+        "prompt": "Compute: two times three plus two times four =",
+        "last_token_idx": 9,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120two",
+          "\u0120times",
+          "\u0120three",
+          "\u0120plus",
+          "\u0120two",
+          "\u0120times",
+          "\u0120four",
+          "\u0120="
+        ]
+      }
+    }
+  },
+  "expr_if_yes": {
+    "result_label": "result:10",
+    "items": {
+      "S-expr_2590": {
+        "expression": "(if (> 5 3) 10 0)",
+        "notation": "S-expr",
+        "prompt": "Compute: (if (> 5 3) 10 0) =",
+        "last_token_idx": 16,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120(",
+          "if",
+          "\u0120(>",
+          "\u0120",
+          "5",
+          "\u0120",
+          "3",
+          ")",
+          "\u0120",
+          "1",
+          "0",
+          "\u0120",
+          "0",
+          ")",
+          "\u0120="
+        ]
+      },
+      "pseudo_7032": {
+        "expression": "if 5 > 3 then 10 else 0",
+        "notation": "pseudo",
+        "prompt": "Compute: if 5 > 3 then 10 else 0 =",
+        "last_token_idx": 15,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120if",
+          "\u0120",
+          "5",
+          "\u0120>",
+          "\u0120",
+          "3",
+          "\u0120then",
+          "\u0120",
+          "1",
+          "0",
+          "\u0120else",
+          "\u0120",
+          "0",
+          "\u0120="
+        ]
+      },
+      "prose_2724": {
+        "expression": "ten if five exceeds three otherwise zero",
+        "notation": "prose",
+        "prompt": "Compute: ten if five exceeds three otherwise zero =",
+        "last_token_idx": 9,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120ten",
+          "\u0120if",
+          "\u0120five",
+          "\u0120exceeds",
+          "\u0120three",
+          "\u0120otherwise",
+          "\u0120zero",
+          "\u0120="
+        ]
+      }
+    }
+  },
+  "expr_add_various": {
+    "result_label": "op:add",
+    "items": {
+      "S-expr_3_0892": {
+        "expression": "(+ 1 2)",
+        "notation": "S-expr_3",
+        "prompt": "Compute: (+ 1 2) =",
+        "last_token_idx": 8,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120(+",
+          "\u0120",
+          "1",
+          "\u0120",
+          "2",
+          ")",
+          "\u0120="
+        ]
+      },
+      "S-expr_10_3777": {
+        "expression": "(+ 5 5)",
+        "notation": "S-expr_10",
+        "prompt": "Compute: (+ 5 5) =",
+        "last_token_idx": 8,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120(+",
+          "\u0120",
+          "5",
+          "\u0120",
+          "5",
+          ")",
+          "\u0120="
+        ]
+      },
+      "S-expr_300_8647": {
+        "expression": "(+ 100 200)",
+        "notation": "S-expr_300",
+        "prompt": "Compute: (+ 100 200) =",
+        "last_token_idx": 12,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120(+",
+          "\u0120",
+          "1",
+          "0",
+          "0",
+          "\u0120",
+          "2",
+          "0",
+          "0",
+          ")",
+          "\u0120="
+        ]
+      },
+      "math_3_2700": {
+        "expression": "1 + 2",
+        "notation": "math_3",
+        "prompt": "Compute: 1 + 2 =",
+        "last_token_idx": 7,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120",
+          "1",
+          "\u0120+",
+          "\u0120",
+          "2",
+          "\u0120="
+        ]
+      },
+      "math_10_5921": {
+        "expression": "5 + 5",
+        "notation": "math_10",
+        "prompt": "Compute: 5 + 5 =",
+        "last_token_idx": 7,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120",
+          "5",
+          "\u0120+",
+          "\u0120",
+          "5",
+          "\u0120="
+        ]
+      },
+      "math_300_3574": {
+        "expression": "100 + 200",
+        "notation": "math_300",
+        "prompt": "Compute: 100 + 200 =",
+        "last_token_idx": 11,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120",
+          "1",
+          "0",
+          "0",
+          "\u0120+",
+          "\u0120",
+          "2",
+          "0",
+          "0",
+          "\u0120="
+        ]
+      }
+    }
+  },
+  "expr_mul_various": {
+    "result_label": "op:mul",
+    "items": {
+      "S-expr_6_6562": {
+        "expression": "(* 2 3)",
+        "notation": "S-expr_6",
+        "prompt": "Compute: (* 2 3) =",
+        "last_token_idx": 8,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120(*",
+          "\u0120",
+          "2",
+          "\u0120",
+          "3",
+          ")",
+          "\u0120="
+        ]
+      },
+      "S-expr_56_3365": {
+        "expression": "(* 7 8)",
+        "notation": "S-expr_56",
+        "prompt": "Compute: (* 7 8) =",
+        "last_token_idx": 8,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120(*",
+          "\u0120",
+          "7",
+          "\u0120",
+          "8",
+          ")",
+          "\u0120="
+        ]
+      },
+      "S-expr_100_5884": {
+        "expression": "(* 10 10)",
+        "notation": "S-expr_100",
+        "prompt": "Compute: (* 10 10) =",
+        "last_token_idx": 10,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120(*",
+          "\u0120",
+          "1",
+          "0",
+          "\u0120",
+          "1",
+          "0",
+          ")",
+          "\u0120="
+        ]
+      },
+      "math_6_2943": {
+        "expression": "2 * 3",
+        "notation": "math_6",
+        "prompt": "Compute: 2 * 3 =",
+        "last_token_idx": 7,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120",
+          "2",
+          "\u0120*",
+          "\u0120",
+          "3",
+          "\u0120="
+        ]
+      },
+      "math_56_4762": {
+        "expression": "7 * 8",
+        "notation": "math_56",
+        "prompt": "Compute: 7 * 8 =",
+        "last_token_idx": 7,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120",
+          "7",
+          "\u0120*",
+          "\u0120",
+          "8",
+          "\u0120="
+        ]
+      },
+      "math_100_6212": {
+        "expression": "10 * 10",
+        "notation": "math_100",
+        "prompt": "Compute: 10 * 10 =",
+        "last_token_idx": 9,
+        "tokens": [
+          "Compute",
+          ":",
+          "\u0120",
+          "1",
+          "0",
+          "\u0120*",
+          "\u0120",
+          "1",
+          "0",
+          "\u0120="
+        ]
+      }
+    }
+  }
+}
