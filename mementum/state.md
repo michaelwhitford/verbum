@@ -162,12 +162,20 @@ tokens into the same basin geometry the 32B model uses at L28-37.
 - Batch to reduce per-sentence overhead (~62s model load, then fast)
 
 **Step D: Build basin projector model**
-- Architecture: PCA-distilled Qwen3 embeddings → strided ascending
-  arm (from v9_model.py, shared ternary attn) → word pooling →
-  basin head → d_basin. O(n × stride) — runs on CPU.
+- MERA ascending arm: W=8 base stride, 8 levels (v6/v7 proven)
+  Level 0 (own weights): 4096 → 512 (stride 8, token/local)
+  Levels 1-7 (SHARED weights, stride 2 each): 512 → 4 (wavelet)
+  Spiral bias: `bias(w) = -α·ln(stride·w + 1)`, α=1.18, fp=40
+  Self-similar: ONE set of ternary weights reused 7×
+- Word extraction from Level 2 (s32 = word scale, ~128 positions)
+- Basin projection head: linear → d_basin
+- PCA-distilled Qwen3 embeddings as input
+- O(n × W) per level — **523× fewer ops than full attn at seq=4096**
 - Target: 100K-1M ternary params
 - Training: gradient-informed evolution (reuse v8 BIOS infra)
 - Loss: cosine similarity + contrastive for cross-notation pairs
+- Existing code: `scripts/v9/v9_model.py` AscendingArm (adapt to
+  Qwen3 BBPE vocab, add spiral bias from v8 model, add basin head)
 
 **Step E: 4-phase training curriculum**
 - Phase 1: S-expr calibration (target >0.9 cosine sim to 32B)
@@ -188,12 +196,11 @@ tokens into the same basin geometry the 32B model uses at L28-37.
 
 **Open questions:**
 - d_basin: how many PCA components capture the basin structure?
-- Context window: sentence-level should suffice (probe showed
-  behavioral frames operate at sentence granularity)
-- Embedding strategy: PCA of 32B token embeddings recommended but
-  untested — may need the full 5120 dim
+- d_model for ascending arm: 256? 512? PCA will inform
+- Embedding strategy: PCA of 32B token embeddings → d_model
 - Invariance recovery at L48-62: should we target L28 or L62?
-- Word pooling: mean-pool vs first-token vs attention-weighted?
+- Word extraction: Level 2 positions vs mean-pool BPE spans?
+- Spiral α: start at 1.18 (empirical) or let it learn from scratch?
 
 ### 9. Future: variable binding and scope
 
