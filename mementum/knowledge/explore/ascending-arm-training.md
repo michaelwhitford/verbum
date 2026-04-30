@@ -44,26 +44,32 @@ pooling is learned (the context encoder merges subword meanings
 through self-attention before pooling collapses them).
 
 ```
-Input:  token_ids (N subword tokens)
+Input:  token_ids (4096 subword tokens)
         ↓
-        Token embeddings (N × d_model)
+        Token embeddings (4096 × d_model)
         ↓
-        Strided ascending arm               ← self-similar ternary attention
-          Level 0: N → N/4 (stride windows, shared weights)
-          Level 1: N/4 → N/16 (same weights)
-          Level 2: N/16 → N/64 (same weights)
-          Multi-scale output: concat all levels
+        Strided ascending arm (W=8, MERA shared weights)
+          Level 0 (own):    4096 → 512   (stride 8, local syntax)
+          Level 1 (shared):  512 → 256   (s16, subword/morpheme)
+          Level 2 (shared):  256 → 128   (s32, word scale) ← word pooling here
+          Level 3 (shared):  128 →  64   (s64, phrase)
+          Level 4 (shared):   64 →  32   (s128, clause)
+          Level 5 (shared):   32 →  16   (s256, sentence) ← behavior context here
+          Level 6 (shared):   16 →   8   (s512, paragraph)
+          Level 7 (shared):    8 →   4   (s1024, global)
         ↓
-        Word pooling (W × d_model)           ← align stride windows to BPE words
+        Word extraction from Level 2 (W ≈ 128 word positions)
         ↓
         Basin projection head (W × d_basin)  ← linear → basin space
         ↓
 Output: per-WORD basin vectors (W × d_basin)
 ```
 
-The strided ascending arm already exists in `scripts/v9/v9_model.py`
-(session 054). Self-similar shared ternary attention across all
-stride levels. O(n × stride) per level — runs on CPU.
+The MERA structure is proven: v6 found the strides snap at W=8,
+v7 proved the ascending arm learns the self-similar wavelet.
+Level 0 has own weights (token-specific), levels 1-7 share ONE
+set of ternary weights reused 7× (the wavelet). O(n × W) per
+level — **523× fewer attention ops than full attention at seq=4096.**
 
 ### Word Pooling
 
@@ -339,39 +345,53 @@ the 32B model's token knowledge.
 weights, ternary Q/K/V, window pooling at each stride level.
 
 ```
-v9_model.py AscendingArm:
-  - Shared TernaryAttention (Q/K/V/O all ternary)
-  - Shared TernaryLinear mix layer
-  - Window position encoding (per-stride, reused)
-  - Attention-weighted pooling per window
-  - stride=4, n_levels=3 → receptive field = 4³ = 64 tokens
+Proven configuration (v6 → v7 → v8):
+  seq_len = 4096
+  Level 0 (own weights): W=8, stride 8 on raw token embeddings
+    4096 tokens → 512 positions
+    2 ternary transformer layers, attention window = 8
+    Attention cost: 4096 × 8 = 32K entries/head (strided, cheap)
+
+  Levels 1-7 (SHARED MERA weights): stride 2, each feeds the next
+    Level 1: 512 → 256  (≡ s16 on raw tokens)
+    Level 2: 256 → 128  (≡ s32 — word scale)
+    Level 3: 128 →  64  (≡ s64 — phrase scale)
+    Level 4:  64 →  32  (≡ s128 — clause scale)
+    Level 5:  32 →  16  (≡ s256 — sentence scale)
+    Level 6:  16 →   8  (≡ s512 — paragraph scale)
+    Level 7:   8 →   4  (≡ s1024)
+    2 ternary transformer layers, ONE set of weights reused 7×
+    Self-similarity is LITERAL — same weights at every scale
 ```
 
-**Why strided, not full attention:**
+This is the configuration that v6 proved (strides snap) and v7
+proved (ascending arm learned the wavelet, 1.8:1 compression
+ratio). The v9 ascending arm reuses the same W=8 base stride
+and MERA shared-weight structure.
 
-- **CPU throughput.** The whole point is a tiny portable artifact
-  that runs on CPU at decent throughput. Full attention is O(n²)
-  — unusable on CPU for anything beyond short sequences. Strided
-  is O(n × stride) per level — linear in sequence length.
-- **Self-similar.** Shared weights across all levels = the wavelet
-  from v7. Fewer parameters for the same receptive field.
-- **Behavioral context works hierarchically.** "Calculate" at
-  position 0, "sum" at position 8. After one stride level (w=4),
-  they're in adjacent windows. After two levels, same window.
-  Sentence-level context emerges from 2-3 levels, not flat O(n²).
-- **Natural word pooling.** Stride windows can align with BPE word
-  boundaries. The window pooling IS the word pooling — one mechanism
-  serves both purposes.
+**Why this configuration:**
 
-**Compute comparison (sentence of 32 tokens, stride=4):**
+- **W=8 base stride.** v6 proved this is where strides snap —
+  the natural granularity for token-level processing. 8 tokens
+  captures digit adjacency, operator-operand pairs, local syntax.
+  Matches the BPE subword scale.
+- **Stride 2 shared levels.** The wavelet: same operation at every
+  scale. v7 proved the self-similar compression function spreads
+  from smallest stride to largest. Shared weights = fewer params.
+- **seq=4096.** Full context window for behavioral frames, multi-
+  sentence reasoning, and prose computation. Room for 8 scales.
+- **CPU throughput.** O(n × W) per level, not O(n²). At seq=4096:
+  strided attention = 4096 × 8 = 32K entries per level per head.
+  Full attention = 4096² = 16.7M entries per head. **523× fewer ops.**
+- **Natural scale hierarchy.** Each level maps to a linguistic
+  scale: token → word → phrase → clause → sentence → paragraph.
+  The probes showed behavioral frames operate at sentence scale
+  (L5, s256) — the hierarchy captures this directly.
 
-| Architecture | Attention ops | Params (shared) |
-|---|---|---|
-| Full transformer (2 layers) | 2 × 32² = 2048 | 2 × separate |
-| Strided (3 levels, stride 4) | 3 × 8 × 4² = 384 | 1 × shared |
-
-5.3× fewer attention ops AND shared weights. On CPU this is the
-difference between interactive and batch-only.
+**Word pooling alignment:** Level 2 (s32) is the word scale. BPE
+words are typically 2-4 subword tokens = 16-32 raw characters.
+The s32 level naturally aligns with word boundaries. Word pooling
+can extract from level 2 instead of requiring a separate mechanism.
 
 ### 3. Output space
 
@@ -462,8 +482,10 @@ Session 057 plan:
      - Project oracle data to basin space
   3. Build basin projector model
      - Distilled embeddings (PCA of 32B token embeddings)
-     - Strided ascending arm (from v9_model.py, adapt to Qwen3 vocab)
-     - Word pooling (align stride windows to BPE word boundaries)
+     - MERA ascending arm: W=8 base, 8 levels (v6/v7 proven config)
+       Level 0 own weights + levels 1-7 shared (the wavelet)
+       seq=4096, d_model=TBD (256? 512? PCA will inform)
+     - Word extraction from Level 2 (s32 = word scale)
      - Linear projection head → d_basin
   4. Phase 1 training: S-expression calibration
   5. Phase 2 training: cross-notation bridge
