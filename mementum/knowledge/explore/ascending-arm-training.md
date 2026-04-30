@@ -46,16 +46,24 @@ through self-attention before pooling collapses them).
 ```
 Input:  token_ids (N subword tokens)
         ↓
-        Token embeddings (N × d_embed)
+        Token embeddings (N × d_model)
         ↓
-        Context encoder (N × d_model)        ← ternary transformer
+        Strided ascending arm               ← self-similar ternary attention
+          Level 0: N → N/4 (stride windows, shared weights)
+          Level 1: N/4 → N/16 (same weights)
+          Level 2: N/16 → N/64 (same weights)
+          Multi-scale output: concat all levels
         ↓
-        Word pooling (W × d_model)           ← mean-pool subword spans
+        Word pooling (W × d_model)           ← align stride windows to BPE words
         ↓
         Basin projection head (W × d_basin)  ← linear → basin space
         ↓
 Output: per-WORD basin vectors (W × d_basin)
 ```
+
+The strided ascending arm already exists in `scripts/v9/v9_model.py`
+(session 054). Self-similar shared ternary attention across all
+stride levels. O(n × stride) per level — runs on CPU.
 
 ### Word Pooling
 
@@ -284,7 +292,10 @@ Each failure type has a different fix.
 1. **Oracle data generator:** Script that feeds corpus through 32B,
    extracts L28 activations, saves as training shards
 2. **PCA projector:** Fit PCA on oracle activations, determine d_basin
-3. **Basin projector model:** Small ternary transformer in MLX
+3. **Basin projector model:** Adapt v9_model.py AscendingArm to
+   Qwen3 vocab + word pooling + basin head. Already ternary, already
+   strided, already self-similar. Main work: swap char vocab for
+   Qwen3 BBPE, add word boundary alignment, add basin head.
 4. **Training loop:** Adam + evolutionary mutation (same as kernel)
 5. **Composition rules:** Basin compatibility → tree structure
 6. **End-to-end pipeline:** tokens → arm → tree → kernel → result
@@ -323,23 +334,44 @@ the 32B model's token knowledge.
 
 ### 2. Context encoder architecture
 
-**Option A: Ternary transformer.** 2-4 layers, d_model=256,
-4-8 heads. Self-attention provides full context. Pro: proven
-architecture, handles behavioral frames naturally. Con: O(n²)
-in sequence length.
+**Decision: Strided ternary attention.** Already built in
+`scripts/v9/v9_model.py` (session 054). Self-similar shared
+weights, ternary Q/K/V, window pooling at each stride level.
 
-**Option B: Strided ternary attention.** Like the v7 ascending
-arm but smaller. Pro: matches the MERA multi-scale intuition.
-Con: more complex, may be overkill for sentence-level context.
+```
+v9_model.py AscendingArm:
+  - Shared TernaryAttention (Q/K/V/O all ternary)
+  - Shared TernaryLinear mix layer
+  - Window position encoding (per-stride, reused)
+  - Attention-weighted pooling per window
+  - stride=4, n_levels=3 → receptive field = 4³ = 64 tokens
+```
 
-**Option C: Ternary CNN.** Causal convolutions with increasing
-dilation. Pro: O(n) in sequence length, fast. Con: limited
-receptive field, may not capture behavioral frames.
+**Why strided, not full attention:**
 
-**Recommendation: Option A for now.** Simple ternary transformer,
-2 layers, d_model=256. We need full context for behavioral frames
-(probe showed behaviors reshape basins at sentence level). If
-sequence length becomes a bottleneck, switch to strided.
+- **CPU throughput.** The whole point is a tiny portable artifact
+  that runs on CPU at decent throughput. Full attention is O(n²)
+  — unusable on CPU for anything beyond short sequences. Strided
+  is O(n × stride) per level — linear in sequence length.
+- **Self-similar.** Shared weights across all levels = the wavelet
+  from v7. Fewer parameters for the same receptive field.
+- **Behavioral context works hierarchically.** "Calculate" at
+  position 0, "sum" at position 8. After one stride level (w=4),
+  they're in adjacent windows. After two levels, same window.
+  Sentence-level context emerges from 2-3 levels, not flat O(n²).
+- **Natural word pooling.** Stride windows can align with BPE word
+  boundaries. The window pooling IS the word pooling — one mechanism
+  serves both purposes.
+
+**Compute comparison (sentence of 32 tokens, stride=4):**
+
+| Architecture | Attention ops | Params (shared) |
+|---|---|---|
+| Full transformer (2 layers) | 2 × 32² = 2048 | 2 × separate |
+| Strided (3 levels, stride 4) | 3 × 8 × 4² = 384 | 1 × shared |
+
+5.3× fewer attention ops AND shared weights. On CPU this is the
+difference between interactive and batch-only.
 
 ### 3. Output space
 
@@ -430,8 +462,8 @@ Session 057 plan:
      - Project oracle data to basin space
   3. Build basin projector model
      - Distilled embeddings (PCA of 32B token embeddings)
-     - 2-layer ternary transformer, d_model=256
-     - Word pooling layer (mean-pool subword spans)
+     - Strided ascending arm (from v9_model.py, adapt to Qwen3 vocab)
+     - Word pooling (align stride windows to BPE word boundaries)
      - Linear projection head → d_basin
   4. Phase 1 training: S-expression calibration
   5. Phase 2 training: cross-notation bridge
