@@ -154,15 +154,16 @@ tokens into the same basin geometry the 32B model uses at L28-37.
 
 **Step C: Build oracle data generator** ← NEXT
 - Script to feed corpus through Qwen3-32B, extract L28 activations
+- **Word pooling:** detect BPE boundaries, mean-pool subword spans
 - Corpus: 80K sentences (S-expr, math, prose, behavioral frames, mixed)
-- PCA on L28 hidden states to find d_basin (expect 32-128 dimensions)
-- Output: training shards of (token_ids, basin_vectors) pairs
+- PCA on **word-level** L28 hidden states → find d_basin (expect 32-128)
+- Output: shards of (token_ids, word_boundaries, per_word_basin_vectors)
 - Loading pattern: `from_pretrained(gguf_dir, gguf_file=name)` proven
 - Batch to reduce per-sentence overhead (~62s model load, then fast)
 
 **Step D: Build basin projector model**
 - Architecture: PCA-distilled Qwen3 embeddings (d=256) → 2-layer
-  ternary transformer → linear head → d_basin
+  ternary transformer → **word pooling** → linear head → d_basin
 - Target: 100K-1M ternary params
 - Training: gradient-informed evolution (reuse v8 BIOS infra)
 - Loss: cosine similarity + contrastive for cross-notation pairs
@@ -178,6 +179,12 @@ tokens into the same basin geometry the 32B model uses at L28-37.
 - Connect ascending arm → tree builder → VSM kernel
 - Evaluate on prose computation tasks
 
+**Kernel extension roadmap** (after scalar pipeline works):
+- Layer 2: Mask ops — bitmask over word positions IS the list type
+  Quantifiers = map/reduce/filter over masks, no new data structure
+  The token vector is already the container; masks select elements
+- Layer 3: Scope/binding — let, lambda, var_ref, scope management
+
 **Open questions:**
 - d_basin: how many PCA components capture the basin structure?
 - Context window: sentence-level should suffice (probe showed
@@ -185,6 +192,7 @@ tokens into the same basin geometry the 32B model uses at L28-37.
 - Embedding strategy: PCA of 32B token embeddings recommended but
   untested — may need the full 5120 dim
 - Invariance recovery at L48-62: should we target L28 or L62?
+- Word pooling: mean-pool vs first-token vs attention-weighted?
 
 ### 9. Future: variable binding and scope
 
