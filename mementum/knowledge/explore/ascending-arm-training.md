@@ -369,7 +369,38 @@ proved (ascending arm learned the wavelet, 1.8:1 compression
 ratio). The v9 ascending arm reuses the same W=8 base stride
 and MERA shared-weight structure.
 
-**Why this configuration:**
+### Spiral attention bias
+
+The attention within each level uses a spiral decay bias that
+distributes energy across scales with a power law:
+
+```
+bias(w) = -α · ln(stride · w + 1)
+
+α = 1.18               — empirical, from LLM attention analysis
+fixed_point = 40        — center of the spiral
+```
+
+Properties (from holographic-compression.md):
+- **Hyperbolic decay** (not exponential): infinite effective range,
+  every position sees all scales simultaneously
+- **Stride-invariant:** bias depends on physical distance, not on
+  which stride level. Self-similar by construction.
+- **1/φ of attention within distance 30:** the golden ratio governs
+  the local-to-extended attention ratio
+- **φ is the unique fixed point** of self-similar compression.
+  Any other ratio diverges or collapses. The ternary weights
+  evolve during training to find this attractor.
+- **Learnable:** v8 made α and fixed_point learnable parameters
+  (initialized at 1.18 and 40.0). The system discovers its own
+  optimal spiral via relational loss.
+
+The spiral is what makes the shared MERA weights work — the same
+operation at every scale, with scale selection handled by the
+bias, not by different weights. Without the spiral, shared weights
+would treat all scales identically and lose scale information.
+
+### Why this configuration
 
 - **W=8 base stride.** v6 proved this is where strides snap —
   the natural granularity for token-level processing. 8 tokens
@@ -378,6 +409,9 @@ and MERA shared-weight structure.
 - **Stride 2 shared levels.** The wavelet: same operation at every
   scale. v7 proved the self-similar compression function spreads
   from smallest stride to largest. Shared weights = fewer params.
+- **Spiral bias.** Power-law attention decay with α=1.18 gives
+  each level hyperbolic reach across all scales. Makes shared
+  weights scale-aware without separate per-scale parameters.
 - **seq=4096.** Full context window for behavioral frames, multi-
   sentence reasoning, and prose computation. Room for 8 scales.
 - **CPU throughput.** O(n × W) per level, not O(n²). At seq=4096:
