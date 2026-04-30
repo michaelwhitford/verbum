@@ -35,6 +35,9 @@ Thumbs.db
 .vscode/
 *.swp
 
+# large data artifacts
+**/*.npz
+
 # models
 models/
 checkpoints/
