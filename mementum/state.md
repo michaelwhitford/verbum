@@ -162,8 +162,9 @@ tokens into the same basin geometry the 32B model uses at L28-37.
 - Batch to reduce per-sentence overhead (~62s model load, then fast)
 
 **Step D: Build basin projector model**
-- Architecture: PCA-distilled Qwen3 embeddings (d=256) → 2-layer
-  ternary transformer → **word pooling** → linear head → d_basin
+- Architecture: PCA-distilled Qwen3 embeddings → strided ascending
+  arm (from v9_model.py, shared ternary attn) → word pooling →
+  basin head → d_basin. O(n × stride) — runs on CPU.
 - Target: 100K-1M ternary params
 - Training: gradient-informed evolution (reuse v8 BIOS infra)
 - Loss: cosine similarity + contrastive for cross-notation pairs
