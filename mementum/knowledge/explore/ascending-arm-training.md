@@ -32,21 +32,77 @@ depends-on: []
 
 ## Architecture: The Basin Projector
 
-The ascending arm is a **dimensionality reducer** that projects
-token embeddings (in context) into the basin space the 32B model
-uses at L28. It's not a classifier with discrete labels — it's
-a projector into a continuous geometric space where proximity
-determines type compatibility.
+The ascending arm has three stages: context encoding, word pooling,
+and basin projection. It takes a token sequence and produces
+per-WORD basin vectors in a continuous geometric space.
+
+BPE tokenization splits words into subword tokens. The ascending
+arm must pool subword tokens into word-level representations
+before basin projection. This pairing step is mechanical (BPE
+word boundaries are deterministic from the tokenizer) but the
+pooling is learned (the context encoder merges subword meanings
+through self-attention before pooling collapses them).
 
 ```
-Input:  token_ids (sequence of vocab indices)
+Input:  token_ids (N subword tokens)
         ↓
-        Token embeddings (from Qwen3 vocab, frozen or learned)
+        Token embeddings (N × d_embed)
         ↓
-        Context encoder (ternary transformer, small)
+        Context encoder (N × d_model)        ← ternary transformer
         ↓
-Output: per-token basin vectors (d_basin dimensional)
+        Word pooling (W × d_model)           ← mean-pool subword spans
+        ↓
+        Basin projection head (W × d_basin)  ← linear → basin space
+        ↓
+Output: per-WORD basin vectors (W × d_basin)
 ```
+
+### Word Pooling
+
+BPE word boundaries come from the tokenizer. Qwen3 BBPE marks
+word-initial tokens with a space prefix. No prefix = continuation.
+
+```
+tokens:    [▁Reform, ulate, ▁the, ▁equ, ation]
+word_ids:  [   0,      0,     1,    2,     2  ]
+words:     [reformulate,     the,  equation   ]
+```
+
+The context encoder (transformer) sees ALL subword tokens and
+propagates meaning between them via self-attention. After encoding,
+mean-pool each word span into a single vector. The pooled vector
+carries the full word meaning because the transformer already
+merged the subword representations.
+
+Word pooling reduces the sequence from N tokens to W words. All
+downstream operations (basin projection, masks, composition,
+tree, kernel) operate at word granularity.
+
+### Masks: Lists as Bitmasks Over Words
+
+The token/word sequence IS the universal container. A bitmask over
+word positions selects which words are "in scope." No list data
+structure needed.
+
+```
+words:    [every, cat, that, runs, sleeps]
+mask:     [  0,    1,    0,    0,     0  ]  ← "cat" entities
+```
+
+Quantifiers in prose ARE map/reduce/filter:
+  - "every cat sleeps" = all(map(sleeps, mask_from_basin(cat)))
+  - "some dog runs"    = any(map(runs, mask_from_basin(dog)))
+  - "no cat sleeps"    = none(map(sleeps, mask_from_basin(cat)))
+
+Kernel mask ops (future extension, after scalar pipeline works):
+  - mask_from_basin(basin_id) → MASK
+  - mask_and/or/not(MASK, MASK) → MASK
+  - map_op(OP, MASK) → per-word results
+  - reduce_op(OP, MASK) → single result
+  - filter(PRED, MASK) → MASK
+
+Masks are {0, 1} — a subset of ternary {-1, 0, +1}. The ternary
+routing fabric produces masks natively.
 
 ### Dimensions
 
@@ -72,6 +128,12 @@ dimensionality before training.
 through the 32B model, collect L28 hidden states, fit PCA. The
 number of significant components tells us d_basin. Likely 32-128.
 
+**Critical:** PCA should be fit on WORD-level pooled activations,
+not raw per-token activations. Pool the 32B's per-token L28 hidden
+states to word level first (same mean-pooling), then PCA. This
+ensures d_basin captures word-level basin structure, not subword
+artifacts.
+
 ## Training Pipeline
 
 ### Phase 0: Oracle Data Generation
@@ -83,9 +145,11 @@ Pipeline:
   1. Curate diverse text corpus (prose, S-expr, math, mixed)
   2. Augment with behavioral frames (same content, different verbs)
   3. Feed through Qwen3-32B with L28 hooks
-  4. Save: (token_ids, per_token_L28_hidden_states)
-  5. PCA fit on all hidden states → d_basin projection matrix
-  6. Project all hidden states → (token_ids, per_token_basin_vectors)
+  4. Detect word boundaries from tokenizer (BPE space prefix)
+  5. Mean-pool per-token L28 activations to per-word activations
+  6. Save: (token_ids, word_boundaries, per_word_L28_hidden_states)
+  7. PCA fit on all word-level hidden states → d_basin projection
+  8. Project: (token_ids, word_boundaries, per_word_basin_vectors)
 ```
 
 **Corpus design** (critical — behaviors reshape basins):
@@ -320,23 +384,60 @@ Con: quantization may lose the learned geometry.
 already exists. Gradient-informed evolution at 100K-1M params
 should converge in hours, not days.
 
+## Kernel Extension Roadmap
+
+The kernel grows in layers. Each layer gives the model more of
+its own operational substrate as pre-wired architecture.
+
+```
+Layer 1 (DONE):    Scalar ops        22 ops, 5 types, 100%, 8K weights
+                   add/sub/mul/div/mod/min/max
+                   eq/lt/gt/le/ge
+                   and/or/not, abs/neg, if
+                   partial/apply/compose/apply-comp
+
+Layer 2 (NEXT):    Mask ops          lists as bitmasks over word positions
+                   mask_from_basin   basin_id → MASK
+                   mask_and/or/not   MASK × MASK → MASK
+                   map_op            OP × MASK → per-word results
+                   reduce_op         OP × MASK → single value
+                   filter            PRED × MASK → MASK
+
+Layer 3 (FUTURE):  Scope/binding     variable binding and quantifier scope
+                   let               bind value to name in scope
+                   lambda            create function with bound variables
+                   var_ref           reference bound variable
+                   scope_enter/exit  manage quantifier scope
+```
+
+Layer 1 is proven. Layer 2 follows naturally from the mask insight:
+the token vector IS the list, bitmasks select elements, quantifiers
+become map/reduce/filter over masks. Layer 3 adds the binding
+mechanism that quantifiers need for scope resolution.
+
+Each layer can be validated independently before integration.
+
 ## The Pipeline, Concrete
 
 ```
 Session 057 plan:
   1. Build oracle data generator
      - Feed corpus through 32B → extract L28 → save shards
+     - Pool to word level using BPE boundaries
   2. PCA analysis
+     - Fit on word-level pooled activations
      - Determine d_basin (expect 32-128)
      - Project oracle data to basin space
   3. Build basin projector model
      - Distilled embeddings (PCA of 32B token embeddings)
      - 2-layer ternary transformer, d_model=256
+     - Word pooling layer (mean-pool subword spans)
      - Linear projection head → d_basin
   4. Phase 1 training: S-expression calibration
   5. Phase 2 training: cross-notation bridge
   6. Phase 3 training: behavioral context
   7. Phase 4: end-to-end integration with VSM tree kernel
+  8. Phase 5: mask extension (kernel layer 2)
 ```
 
 Each phase has a clear success criterion. Failure at any phase
